@@ -1,0 +1,69 @@
+# Linux kernel style，按 AGENTS.md §0.3 校准。
+#
+# 已知局限：clang-format 无法完全表达内核风格（尤其是续行「优先对齐括号、
+# 否则用 Tab」的混合规则，以及宏定义体的特殊排版）。M3 里以本文件打底，
+# 差异用手工规则补，不要为了迁就工具去改风格约定。
+---
+BasedOnStyle: LLVM
+Language: Cpp
+
+# 缩进：Tab，8 列
+IndentWidth: 8
+TabWidth: 8
+ContinuationIndentWidth: 8
+UseTab: Always
+
+# 大括号：K&R（函数左括号独占一行，控制语句同行，} else { 同行）
+BreakBeforeBraces: Linux
+
+# 不折行、不重排
+ColumnLimit: 0
+ReflowComments: false
+BreakStringLiterals: false
+
+# switch：case 与 switch 对齐，case 体再缩进一层
+IndentCaseLabels: false
+
+# 预处理指令顶格，跨行用反斜杠左对齐
+IndentPPDirectives: None
+AlignEscapedNewlines: Left
+
+# 指针星号贴近变量名
+PointerAlignment: Right
+DerivePointerAlignment: false
+
+# 空格
+SpaceBeforeParens: ControlStatements
+SpaceAfterCStyleCast: false
+SpaceInEmptyParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpaceBeforeRangeBasedForLoopColon: true
+Cpp11BracedListStyle: false
+
+# 括号与对齐
+AlignAfterOpenBracket: Align
+BinPackArguments: true
+BinPackParameters: true
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignTrailingComments: false
+AlignOperands: false
+
+# 短语句不合并到一行
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never
+
+# 不重排 include（顺序是人为安排的信息）
+SortIncludes: false
+SortUsingDeclarations: false
+
+# 空行
+MaxEmptyLinesToKeep: 1
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+# 其他
+FixNamespaceComments: false
