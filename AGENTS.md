@@ -20,9 +20,12 @@
 **任何改动之后都必须仍然满足：**
 
 ```bash
-make -j16 && sha1sum -c checksum.sha1   # 期望：fireemblem8.gba: OK
+make -j16 && make check   # 期望：fireemblem8.gba: OK
 ```
 
+- 门禁的 sha1 常量在 `Makefile` 的 `ROM_SHA1`（基线值
+  `c25b145e37456171ada4b0d440bf88a19f4d509f`）。换基线时两处同步改：
+  `Makefile` 与 `docs/baseline.md`。
 - 该门禁使用到 **M4b（合并代码）之前**，之后由 `tools/emu` 行为测试接替。
 - 干净树全量构建约 **46 秒**（`-j16`），没有理由跳过。
 - 只有纯文档 / 纯脚本改动可以不跑构建，但汇报里必须写明「未跑构建及原因」。
@@ -103,7 +106,7 @@ Co-Authored-By: DeepSeek-V4.1-Flash <noreply@deepseek.com>
   不回滚未提交改动。
 - 破坏性操作先确认，特别是**禁止**：
   - `git clean`（含 `-dfx`）——会清掉所有未跟踪文件
-  - `make clean_all` ——本仓库该目标就是 `git clean -dfx`
+  - 用一个 `git clean` 目标替代 `make clean`（`clean_all` 已于 M2 移除）
 - 不擅自新增依赖或升级工具链，除非用户要求。
 
 ## 4. 构建与验证
@@ -112,12 +115,13 @@ Co-Authored-By: DeepSeek-V4.1-Flash <noreply@deepseek.com>
   `arm-none-eabi-*`（当前 2.34 binutils / gcc 9.2.1）加仓库自带的
   `tools/agbcc`。不要以为缺 `DEVKITARM` 就跑不起来。
 - 构建入口：
-  - `make -j16` —— 当前默认目标是 `compare`（构建 + 校验 sha1）；
-    M2 之后改为默认 `all`、校验并入 `make check`。
-  - 产物：`fireemblem8.gba` / `.elf` / `.map`（M2 后改名 `fe8re.*`）。
+  - `make -j16` —— 默认目标 `all`，只构建 `fireemblem8.gba` / `.elf` / `.map`。
+  - `make check` —— 字节门禁，比对 `Makefile` 里的 `ROM_SHA1`。
+  - `make clean` / `make clean_fast` —— 清理。
   - 默认**不生成** `.sym`（M5 补）。
+- 构建脚本在 `tools/scripts/`；`tools/extract/` 是反编译提取脚本归档，**不参与构建**。
 - `baserom.gba`（16 MiB）是构建必需输入，**按设计不入库**（decomp 惯例），
-  但本地必须存在；`Makefile` 的 `clean_all` 已带 `-e baserom.gba` 排除。
+  但本地必须存在。工具二进制同样未入库，首次构建前跑 `./build_tools.sh`。
 - 涉及 ROM 行为的改动，优先用 `tools/emu`（M5 落地后）验证；
   当前阶段用 0.1 的字节门禁。
 - 汇报时写清楚：跑了什么、结果如何、没跑什么及原因。

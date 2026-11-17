@@ -186,36 +186,50 @@ M0 基线固化
 2. **clang-format 10 不认若干新选项**（`IndentCaseBlocks`、`InsertBraces`、
    `RemoveBracesLLVM`），写进配置会直接报错退出，不是静默忽略。已移除。
 
-### M2 瘦身清理（1–2 天）
+### M2 瘦身清理（1–2 天）✅ 已完成（2026-11-17）
 
-**A. 直接删除（先 tag 再删）**
+**A. 直接删除** ✅
 
-| 目标 | 理由 |
-|---|---|
-| `_site/` | GitHub Pages 文档站 |
-| `reports/` | 反编译资产普查 CSV/TXT |
-| `docs/Background_TSA_Report.md`、`Banim_*.md`、`banim_asset_extraction.md`、`quickstart.md` | decomp 过程产物 |
-| `checksum.sha1`、`asmdiff.sh` | 改用 `make check` 内部比对 |
-| `buddy.yml`、`CONTRIBUTING.md`、`graphic_extract.yml`（839 KB） | 上游协作/提取配置 |
-| `Makefile` 的 `compare`/`clean_all`/`tag` 目标 | 改成 `check`，去掉 `git clean -dfx` 这类危险目标 |
-| `include/.clang-format` | 与根目录 `.clang-format` 冲突，会劫持 `include/` 下的格式化（M1 发现） |
+| 目标 | 理由 | 状态 |
+|---|---|---|
+| `_site/` | GitHub Pages 文档站 | ✅ |
+| `buddy.yml` | 上游 Buddy CI 配置 | ✅ |
+| `CONTRIBUTING.md` | 上游 PR 规范 | ✅ |
+| `asmdiff.sh` | 反汇编比对包装 | ✅ |
+| `checksum.sha1` | sha1 移入 `Makefile` 的 `ROM_SHA1` | ✅ |
+| `include/.clang-format` | 会劫持根目录格式化配置 | ✅ |
 
-**B. 迁移/归档**
+> 与初版清单的差异：`reports/`（3 CSV）、`graphic_extract.yml`、`docs/` 5 篇报告
+> 从「删除」**降级为归档**——`reports/*.csv` 是 `update_banim_img_rules.py` 的输入，
+> 删了以后无法重新生成 `banim_img_rules.mk`；其余在 M4c 素材外置时还有参考价值。
+
+**B. 迁移/归档** ✅
 
 | 目标 | 去处 |
 |---|---|
-| `scripts/` 中构建链路必需：`arm_compressing_linker.py`、`compressor.py`、`gfxtools/`、`mar_to_map.py`、`tmap2tsa.py`、`tsa_png.py`、`texttools/` | `tools/scripts/` |
-| `scripts/` 其余 ≈100 个 `dump_*.py`、`match_samples/`、`calcrom*`、`asm2casm.py`、`bindiff.sh`、`upload-progress.py` 等 | `tools/extract/`（先归档，稳定后再删） |
-| `tools/{agbcc,gbagfx,bin2c,scaninc,aif2pcm,mid2agb,textencode,jsonproc}` | 保留 |
-| `ldscript.txt`、`linker_script_banim.txt`、`linker_script_sound.txt` | `lds/`（M4a 一并做） |
+| `scripts/` 构建必需闭包（20 个文件）：`arm_compressing_linker.py`、`compressor.py`、`mar_to_map.py`、`tmap2tsa.py`、`tsa_png.py`、`update_banim_img_rules.py`、`gfxtools/`、`texttools/` | `tools/scripts/` |
+| `scripts/` 其余 108 个 + `dump_sound/` | `tools/extract/` |
+| `reports/`（3 CSV） | `tools/extract/reports/` |
+| `graphic_extract.yml`（820 KB） | `tools/extract/` |
+| `docs/` 5 篇 decomp 报告 | `docs/decomp/` |
+| `tools/{agbcc,gbagfx,bin2c,scaninc,aif2pcm,mid2agb,textencode,jsonproc}` | 留在原地 |
+| `ldscript.txt`、`linker_script_banim.txt`、`linker_script_sound.txt` | 留给 M4a |
 
-**C. 重写**
+已同步的路径常量：`Makefile` 全部 `scripts/` 引用、`update_banim_img_rules.py` 的
+`LABELS_CSV`/`ASSET_MAP_CSV`、`extract_file.py` 的 `graphic_extract.yml`、
+`include/constants/msg.h` 的生成器注释。
 
-- `Makefile`：默认 `all`；`check` 做 sha1 比对；统一 `.dep` 依赖生成；保留 `clean`/`clean_fast`
-- `README.md`：改成开发向（构建、目录说明、测试入口）
-- `.gitignore`：979 行按类归并
+**C. 重写** ✅
 
-**验收**：`make -j16` 通过 + `make check` 一致；跟踪文件数从 7,028 降到约 6,000。
+- `Makefile`：默认目标 `all`；`compare` → `check`（内嵌 `ROM_SHA1`）；删 `clean_all`、`tag`
+- `README.md`：改成开发向（构建、目录、约束、路线）
+- `compile_flags.txt`：修掉拼错的 `-WParenheses`，补 `-iquote`、`-std=gnu99`、`-mcpu`
+- `.gitignore`：去重 28 条，`scripts/dump_sound/` → `tools/extract/dump_sound/`
+- `tools/extract/README.md`：新增，说明归档用途
+
+**验收结果**：`make -j16` → `make check` → `fireemblem8.gba: OK`。
+根目录条目 36 → 28；`scripts/` 目录消失；跟踪文件 7,036 → 7,030（删 6 个）。
+构建产物无泄漏（`make clean` 后 `git status` 干净）。
 
 ### M3 代码风格：Linux kernel style（4–6 天）
 

@@ -98,14 +98,13 @@ clean_all:
 `-e baserom.gba` 显式把 ROM 排除在清理之外。**开发时不需要额外备份**，
 只要本地这一份在即可；换机器时自备 ROM 是 decomp 的常规前提。
 
-> M2 仍建议移除 `clean_all` 目标：它的伤害面太大（未跟踪文件全清），
-> 保留 `-e` 之后风险已经可控，但没有保留价值。
+> 该目标已在 M2 移除：它的伤害面太大（未跟踪文件全清），且 `make clean` 已足够。
 
 ## 5. 回归门禁（后续各阶段使用）
 
 | 门禁 | 命令 | 期望 |
 |---|---|---|
-| G1 字节一致 | `make -j16 && sha1sum -c checksum.sha1` | `fireemblem8.gba: OK` |
+| G1 字节一致 | `make -j16 && make check` | `fireemblem8.gba: OK` |
 | G2 构建成功 | `make clean && make -j16` | exit 0 |
 | G3 无告警 | 构建日志中 `warning:` 计数 | 0 |
 | G4 除法 | `arm-none-eabi-nm fireemblem8.elf \| grep '__aeabi_.*div'` | 无输出（M6 起生效） |
@@ -121,6 +120,6 @@ G1 使用到 **M4b（合并代码）之前**；之后由 G5 接替。
 | 2 | `monstergen_data.s` 的 `.data` 段属性告警 | M3 顺手修 |
 | 3 | 默认不生成 `.sym`，调试不便 | M5 |
 | 4 | 无 CI，无 `make test` | M5 |
-| 5 | `Makefile` 默认目标是 `compare`，不是 `all` | M2 |
-| 6 | `clean_all` 目标执行 `git clean -dfx`（虽带 `-e baserom.gba`，但会清掉所有未跟踪文件） | M2 移除 |
+| 5 | ~~`Makefile` 默认目标是 `compare`，不是 `all`~~ | M2 已修 |
+| 6 | ~~`clean_all` 目标执行 `git clean -dfx`~~ | M2 已移除 |
 | 7 | `ldscript.txt` 对象级布局，阻碍任何文件移动 | M4a（路径改写）/ M4b（放松） |

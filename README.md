@@ -1,83 +1,75 @@
-# Fire Emblem: The Sacred Stones
+# Fire Emblem: The Sacred Stones —— 重构工程
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+从 [fireemblem8u](https://github.com/laqieer/fireemblem8u) decomp 起步的源代码级重构，
+目标是让 GBA FE8 变成可以自由增改代码的项目。
 
-[FE Decomp Portal](https://laqieer.github.io/fe-decomp-portal/)
-
-This is a disassembly of Fire Emblem: The Sacred Stones (U)[!]
-
-It builds the following ROM:
-* fireemblem8.gba `sha1: c25b145e37456171ada4b0d440bf88a19f4d509f`
-
-### Quick Start
-
-If you just want to get the repo building quickly (Ubuntu/WSL, Arch Linux, or macOS/Homebrew), drop your legally obtained ROM at the repo root as `baserom.gba` and run:
+当前状态：**与 ROM 字节一致**（重构前阶段），每次改动后用 `make check` 验证。
 
 ```
-./scripts/quickstart.sh [--rom /path/to/baserom.gba] [--refresh-agbcc]
+ROM_SHA1 = c25b145e37456171ada4b0d440bf88a19f4d509f
 ```
 
-See [`docs/quickstart.md`](docs/quickstart.md) for full details, flags, and troubleshooting tips.
+- 重构规划：[`docs/rebuild-plan.md`](docs/rebuild-plan.md)
+- 构建基线：[`docs/baseline.md`](docs/baseline.md)
+- 工作约定：[`AGENTS.md`](AGENTS.md)
 
-### Building
+---
 
-To build the ROM:
+## 构建
+
+### 依赖
+
+- `arm-none-eabi-*`（binutils + gcc）
+- `python3`（构建脚本）
+- `numpy`、`Pillow`（`tools/scripts/tsa_png.py`、`gfxtools/tsa_generator.py`）
+
+`DEVKITPRO` / `DEVKITARM` **不需要设置**。
+
+### 一次性准备
+
+1. 把合法取得的 ROM 放到仓库根目录，命名为 `baserom.gba`（不入库）。
+2. 编译工具链（二进制未入库）：
+
 ```bash
-make fireemblem8.gba -j$(nproc)
-```
-To clean all build artifacts:
-```bash
-make clean
-```
-To clean all build artifacts **except** the extremely slow battle animation compression outputs:
-```bash
-make clean_fast
-```
-
-### Setting up the repository manually
-
-1. You must have a copy of the Fire Emblem: The Sacred Stones ROM named `baserom.gba` in the repository directory.
-2. Install [devkitPro](https://devkitpro.org/wiki/Getting_Started) or [GNU Arm Embedded Toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm).
-```
-# for Ubuntu/WSL users
-apt install binutils-arm-none-eabi
-```
-3. Install [agbcc](https://github.com/pret/agbcc) to this project.
-```
-cd /path/to/agbcc
-./build.sh
-./install.sh /path/to/fireemblem8u
-```
-4. Build tools.
-```
-cd /path/to/fireemblem8u
 ./build_tools.sh
 ```
-5. Build the project.
+
+> agbcc 已随仓库提供（`tools/agbcc/`），无需额外安装。
+
+### 日常
+
+```bash
+make -j$(nproc)    # 构建 fireemblem8.gba / .elf / .map
+make check         # 字节门禁：sha1 必须等于 ROM_SHA1
+make clean         # 清理
 ```
-make
-```
-6. You will see this for success.
-```
-fireemblem8.gba: OK
-```
 
-Q: `fatal error: png.h: No such file or directory`
+干净树全量构建约 **46 秒**（16 核）。
 
-A: Install [libpng](http://www.libpng.org/pub/png/libpng.html) to build `tools/gbagfx`.
+## 目录
 
-Q: `make: *** No rule to make target 'baserom.gba', needed by 'xxx'.  Stop.`
+| 目录 | 内容 |
+|---|---|
+| `src/` | C 源码（359 个文件，agbcc 编译） |
+| `include/` | 头文件；`constants/` 常量、`configs/` 编译开关、`hacks/` 新增接口 |
+| `asm/` | 手写汇编（`arm.s`、`arm_call.s`、宏） |
+| `data/` | 数据段汇编（`.s`，含 `.incbin baserom.gba` 引用） |
+| `graphics/` | 素材源文件（PNG / PAL / TSA）与生成物 |
+| `sound/` | 音乐（MML / MID）与音源 |
+| `texts/` | 文本表 |
+| `tools/` | 构建工具（`agbcc`、`gbagfx` 等）+ `scripts/` 构建脚本 + `extract/` 反编译提取归档 |
+| `docs/` | 文档；`decomp/` 存放 decomp 阶段报告 |
+| `ldscript.txt` | 链接脚本（**对象级布局，见 AGENTS.md §5**） |
 
-A: You must place a copy of the Fire Emblem: The Sacred Stones ROM named `baserom.gba` in the repository directory.
+## 已知约束
 
-Q: `unrecognized option '--add-symbol'`
+- **`ldscript.txt` 是对象级布局**：1,031 处 `src/xxx.o(.text)` 把每个目标文件钉死在固定地址。
+  移动文件必须同步改路径并保持顺序；新增 `.c` 必须在脚本里安排位置，否则被 `/DISCARD/` 丢掉。
+- **`baserom.gba` 是构建输入**：1,293 处 `.incbin` 引用它（约 1.07 MB）。M4c 会逐步外置到 `contents/`。
+- **源码必须 UTF-8**：构建管道会 `iconv -f UTF-8 -t CP932` 再喂给 agbcc。
+- **目前不生成 `.sym`**，M5 补。
 
-A: Update your devkitPro or embedded toolchain. Read [this](https://github.com/bminor/binutils-gdb/blob/3451a2d7a3501e9c3fc344cbc4950c495f30c16d/binutils/ChangeLog-2015#L120) for more info.
+## 后续
 
-Q: `.dep/src/xxx.d:2: *** missing separator.  Stop.`
-
-A: `rm -rf .dep` or disable [VSCode Extension: Makefile Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.makefile-tools) if installed.
-
-Check [INSTALL.md](https://github.com/pret/pokeruby/blob/master/INSTALL.md) and [INSTALL.md](https://github.com/pret/pokeemerald/blob/master/INSTALL.md) if you have trouble in setting up.
-
-Check [remove_tools](https://github.com/laqieer/fireemblem8u/tree/remove_tools) branch if you don't want to build agbcc and other tools by yourself. It uses docker to make setting up easier. Follow its [README.md](https://github.com/laqieer/fireemblem8u/blob/remove_tools/README.md) instead.
+见 [`docs/rebuild-plan.md`](docs/rebuild-plan.md) 的阶段划分（M0–M6）：
+瘦身 → 代码风格 → 目录重组 → 素材外置 → 测试基建 → agbcc 迁移到 arm-none-eabi-gcc。
