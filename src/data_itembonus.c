@@ -10,7 +10,7 @@ CONST_DATA struct ItemStatBonuses ItemBonus_DarkGleipnir = {
 };
 
 CONST_DATA struct ItemStatBonuses ItemBonus_BoosterHp = {
-	.hpBonus  = 7,
+	.hpBonus = 7,
 };
 
 CONST_DATA struct ItemStatBonuses ItemBonus_BoosterPow = {
