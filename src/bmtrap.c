@@ -24,280 +24,276 @@
 #include "constants/songs.h"
 
 struct ProcCmd CONST_DATA sProcScr_ExecTrap8[] = {
-    PROC_SLEEP(1),
-    PROC_WHILE(MuExistsActive),
-    PROC_CALL(RegisterTrapDeathBWL),
-    PROC_CALL(ExecFireTileTrapAnim1),
-    PROC_YIELD,
+	PROC_SLEEP(1),
+	PROC_WHILE(MuExistsActive),
+	PROC_CALL(RegisterTrapDeathBWL),
+	PROC_CALL(ExecFireTileTrapAnim1),
+	PROC_YIELD,
 
-    PROC_CALL(ApplyTrapDamageAnim),
-    PROC_YIELD,
+	PROC_CALL(ApplyTrapDamageAnim),
+	PROC_YIELD,
 
-    PROC_CALL(ApplyTrapDamageReal),
-    PROC_YIELD,
+	PROC_CALL(ApplyTrapDamageReal),
+	PROC_YIELD,
 
-    PROC_END,
+	PROC_END,
 };
 
 struct ProcCmd CONST_DATA sProcScr_ExecTrapMine[] = {
-    PROC_SLEEP(1),
-    PROC_WHILE(MuExistsActive),
-    PROC_CALL(RegisterTrapDeathBWL),
-    PROC_CALL(ExecFireTileTrapAnim2),
-    PROC_YIELD,
+	PROC_SLEEP(1),
+	PROC_WHILE(MuExistsActive),
+	PROC_CALL(RegisterTrapDeathBWL),
+	PROC_CALL(ExecFireTileTrapAnim2),
+	PROC_YIELD,
 
-    PROC_CALL(ApplyTrapDamageAnim),
-    PROC_YIELD,
+	PROC_CALL(ApplyTrapDamageAnim),
+	PROC_YIELD,
 
-    PROC_CALL(ApplyTrapDamageReal),
-    PROC_YIELD,
+	PROC_CALL(ApplyTrapDamageReal),
+	PROC_YIELD,
 
-    PROC_END,
+	PROC_END,
 };
 
-void RegisterTrapDeathBWL(struct ProcBmTrap * proc)
+void RegisterTrapDeathBWL(struct ProcBmTrap *proc)
 {
-    struct Unit * unit = proc->unit;
+	struct Unit *unit = proc->unit;
 
-    if (GetUnitCurrentHp(unit) <= 10)
-        PidStatsRecordLoseData(unit->pCharacterData->number);
+	if (GetUnitCurrentHp(unit) <= 10)
+		PidStatsRecordLoseData(unit->pCharacterData->number);
 }
 
-void ExecFireTileTrapAnim1(struct ProcBmTrap * proc)
+void ExecFireTileTrapAnim1(struct ProcBmTrap *proc)
 {
-    StartFireTrapAnim(proc, proc->unit->xPos, proc->unit->yPos);
+	StartFireTrapAnim(proc, proc->unit->xPos, proc->unit->yPos);
 }
 
-void ExecFireTileTrapAnim2(struct ProcBmTrap * proc)
+void ExecFireTileTrapAnim2(struct ProcBmTrap *proc)
 {
-    StartFireTrapAnim2(proc, proc->unit->xPos, proc->unit->yPos);
+	StartFireTrapAnim2(proc, proc->unit->xPos, proc->unit->yPos);
 }
 
-void ApplyTrapDamageAnim(struct ProcBmTrap * proc)
+void ApplyTrapDamageAnim(struct ProcBmTrap *proc)
 {
-    struct Unit * unit = proc->unit;
+	struct Unit *unit = proc->unit;
 
-    switch (proc->post_exec_type) {
-    case 0:
-        EndAllMus();
-        break;
+	switch (proc->post_exec_type) {
+	case 0:
+		EndAllMus();
+		break;
 
-    case 1:
-        EndAllMus();
-        StartMu(gActiveUnit);
-        SetAutoMuDefaultFacing();
-        break;
+	case 1:
+		EndAllMus();
+		StartMu(gActiveUnit);
+		SetAutoMuDefaultFacing();
+		break;
 
-    case 2:
-        EndMu(GetUnitMu(unit));
-        break;
-    }
+	case 2:
+		EndMu(GetUnitMu(unit));
+		break;
+	}
 
-    gActionData.trapType = TRAP_TORCHLIGHT;
-    BeginUnitCritDamageAnim(unit, TRAP_TORCHLIGHT);
+	gActionData.trapType = TRAP_TORCHLIGHT;
+	BeginUnitCritDamageAnim(unit, TRAP_TORCHLIGHT);
 }
 
-void ApplyTrapDamageReal(struct ProcBmTrap * proc)
+void ApplyTrapDamageReal(struct ProcBmTrap *proc)
 {
-    struct Unit * unit = proc->unit;
+	struct Unit *unit = proc->unit;
 
-    ApplyHazardHealing(proc, unit, -10, -1);
+	ApplyHazardHealing(proc, unit, -10, -1);
 
-    if (GetUnitCurrentHp(unit) == 0)
-    {
-        struct Unit * tmp = gActiveUnit;
-        gActiveUnit = unit;
+	if (GetUnitCurrentHp(unit) == 0) {
+		struct Unit *tmp = gActiveUnit;
+
+		gActiveUnit = unit;
         
-        PidStatsRecordDefeatInfo(unit->pCharacterData->number, 0, 3);
+		PidStatsRecordDefeatInfo(unit->pCharacterData->number, 0, 3);
 
-        if (CheckForWaitEvents() != 0)
-            RunWaitEvents();
+		if (CheckForWaitEvents() != 0)
+			RunWaitEvents();
 
-        gActiveUnit = tmp;
-    }
+		gActiveUnit = tmp;
+	}
 }
 
-int GetPickTrapType(struct Unit * unit)
+int GetPickTrapType(struct Unit *unit)
 {
-    struct Trap * trap;
+	struct Trap *trap;
 
-    if ((trap = GetTrapAt(unit->xPos, unit->yPos)) == NULL)
-        return TRAP_NONE;
+	if ((trap = GetTrapAt(unit->xPos, unit->yPos)) == NULL)
+		return TRAP_NONE;
 
-    switch (trap->type) {
-    case TRAP_BALLISTA:
-        return TRAP_NONE;
+	switch (trap->type) {
+	case TRAP_BALLISTA:
+		return TRAP_NONE;
 
-    case TRAP_FIRETILE:
-        if ((UNIT_CATTRIBUTES(unit) & CA_THIEF))
-            return TRAP_FIRE_THIEF;
+	case TRAP_FIRETILE:
+		if ((UNIT_CATTRIBUTES(unit) & CA_THIEF))
+			return TRAP_FIRE_THIEF;
 
-        break;
+		break;
 
-    case TRAP_MINE:
-        if ((UNIT_CATTRIBUTES(unit) & CA_ASSASSIN))
-        {
-            if (GetUnitItemCount(unit) != UNIT_ITEM_COUNT)
-                return TRAP_MINE_ASSASSIN;
+	case TRAP_MINE:
+		if ((UNIT_CATTRIBUTES(unit) & CA_ASSASSIN)) {
+			if (GetUnitItemCount(unit) != UNIT_ITEM_COUNT)
+				return TRAP_MINE_ASSASSIN;
 
-            return TRAP_NONE;
-        } else if ((UNIT_CATTRIBUTES(unit) & CA_STEAL))
-            return TRAP_NONE;
+			return TRAP_NONE;
+		} else if ((UNIT_CATTRIBUTES(unit) & CA_STEAL))
+			return TRAP_NONE;
 
-        break;
-    }
+		break;
+	}
 
-    return trap->type;
+	return trap->type;
 }
 
-int ExecTrap(ProcPtr proc, struct Unit * unit, int exec_type)
+int ExecTrap(ProcPtr proc, struct Unit *unit, int exec_type)
 {
-    struct ProcBmTrap * proc2;
+	struct ProcBmTrap *proc2;
 
-    switch (GetPickTrapType(unit)) {
-        case TRAP_8:
-            proc2 = Proc_StartBlocking(sProcScr_ExecTrap8, proc);
-            proc2->post_exec_type = exec_type;
-            proc2->unit = unit;
-            break;
+	switch (GetPickTrapType(unit)) {
+		case TRAP_8:
+			proc2 = Proc_StartBlocking(sProcScr_ExecTrap8, proc);
+			proc2->post_exec_type = exec_type;
+			proc2->unit = unit;
+			break;
 
-        case TRAP_MINE:
-            RemoveTrap(GetTypedTrapAt(unit->xPos, unit->yPos, TRAP_MINE));
-            proc2 = Proc_StartBlocking(sProcScr_ExecTrapMine, proc);
-            proc2->post_exec_type = exec_type;
-            proc2->unit = unit;
-            break;
+		case TRAP_MINE:
+			RemoveTrap(GetTypedTrapAt(unit->xPos, unit->yPos, TRAP_MINE));
+			proc2 = Proc_StartBlocking(sProcScr_ExecTrapMine, proc);
+			proc2->post_exec_type = exec_type;
+			proc2->unit = unit;
+			break;
 
-        case TRAP_FIRE_THIEF:
-            RemoveTrap(GetTrapAt(unit->xPos, unit->yPos));
-            PlaySoundEffect(SONG_B1);
-            NewPopup2_PlanA(proc, -1, GetStringFromIndex(0x20));    /* Disabled trap. */
-            break;
+		case TRAP_FIRE_THIEF:
+			RemoveTrap(GetTrapAt(unit->xPos, unit->yPos));
+			PlaySoundEffect(SONG_B1);
+			NewPopup2_PlanA(proc, -1, GetStringFromIndex(0x20));    /* Disabled trap. */
+			break;
 
-        case TRAP_MINE_ASSASSIN:
-            RemoveTrap(GetTrapAt(unit->xPos, unit->yPos));
-            PlaySoundEffect(SONG_B1);
-            NewPopup2_PlanA(proc, -1, GetStringFromIndex(0x21));    /* Recovered mine. */
-            UnitAddItem(unit, MakeNewItem(ITEM_MINE));
-            break;
-    }
+		case TRAP_MINE_ASSASSIN:
+			RemoveTrap(GetTrapAt(unit->xPos, unit->yPos));
+			PlaySoundEffect(SONG_B1);
+			NewPopup2_PlanA(proc, -1, GetStringFromIndex(0x21));    /* Recovered mine. */
+			UnitAddItem(unit, MakeNewItem(ITEM_MINE));
+			break;
+	}
 
-    return 0;
+	return 0;
 }
 
-bool HandlePostActionTraps(ProcPtr proc) {
+bool HandlePostActionTraps(ProcPtr proc)
+{
 
-    if (GetUnitCurrentHp(gActiveUnit) <= 0) {
-        return 1;
-    }
+	if (GetUnitCurrentHp(gActiveUnit) <= 0)
+		return 1;
 
-    if ((UNIT_CATTRIBUTES(gActiveUnit) & CA_CANTO) && !(gActiveUnit->state & US_CANTOING)) {
-        switch (gActionData.unitActionType) {
-            case UNIT_ACTION_WAIT:
-            case UNIT_ACTION_COMBAT:
-            case UNIT_ACTION_STAFF:
-                break;
+	if ((UNIT_CATTRIBUTES(gActiveUnit) & CA_CANTO) && !(gActiveUnit->state & US_CANTOING)) {
+		switch (gActionData.unitActionType) {
+			case UNIT_ACTION_WAIT:
+			case UNIT_ACTION_COMBAT:
+			case UNIT_ACTION_STAFF:
+				break;
 
-            default:
-                return 1;
-        }
-    }
+			default:
+				return 1;
+		}
+	}
 
-    if (!GetPickTrapType(gActiveUnit)) {
-        return 1;
-    }
+	if (!GetPickTrapType(gActiveUnit))
+		return 1;
 
-    gActionData.suspendPointType = 1;
-    gActionData.unitActionType = 1;
+	gActionData.suspendPointType = 1;
+	gActionData.unitActionType = 1;
 
-    WriteSuspendSave(3);
+	WriteSuspendSave(3);
 
-    if (GetBattleAnimPreconfType() == PLAY_ANIMCONF_OFF) {
-        RefreshUnitSprites();
-    }
+	if (GetBattleAnimPreconfType() == PLAY_ANIMCONF_OFF)
+		RefreshUnitSprites();
 
-    return ExecTrap(proc, gActiveUnit, 0);
+	return ExecTrap(proc, gActiveUnit, 0);
 }
 
 bool ExecTrapAfterWarp(ProcPtr proc)
 {
-    return ExecTrap(proc, GetUnit(gActionData.targetIndex), 1);
+	return ExecTrap(proc, GetUnit(gActionData.targetIndex), 1);
 }
 
-bool ExecTrapAfterDropAction(ProcPtr proc, struct Unit * unit)
+bool ExecTrapAfterDropAction(ProcPtr proc, struct Unit *unit)
 {
-    if (!GetPickTrapType(unit)) {
-        EndMu(GetUnitMu(unit));
-        RenderBmMap();
-        RefreshEntityBmMaps();
-        ForceSyncUnitSpriteSheet();
-        return 1;
-    }
+	if (!GetPickTrapType(unit)) {
+		EndMu(GetUnitMu(unit));
+		RenderBmMap();
+		RefreshEntityBmMaps();
+		ForceSyncUnitSpriteSheet();
+		return 1;
+	}
 
-    return ExecTrap(proc, unit, 2);
+	return ExecTrap(proc, unit, 2);
 }
 
-bool ExecTrapAfterDeathDrop(ProcPtr proc, struct Unit * unit)
+bool ExecTrapAfterDeathDrop(ProcPtr proc, struct Unit *unit)
 {
-    return ExecTrap(proc, unit, 3);
+	return ExecTrap(proc, unit, 3);
 }
 
-void LoadTrapData(const struct TrapData * data)
+void LoadTrapData(const struct TrapData *data)
 {
-    if (!data || !data->type)
-        return;
+	if (!data || !data->type)
+		return;
 
-    while (data->type)
-    {
-        switch (data->type) {
-        case TRAP_BALLISTA:
-            AddBallista(data->xPos, data->yPos, data->subtype);
-            break;
+	while (data->type) {
+		switch (data->type) {
+		case TRAP_BALLISTA:
+			AddBallista(data->xPos, data->yPos, data->subtype);
+			break;
 
-        case TRAP_FIRETILE:
-            AddFireTile(data->xPos, data->yPos, data->turn_counter, data->turn);
-            break;
+		case TRAP_FIRETILE:
+			AddFireTile(data->xPos, data->yPos, data->turn_counter, data->turn);
+			break;
 
-        case TRAP_GAS:
-            AddGasTrap(data->xPos, data->yPos, data->subtype, data->turn_counter, data->turn);
-            break;
+		case TRAP_GAS:
+			AddGasTrap(data->xPos, data->yPos, data->subtype, data->turn_counter, data->turn);
+			break;
 
-        case TRAP_8:
-            AddTrap8(data->xPos, data->yPos);
-            break;
+		case TRAP_8:
+			AddTrap8(data->xPos, data->yPos);
+			break;
 
-        case TRAP_9:
-            AddTrap9(data->xPos, data->yPos, data->subtype);
-            break;
+		case TRAP_9:
+			AddTrap9(data->xPos, data->yPos, data->subtype);
+			break;
 
-        case TRAP_MINE:
-            AddTrap(data->xPos, data->yPos, data->type, 0);
-            break;
+		case TRAP_MINE:
+			AddTrap(data->xPos, data->yPos, data->type, 0);
+			break;
 
-        case TRAP_LIGHTARROW:
-            AddArrowTrap(data->xPos, data->turn_counter, data->turn);
+		case TRAP_LIGHTARROW:
+			AddArrowTrap(data->xPos, data->turn_counter, data->turn);
 #if BUGFIX
-            break;
+			break;
 #endif
 
-        case TRAP_GORGON_EGG:
-            AddGorgonEggTrap(data->xPos, data->yPos, data->subtype, data->turn_counter, data->turn);
-            break;
-        }
-        data++;
-    }
+		case TRAP_GORGON_EGG:
+			AddGorgonEggTrap(data->xPos, data->yPos, data->subtype, data->turn_counter, data->turn);
+			break;
+		}
+		data++;
+	}
 }
 
 //! FE8U = 0x08037910
 void LoadChapterTraps(void)
 {
-    LoadTrapData(GetTrapPointer());
-    LoadTrapData(GetHardModeTrapPointer());
+	LoadTrapData(GetTrapPointer());
+	LoadTrapData(GetHardModeTrapPointer());
 }
 
 //! FE8U = 0x08037928
 void AddGorgonEggTrap(s8 x, s8 y, u8 meta, u8 delay, u8 level)
 {
-    // The value of the "meta" parameter appears to be unused in the game logic
-    AddDamagingTrap(x, y, TRAP_GORGON_EGG, meta, delay, 1, level);
+	// The value of the "meta" parameter appears to be unused in the game logic
+	AddDamagingTrap(x, y, TRAP_GORGON_EGG, meta, delay, 1, level);
 }

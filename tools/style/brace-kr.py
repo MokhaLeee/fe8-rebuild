@@ -119,22 +119,13 @@ def strip_single_braces(lines):
                     i = j + 1
                     continue
             # 形态二：`if (c) {` + 单语句 + `} else {` + 单语句 + `}`
+            # 保留两侧大括号：agbcc 的 -Wparentheses 会对没有大括号的
+            # if/else 报 "suggest explicit braces to avoid ambiguous else"
             e = ELSE_TAIL.match(lines[j].rstrip("\n")) if j < n else None
             if e:
-                indent2 = e.group(1)
-                k = j + 1
-                while k < n and not lines[k].strip().startswith("}"):
-                    k += 1
-                if k < n and lines[k].rstrip("\n") == indent2 + "}":
-                    body1 = _single_stmt(lines, i + 1, j)
-                    body2 = _single_stmt(lines, j + 1, k)
-                    if body1 is not None and body2 is not None:
-                        out.append("%s%s (%s)\n" % (ind, kw, cond))
-                        out.append(body1)
-                        out.append("%selse\n" % ind)
-                        out.append(body2)
-                        i = k + 1
-                        continue
+                out.append(line)
+                i += 1
+                continue
 
         out.append(line)
         i += 1
@@ -146,12 +137,36 @@ def convert_text(text):
     out = []
     depth = 0
     in_block = in_str = in_chr = False
+    # `#if` 每个分支可能各自开/闭大括号，朴素累加会重复计数。
+    # 栈元素：(进入 #if 时的深度, #else 分支结束时的深度或 None)
+    pp_stack = []
 
     i = 0
     while i < len(lines):
         line = lines[i]
         stripped = line.strip()
         (in_block, in_str, in_chr), delta = scan(line, in_block, in_str, in_chr)
+
+        # 预处理条件：单独记账，不参与合并
+        if re.match(r"^#\s*(if|ifdef|ifndef)\b", stripped):
+            pp_stack.append([depth, None])
+            out.append(line)
+            i += 1
+            continue
+        if re.match(r"^#\s*else\b", stripped):
+            if pp_stack:
+                pp_stack[-1][1] = depth
+                depth = pp_stack[-1][0]
+            out.append(line)
+            i += 1
+            continue
+        if re.match(r"^#\s*endif\b", stripped):
+            if pp_stack:
+                base, else_depth = pp_stack.pop()
+                depth = max(depth, else_depth) if else_depth is not None else depth
+            out.append(line)
+            i += 1
+            continue
 
         # 0) 深度 0 处的函数定义，左大括号要独占一行：`void f(void) {` -> 两行
         if depth == 0 and stripped.endswith("{") and "=" not in stripped:
