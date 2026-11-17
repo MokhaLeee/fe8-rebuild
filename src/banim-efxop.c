@@ -15,190 +15,177 @@ EWRAM_DATA ProcPtr gpActiveCRSpellBgColorProc = NULL;
 //! FE8U = 0x0806E8F0
 void ResetClassReelSpell(void)
 {
-    gpActiveClassReelSpellProc = NULL;
-    gpActiveCRSpellBgColorProc = NULL;
+	gpActiveClassReelSpellProc = NULL;
+	gpActiveCRSpellBgColorProc = NULL;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806E904
 void EndActiveClassReelSpell(void)
 {
-    if (gpActiveClassReelSpellProc != NULL)
-    {
-        Proc_End(gpActiveClassReelSpellProc);
-        gpActiveClassReelSpellProc = NULL;
-    }
+	if (gpActiveClassReelSpellProc != NULL) {
+		Proc_End(gpActiveClassReelSpellProc);
+		gpActiveClassReelSpellProc = NULL;
+	}
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806E920
 void EndActiveClassReelBgColorProc(void)
 {
-    if (gpActiveCRSpellBgColorProc != NULL)
-    {
-        Proc_End(gpActiveCRSpellBgColorProc);
-        gpActiveCRSpellBgColorProc = NULL;
-    }
+	if (gpActiveCRSpellBgColorProc != NULL) {
+		Proc_End(gpActiveCRSpellBgColorProc);
+		gpActiveCRSpellBgColorProc = NULL;
+	}
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806E93C
 void SetActiveClassReelSpell(ProcPtr proc)
 {
-    gpActiveClassReelSpellProc = proc;
-    return;
+	gpActiveClassReelSpellProc = proc;
+	return;
 }
 
 //! FE8U = 0x0806E948
 void SetActiveCRSpellBgColorProc(ProcPtr proc)
 {
-    gpActiveCRSpellBgColorProc = proc;
-    return;
+	gpActiveCRSpellBgColorProc = proc;
+	return;
 }
 
 //! FE8U = 0x0806E954
-struct AnimMagicFxBuffer * GetMagicEffectBufferFor(struct Anim * anim)
+struct AnimMagicFxBuffer *GetMagicEffectBufferFor(struct Anim *anim)
 {
-    return ((struct EkrMainMiniDesc *)(anim->pUnk44))->magicfx_desc;
+	return ((struct EkrMainMiniDesc *)(anim->pUnk44))->magicfx_desc;
 }
 
 //! FE8U = 0x0806E95C
-void SetCRSpellBgPosition(struct Anim * anim, struct AnimMagicFxBuffer * magicFx)
+void SetCRSpellBgPosition(struct Anim *anim, struct AnimMagicFxBuffer *magicFx)
 {
-    s16 x;
-    s16 y;
+	s16 x;
+	s16 y;
 
-    if (GetAnimPosition(anim) == 0)
-    {
-        x = anim->xPosition - BanimTypesPosLeft[0];
-    }
-    else
-    {
-        x = BanimTypesPosRight[0] - anim->xPosition;
-    }
+	if (GetAnimPosition(anim) == 0) {
+		x = anim->xPosition - BanimTypesPosLeft[0];
+	} else {
+		x = BanimTypesPosRight[0] - anim->xPosition;
+	}
 
-    y = 88 - anim->yPosition;
+	y = 88 - anim->yPosition;
 
-    BG_SetPosition(magicFx->bg, x - magicFx->xOffsetBg, y - magicFx->yOffsetBg);
+	BG_SetPosition(magicFx->bg, x - magicFx->xOffsetBg, y - magicFx->yOffsetBg);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806E9B4
-void ClearCRSpellBgTmBuf(struct Anim * anim)
+void ClearCRSpellBgTmBuf(struct Anim *anim)
 {
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
 
-    CpuFastFill(0, magicFx->bgTmBuf, 0x800);
-    BG_EnableSyncByMask(1 << magicFx->bg);
+	CpuFastFill(0, magicFx->bgTmBuf, 0x800);
+	BG_EnableSyncByMask(1 << magicFx->bg);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806E9E4
-struct Anim * CRSpellCreateFrontAnim(struct Anim * anim, u16 scrIdx, void * scrA, void * scrB)
+struct Anim *CRSpellCreateFrontAnim(struct Anim *anim, u16 scrIdx, void *scrA, void *scrB)
 {
-    struct Anim * newAnim;
+	struct Anim *newAnim;
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
 
-    if (scrIdx == 0)
-    {
-        newAnim = AnimCreate(scrA, 120);
-    }
-    else
-    {
-        newAnim = AnimCreate(scrB, 120);
-    }
+	if (scrIdx == 0) {
+		newAnim = AnimCreate(scrA, 120);
+	} else {
+		newAnim = AnimCreate(scrB, 120);
+	}
 
-    newAnim->oam2Base = (magicFx->objPalId << 12) | magicFx->objChr | OAM2_LAYER(2);
-    newAnim->xPosition = anim->xPosition;
-    newAnim->yPosition = anim->yPosition;
+	newAnim->oam2Base = (magicFx->objPalId << 12) | magicFx->objChr | OAM2_LAYER(2);
+	newAnim->xPosition = anim->xPosition;
+	newAnim->yPosition = anim->yPosition;
 
-    return newAnim;
+	return newAnim;
 }
 
 //! FE8U = 0x0806EA38
-void CRSpell_WriteBgMap(struct Anim * anim, u16 notFlipped, void * src, u16 isCompressed)
+void CRSpell_WriteBgMap(struct Anim *anim, u16 notFlipped, void *src, u16 isCompressed)
 {
-    void * buf;
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
+	void *buf;
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
 
-    if (isCompressed == 1)
-    {
-        LZ77UnCompWram(src, magicFx->bgTsaBuf);
-    }
+	if (isCompressed == 1) {
+		LZ77UnCompWram(src, magicFx->bgTsaBuf);
+	}
 
-    buf = src;
+	buf = src;
 
-    if (isCompressed == 1)
-    {
-        buf = magicFx->bgTsaBuf;
-    }
+	if (isCompressed == 1) {
+		buf = magicFx->bgTsaBuf;
+	}
 
-    if (notFlipped == 0)
-    {
-        EfxTmCpyBgHFlip(buf, magicFx->bgTmBuf, 30, 20, magicFx->bgPalId, magicFx->bgChr);
-    }
-    else
-    {
-        EfxTmCpyBG(buf, magicFx->bgTmBuf, 30, 20, magicFx->bgPalId, magicFx->bgChr);
-    }
+	if (notFlipped == 0) {
+		EfxTmCpyBgHFlip(buf, magicFx->bgTmBuf, 30, 20, magicFx->bgPalId, magicFx->bgChr);
+	} else {
+		EfxTmCpyBG(buf, magicFx->bgTmBuf, 30, 20, magicFx->bgPalId, magicFx->bgChr);
+	}
 
-    BG_EnableSyncByMask(1 << magicFx->bg);
+	BG_EnableSyncByMask(1 << magicFx->bg);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806EAA4
-void CRSpell_RegisterBgGfx(struct Anim * anim, void * src)
+void CRSpell_RegisterBgGfx(struct Anim *anim, void *src)
 {
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
 
-    void * dst = (void *)(VRAM + magicFx->bgChr * CHR_SIZE);
+	void *dst = (void *)(VRAM + magicFx->bgChr * CHR_SIZE);
 
-    LZ77UnCompWram(src, magicFx->bgImgBuf);
-    RegisterDataMove(magicFx->bgImgBuf, dst, 0x2000);
+	LZ77UnCompWram(src, magicFx->bgImgBuf);
+	RegisterDataMove(magicFx->bgImgBuf, dst, 0x2000);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806EAD4
-void CRSpell_RegisterBgPal(struct Anim * anim, u16 * src)
+void CRSpell_RegisterBgPal(struct Anim *anim, u16 *src)
 {
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
 
-    CpuFastCopy(src, gPaletteBuffer + (magicFx->bgPalId * 0x10), PLTT_SIZE_4BPP);
-    EnablePaletteSync();
+	CpuFastCopy(src, gPaletteBuffer + (magicFx->bgPalId * 0x10), PLTT_SIZE_4BPP);
+	EnablePaletteSync();
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806EAFC
-void CRSpell_RegisterObjGfx(struct Anim * anim, void * src)
+void CRSpell_RegisterObjGfx(struct Anim *anim, void *src)
 {
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
 
-    void * dst = (void *)(0x6010000 + magicFx->objChr * CHR_SIZE);
+	void *dst = (void *)(0x6010000 + magicFx->objChr * CHR_SIZE);
 
-    LZ77UnCompWram(src, magicFx->objImgBuf);
-    RegisterDataMove(magicFx->objImgBuf, dst, 0x1000);
+	LZ77UnCompWram(src, magicFx->objImgBuf);
+	RegisterDataMove(magicFx->objImgBuf, dst, 0x1000);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806EB2C
-void CRSpell_RegisterObjPal(struct Anim * anim, u16 * src)
+void CRSpell_RegisterObjPal(struct Anim *anim, u16 *src)
 {
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
 
-    CpuFastCopy(src, gPaletteBuffer + 0x100 + (magicFx->objPalId * 0x10), PLTT_SIZE_4BPP);
-    EnablePaletteSync();
+	CpuFastCopy(src, gPaletteBuffer + 0x100 + (magicFx->objPalId * 0x10), PLTT_SIZE_4BPP);
+	EnablePaletteSync();
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -219,24 +206,24 @@ CONST_DATA SpellAnimFunc gClassReelSpellAnimFuncLut[] =
 // clang-format on
 
 //! FE8U = 0x0806EB54
-void StartClassReelSpellAnim(struct Anim * anim)
+void StartClassReelSpellAnim(struct Anim *anim)
 {
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
 
 #if BUGFIX
-    if (gClassReelSpellAnimFuncLut[magicFx->magicFuncIdx] == NULL)
-        return;
+	if (gClassReelSpellAnimFuncLut[magicFx->magicFuncIdx] == NULL)
+		return;
 #endif
 
-    gClassReelSpellAnimFuncLut[magicFx->magicFuncIdx](anim);
+	gClassReelSpellAnimFuncLut[magicFx->magicFuncIdx](anim);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806EB78
-void StartClassReelSpellAnimDummy(struct Anim * anim)
+void StartClassReelSpellAnimDummy(struct Anim *anim)
 {
-    return;
+	return;
 }
 
 // clang-format off
@@ -256,25 +243,25 @@ struct ProcCmd CONST_DATA ProcScr_efxopFire[] =
 // clang-format on
 
 //! FE8U = 0x0806EB7C
-void StartClassReelSpellAnimFire(struct Anim * anim)
+void StartClassReelSpellAnimFire(struct Anim *anim)
 {
-    struct ProcEfx * proc = Proc_Start(ProcScr_efxopFire, PROC_TREE_3);
-    SetActiveClassReelSpell(proc);
+	struct ProcEfx *proc = Proc_Start(ProcScr_efxopFire, PROC_TREE_3);
+	SetActiveClassReelSpell(proc);
 
-    proc->anim = anim;
+	proc->anim = anim;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806EB9C
-void efxopFire_Loop_Main(struct ProcEfx * proc)
+void efxopFire_Loop_Main(struct ProcEfx *proc)
 {
-    StartCRSubSpell_efxopFireBG(proc->anim, proc);
-    StartCRSubSpell_efxopFireOBJ(proc->anim, proc);
+	StartCRSubSpell_efxopFireBG(proc->anim, proc);
+	StartCRSubSpell_efxopFireOBJ(proc->anim, proc);
 
-    Proc_Break(proc);
+	Proc_Break(proc);
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -305,9 +292,9 @@ u16 * CONST_DATA TsaArray_Fire_ClassReel[] =
 // clang-format on
 
 //! FE8U = 0x0806EBBC
-void StartCRSubSpell_efxopFireBG(struct Anim * anim, struct ProcEfx * parent)
+void StartCRSubSpell_efxopFireBG(struct Anim *anim, struct ProcEfx *parent)
 {
-    // clang-format off
+	// clang-format off
     static const u16 frames[] =
     {
         0, 3,
@@ -324,49 +311,45 @@ void StartCRSubSpell_efxopFireBG(struct Anim * anim, struct ProcEfx * parent)
         11, 3,
         -1,
     };
-    // clang-format on
+	// clang-format on
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
-    struct ProcEfxBG * proc = Proc_Start(ProcScr_efxopFireBG, parent);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
+	struct ProcEfxBG *proc = Proc_Start(ProcScr_efxopFireBG, parent);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    proc->frame = 0;
-    proc->frame_config = frames;
-    proc->tsal = TsaArray_Fire_ClassReel;
+	proc->frame = 0;
+	proc->frame_config = frames;
+	proc->tsal = TsaArray_Fire_ClassReel;
 
-    CRSpell_RegisterBgPal(anim, Pal_FireSpellBg);
-    CRSpell_RegisterBgGfx(proc->anim, Img_FireSpellBg);
+	CRSpell_RegisterBgPal(anim, Pal_FireSpellBg);
+	CRSpell_RegisterBgGfx(proc->anim, Img_FireSpellBg);
 
-    magicFx->resetCallback();
+	magicFx->resetCallback();
 
-    SetCRSpellBgPosition(proc->anim, magicFx);
+	SetCRSpellBgPosition(proc->anim, magicFx);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806EC1C
-void efxopFireBG_Loop(struct ProcEfxBG * proc)
+void efxopFireBG_Loop(struct ProcEfxBG *proc)
 {
-    s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+	s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-    if (ret >= 0)
-    {
-        u16 ** tsaL = proc->tsal;
-        CRSpell_WriteBgMap(proc->anim, 1, *(tsaL + ret), 1);
-    }
-    else
-    {
-        if (ret == -1)
-        {
-            ClearCRSpellBgTmBuf(proc->anim);
-            SetDefaultColorEffects_();
-            Proc_Break(proc);
-        }
-    }
+	if (ret >= 0) {
+		u16 **tsaL = proc->tsal;
+		CRSpell_WriteBgMap(proc->anim, 1, *(tsaL + ret), 1);
+	} else {
+		if (ret == -1) {
+			ClearCRSpellBgTmBuf(proc->anim);
+			SetDefaultColorEffects_();
+			Proc_Break(proc);
+		}
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -381,51 +364,47 @@ struct ProcCmd CONST_DATA ProcScr_efxopFireOBJ[] =
 // clang-format on
 
 //! FE8U = 0x0806EC68
-void StartCRSubSpell_efxopFireOBJ(struct Anim * anim, struct ProcEfx * parent)
+void StartCRSubSpell_efxopFireOBJ(struct Anim *anim, struct ProcEfx *parent)
 {
-    struct Anim * frontAnim;
+	struct Anim *frontAnim;
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
 
-    struct ProcEfxOBJ * proc = Proc_Start(ProcScr_efxopFireOBJ, parent);
-    proc->anim = anim;
-    proc->timer = 0;
+	struct ProcEfxOBJ *proc = Proc_Start(ProcScr_efxopFireOBJ, parent);
+	proc->anim = anim;
+	proc->timer = 0;
 
-    frontAnim = CRSpellCreateFrontAnim(anim, 1, AnimScr_EfxFireOBJ_R_Front, AnimScr_EfxFireOBJ_L_Front);
-    proc->anim2 = frontAnim;
+	frontAnim = CRSpellCreateFrontAnim(anim, 1, AnimScr_EfxFireOBJ_R_Front, AnimScr_EfxFireOBJ_L_Front);
+	proc->anim2 = frontAnim;
 
-    if (GetAnimPosition(anim) == 0)
-    {
-        frontAnim->xPosition = anim->xPosition - 8;
-    }
-    else
-    {
-        frontAnim->xPosition = anim->xPosition + 8;
-    }
+	if (GetAnimPosition(anim) == 0) {
+		frontAnim->xPosition = anim->xPosition - 8;
+	} else {
+		frontAnim->xPosition = anim->xPosition + 8;
+	}
 
-    frontAnim->yPosition = anim->yPosition + 8;
+	frontAnim->yPosition = anim->yPosition + 8;
 
-    frontAnim->xPosition += magicFx->xOffsetObj;
-    frontAnim->yPosition += magicFx->yOffsetObj;
+	frontAnim->xPosition += magicFx->xOffsetObj;
+	frontAnim->yPosition += magicFx->yOffsetObj;
 
-    CRSpell_RegisterObjPal(proc->anim, Pal_FireSpellSprites);
-    CRSpell_RegisterObjGfx(proc->anim, Img_FireSpellSprites);
+	CRSpell_RegisterObjPal(proc->anim, Pal_FireSpellSprites);
+	CRSpell_RegisterObjGfx(proc->anim, Img_FireSpellSprites);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806ECE8
-void efxopFireOBJ_Loop(struct ProcEfxOBJ * proc)
+void efxopFireOBJ_Loop(struct ProcEfxOBJ *proc)
 {
-    proc->timer++;
+	proc->timer++;
 
-    if (proc->timer > 50)
-    {
-        AnimDelete(proc->anim2);
-        Proc_Break(proc);
-    }
+	if (proc->timer > 50) {
+		AnimDelete(proc->anim2);
+		Proc_Break(proc);
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -445,26 +424,26 @@ struct ProcCmd CONST_DATA ProcScr_efxopThunder[] =
 // clang-format on
 
 //! FE8U = 0x0806ED0C
-void StartClassReelSpellAnimThunder(struct Anim * anim)
+void StartClassReelSpellAnimThunder(struct Anim *anim)
 {
-    struct ProcEfx * proc = Proc_Start(ProcScr_efxopThunder, PROC_TREE_3);
-    SetActiveClassReelSpell(proc);
+	struct ProcEfx *proc = Proc_Start(ProcScr_efxopThunder, PROC_TREE_3);
+	SetActiveClassReelSpell(proc);
 
-    proc->anim = anim;
+	proc->anim = anim;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806ED2C
-void efxopThunder_Loop_Main(struct ProcEfx * proc)
+void efxopThunder_Loop_Main(struct ProcEfx *proc)
 {
-    StartCRSubSpell_efxopThunderBG(proc->anim, proc);
-    StartCRSubSpell_efxopThunderBGCOL(proc->anim, proc);
-    StartCRSubSpell_efxopThunderOBJ(proc->anim, proc);
+	StartCRSubSpell_efxopThunderBG(proc->anim, proc);
+	StartCRSubSpell_efxopThunderBGCOL(proc->anim, proc);
+	StartCRSubSpell_efxopThunderOBJ(proc->anim, proc);
 
-    Proc_Break(proc);
+	Proc_Break(proc);
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -485,74 +464,68 @@ u16 * CONST_DATA TsaArray_Thunder_ClassReel[] =
 // clang-format on
 
 //! FE8U = 0x0806ED54
-void StartCRSubSpell_efxopThunderBG(struct Anim * anim, struct ProcEfx * unused)
+void StartCRSubSpell_efxopThunderBG(struct Anim *anim, struct ProcEfx *unused)
 {
-    // clang-format off
+	// clang-format off
     static const u16 frames[] =
     {
         0, 4,
         1, 40,
         -1,
     };
-    // clang-format on
+	// clang-format on
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
-    struct ProcEfxBG * proc = Proc_Start(ProcScr_efxopThunderBG, PROC_TREE_3);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
+	struct ProcEfxBG *proc = Proc_Start(ProcScr_efxopThunderBG, PROC_TREE_3);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    proc->frame = 0;
-    proc->frame_config = frames;
+	proc->frame = 0;
+	proc->frame_config = frames;
 
-    proc->tsal = TsaArray_Thunder_ClassReel;
+	proc->tsal = TsaArray_Thunder_ClassReel;
 
-    CRSpell_RegisterBgPal(anim, Pal_ThunderSpellBg);
-    CRSpell_RegisterBgGfx(proc->anim, Img_ThunderSpellBg);
+	CRSpell_RegisterBgPal(anim, Pal_ThunderSpellBg);
+	CRSpell_RegisterBgGfx(proc->anim, Img_ThunderSpellBg);
 
-    magicFx->resetCallback();
+	magicFx->resetCallback();
 
-    SetCRSpellBgPosition(proc->anim, magicFx);
+	SetCRSpellBgPosition(proc->anim, magicFx);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806EDB0
-void efxopThunderBG_Loop(struct ProcEfxBG * proc)
+void efxopThunderBG_Loop(struct ProcEfxBG *proc)
 {
-    u16 chr = 0;
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(proc->anim);
+	u16 chr = 0;
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(proc->anim);
 
-    s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+	s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-    if (ret >= 0)
-    {
-        u16 ** tsaL = proc->tsal;
-        CRSpell_WriteBgMap(proc->anim, 0, *(tsaL + ret), 1);
+	if (ret >= 0) {
+		u16 **tsaL = proc->tsal;
+		CRSpell_WriteBgMap(proc->anim, 0, *(tsaL + ret), 1);
 
-        if (ret == 0)
-        {
-            chr = magicFx->bgChr + 31;
-        }
+		if (ret == 0) {
+			chr = magicFx->bgChr + 31;
+		}
 
-        if (ret == 1)
-        {
-            chr = magicFx->bgChr + 80;
-        }
+		if (ret == 1) {
+			chr = magicFx->bgChr + 80;
+		}
 
-        FillBGRect(magicFx->bgTmBuf + 0x1E, 2, 20, magicFx->bgPalId, chr);
-    }
-    else
-    {
-        if (ret == -1)
-        {
-            ClearCRSpellBgTmBuf(proc->anim);
-            SetDefaultColorEffects_();
-            Proc_Break(proc);
-        }
-    }
+		FillBGRect(magicFx->bgTmBuf + 0x1E, 2, 20, magicFx->bgPalId, chr);
+	} else {
+		if (ret == -1) {
+			ClearCRSpellBgTmBuf(proc->anim);
+			SetDefaultColorEffects_();
+			Proc_Break(proc);
+		}
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -570,9 +543,9 @@ struct ProcCmd CONST_DATA ProcScr_efxopThunderBGCOL[] =
 // clang-format on
 
 //! FE8U = 0x0806EE34
-void StartCRSubSpell_efxopThunderBGCOL(struct Anim * anim, struct ProcEfx * unused)
+void StartCRSubSpell_efxopThunderBGCOL(struct Anim *anim, struct ProcEfx *unused)
 {
-    // clang-format off
+	// clang-format off
     static const u16 frames[] =
     {
         0, 4,
@@ -593,42 +566,38 @@ void StartCRSubSpell_efxopThunderBGCOL(struct Anim * anim, struct ProcEfx * unus
         15, 1,
         -1,
     };
-    // clang-format on
+	// clang-format on
 
-    struct ProcEfxBGCOL * proc = Proc_Start(ProcScr_efxopThunderBGCOL, PROC_TREE_3);
-    SetActiveCRSpellBgColorProc(proc);
+	struct ProcEfxBGCOL *proc = Proc_Start(ProcScr_efxopThunderBGCOL, PROC_TREE_3);
+	SetActiveCRSpellBgColorProc(proc);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    proc->frame = 0;
-    proc->frame_config = frames;
+	proc->frame = 0;
+	proc->frame_config = frames;
 
-    proc->pal = Pal_ThunderSpellBg;
+	proc->pal = Pal_ThunderSpellBg;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806EE68
-void efxopThunderBGCOL_Loop(struct ProcEfxBGCOL * proc)
+void efxopThunderBGCOL_Loop(struct ProcEfxBGCOL *proc)
 {
-    s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+	s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-    if (ret >= 0)
-    {
-        u16 * pal = proc->pal;
-        CRSpell_RegisterBgPal(proc->anim, pal + ret * 0x10);
-    }
-    else
-    {
-        if (ret == -1)
-        {
-            EndActiveClassReelBgColorProc();
-            Proc_Break(proc);
-        }
-    }
+	if (ret >= 0) {
+		u16 *pal = proc->pal;
+		CRSpell_RegisterBgPal(proc->anim, pal + ret * 0x10);
+	} else {
+		if (ret == -1) {
+			EndActiveClassReelBgColorProc();
+			Proc_Break(proc);
+		}
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -643,49 +612,45 @@ struct ProcCmd CONST_DATA ProcScr_efxopThunderOBJ[] =
 // clang-format on
 
 //! FE8U = 0x0806EEA8
-void StartCRSubSpell_efxopThunderOBJ(struct Anim * anim, struct ProcEfx * unused)
+void StartCRSubSpell_efxopThunderOBJ(struct Anim *anim, struct ProcEfx *unused)
 {
-    struct Anim * frontAnim;
+	struct Anim *frontAnim;
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
-    struct ProcEfxOBJ * proc = Proc_Start(ProcScr_efxopThunderOBJ, PROC_TREE_3);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
+	struct ProcEfxOBJ *proc = Proc_Start(ProcScr_efxopThunderOBJ, PROC_TREE_3);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    frontAnim = CRSpellCreateFrontAnim(anim, 1, AnimScr_EfxThunderOBJ_L, AnimScr_EfxThunderOBJ_R);
-    proc->anim2 = frontAnim;
+	frontAnim = CRSpellCreateFrontAnim(anim, 1, AnimScr_EfxThunderOBJ_L, AnimScr_EfxThunderOBJ_R);
+	proc->anim2 = frontAnim;
 
-    if (GetAnimPosition(anim) == 0)
-    {
-        frontAnim->xPosition = anim->xPosition + 56;
-    }
-    else
-    {
-        frontAnim->xPosition = anim->xPosition - 56;
-    }
+	if (GetAnimPosition(anim) == 0) {
+		frontAnim->xPosition = anim->xPosition + 56;
+	} else {
+		frontAnim->xPosition = anim->xPosition - 56;
+	}
 
-    frontAnim->xPosition += magicFx->xOffsetObj;
-    frontAnim->yPosition += magicFx->yOffsetObj;
+	frontAnim->xPosition += magicFx->xOffsetObj;
+	frontAnim->yPosition += magicFx->yOffsetObj;
 
-    CRSpell_RegisterObjPal(proc->anim, Pal_BoltingSprites);
-    CRSpell_RegisterObjGfx(proc->anim, Img_BoltingSprites);
+	CRSpell_RegisterObjPal(proc->anim, Pal_BoltingSprites);
+	CRSpell_RegisterObjGfx(proc->anim, Img_BoltingSprites);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806EF24
-void efxopThunderOBJ_Loop(struct ProcEfxOBJ * proc)
+void efxopThunderOBJ_Loop(struct ProcEfxOBJ *proc)
 {
-    proc->timer++;
+	proc->timer++;
 
-    if (proc->timer > 50)
-    {
-        AnimDelete(proc->anim2);
-        Proc_Break(proc);
-    }
+	if (proc->timer > 50) {
+		AnimDelete(proc->anim2);
+		Proc_Break(proc);
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -705,31 +670,31 @@ struct ProcCmd CONST_DATA ProcScr_efxopLive[] =
 // clang-format on
 
 //! FE8U = 0x0806EF48
-void StartClassReelSpellAnimHeal(struct Anim * anim)
+void StartClassReelSpellAnimHeal(struct Anim *anim)
 {
-    struct ProcEfx * proc = Proc_Start(ProcScr_efxopLive, PROC_TREE_3);
+	struct ProcEfx *proc = Proc_Start(ProcScr_efxopLive, PROC_TREE_3);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806EF64
-void efxopLive_Loop_Main(struct ProcEfx * proc)
+void efxopLive_Loop_Main(struct ProcEfx *proc)
 {
-    StartCRSubSpell_efxopLiveOBJ(proc->anim, proc);
-    StartCRSubSpell_efxopLiveBG(proc->anim, proc);
-    StartCRSubSpell_efxopLiveBGCOL(proc->anim, proc);
+	StartCRSubSpell_efxopLiveOBJ(proc->anim, proc);
+	StartCRSubSpell_efxopLiveBG(proc->anim, proc);
+	StartCRSubSpell_efxopLiveBGCOL(proc->anim, proc);
 
-    SetBlendAlpha(0, 16);
+	SetBlendAlpha(0, 16);
 
-    StartCRSubSpell_efxopLiveALPHA(proc->anim, 1, 12, 0, proc);
-    StartCRSubSpell_efxopLiveALPHA(proc->anim, 35, 25, 1, proc);
+	StartCRSubSpell_efxopLiveALPHA(proc->anim, 1, 12, 0, proc);
+	StartCRSubSpell_efxopLiveALPHA(proc->anim, 35, 25, 1, proc);
 
-    Proc_Break(proc);
+	Proc_Break(proc);
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -750,59 +715,55 @@ u16 * CONST_DATA gUnknown_085D959C[] =
 // clang-format on
 
 //! FE8U = 0x0806EFB8
-void StartCRSubSpell_efxopLiveBG(struct Anim * anim, struct ProcEfx * unused)
+void StartCRSubSpell_efxopLiveBG(struct Anim *anim, struct ProcEfx *unused)
 {
-    // clang-format off
+	// clang-format off
     static const u16 frames[] =
     {
         0, 62,
         -1,
     };
-    // clang-format on
+	// clang-format on
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
 
-    struct ProcEfxBG * proc = Proc_Start(ProcScr_efxopLiveBG, PROC_TREE_3);
-    SetActiveClassReelSpell(proc);
+	struct ProcEfxBG *proc = Proc_Start(ProcScr_efxopLiveBG, PROC_TREE_3);
+	SetActiveClassReelSpell(proc);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    proc->frame = 0;
-    proc->frame_config = frames;
+	proc->frame = 0;
+	proc->frame_config = frames;
 
-    proc->tsal = gUnknown_085D959C;
+	proc->tsal = gUnknown_085D959C;
 
-    CRSpell_RegisterBgGfx(anim, Img_HealSpellBg);
+	CRSpell_RegisterBgGfx(anim, Img_HealSpellBg);
 
-    magicFx->resetCallback();
+	magicFx->resetCallback();
 
-    SetCRSpellBgPosition(proc->anim, magicFx);
+	SetCRSpellBgPosition(proc->anim, magicFx);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F00C
-void efxopLiveBG_Loop(struct ProcEfxBG * proc)
+void efxopLiveBG_Loop(struct ProcEfxBG *proc)
 {
-    s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+	s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-    if (ret >= 0)
-    {
-        u16 ** tsaL = proc->tsal;
-        CRSpell_WriteBgMap(proc->anim, 1, *(tsaL + ret), 0);
-    }
-    else
-    {
-        if (ret == -1)
-        {
-            ClearCRSpellBgTmBuf(proc->anim);
-            SetDefaultColorEffects_();
-            Proc_Break(proc);
-        }
-    }
+	if (ret >= 0) {
+		u16 **tsaL = proc->tsal;
+		CRSpell_WriteBgMap(proc->anim, 1, *(tsaL + ret), 0);
+	} else {
+		if (ret == -1) {
+			ClearCRSpellBgTmBuf(proc->anim);
+			SetDefaultColorEffects_();
+			Proc_Break(proc);
+		}
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -820,9 +781,9 @@ struct ProcCmd CONST_DATA ProcScr_efxopLiveBGCOL[] =
 // clang-format on
 
 //! FE8U = 0x0806F058
-void StartCRSubSpell_efxopLiveBGCOL(struct Anim * anim, struct ProcEfx * unused)
+void StartCRSubSpell_efxopLiveBGCOL(struct Anim *anim, struct ProcEfx *unused)
 {
-    // clang-format off
+	// clang-format off
     static const u16 frames[] =
     {
         0, 3,
@@ -843,42 +804,38 @@ void StartCRSubSpell_efxopLiveBGCOL(struct Anim * anim, struct ProcEfx * unused)
         15, 5,
         -1,
     };
-    // clang-format on
+	// clang-format on
 
-    struct ProcEfxBGCOL * proc = Proc_Start(ProcScr_efxopLiveBGCOL, PROC_TREE_3);
-    SetActiveCRSpellBgColorProc(proc);
+	struct ProcEfxBGCOL *proc = Proc_Start(ProcScr_efxopLiveBGCOL, PROC_TREE_3);
+	SetActiveCRSpellBgColorProc(proc);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    proc->frame = 0;
-    proc->frame_config = frames;
+	proc->frame = 0;
+	proc->frame_config = frames;
 
-    proc->pal = Pal_HealSpellBg;
+	proc->pal = Pal_HealSpellBg;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F08C
-void efxopLiveBGCOL_Loop(struct ProcEfxBGCOL * proc)
+void efxopLiveBGCOL_Loop(struct ProcEfxBGCOL *proc)
 {
-    s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+	s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-    if (ret >= 0)
-    {
-        u16 * pal = proc->pal;
-        CRSpell_RegisterBgPal(proc->anim, pal + ret * 0x10);
-    }
-    else
-    {
-        if (ret == -1)
-        {
-            EndActiveClassReelBgColorProc();
-            Proc_Break(proc);
-        }
-    }
+	if (ret >= 0) {
+		u16 *pal = proc->pal;
+		CRSpell_RegisterBgPal(proc->anim, pal + ret * 0x10);
+	} else {
+		if (ret == -1) {
+			EndActiveClassReelBgColorProc();
+			Proc_Break(proc);
+		}
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -896,55 +853,50 @@ struct ProcCmd CONST_DATA ProcScr_efxopLiveALPHA[] =
 // clang-format on
 
 //! FE8U = 0x0806F0CC
-void StartCRSubSpell_efxopLiveALPHA(struct Anim * anim, int timer, int c, int d, struct ProcEfx * unused)
+void StartCRSubSpell_efxopLiveALPHA(struct Anim *anim, int timer, int c, int d, struct ProcEfx *unused)
 {
-    struct ProcEfxALPHA * proc = Proc_Start(ProcScr_efxopLiveALPHA, PROC_TREE_3);
-    proc->anim = anim;
+	struct ProcEfxALPHA *proc = Proc_Start(ProcScr_efxopLiveALPHA, PROC_TREE_3);
+	proc->anim = anim;
 
-    proc->timer = timer;
-    proc->unk2E = c;
+	proc->timer = timer;
+	proc->unk2E = c;
 
-    proc->unk29 = d;
+	proc->unk29 = d;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F0FC
-void efxopLiveALPHA_Loop_A(struct ProcEfxALPHA * proc)
+void efxopLiveALPHA_Loop_A(struct ProcEfxALPHA *proc)
 {
-    if (--proc->timer == 0)
-    {
-        Proc_Break(proc);
-    }
+	if (--proc->timer == 0) {
+		Proc_Break(proc);
+	}
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F118
-void efxopLiveALPHA_Loop_B(struct ProcEfxALPHA * proc)
+void efxopLiveALPHA_Loop_B(struct ProcEfxALPHA *proc)
 {
-    int bldA;
+	int bldA;
 
-    if (proc->timer > proc->unk2E)
-    {
-        Proc_Break(proc);
-        return;
-    }
+	if (proc->timer > proc->unk2E) {
+		Proc_Break(proc);
+		return;
+	}
 
-    if (proc->unk29 == 0)
-    {
-        bldA = Interpolate(INTERPOLATE_LINEAR, 0, 16, proc->timer, proc->unk2E);
-    }
-    else
-    {
-        bldA = Interpolate(INTERPOLATE_LINEAR, 16, 0, proc->timer, proc->unk2E);
-    }
+	if (proc->unk29 == 0) {
+		bldA = Interpolate(INTERPOLATE_LINEAR, 0, 16, proc->timer, proc->unk2E);
+	} else {
+		bldA = Interpolate(INTERPOLATE_LINEAR, 16, 0, proc->timer, proc->unk2E);
+	}
 
-    SetBlendAlpha(bldA, 16);
+	SetBlendAlpha(bldA, 16);
 
-    proc->timer++;
+	proc->timer++;
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -959,43 +911,42 @@ struct ProcCmd CONST_DATA ProcScr_efxopLiveOBJ[] =
 // clang-format on
 
 //! FE8U = 0x0806F184
-void StartCRSubSpell_efxopLiveOBJ(struct Anim * anim, struct ProcEfx * unused)
+void StartCRSubSpell_efxopLiveOBJ(struct Anim *anim, struct ProcEfx *unused)
 {
-    struct Anim * frontAnim;
-    u32 * scr;
+	struct Anim *frontAnim;
+	u32 *scr;
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
-    struct ProcEfxOBJ * proc = Proc_Start(ProcScr_efxopLiveOBJ, PROC_TREE_3);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
+	struct ProcEfxOBJ *proc = Proc_Start(ProcScr_efxopLiveOBJ, PROC_TREE_3);
 
-    proc->anim = anim;
-    proc->timer = 0;
-    proc->terminator = 51;
+	proc->anim = anim;
+	proc->timer = 0;
+	proc->terminator = 51;
 
-    scr = AnimScr_EfxLiveOBJ1;
-    frontAnim = CRSpellCreateFrontAnim(anim, 1, scr, scr);
-    proc->anim2 = frontAnim;
+	scr = AnimScr_EfxLiveOBJ1;
+	frontAnim = CRSpellCreateFrontAnim(anim, 1, scr, scr);
+	proc->anim2 = frontAnim;
 
-    frontAnim->xPosition += magicFx->xOffsetObj;
-    frontAnim->yPosition += magicFx->yOffsetObj;
+	frontAnim->xPosition += magicFx->xOffsetObj;
+	frontAnim->yPosition += magicFx->yOffsetObj;
 
-    CRSpell_RegisterObjPal(proc->anim, Pal_HealSprites_Sparkles);
-    CRSpell_RegisterObjGfx(proc->anim, Img_HealSprites_Sparkles);
+	CRSpell_RegisterObjPal(proc->anim, Pal_HealSprites_Sparkles);
+	CRSpell_RegisterObjGfx(proc->anim, Img_HealSprites_Sparkles);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F1E8
-void efxopLiveOBJ_Loop(struct ProcEfxOBJ * proc)
+void efxopLiveOBJ_Loop(struct ProcEfxOBJ *proc)
 {
-    proc->timer++;
+	proc->timer++;
 
-    if (proc->timer == proc->terminator)
-    {
-        AnimDelete(proc->anim2);
-        Proc_Break(proc);
-    }
+	if (proc->timer == proc->terminator) {
+		AnimDelete(proc->anim2);
+		Proc_Break(proc);
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -1015,22 +966,22 @@ struct ProcCmd CONST_DATA ProcScr_efxopLightning[] =
 // clang-format on
 
 //! FE8U = 0x0806F210
-void StartClassReelSpellAnimLight(struct Anim * anim)
+void StartClassReelSpellAnimLight(struct Anim *anim)
 {
-    struct ProcEfx * proc = Proc_Start(ProcScr_efxopLightning, PROC_TREE_3);
-    SetActiveClassReelSpell(proc);
+	struct ProcEfx *proc = Proc_Start(ProcScr_efxopLightning, PROC_TREE_3);
+	SetActiveClassReelSpell(proc);
 
-    proc->anim = anim;
+	proc->anim = anim;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F230
-void efxopLightning_Loop_Main(struct ProcEfx * proc)
+void efxopLightning_Loop_Main(struct ProcEfx *proc)
 {
-    StartCRSubSpell_efxopLightningBG(proc->anim, proc);
-    Proc_Break(proc);
-    return;
+	StartCRSubSpell_efxopLightningBG(proc->anim, proc);
+	Proc_Break(proc);
+	return;
 }
 
 // clang-format off
@@ -1156,9 +1107,9 @@ u16 * CONST_DATA TsaArray_Light_ClassReel[] =
 // clang-format on
 
 //! FE8U = 0x0806F248
-void StartCRSubSpell_efxopLightningBG(struct Anim * anim, struct ProcEfx * parent)
+void StartCRSubSpell_efxopLightningBG(struct Anim *anim, struct ProcEfx *parent)
 {
-    // clang-format off
+	// clang-format off
     static const u16 frames[] =
     {
         25, 2,
@@ -1196,56 +1147,52 @@ void StartCRSubSpell_efxopLightningBG(struct Anim * anim, struct ProcEfx * paren
         15, 1,
         -1,
     };
-    // clang-format on
+	// clang-format on
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
-    struct ProcEfxBG * proc = Proc_Start(ProcScr_efxopLightningBG, parent);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
+	struct ProcEfxBG *proc = Proc_Start(ProcScr_efxopLightningBG, parent);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    proc->frame = 0;
-    proc->frame_config = frames;
+	proc->frame = 0;
+	proc->frame_config = frames;
 
-    proc->tsal = TsaArray_Light_ClassReel;
-    proc->tsar = TsaArray_Light_ClassReel;
+	proc->tsal = TsaArray_Light_ClassReel;
+	proc->tsar = TsaArray_Light_ClassReel;
 
-    proc->img = ImgArray_Light_ClassReel;
-    proc->pal = PalArray_Light_ClassReel;
+	proc->img = ImgArray_Light_ClassReel;
+	proc->pal = PalArray_Light_ClassReel;
 
-    magicFx->resetCallback();
+	magicFx->resetCallback();
 
-    SetCRSpellBgPosition(proc->anim, magicFx);
+	SetCRSpellBgPosition(proc->anim, magicFx);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F2A0
-void efxopLightningBG_Loop(struct ProcEfxBG * proc)
+void efxopLightningBG_Loop(struct ProcEfxBG *proc)
 {
-    s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+	s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-    if (ret >= 0)
-    {
-        u16 ** tsaL = proc->tsal;
-        u16 ** img = proc->img;
-        u16 ** pal = proc->pal;
+	if (ret >= 0) {
+		u16 **tsaL = proc->tsal;
+		u16 **img = proc->img;
+		u16 **pal = proc->pal;
 
-        CRSpell_RegisterBgGfx(proc->anim, *(img + ret));
-        CRSpell_RegisterBgPal(proc->anim, *(pal + ret));
-        CRSpell_WriteBgMap(proc->anim, 0, *(tsaL + ret), 1);
-    }
-    else
-    {
-        if (ret == -1)
-        {
-            ClearCRSpellBgTmBuf(proc->anim);
-            SetDefaultColorEffects_();
-            Proc_Break(proc);
-        }
-    }
+		CRSpell_RegisterBgGfx(proc->anim, *(img + ret));
+		CRSpell_RegisterBgPal(proc->anim, *(pal + ret));
+		CRSpell_WriteBgMap(proc->anim, 0, *(tsaL + ret), 1);
+	} else {
+		if (ret == -1) {
+			ClearCRSpellBgTmBuf(proc->anim);
+			SetDefaultColorEffects_();
+			Proc_Break(proc);
+		}
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -1350,9 +1297,9 @@ u16 * CONST_DATA ImgArray_Flux_ClassReel[] =
 // clang-format on
 
 //! FE8U = 0x0806F304
-void StartCRSubSpell_efxopMistyrainBG(struct Anim * anim, struct ProcEfx * parent)
+void StartCRSubSpell_efxopMistyrainBG(struct Anim *anim, struct ProcEfx *parent)
 {
-    // clang-format off
+	// clang-format off
     static const u16 frames[] =
     {
         0, 2,
@@ -1369,47 +1316,44 @@ void StartCRSubSpell_efxopMistyrainBG(struct Anim * anim, struct ProcEfx * paren
         11, 2,
         -1,
     };
-    // clang-format on
+	// clang-format on
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
-    struct ProcEfxBG * proc = Proc_Start(ProcScr_efxopMistyrainBG, parent);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
+	struct ProcEfxBG *proc = Proc_Start(ProcScr_efxopMistyrainBG, parent);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    proc->frame = 0;
-    proc->frame_config = frames;
+	proc->frame = 0;
+	proc->frame_config = frames;
 
-    proc->tsal = TsaArray_Flux_ClassReel;
-    proc->tsar = TsaArray_Flux_ClassReel;
-    proc->img = ImgArray_Flux_ClassReel;
+	proc->tsal = TsaArray_Flux_ClassReel;
+	proc->tsar = TsaArray_Flux_ClassReel;
+	proc->img = ImgArray_Flux_ClassReel;
 
-    proc->terminator = 0;
+	proc->terminator = 0;
 
-    CRSpell_RegisterBgPal(anim, Pal_0862A2D0);
+	CRSpell_RegisterBgPal(anim, Pal_0862A2D0);
 
-    if (GetAnimPosition(proc->anim) == 0)
-    {
-        gLCDControlBuffer.bgoffset[BG_1].x += 4;
-    }
-    else
-    {
-        gLCDControlBuffer.bgoffset[BG_1].x -= 4;
-    }
+	if (GetAnimPosition(proc->anim) == 0) {
+		gLCDControlBuffer.bgoffset[BG_1].x += 4;
+	} else {
+		gLCDControlBuffer.bgoffset[BG_1].x -= 4;
+	}
 
-    gLCDControlBuffer.bgoffset[BG_1].y += 8;
+	gLCDControlBuffer.bgoffset[BG_1].y += 8;
 
-    magicFx->resetCallback();
+	magicFx->resetCallback();
 
-    SetCRSpellBgPosition(proc->anim, magicFx);
+	SetCRSpellBgPosition(proc->anim, magicFx);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F38C
-void StartCRSubSpell_efxopMistyrainBG_2(struct Anim * anim, struct ProcEfx * parent)
+void StartCRSubSpell_efxopMistyrainBG_2(struct Anim *anim, struct ProcEfx *parent)
 {
-    // clang-format off
+	// clang-format off
     static const u16 frames[] =
     {
         12, 6,
@@ -1443,58 +1387,54 @@ void StartCRSubSpell_efxopMistyrainBG_2(struct Anim * anim, struct ProcEfx * par
         40, 2,
         -1,
     };
-    // clang-format on
+	// clang-format on
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
-    struct ProcEfxBG * proc = Proc_Start(ProcScr_efxopMistyrainBG, parent);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
+	struct ProcEfxBG *proc = Proc_Start(ProcScr_efxopMistyrainBG, parent);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    proc->frame = 0;
-    proc->frame_config = frames;
+	proc->frame = 0;
+	proc->frame_config = frames;
 
-    proc->tsal = TsaArray_Flux_ClassReel;
-    proc->tsar = TsaArray_Flux_ClassReel;
-    proc->img = ImgArray_Flux_ClassReel;
+	proc->tsal = TsaArray_Flux_ClassReel;
+	proc->tsar = TsaArray_Flux_ClassReel;
+	proc->img = ImgArray_Flux_ClassReel;
 
-    proc->terminator = 1;
+	proc->terminator = 1;
 
-    CRSpell_RegisterBgPal(anim, Pal_0862A2F0);
+	CRSpell_RegisterBgPal(anim, Pal_0862A2F0);
 
-    magicFx->resetCallback();
+	magicFx->resetCallback();
 
-    SetCRSpellBgPosition(proc->anim, magicFx);
+	SetCRSpellBgPosition(proc->anim, magicFx);
 
-    SetBlendAlpha(10, 7);
+	SetBlendAlpha(10, 7);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F3F8
-void efxopMistyrainBG_Loop(struct ProcEfxBG * proc)
+void efxopMistyrainBG_Loop(struct ProcEfxBG *proc)
 {
-    s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+	s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-    if (ret >= 0)
-    {
-        u16 ** tsaL = proc->tsal;
-        u16 ** img = proc->img;
+	if (ret >= 0) {
+		u16 **tsaL = proc->tsal;
+		u16 **img = proc->img;
 
-        CRSpell_RegisterBgGfx(proc->anim, *(img + ret));
-        CRSpell_WriteBgMap(proc->anim, proc->terminator, *(tsaL + ret), 1);
-    }
-    else
-    {
-        if (ret == -1)
-        {
-            ClearCRSpellBgTmBuf(proc->anim);
-            SetDefaultColorEffects_();
-            Proc_Break(proc);
-        }
-    }
+		CRSpell_RegisterBgGfx(proc->anim, *(img + ret));
+		CRSpell_WriteBgMap(proc->anim, proc->terminator, *(tsaL + ret), 1);
+	} else {
+		if (ret == -1) {
+			ClearCRSpellBgTmBuf(proc->anim);
+			SetDefaultColorEffects_();
+			Proc_Break(proc);
+		}
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -1520,17 +1460,17 @@ struct ProcCmd CONST_DATA ProcScr_efxopMistyrainOBJ[] =
 // clang-format on
 
 //! FE8U = 0x0806F450
-void StartCRSubSpell_efxopMistyrainOBJ(struct Anim * anim, struct ProcEfx * parent)
+void StartCRSubSpell_efxopMistyrainOBJ(struct Anim *anim, struct ProcEfx *parent)
 {
-    u32 * scr;
+	u32 *scr;
 
-    struct ProcEfxOBJ * proc = Proc_Start(ProcScr_efxopMistyrainOBJ, parent);
-    proc->anim = anim;
+	struct ProcEfxOBJ *proc = Proc_Start(ProcScr_efxopMistyrainOBJ, parent);
+	proc->anim = anim;
 
-    scr = FramScr_Unk5D4F90;
-    proc->anim2 = CRSpellCreateFrontAnim(anim, 1, scr, scr);
+	scr = FramScr_Unk5D4F90;
+	proc->anim2 = CRSpellCreateFrontAnim(anim, 1, scr, scr);
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -1552,127 +1492,126 @@ struct ProcCmd CONST_DATA ProcScr_efxopMistyrainOBJ2[] =
 // clang-format on
 
 //! FE8U = 0x0806F47C
-struct ProcEfxOBJ * StartCRSubSpell_efxopMistyrainOBJ2(struct Anim * anim, struct ProcEfx * parent)
+struct ProcEfxOBJ *StartCRSubSpell_efxopMistyrainOBJ2(struct Anim *anim, struct ProcEfx *parent)
 {
-    struct Anim * frontAnim;
-    u32 * scr;
+	struct Anim *frontAnim;
+	u32 *scr;
 
-    struct ProcEfxOBJ * proc = Proc_Start(ProcScr_efxopMistyrainOBJ2, parent);
-    proc->anim = anim;
+	struct ProcEfxOBJ *proc = Proc_Start(ProcScr_efxopMistyrainOBJ2, parent);
+	proc->anim = anim;
 
-    scr = FramScr_Unk5D4F90;
-    frontAnim = CRSpellCreateFrontAnim(anim, 0, scr, scr);
-    proc->anim2 = frontAnim;
+	scr = FramScr_Unk5D4F90;
+	frontAnim = CRSpellCreateFrontAnim(anim, 0, scr, scr);
+	proc->anim2 = frontAnim;
 
-    frontAnim->xPosition -= 56;
-    frontAnim->yPosition -= 4;
+	frontAnim->xPosition -= 56;
+	frontAnim->yPosition -= 4;
 
-    return proc;
+	return proc;
 }
 
-void efxopMistyrainOBJ_OnEnd(struct ProcEfxOBJ * proc)
+void efxopMistyrainOBJ_OnEnd(struct ProcEfxOBJ *proc)
 {
-    AnimDelete(proc->anim2);
-    return;
+	AnimDelete(proc->anim2);
+	return;
 }
 
 //! FE8U = 0x0806F4C0
-void efxopMistyrainOBJ_Loop_A(struct ProcEfxOBJ * proc)
+void efxopMistyrainOBJ_Loop_A(struct ProcEfxOBJ *proc)
 {
-    struct Anim * anim = proc->anim2;
+	struct Anim *anim = proc->anim2;
 
-    u32 * scr = AnimScr_EfxMistyRainObj1;
+	u32 *scr = AnimScr_EfxMistyRainObj1;
 
-    anim->pScrStart = scr;
-    anim->pScrCurrent = scr;
-    anim->timer = 0;
+	anim->pScrStart = scr;
+	anim->pScrCurrent = scr;
+	anim->timer = 0;
 
-    CRSpell_RegisterObjPal(proc->anim, Pal_FluxAnimSprites);
-    CRSpell_RegisterObjGfx(proc->anim, Img_FluxAnimSprites_Orb);
+	CRSpell_RegisterObjPal(proc->anim, Pal_FluxAnimSprites);
+	CRSpell_RegisterObjGfx(proc->anim, Img_FluxAnimSprites_Orb);
 
-    Proc_Break(proc);
+	Proc_Break(proc);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F4F8
-void efxopMistyrainOBJ_Loop_B(struct ProcEfxOBJ * proc)
+void efxopMistyrainOBJ_Loop_B(struct ProcEfxOBJ *proc)
 {
-    struct Anim * anim = proc->anim2;
+	struct Anim *anim = proc->anim2;
 
-    u32 * scr = AnimScr_EfxMistyRainObj2;
+	u32 *scr = AnimScr_EfxMistyRainObj2;
 
-    anim->pScrStart = scr;
-    anim->pScrCurrent = scr;
-    anim->timer = 0;
+	anim->pScrStart = scr;
+	anim->pScrCurrent = scr;
+	anim->timer = 0;
 
-    CRSpell_RegisterObjPal(proc->anim, Pal_FluxAnimSprites);
-    CRSpell_RegisterObjGfx(proc->anim, Img_FluxAnimSprites_Tendrils);
+	CRSpell_RegisterObjPal(proc->anim, Pal_FluxAnimSprites);
+	CRSpell_RegisterObjGfx(proc->anim, Img_FluxAnimSprites_Tendrils);
 
-    Proc_Break(proc);
+	Proc_Break(proc);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F530
-void efxopMistyrainOBJ_Loop_C(struct ProcEfxOBJ * proc)
+void efxopMistyrainOBJ_Loop_C(struct ProcEfxOBJ *proc)
 {
-    struct Anim * anim = proc->anim2;
+	struct Anim *anim = proc->anim2;
 
-    u32 * scr = AnimScr_EfxMistyRainObj3;
+	u32 *scr = AnimScr_EfxMistyRainObj3;
 
-    anim->pScrStart = scr;
-    anim->pScrCurrent = scr;
-    anim->timer = 0;
+	anim->pScrStart = scr;
+	anim->pScrCurrent = scr;
+	anim->timer = 0;
 
-    CRSpell_RegisterObjPal(proc->anim, Pal_FluxAnimSprites);
-    CRSpell_RegisterObjGfx(proc->anim, Img_FluxAnimSprites_SigilVoid);
+	CRSpell_RegisterObjPal(proc->anim, Pal_FluxAnimSprites);
+	CRSpell_RegisterObjGfx(proc->anim, Img_FluxAnimSprites_SigilVoid);
 
-    Proc_Break(proc);
+	Proc_Break(proc);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F568
-void efxopMistyrainOBJ2_Loop_A(struct ProcEfxOBJ * proc)
+void efxopMistyrainOBJ2_Loop_A(struct ProcEfxOBJ *proc)
 {
-    struct Anim * anim = proc->anim2;
+	struct Anim *anim = proc->anim2;
 
-    u32 * scr = AnimScr_EfxMistyRainObj4;
+	u32 *scr = AnimScr_EfxMistyRainObj4;
 
-    anim->pScrStart = scr;
-    anim->pScrCurrent = scr;
-    anim->timer = 0;
-    anim->drawLayerPriority = 20;
+	anim->pScrStart = scr;
+	anim->pScrCurrent = scr;
+	anim->timer = 0;
+	anim->drawLayerPriority = 20;
 
-    AnimSort();
+	AnimSort();
 
-    proc->timer = 39;
+	proc->timer = 39;
 
-    Proc_Break(proc);
+	Proc_Break(proc);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F594
-void efxopMistyrainOBJ2_Loop_B(struct ProcEfxOBJ * proc)
+void efxopMistyrainOBJ2_Loop_B(struct ProcEfxOBJ *proc)
 {
-    struct Anim * anim = proc->anim2;
+	struct Anim *anim = proc->anim2;
 
-    proc->timer++;
+	proc->timer++;
 
-    if (proc->timer == 40)
-    {
-        u32 * scr = AnimScr_EfxMistyRainObj5;
+	if (proc->timer == 40) {
+		u32 *scr = AnimScr_EfxMistyRainObj5;
 
-        anim->pScrStart = scr;
-        anim->pScrCurrent = scr;
-        anim->timer = 0;
+		anim->pScrStart = scr;
+		anim->pScrCurrent = scr;
+		anim->timer = 0;
 
-        proc->timer = 0;
-    }
+		proc->timer = 0;
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -1692,49 +1631,44 @@ struct ProcCmd CONST_DATA ProcScr_efxopMistyrain[] =
 // clang-format on
 
 //! FE8U = 0x0806F5BC
-void StartClassReelSpellAnimFlux(struct Anim * anim)
+void StartClassReelSpellAnimFlux(struct Anim *anim)
 {
-    struct ProcEfx * proc = Proc_Start(ProcScr_efxopMistyrain, PROC_TREE_3);
-    SetActiveClassReelSpell(proc);
+	struct ProcEfx *proc = Proc_Start(ProcScr_efxopMistyrain, PROC_TREE_3);
+	SetActiveClassReelSpell(proc);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F5E0
-void efxopMistyrain_Loop_Main(struct ProcEfx * proc)
+void efxopMistyrain_Loop_Main(struct ProcEfx *proc)
 {
-    proc->timer++;
+	proc->timer++;
 
-    if (proc->timer == 1)
-    {
-        StartCRSubSpell_efxopMistyrainBG(proc->anim, proc);
-    }
+	if (proc->timer == 1) {
+		StartCRSubSpell_efxopMistyrainBG(proc->anim, proc);
+	}
 
-    if (proc->timer == 16)
-    {
-        StartCRSubSpell_efxopMistyrainOBJ(proc->anim, proc);
-    }
+	if (proc->timer == 16) {
+		StartCRSubSpell_efxopMistyrainOBJ(proc->anim, proc);
+	}
 
-    if (proc->timer == 75)
-    {
-        proc->unk_64 = StartCRSubSpell_efxopMistyrainOBJ2(proc->anim, proc);
-    }
+	if (proc->timer == 75) {
+		proc->unk_64 = StartCRSubSpell_efxopMistyrainOBJ2(proc->anim, proc);
+	}
 
-    if (proc->timer == 94)
-    {
-        StartCRSubSpell_efxopMistyrainBG_2(proc->anim, proc);
-    }
+	if (proc->timer == 94) {
+		StartCRSubSpell_efxopMistyrainBG_2(proc->anim, proc);
+	}
 
-    if (proc->timer == 114)
-    {
-        Proc_End(proc->unk_64);
-        Proc_Break(proc);
-    }
+	if (proc->timer == 114) {
+		Proc_End(proc->unk_64);
+		Proc_Break(proc);
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -1754,30 +1688,30 @@ struct ProcCmd CONST_DATA ProcScr_efxopMyrrh[] =
 // clang-format on
 
 //! FE8U = 0x0806F648
-void StartClassReelSpellAnimMyrrh(struct Anim * anim)
+void StartClassReelSpellAnimMyrrh(struct Anim *anim)
 {
-    struct ProcEfx * proc = Proc_Start(ProcScr_efxopMyrrh, PROC_TREE_3);
-    SetActiveClassReelSpell(proc);
+	struct ProcEfx *proc = Proc_Start(ProcScr_efxopMyrrh, PROC_TREE_3);
+	SetActiveClassReelSpell(proc);
 
-    proc->anim = anim;
+	proc->anim = anim;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F668
 void efxopMyrrh_Loop_Main(ProcPtr proc)
 {
-    struct BattleAnim * banim = banim_data;
-    LZ77UnCompWram(banim[197 - 1].pal, gPal_Banim);
+	struct BattleAnim *banim = banim_data;
+	LZ77UnCompWram(banim[197 - 1].pal, gPal_Banim);
 
-    CpuFastCopy(gPal_Banim + 0x10, gPaletteBuffer + 0x120, PLTT_SIZE_4BPP);
-    CpuFastCopy(gPal_Banim + 0x10, gPaletteBuffer + 0x130, PLTT_SIZE_4BPP);
+	CpuFastCopy(gPal_Banim + 0x10, gPaletteBuffer + 0x120, PLTT_SIZE_4BPP);
+	CpuFastCopy(gPal_Banim + 0x10, gPaletteBuffer + 0x130, PLTT_SIZE_4BPP);
 
-    EnablePaletteSync();
+	EnablePaletteSync();
 
-    Proc_Break(proc);
+	Proc_Break(proc);
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -1798,30 +1732,30 @@ struct ProcCmd CONST_DATA ProcScr_efxopEvilEye[] =
 // clang-format on
 
 //! FE8U = 0x0806F6B4
-void StartClassReelSpellAnimEvilEye(struct Anim * anim)
+void StartClassReelSpellAnimEvilEye(struct Anim *anim)
 {
-    struct ProcEfx * proc = Proc_Start(ProcScr_efxopEvilEye, PROC_TREE_3);
-    SetActiveClassReelSpell(proc);
+	struct ProcEfx *proc = Proc_Start(ProcScr_efxopEvilEye, PROC_TREE_3);
+	SetActiveClassReelSpell(proc);
 
-    proc->anim = anim;
+	proc->anim = anim;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F6D4
-void efxopEvilEye_Loop_A(struct ProcEfx * proc)
+void efxopEvilEye_Loop_A(struct ProcEfx *proc)
 {
-    StartCRSubSpell_efxopEvilEyeOBJ(proc->anim, proc);
-    Proc_Break(proc);
-    return;
+	StartCRSubSpell_efxopEvilEyeOBJ(proc->anim, proc);
+	Proc_Break(proc);
+	return;
 }
 
 //! FE8U = 0x0806F6EC
-void efxopEvilEye_Loop_B(struct ProcEfx * proc)
+void efxopEvilEye_Loop_B(struct ProcEfx *proc)
 {
-    StartCRSubSpell_efxopEvilEyeBG(proc->anim, proc);
-    Proc_Break(proc);
-    return;
+	StartCRSubSpell_efxopEvilEyeBG(proc->anim, proc);
+	Proc_Break(proc);
+	return;
 }
 
 // clang-format off
@@ -1925,9 +1859,9 @@ u16 * CONST_DATA PalArray_EvilEye_ClassReel[] =
 // clang-format on
 
 //! FE8U = 0x0806F704
-void StartCRSubSpell_efxopEvilEyeBG(struct Anim * anim, struct ProcEfx * parent)
+void StartCRSubSpell_efxopEvilEyeBG(struct Anim *anim, struct ProcEfx *parent)
 {
-    // clang-format off
+	// clang-format off
     static const u16 frames[] =
     {
         0, 3,
@@ -1958,54 +1892,50 @@ void StartCRSubSpell_efxopEvilEyeBG(struct Anim * anim, struct ProcEfx * parent)
         25, 2,
         -1,
     };
-    // clang-format on
+	// clang-format on
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
-    struct ProcEfxBG * proc = Proc_Start(ProcScr_efxopEvilEyeBG, parent);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
+	struct ProcEfxBG *proc = Proc_Start(ProcScr_efxopEvilEyeBG, parent);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    proc->frame = 0;
-    proc->frame_config = frames;
+	proc->frame = 0;
+	proc->frame_config = frames;
 
-    proc->tsal = TsaArray_EvilEye_ClassReel;
-    proc->img = ImgArray_EvilEye_ClassReel;
-    proc->pal = PalArray_EvilEye_ClassReel;
+	proc->tsal = TsaArray_EvilEye_ClassReel;
+	proc->img = ImgArray_EvilEye_ClassReel;
+	proc->pal = PalArray_EvilEye_ClassReel;
 
-    magicFx->resetCallback();
+	magicFx->resetCallback();
 
-    SetCRSpellBgPosition(proc->anim, magicFx);
+	SetCRSpellBgPosition(proc->anim, magicFx);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F75C
-void efxopEvilEyeBG_Loop(struct ProcEfxBG * proc)
+void efxopEvilEyeBG_Loop(struct ProcEfxBG *proc)
 {
-    s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+	s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-    if (ret >= 0)
-    {
-        u16 ** tsaL = proc->tsal;
-        u16 ** img = proc->img;
-        u16 ** pal = proc->pal;
+	if (ret >= 0) {
+		u16 **tsaL = proc->tsal;
+		u16 **img = proc->img;
+		u16 **pal = proc->pal;
 
-        CRSpell_WriteBgMap(proc->anim, 1, *(tsaL + ret), 1);
-        CRSpell_RegisterBgGfx(proc->anim, *(img + ret));
-        CRSpell_RegisterBgPal(proc->anim, *(pal + ret));
-    }
-    else
-    {
-        if (ret == -1)
-        {
-            ClearCRSpellBgTmBuf(proc->anim);
-            SetDefaultColorEffects_();
-            Proc_Break(proc);
-        }
-    }
+		CRSpell_WriteBgMap(proc->anim, 1, *(tsaL + ret), 1);
+		CRSpell_RegisterBgGfx(proc->anim, *(img + ret));
+		CRSpell_RegisterBgPal(proc->anim, *(pal + ret));
+	} else {
+		if (ret == -1) {
+			ClearCRSpellBgTmBuf(proc->anim);
+			SetDefaultColorEffects_();
+			Proc_Break(proc);
+		}
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -2019,40 +1949,39 @@ struct ProcCmd CONST_DATA ProcScr_efxopEvilEyeOBJ[] =
 // clang-format on
 
 //! FE8U = 0x0806F7C0
-void StartCRSubSpell_efxopEvilEyeOBJ(struct Anim * anim, struct ProcEfx * parent)
+void StartCRSubSpell_efxopEvilEyeOBJ(struct Anim *anim, struct ProcEfx *parent)
 {
-    struct Anim * frontAnim;
+	struct Anim *frontAnim;
 
-    struct AnimMagicFxBuffer * unused = GetMagicEffectBufferFor(anim);
-    struct ProcEfxOBJ * proc = Proc_Start(ProcScr_efxopEvilEyeOBJ, parent);
+	struct AnimMagicFxBuffer *unused = GetMagicEffectBufferFor(anim);
+	struct ProcEfxOBJ *proc = Proc_Start(ProcScr_efxopEvilEyeOBJ, parent);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    frontAnim = CRSpellCreateFrontAnim(anim, 1, AnimScr_086C978C, AnimScr_086C95C0);
-    proc->anim2 = frontAnim;
+	frontAnim = CRSpellCreateFrontAnim(anim, 1, AnimScr_086C978C, AnimScr_086C95C0);
+	proc->anim2 = frontAnim;
 
-    frontAnim->xPosition -= 56;
-    frontAnim->yPosition += 24;
+	frontAnim->xPosition -= 56;
+	frontAnim->yPosition += 24;
 
-    CRSpell_RegisterObjPal(proc->anim, Pal_086C93FC);
-    CRSpell_RegisterObjGfx(proc->anim, Img_086C90A4);
+	CRSpell_RegisterObjPal(proc->anim, Pal_086C93FC);
+	CRSpell_RegisterObjGfx(proc->anim, Img_086C90A4);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F820
-void efxopEvilEyeOBJ_Loop(struct ProcEfxOBJ * proc)
+void efxopEvilEyeOBJ_Loop(struct ProcEfxOBJ *proc)
 {
-    proc->timer++;
+	proc->timer++;
 
-    if (proc->timer > 60)
-    {
-        AnimDelete(proc->anim2);
-        Proc_Break(proc);
-    }
+	if (proc->timer > 60) {
+		AnimDelete(proc->anim2);
+		Proc_Break(proc);
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -2073,30 +2002,30 @@ struct ProcCmd CONST_DATA ProcScr_efxopStone[] =
 // clang-format on
 
 //! FE8U = 0x0806F844
-void StartClassReelSpellAnimStone(struct Anim * anim)
+void StartClassReelSpellAnimStone(struct Anim *anim)
 {
-    struct ProcEfx * proc = Proc_Start(ProcScr_efxopStone, PROC_TREE_3);
-    SetActiveClassReelSpell(proc);
+	struct ProcEfx *proc = Proc_Start(ProcScr_efxopStone, PROC_TREE_3);
+	SetActiveClassReelSpell(proc);
 
-    proc->anim = anim;
+	proc->anim = anim;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F864
-void efxopStone_Loop_A(struct ProcEfx * proc)
+void efxopStone_Loop_A(struct ProcEfx *proc)
 {
-    StartCRSubSpell_efxopStoneOBJ(proc->anim, proc);
-    Proc_Break(proc);
-    return;
+	StartCRSubSpell_efxopStoneOBJ(proc->anim, proc);
+	Proc_Break(proc);
+	return;
 }
 
 //! FE8U = 0x0806F87C
-void efxopStone_Loop_B(struct ProcEfx * proc)
+void efxopStone_Loop_B(struct ProcEfx *proc)
 {
-    StartCRSubSpell_efxopStoneBG(proc->anim, proc);
-    Proc_Break(proc);
-    return;
+	StartCRSubSpell_efxopStoneBG(proc->anim, proc);
+	Proc_Break(proc);
+	return;
 }
 
 // clang-format off
@@ -2156,9 +2085,9 @@ u16 * CONST_DATA TsaArray_Stone_ClassReel[] =
 // clang-format on
 
 //! FE8U = 0x0806F894
-void StartCRSubSpell_efxopStoneBG(struct Anim * anim, struct ProcEfx * parent)
+void StartCRSubSpell_efxopStoneBG(struct Anim *anim, struct ProcEfx *parent)
 {
-    // clang-format off
+	// clang-format off
     static const u16 frames[] =
     {
         0, 4,
@@ -2182,63 +2111,57 @@ void StartCRSubSpell_efxopStoneBG(struct Anim * anim, struct ProcEfx * parent)
         18, 4,
         -1,
     };
-    // clang-format on
+	// clang-format on
 
-    struct AnimMagicFxBuffer * magicFx = GetMagicEffectBufferFor(anim);
-    struct ProcEfxBG * proc = Proc_Start(ProcScr_efxopStoneBG, parent);
+	struct AnimMagicFxBuffer *magicFx = GetMagicEffectBufferFor(anim);
+	struct ProcEfxBG *proc = Proc_Start(ProcScr_efxopStoneBG, parent);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    proc->frame = 0;
-    proc->frame_config = frames;
+	proc->frame = 0;
+	proc->frame_config = frames;
 
-    proc->tsal = TsaArray_Stone_ClassReel;
-    proc->img = ImgArray_Stone_ClassReel;
+	proc->tsal = TsaArray_Stone_ClassReel;
+	proc->img = ImgArray_Stone_ClassReel;
 
-    CRSpell_RegisterBgPal(anim, Pal_StoneBg);
+	CRSpell_RegisterBgPal(anim, Pal_StoneBg);
 
-    magicFx->resetCallback();
+	magicFx->resetCallback();
 
-    SetCRSpellBgPosition(proc->anim, magicFx);
+	SetCRSpellBgPosition(proc->anim, magicFx);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F8F0
-void efxopStoneBG_Loop(struct ProcEfxBG * proc)
+void efxopStoneBG_Loop(struct ProcEfxBG *proc)
 {
-    s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+	s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-    if (ret >= 0)
-    {
-        u16 ** tsaL = proc->tsal;
-        u16 ** img = proc->img;
+	if (ret >= 0) {
+		u16 **tsaL = proc->tsal;
+		u16 **img = proc->img;
 
-        CRSpell_WriteBgMap(proc->anim, 1, *(tsaL + ret), 1);
-        CRSpell_RegisterBgGfx(proc->anim, *(img + ret));
+		CRSpell_WriteBgMap(proc->anim, 1, *(tsaL + ret), 1);
+		CRSpell_RegisterBgGfx(proc->anim, *(img + ret));
 
-        if (ret == 17)
-        {
-            SpellFx_RegisterBgPal(Pal_StoneBg_086C792C, PLTT_SIZE_4BPP);
-        }
+		if (ret == 17) {
+			SpellFx_RegisterBgPal(Pal_StoneBg_086C792C, PLTT_SIZE_4BPP);
+		}
 
-        if (ret == 18)
-        {
-            SpellFx_RegisterBgPal(Pal_StoneBg_086C794C, PLTT_SIZE_4BPP);
-        }
-    }
-    else
-    {
-        if (ret == -1)
-        {
-            ClearCRSpellBgTmBuf(proc->anim);
-            SetDefaultColorEffects_();
-            Proc_Break(proc);
-        }
-    }
+		if (ret == 18) {
+			SpellFx_RegisterBgPal(Pal_StoneBg_086C794C, PLTT_SIZE_4BPP);
+		}
+	} else {
+		if (ret == -1) {
+			ClearCRSpellBgTmBuf(proc->anim);
+			SetDefaultColorEffects_();
+			Proc_Break(proc);
+		}
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -2252,45 +2175,44 @@ struct ProcCmd CONST_DATA ProcScr_efxopStoneOBJ[] =
 // clang-format on
 
 //! FE8U = 0x0806F968
-void StartCRSubSpell_efxopStoneOBJ(struct Anim * anim, struct ProcEfx * parent)
+void StartCRSubSpell_efxopStoneOBJ(struct Anim *anim, struct ProcEfx *parent)
 {
-    struct Anim * frontAnim;
-    u32 * scr;
+	struct Anim *frontAnim;
+	u32 *scr;
 
-    struct AnimMagicFxBuffer * unused = GetMagicEffectBufferFor(anim);
-    struct ProcEfxOBJ * proc = Proc_Start(ProcScr_efxopStoneOBJ, parent);
+	struct AnimMagicFxBuffer *unused = GetMagicEffectBufferFor(anim);
+	struct ProcEfxOBJ *proc = Proc_Start(ProcScr_efxopStoneOBJ, parent);
 
-    proc->anim = anim;
-    proc->timer = 0;
+	proc->anim = anim;
+	proc->timer = 0;
 
-    scr = AnimScr_EfxStone;
-    frontAnim = CRSpellCreateFrontAnim(anim, 1, scr, scr);
-    proc->anim2 = frontAnim;
+	scr = AnimScr_EfxStone;
+	frontAnim = CRSpellCreateFrontAnim(anim, 1, scr, scr);
+	proc->anim2 = frontAnim;
 
-    frontAnim->xPosition -= 56;
-    frontAnim->yPosition += 12;
-    frontAnim->timer = 0;
-    frontAnim->drawLayerPriority = 20;
-    frontAnim->oam2Base |= OAM2_LAYER(3);
+	frontAnim->xPosition -= 56;
+	frontAnim->yPosition += 12;
+	frontAnim->timer = 0;
+	frontAnim->drawLayerPriority = 20;
+	frontAnim->oam2Base |= OAM2_LAYER(3);
 
-    AnimSort();
+	AnimSort();
 
-    CRSpell_RegisterObjPal(proc->anim, Pal_StoneSprites);
-    CRSpell_RegisterObjGfx(proc->anim, Img_StoneSprites);
+	CRSpell_RegisterObjPal(proc->anim, Pal_StoneSprites);
+	CRSpell_RegisterObjGfx(proc->anim, Img_StoneSprites);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0806F9D8
-void efxopStoneOBJ_Loop(struct ProcEfxOBJ * proc)
+void efxopStoneOBJ_Loop(struct ProcEfxOBJ *proc)
 {
-    proc->timer++;
+	proc->timer++;
 
-    if (proc->timer > 200)
-    {
-        AnimDelete(proc->anim2);
-        Proc_Break(proc);
-    }
+	if (proc->timer > 200) {
+		AnimDelete(proc->anim2);
+		Proc_Break(proc);
+	}
 
-    return;
+	return;
 }

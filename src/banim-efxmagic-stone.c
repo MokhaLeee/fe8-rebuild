@@ -19,65 +19,56 @@ struct ProcCmd CONST_DATA ProcScr_efxStone[] =
 // clang-format on
 
 //! FE8U = 0x080674D4
-void StartSpellAnimStone(struct Anim * anim)
+void StartSpellAnimStone(struct Anim *anim)
 {
-    struct ProcEfx * proc;
+	struct ProcEfx *proc;
 
-    SpellFx_Begin();
-    NewEfxSpellCast();
-    SpellFx_ClearBG1Position();
+	SpellFx_Begin();
+	NewEfxSpellCast();
+	SpellFx_ClearBG1Position();
 
-    proc = Proc_Start(ProcScr_efxStone, PROC_TREE_3);
-    proc->anim = anim;
-    proc->timer = 0;
-    proc->hitted = CheckRoundMiss(GetAnimRoundTypeAnotherSide(anim));
+	proc = Proc_Start(ProcScr_efxStone, PROC_TREE_3);
+	proc->anim = anim;
+	proc->timer = 0;
+	proc->hitted = CheckRoundMiss(GetAnimRoundTypeAnotherSide(anim));
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08067510
-void efxStone_Loop_Main(struct ProcEfx * proc)
+void efxStone_Loop_Main(struct ProcEfx *proc)
 {
-    struct Anim * anim = GetAnimAnotherSide(proc->anim);
-    int duration = EfxGetCamMovDuration();
+	struct Anim *anim = GetAnimAnotherSide(proc->anim);
+	int duration = EfxGetCamMovDuration();
 
-    proc->timer++;
+	proc->timer++;
 
-    if (proc->timer == 1)
-    {
-        NewEfxFarAttackWithDistance(proc->anim, -1);
-    }
-    else if (proc->timer == duration + 10)
-    {
-        PlaySFX(0x3b8, 0x100, anim->xPosition, 1);
-        StartSubSpell_efxStoneOBJ(anim, 200);
-    }
-    else if (proc->timer == duration + 72)
-    {
-        anim->state3 |= (ANIM_BIT3_TAKE_BACK_ENABLE | ANIM_BIT3_HIT_EFFECT_APPLIED);
+	if (proc->timer == 1) {
+		NewEfxFarAttackWithDistance(proc->anim, -1);
+	} else if (proc->timer == duration + 10) {
+		PlaySFX(0x3b8, 0x100, anim->xPosition, 1);
+		StartSubSpell_efxStoneOBJ(anim, 200);
+	} else if (proc->timer == duration + 72) {
+		anim->state3 |= (ANIM_BIT3_TAKE_BACK_ENABLE | ANIM_BIT3_HIT_EFFECT_APPLIED);
 
-        if (!proc->hitted)
-        {
-            PlaySFX(0x3B9, 0x100, anim->xPosition, 1);
+		if (!proc->hitted) {
+			PlaySFX(0x3B9, 0x100, anim->xPosition, 1);
 
-            StartSubSpell_efxStoneBG(anim);
+			StartSubSpell_efxStoneBG(anim);
 
-            if (GetUnitEfxDebuff(anim) == UNIT_STATUS_NONE)
-            {
-                SetUnitEfxDebuff(anim, UNIT_STATUS_PETRIFY);
-            }
-        }
+			if (GetUnitEfxDebuff(anim) == UNIT_STATUS_NONE) {
+				SetUnitEfxDebuff(anim, UNIT_STATUS_PETRIFY);
+			}
+		}
 
-        StartBattleAnimHitEffectsDefault(anim, proc->hitted);
-    }
-    else if (proc->timer == duration + 236)
-    {
-        SpellFx_Finish();
-        RegisterEfxSpellCastEnd();
-        Proc_Break(proc);
-    }
+		StartBattleAnimHitEffectsDefault(anim, proc->hitted);
+	} else if (proc->timer == duration + 236) {
+		SpellFx_Finish();
+		RegisterEfxSpellCastEnd();
+		Proc_Break(proc);
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -138,9 +129,9 @@ u16 * CONST_DATA TsaArray_StoneBg[] =
 // clang-format on
 
 //! FE8U = 0x080675D4
-void StartSubSpell_efxStoneBG(struct Anim * anim)
+void StartSubSpell_efxStoneBG(struct Anim *anim)
 {
-    // clang-format off
+	// clang-format off
     static const u16 frames[] =
     {
         0, 4,
@@ -164,77 +155,67 @@ void StartSubSpell_efxStoneBG(struct Anim * anim)
         18, 4,
         -1,
     };
-    // clang-format on
+	// clang-format on
 
-    struct ProcEfxBG * proc;
+	struct ProcEfxBG *proc;
 
-    gEfxBgSemaphore++;
+	gEfxBgSemaphore++;
 
-    proc = Proc_Start(ProcScr_efxStoneBG, PROC_TREE_3);
-    proc->anim = GetAnimAnotherSide(anim);
-    proc->timer = 0;
-    proc->frame = 0;
-    proc->frame_config = frames;
+	proc = Proc_Start(ProcScr_efxStoneBG, PROC_TREE_3);
+	proc->anim = GetAnimAnotherSide(anim);
+	proc->timer = 0;
+	proc->frame = 0;
+	proc->frame_config = frames;
 
-    proc->tsal = TsaArray_StoneBg;
-    proc->tsar = TsaArray_StoneBg;
+	proc->tsal = TsaArray_StoneBg;
+	proc->tsar = TsaArray_StoneBg;
 
-    proc->img = ImgArray_StoneBg;
+	proc->img = ImgArray_StoneBg;
 
-    SpellFx_RegisterBgPal(Pal_StoneBg, PLTT_SIZE_4BPP);
-    SpellFx_SetSomeColorEffect();
+	SpellFx_RegisterBgPal(Pal_StoneBg, PLTT_SIZE_4BPP);
+	SpellFx_SetSomeColorEffect();
 
-    if (gEkrDistanceType != 0)
-    {
-        if (GetAnimPosition(proc->anim) == 0)
-        {
-            BG_SetPosition(BG_1, 232, 0);
-        }
-        else
-        {
-            BG_SetPosition(BG_1, 24, 0);
-        }
-    }
+	if (gEkrDistanceType != 0) {
+		if (GetAnimPosition(proc->anim) == 0) {
+			BG_SetPosition(BG_1, 232, 0);
+		} else {
+			BG_SetPosition(BG_1, 24, 0);
+		}
+	}
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08067660
-void efxStoneBG_Loop(struct ProcEfxBG * proc)
+void efxStoneBG_Loop(struct ProcEfxBG *proc)
 {
-    int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+	int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-    if (ret >= 0)
-    {
-        u16 ** tsaL = proc->tsal;
-        u16 ** tsaR = proc->tsar;
-        u16 ** img = proc->img;
+	if (ret >= 0) {
+		u16 **tsaL = proc->tsal;
+		u16 **tsaR = proc->tsar;
+		u16 **img = proc->img;
 
-        SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
-        SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
+		SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
+		SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
 
-        if (ret == 17)
-        {
-            SpellFx_RegisterBgPal(Pal_StoneBg_086C792C, PLTT_SIZE_4BPP);
-        }
+		if (ret == 17) {
+			SpellFx_RegisterBgPal(Pal_StoneBg_086C792C, PLTT_SIZE_4BPP);
+		}
 
-        if (ret == 18)
-        {
-            SpellFx_RegisterBgPal(Pal_StoneBg_086C794C, PLTT_SIZE_4BPP);
-        }
-    }
-    else
-    {
-        if (ret == -1)
-        {
-            SpellFx_ClearBG1();
-            gEfxBgSemaphore--;
-            SetDefaultColorEffects_();
-            Proc_Break(proc);
-        }
-    }
+		if (ret == 18) {
+			SpellFx_RegisterBgPal(Pal_StoneBg_086C794C, PLTT_SIZE_4BPP);
+		}
+	} else {
+		if (ret == -1) {
+			SpellFx_ClearBG1();
+			gEfxBgSemaphore--;
+			SetDefaultColorEffects_();
+			Proc_Break(proc);
+		}
+	}
 
-    return;
+	return;
 }
 
 // clang-format off
@@ -249,46 +230,45 @@ struct ProcCmd CONST_DATA ProcScr_efxStoneOBJ[] =
 // clang-format on
 
 //! FE8U = 0x080676E4
-void StartSubSpell_efxStoneOBJ(struct Anim * anim, int terminator)
+void StartSubSpell_efxStoneOBJ(struct Anim *anim, int terminator)
 {
-    struct ProcEfxOBJ * proc;
-    struct Anim * frontAnim;
-    u32 * scr;
+	struct ProcEfxOBJ *proc;
+	struct Anim *frontAnim;
+	u32 *scr;
 
-    gEfxBgSemaphore++;
+	gEfxBgSemaphore++;
 
-    proc = Proc_Start(ProcScr_efxStoneOBJ, PROC_TREE_3);
-    proc->anim = GetAnimAnotherSide(anim);
-    proc->timer = 0;
-    proc->terminator = terminator;
+	proc = Proc_Start(ProcScr_efxStoneOBJ, PROC_TREE_3);
+	proc->anim = GetAnimAnotherSide(anim);
+	proc->timer = 0;
+	proc->terminator = terminator;
 
-    scr = AnimScr_EfxStone;
-    frontAnim = EfxCreateFrontAnim(anim, scr, scr, scr, scr);
-    proc->anim2 = frontAnim;
+	scr = AnimScr_EfxStone;
+	frontAnim = EfxCreateFrontAnim(anim, scr, scr, scr, scr);
+	proc->anim2 = frontAnim;
 
-    frontAnim->yPosition += 12;
-    frontAnim->timer = 0;
-    frontAnim->drawLayerPriority = 20;
+	frontAnim->yPosition += 12;
+	frontAnim->timer = 0;
+	frontAnim->drawLayerPriority = 20;
 
-    AnimSort();
+	AnimSort();
 
-    SpellFx_RegisterObjPal(Pal_StoneSprites, PLTT_SIZE_4BPP);
-    SpellFx_RegisterObjGfx(Img_StoneSprites, 32 * 4 * CHR_SIZE);
+	SpellFx_RegisterObjPal(Pal_StoneSprites, PLTT_SIZE_4BPP);
+	SpellFx_RegisterObjGfx(Img_StoneSprites, 32 * 4 * CHR_SIZE);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08067764
-void efxStoneOBJ_Loop(struct ProcEfxOBJ * proc)
+void efxStoneOBJ_Loop(struct ProcEfxOBJ *proc)
 {
-    proc->timer++;
+	proc->timer++;
 
-    if (proc->timer == proc->terminator)
-    {
-        gEfxBgSemaphore--;
-        AnimDelete(proc->anim2);
-        Proc_Break(proc);
-    }
+	if (proc->timer == proc->terminator) {
+		gEfxBgSemaphore--;
+		AnimDelete(proc->anim2);
+		Proc_Break(proc);
+	}
 
-    return;
+	return;
 }
