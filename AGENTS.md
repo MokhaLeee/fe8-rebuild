@@ -89,7 +89,10 @@ Co-Authored-By: DeepSeek-V4.1-Flash <noreply@deepseek.com>
   `git commit`、`git commit --amend`、`git push`、`git reset`、`git rebase`、
   `git revert`、`git cherry-pick`、`git tag`、`git stash drop/pop`。
 - 用户说「提交 / commit」才算许可；询问、建议、沉默、说「继续做功能」都**不算**许可。
-- 需要提交时，先列出准备提交的文件和提交信息，得到明确同意后再执行。
+- **提交前必须先停一次**：输出「待提交文件清单 + `git diff --stat` + 完整提交信息」，
+  然后结束本轮回复，等用户下一条明确回复。不允许在同一条回复里既列清单又执行。
+- 即使上一条用户消息里出现过「提交 / commit / 做吧」等字样，只要不是对我列出的
+  清单的确认，就**不算**授权；宁可再问一次。
 - 只读的 `git status` / `git diff` / `git log` / `git show` / `git tag -l` 随时可用。
 - 提交信息用英文，正文说清「为什么」而不是「改了哪些文件」。
 
@@ -142,6 +145,13 @@ Co-Authored-By: DeepSeek-V4.1-Flash <noreply@deepseek.com>
   改编码会导致编译失败或乱码。
 - 不要删 `tools/agbcc/`（M6 之前构建依赖它）。
 - 报告制度（日报 / 周报 / 月报）**尚未启用**；启用与否由用户决定，代理不得自行新建。
+
+**`.clang-format` 的目录覆盖坑**：
+
+- `include/.clang-format` 是上游 decomp 自带的（Allman + 4 空格 + 不缩进 case），
+  与 §0.3 的内核风格直接冲突，且它会**覆盖仓库根目录的 `.clang-format`**。
+- 格式化 `include/` 下任何文件前必须先处理它（M2 清理清单里已列）。
+- `tools/textencode/.clang-format` 只作用于该 C++ 工具，无冲突，保留。
 
 ## 6. 汇报与收尾
 

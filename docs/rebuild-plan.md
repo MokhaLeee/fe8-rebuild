@@ -149,30 +149,42 @@ M0 基线固化
 
 **风险**：仓库只有 1 个提交，`git clean`/批量删除不可恢复。**tag 必须在任何删除之前完成。**
 
-### M1 宪法（1 天）
+### M1 宪法（1 天）✅ 已完成（2026-11-17）
 
 从 `~/fe6-rebuild/AGENTS.md` 移植，逐条标注「照搬 / 改写 / 暂不适用」：
 
-| 条款 | 处理 |
-|---|---|
-| 思考与表达（中文） | 照搬 |
-| 提交与版本控制纪律 | 照搬（未经许可不 commit/push/reset） |
-| 改动纪律、破坏性操作先确认 | 照搬 |
-| 汇报与收尾 | 照搬 |
-| 代码风格 Linux kernel style | 照搬，并补 FE8 的具体细则 |
-| 除法/取模走 klib | **改写**：M6 起生效（M6 前 agbcc 自带 `__udivsi3`，不冲突） |
-| 报告对齐审查（日报/周报/月报） | 可选：照搬 `docs/reports/` + `tools/reports/` |
-| 构建入口 | 改写：`make all` → `fe8re.gba` / `.elf` / `.sym` / `.map` |
-| 测试入口 | 先占位，M5 落地后回填 |
+| 条款 | 处理 | 状态 |
+|---|---|---|
+| 思考与表达（中文） | 照搬 | ✅ |
+| 提交与版本控制纪律 | 照搬，并加硬「提交前必须先停一次、列清单等确认」 | ✅ |
+| 改动纪律、破坏性操作先确认 | 照搬（补 `git clean` / `make clean_all` 禁止项） | ✅ |
+| 汇报与收尾 | 照搬 | ✅ |
+| 代码风格 Linux kernel style | 照搬，并补 FE8 的具体细则 | ✅ |
+| 除法/取模走 klib | **改写**：M6 起生效（M6 前 agbcc 自带 `__udivsi3`，不冲突） | ✅ |
+| 报告对齐审查（日报/周报/月报） | 暂不启用，明确「代理不得自行新建」 | ✅ |
+| 构建入口 | 改写：`make all` → `fe8re.gba` / `.elf` / `.sym` / `.map` | ✅ |
+| 测试入口 | 先占位，M5 落地后回填 | ✅ |
 
 配套落地：
 
-- `include/configs/configs.h` + `include/configs/configs/*.h` 配置骨架（`CONFIG_TEST_MENU`、`CONFIG_DEBUG_MENU`）
-- `include/hacks/klib.h` 接口（实现留到 M6，但接口先定，避免后面改调用点）
-- `.clang-format`、`.editorconfig` 入库
-- `docs/reports/` 骨架（如启用报告制度）
+| 文件 | 内容 | 状态 |
+|---|---|---|
+| `include/hacks/klib.h` | `k_udiv` / `k_umod` / `k_udiv10` / `k_u64div` / `k_u64mod` / `k_sdiv` / `perc_of` + 位操作内联，**只有接口** | ✅ |
+| `include/configs/configs.h` | `CONFIG_USE_DEBUG` / `CONFIG_TEST_MENU` / `CONFIG_DEBUG_MENU` / 打印开关，默认全关 | ✅ |
+| `include/configs/configs/config-debug.h` | debug 构建的覆盖层 | ✅ |
+| `.clang-format` | 内核风格（Tab 8、`BreakBeforeBraces: Linux`、`ColumnLimit: 0`、`IndentCaseLabels: false`、不排 include） | ✅ |
+| `.editorconfig` | Tab 8 / UTF-8 / LF | ✅ |
+| `docs/reports/` | 暂不建 | ⬜ 待定 |
 
-**验收**：`make check` 仍通过；`AGENTS.md` 对后续会话生效。
+**验收**：`make -j16` + `sha1sum -c checksum.sha1` → `OK`（已跑）。
+新增的 4 个头文件/配置**未被任何代码包含**，构建行为零变化。
+
+**M1 发现的两个坑**：
+
+1. **`include/.clang-format` 会覆盖根目录配置**（上游自带 Allman + 4 空格 + 不缩进 case）。
+   M3 格式化 `include/` 之前必须先删它，否则 batch 6 会得到与宪法相反的风格。
+2. **clang-format 10 不认若干新选项**（`IndentCaseBlocks`、`InsertBraces`、
+   `RemoveBracesLLVM`），写进配置会直接报错退出，不是静默忽略。已移除。
 
 ### M2 瘦身清理（1–2 天）
 
@@ -186,6 +198,7 @@ M0 基线固化
 | `checksum.sha1`、`asmdiff.sh` | 改用 `make check` 内部比对 |
 | `buddy.yml`、`CONTRIBUTING.md`、`graphic_extract.yml`（839 KB） | 上游协作/提取配置 |
 | `Makefile` 的 `compare`/`clean_all`/`tag` 目标 | 改成 `check`，去掉 `git clean -dfx` 这类危险目标 |
+| `include/.clang-format` | 与根目录 `.clang-format` 冲突，会劫持 `include/` 下的格式化（M1 发现） |
 
 **B. 迁移/归档**
 
