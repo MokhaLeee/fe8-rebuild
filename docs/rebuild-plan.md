@@ -286,17 +286,39 @@ M0 基线固化
 
 **速度**：纯人工阶段每轮 5–18 个；工具链成型后每轮 60–121 个。
 
-### M4a 目录重组：只移动，不改内容（2–3 天）
+### M4a 目录重组：只移动，不改内容（2–3 天）✅ 已完成（2026-11-17）
 
-| # | 任务 | 说明 |
-|---|---|---|
-| 4a.1 | 定目录树 | 见 §2；`src/` 按 FE8 模块域分 |
-| 4a.2 | `tools/refactor/move_src.py` | `git mv` + 自动改写 `ldscript.txt` 对象路径 + `#include` 路径 + Makefile 通配 |
-| 4a.3 | 分批移动 | 先逻辑代码 → 再 `data/` → 再 `include/` |
-| 4a.4 | `lds/` 迁移 | `ldscript.txt` → `lds/gba_cart.lds`（内容先原样保留） |
+| # | 任务 | 说明 | 状态 |
+|---|---|---|---|
+| 4a.1 | 定目录树 | 见 §2；`src/` 按 FE8 模块域分 | ✅ |
+| 4a.2 | `tools/refactor/{gen_mapping,move_src}.py` | 映射表 + `git mv` + 四个链接脚本路径改写 | ✅ |
+| 4a.3 | 分批移动 | 8 批，每批一次 `make check` | ✅ |
+| 4a.4 | `lds/` 迁移 | `ldscript.txt` → `lds/gba_cart.lds` | ⬜ 留到 M4b |
 
-**核心约束**：`ldscript.txt` 里每个对象的**出现顺序不能变**（顺序即地址）。只改路径、不改顺序，
+**核心约束**：四个链接脚本里每个对象的**出现顺序不能变**（顺序即地址）。只改路径、不改顺序，
 sha1 才会不变。
+
+#### M4a 实际结果
+
+| 项 | 结果 |
+|---|---|
+| 移动文件 | **359 / 359**，`src/` 根目录残留 `.c` = 0 |
+| 目录 | `Battle` 92、`Core/{Map 46,WorldMap 28,Events 22,Sio 20,Prep 17,Unit 13,Save 10,Ending 4}`、`UI` 38、`MapAnim` 20、`Boot` 19、`Common` 13、`Data` 13、`Debug` 3、`Core` 1 |
+| 链接脚本 | 四个（`ldscript.txt` / `linker_script_sound.txt` / `linker_script_banim.txt` / `sym_iwram.txt`）引用 363 个对象，缺失 0、未引用 0 |
+| 门禁 | 8 批全部 `make check` OK；`make clean` 后全量重建仍 OK |
+
+**四个必须知道的坑**（全部已修，写进 AGENTS.md §5.1）：
+
+| # | 坑 | 症状 | 处理 |
+|---|---|---|---|
+| 1 | 忘了 `sym_iwram.txt` 也是链接脚本 | 链接报 `cannot find src/rng.o` |  路径改写范围扩到四个脚本 |
+| 2 | Makefile 的**逐文件编译选项**按旧路径写 | `agb_sram.o` +0x18、`m4a.o` +0x10，后续整体平移 | 覆盖规则的路径跟着批次同步改 |
+| 3 | 旧路径 `.o` 残留被一起链接 | `multiple definition` | 清理「旁边没有同名 `.c` 的 `.o`/`.s`」，本次 626 个 |
+| 4 | `find src -name '*.s' -delete` 误删源码 | `rom_header.s` 等 4 个汇编源消失 | 清理脚本加白名单 |
+
+> 定位第 2 个坑的方法值得记：用 `git archive HEAD` 把已提交版本导出到 `/tmp/base`
+> 单独构建，diff 两张 `fireemblem8.map`，直接看出哪两个对象的 `.text` 尺寸不对。
+
 
 **验收**：`make check` 一致；`git ls-files | wc -l` 不变；`git log --follow` 可追溯。
 

@@ -1,4 +1,4 @@
-. = ALIGN(4); src/rng.o(.bss);
+. = ALIGN(4); src/Boot/rng.o(.bss);
 
 /* hardware.c*/
 . = 0x00000C; gKeyComboResetEN = .;
@@ -13,9 +13,9 @@
 . = 0x000020; sOamHi = .;
 . = 0x000030; sOamLo = .;
 . = 0x000040;
-. = ALIGN(4); src/soundwrapper.o(.bss);
-. = ALIGN(4); src/scene.o(.bss);
-. = 0x000108; src/ap.o(.bss); /* sAPArray = .; */
+. = ALIGN(4); src/Boot/soundwrapper.o(.bss);
+. = ALIGN(4); src/Boot/scene.o(.bss);
+. = 0x000108; src/Boot/ap.o(.bss); /* sAPArray = .; */
 . = 0x000428; gUnknown_03000428 = .;
 . = 0x000430; gUnknown_03000430 = .;
 . = 0x000434; gLoadedUnitBuffer = .;
@@ -26,21 +26,21 @@
 . = 0x000570; gEventActiveQueue = .;
 . = 0x0005B0; gGenericProc = .;
 . = 0x0005D0;
-. = ALIGN(4); src/popup.o(.bss);
-. = ALIGN(4); src/eventscr3.o(.bss);
+. = ALIGN(4); src/UI/popup.o(.bss);
+. = ALIGN(4); src/Core/Events/eventscr3.o(.bss);
 . = 0x000600; gUnknown_03000600 = .;
 . = 0x000700;
-. = ALIGN(4); src/eventfx-fade.o(.bss);
-. = ALIGN(4); src/bmlib.o(.bss);
-. = ALIGN(4); src/bmmap.o(.bss);
+. = ALIGN(4); src/Core/Events/eventfx-fade.o(.bss);
+. = ALIGN(4); src/Common/bmlib.o(.bss);
+. = ALIGN(4); src/Core/Map/bmmap.o(.bss);
 . = 0x001780; gDebugChapterModeIndex = .;
 . = 0x001788; gUnknown_03001788 = .;
 . = 0x0017A0; gDungeonState = .;
 . = 0x0017AC; gUnknown_030017AC = .;
 . = 0x0017C8;
-. = ALIGN(4); src/cp_script.o(.bss);
-. = ALIGN(4); src/cp_battle.o(.bss);
-. = ALIGN(4); src/sio_core.o(.bss);
+. = ALIGN(4); src/Battle/cp_script.o(.bss);
+. = ALIGN(4); src/Battle/cp_battle.o(.bss);
+. = ALIGN(4); src/Core/Sio/sio_core.o(.bss);
 . = ALIGN(4); gCurrentKeyInSeqIndex = .;
 . = 0x00180C; gTargetKeyInSeqIndex = .;
 . = 0x001810; gUnknown_03001810 = .;
@@ -54,10 +54,10 @@
 . = 0x001860; gUnknown_03001860 = .;
 . = 0x001864; gUnknown_03001864 = .;
 . = 0x001870;
-. = ALIGN(4); src/uimenu.o(.bss);
+. = ALIGN(4); src/UI/uimenu.o(.bss);
 . = 0x0018F0; gUnknown_030018F0 = .;
 . = 0x0018F8;
-. = ALIGN(4); src/mu.o(.bss);
+. = ALIGN(4); src/Core/Map/mu.o(.bss);
 . = 0x001A30; gEventREDAs = .;
 . = 0x001C34; gUnknown_03001C34 = .;
 . = 0x001C35; gUnknown_03001C35 = .;
@@ -82,7 +82,7 @@
 . = ALIGN(4); sound/music_player_table.o(.bss);
 
 . = 0x002A68;
-. = ALIGN(4); src/agb_sram.o(.bss);
+. = ALIGN(4); src/Boot/agb_sram.o(.bss);
 . = ALIGN(4); *libc.a:syscalls.o(.bss);
 . = ALIGN(4); *libgcc.a:dp-bit.o(.bss);
 . = ALIGN(4); *libgcc.a:fp-bit.o(.bss);
@@ -134,8 +134,8 @@
 . = 0x004FAC; gBanimDebugCurrentIndex = .;
 . = 0x004FB0; gEkrYQuakeOff = .;
 . = 0x004FC0;
-. = ALIGN(4); src/mapanim_debug.o(.bss);
-. = ALIGN(4); src/mapanim_spellassocfx.o(.bss);
+. = ALIGN(4); src/MapAnim/mapanim_debug.o(.bss);
+. = ALIGN(4); src/MapAnim/mapanim_spellassocfx.o(.bss);
 . = 0x005250; gPermanentFlagBits = .;
 . = 0x005270; gChapterFlagBits = .;
 . = 0x005280; gGMData = .;
@@ -165,7 +165,7 @@
 . = 0x006720; gMPlayInfo_SE7_EVT = .;
 . = 0x006760; gMPlayInfo_SE2_SYS2 = .;
 
-/* src/agb_sram.o(COMMON); */
+/* src/Boot/agb_sram.o(COMMON); */
 . = 0x0067A0; ReadSramFast = .;
 . = 0x0067A4; VerifySramFast = .;
 

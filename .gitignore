@@ -63,6 +63,7 @@ Temporary Items
 objects.lst
 *.o
 src/*.s
+src/**/*.s
 *.dump
 tools/agbcc
 *.exe
@@ -932,6 +933,7 @@ sound/songs/midi/*.s
 
 # Generated source files
 src/msg_data.c
+src/**/msg_data.c
 include/msg_data.h
 
 # Source files written in ASM

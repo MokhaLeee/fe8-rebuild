@@ -53,7 +53,7 @@ else
 endif
 
 CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -Werror -O2 -fhex-asm -ffix-debug-line -g
-CPPFLAGS := -I tools/agbcc/include -iquote include -iquote . -nostdinc -undef
+CPPFLAGS := -I tools/agbcc/include -iquote include -iquote . -iquote src -nostdinc -undef
 ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I include
 
 #### Files ####
@@ -71,8 +71,8 @@ ELF          := $(ROM:.gba=.elf)
 MAP          := $(ROM:.gba=.map)
 LDSCRIPT     := ldscript.txt
 SYM_FILES    := sym_iwram.txt
-CFILES_GENERATED := $(C_SUBDIR)/msg_data.c
-CFILES       := $(wildcard $(C_SUBDIR)/*.c)
+CFILES_GENERATED := $(C_SUBDIR)/Common/msg_data.c
+CFILES       := $(shell find $(C_SUBDIR) -name '*.c')
 ifeq (,$(findstring $(CFILES_GENERATED),$(CFILES)))
 CFILES       += $(CFILES_GENERATED)
 endif
@@ -94,12 +94,14 @@ DEPS_DIR     := .dep
 AUTO_GEN_TARGETS :=
 
 # Use the older compiler to build library code
-src/agb_sram.o: CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -Werror -O1 -ffix-debug-line -g
-src/m4a.o: CC1 := $(CC1_OLD)
+# 注意：以下按对象路径的覆盖必须跟着 M4a 的目录移动同步更新，
+# 否则不会命中，代码生成会与基线不同（实测 agb_sram/m4a 各差若干字节）。
+src/Boot/agb_sram.o: CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -Werror -O1 -ffix-debug-line -g
+src/Boot/m4a.o: CC1 := $(CC1_OLD)
 
 # TODO: find a more elegant solution to the inlining issue
-src/bmitem.o: CC1FLAGS += -Wno-error
-src/menu_def.o: CC1FLAGS += -Wno-error
+src/Core/Map/bmitem.o: CC1FLAGS += -Wno-error
+src/UI/menu_def.o: CC1FLAGS += -Wno-error
 
 #### Main Targets ####
 
@@ -168,9 +170,10 @@ TEXT_DEFS := $(TEXT_DIR)/textdefs.txt
 TEXT_SRC  := $(TEXT_MAIN) $(shell find $(TEXT_DIR) -type f -name "*.txt")
 
 TEXT_HEADER := include/constants/msg.h
-MSG_LIST    := src/msg_data.c
+MSG_LIST    := src/Common/msg_data.c
 
-src/msg_data.c: $(TEXT_SRC) $(TEXT_DEFS)
+src/Common/msg_data.c: $(TEXT_SRC) $(TEXT_DEFS)
+	@mkdir -p $(dir $@)
 	@$(TEXT_PROCESS) $(TEXT_MAIN) $(TEXT_DEFS) $@ $(TEXT_HEADER) utf8
 
 # Graphics Recipes

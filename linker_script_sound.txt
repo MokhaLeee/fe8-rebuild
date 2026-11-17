@@ -1,4 +1,4 @@
-src/m4a_tables.o(.rodata);
+src/Boot/m4a_tables.o(.rodata);
 sound/voicegroups/voicegroup000.o(.rodata);
 sound/voicegroups/voicegroup001.o(.rodata);
 sound/voicegroups/voicegroup002.o(.rodata);

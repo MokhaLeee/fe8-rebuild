@@ -164,14 +164,29 @@ Co-Authored-By: DeepSeek-V4.1-Flash <noreply@deepseek.com>
 
 ## 2. 提交与版本控制（硬性约束）
 
-- **未经用户明确许可，禁止任何改变历史的操作**，包括但不限于：
-  `git commit`、`git commit --amend`、`git push`、`git reset`、`git rebase`、
+### 2.1 默认禁止提交（2026-11-17 用户指令）
+
+**从 2026-11-17 起，未经用户对当次提交的明确许可，一律不执行 `git commit`。**
+
+具体含义：
+
+- 不做「顺手提交」「阶段性提交」「为了干净先提交一下」。
+- 完成工作后把改动留在工作区，在汇报里说明「未提交」。
+- 即使前一次得到过提交许可，也不延续到下一次。
+- 用户说「继续」「下一步」「做吧」**不构成**提交许可。
+
+### 2.2 提交的正确流程
+
+1. 输出「待提交文件清单 + `git diff --stat` + 完整提交信息」；
+2. **结束本轮回复**，等用户下一条明确回复；
+3. 只有在用户明确同意**这一份清单**之后才执行；
+4. 不允许在同一条回复里既列清单又执行。
+
+### 2.3 其他禁止项
+
+- **未经用户明确许可，禁止任何改变历史的操作**：
+  `git commit --amend`、`git push`、`git reset`、`git rebase`、
   `git revert`、`git cherry-pick`、`git tag`、`git stash drop/pop`。
-- 用户说「提交 / commit」才算许可；询问、建议、沉默、说「继续做功能」都**不算**许可。
-- **提交前必须先停一次**：输出「待提交文件清单 + `git diff --stat` + 完整提交信息」，
-  然后结束本轮回复，等用户下一条明确回复。不允许在同一条回复里既列清单又执行。
-- 即使上一条用户消息里出现过「提交 / commit / 做吧」等字样，只要不是对我列出的
-  清单的确认，就**不算**授权；宁可再问一次。
 - 只读的 `git status` / `git diff` / `git log` / `git show` / `git tag -l` 随时可用。
 - 提交信息用英文，正文说清「为什么」而不是「改了哪些文件」。
 
@@ -202,24 +217,43 @@ Co-Authored-By: DeepSeek-V4.1-Flash <noreply@deepseek.com>
   当前阶段用 0.1 的字节门禁。
 - 汇报时写清楚：跑了什么、结果如何、没跑什么及原因。
 
-## 5. 当前阶段与禁区（M1 期间）
+## 5. 当前阶段与禁区
 
-阶段划分见 [`docs/rebuild-plan.md`](docs/rebuild-plan.md)。在 M1–M3 期间：
+阶段划分见 [`docs/rebuild-plan.md`](docs/rebuild-plan.md)。M0–M4a 已完成，
+当前处于 **M4b 之前**：字节门禁仍然有效。
 
 | 允许 | 禁止 |
 |---|---|
-| 改文档、脚本、`Makefile` | 合并 / 拆分 `src/*.c`（属于 M4b） |
-| 按批次做风格重排（M3） | 全局一次性重排所有文件 |
+| 改文档、脚本、`Makefile` | 合并 / 拆分 `src/*.c`（属于 M4b，会破坏字节一致） |
+| 在现有模块目录内新增文件 | 移动文件而不改四个链接脚本 |
 | 新增 `include/` 下的头文件 | 改动既有 C 代码的语义 |
-| 建目录骨架 | 移动 `src/*.c` 而不改 `ldscript.txt`（属于 M4a，且有脚本） |
 
-**`ldscript.txt` 的硬约束**（M4a 之前一律不动；M4a 之后只改路径、不改顺序）：
+### 5.1 目录与链接脚本（M4a 之后）
 
-- 该文件按**对象文件粒度**定位，1,031 处 `src/xxx.o(.text)` 把每个目标文件钉死在地址上。
-- 对象出现的**顺序即地址**。移动文件时必须同步改路径并保持顺序，否则 ROM 不再一致。
-- 新增 `.c` 文件必须同时在 `ldscript.txt` 里安排位置，否则会被 `/DISCARD/` 丢掉。
+`src/` 已按 FE8 模块域分到子目录（`Battle/` `Boot/` `Common/` `Core/*` `Data/`
+`Debug/` `MapAnim/` `UI/`）。移动或新增 `.c` 时必须同时处理以下几件事，
+否则 ROM 会不一致或链接失败：
 
-其他约定：
+1. **四个链接脚本**都要改（不是三个）：
+   - `ldscript.txt`
+   - `linker_script_sound.txt`（被 `INCLUDE` 进 ldscript）
+   - `linker_script_banim.txt`
+   - `sym_iwram.txt`（被 `INCLUDE`，含 `src/*.o(.bss)`）
+   只能做字符串替换，**绝不能改变行序**——行序即地址。
+2. **Makefile 的逐文件覆盖**要跟着改：`src/Boot/agb_sram.o` 用 `-O1`、
+   `src/Boot/m4a.o` 用 `CC1_OLD`、`src/Core/Map/bmitem.o` 与 `src/UI/menu_def.o`
+   加 `-Wno-error`。路径不命中会静默退回默认选项，代码生成随之改变
+   （实测 `agb_sram.o` +0x18、`m4a.o` +0x10，后面全部平移）。
+3. **清理陈旧产物**：`git mv` 不搬 `.o`/`.s`。判断标准是「旁边没有同名 `.c`
+   的 `.o` 或 `.s` 就是陈旧产物」——但**排除** `src/rom_header.s`、`src/crt0.s`、
+   `src/m4a_1.s`、`src/libagbsyscall.s` 这四个手写汇编源（它们是源码）。
+4. **`CFILES` 用 `find` 时注意顺序**：链接顺序影响少数未显式定位的段。
+   当前用 `$(shell find ...)`，若发现字节不一致可改用按文件名排序。
+
+定位这类问题的有效手段：`git archive HEAD | tar -x -C /tmp/base` 导出已提交版本
+单独构建，diff 两张 `fireemblem8.map`，直接看出哪个对象的段尺寸不对。
+
+### 5.2 其他约定
 
 - 源码一律 UTF-8；构建管道会 `iconv -f UTF-8 -t CP932` 再喂给 agbcc，
   改编码会导致编译失败或乱码。
