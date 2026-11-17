@@ -8,11 +8,11 @@
 #include "constants/classes.h"
 
 CONST_DATA EventScr EventScr_WM_FadeCommon[] = {
-    WmEvtFadeInDark(60) // WM_SATURATE_COLORS
-    WM_SHOWTEXTWINDOW(40, 0x0001)
-    WM_WAITFORTEXT
-    WmEvtWaitFadeInDark // ENOSUPP in EAstdlib
-    ENDA
+	WmEvtFadeInDark(60) // WM_SATURATE_COLORS
+	WM_SHOWTEXTWINDOW(40, 0x0001)
+	WM_WAITFORTEXT
+	WmEvtWaitFadeInDark // ENOSUPP in EAstdlib
+	ENDA
 };
 
 #include "events/prologue-wm.h"

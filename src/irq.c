@@ -10,18 +10,20 @@ void DummyIRQRoutine(void);
 
 void StoreIRQToIRAM(void)
 {
-    int i;
-    for(i = 0; i < IRQ_COUNT; i++)
-        gIRQHandlers[i] = DummyIRQRoutine;
+	int i;
 
-    CpuFastCopy(IrqMain, IntrMain_Buffer, sizeof IntrMain_Buffer);
-    INTR_VECTOR = IntrMain_Buffer;
+	for (i = 0; i < IRQ_COUNT; i++)
+		gIRQHandlers[i] = DummyIRQRoutine;
+
+	CpuFastCopy(IrqMain, IntrMain_Buffer, sizeof IntrMain_Buffer);
+	INTR_VECTOR = IntrMain_Buffer;
 }
 
 void DummyIRQRoutine(void)
-{}
+{
+}
 
 void SetIRQHandler(int index, void *irq)
 {
-    gIRQHandlers[index] = irq;
+	gIRQHandlers[index] = irq;
 }
