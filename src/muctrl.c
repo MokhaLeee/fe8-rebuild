@@ -18,341 +18,324 @@
 */
 
 //! FE8U = 0x08079CD8
-struct REDA * CopyEventMoveREDAs(const struct REDA * redas, u8 count)
+struct REDA * CopyEventMoveREDAs(const struct REDA *redas, u8 count)
 {
-    u8 i;
+	u8 i;
 
-    for (i = 0; i < 4; i++)
-    {
-        if (((gEventREDAs.usedBuffers >> i) & 1) == 0)
-        {
-            struct REDA * buffer = gEventREDAs.buf[i];
+	for (i = 0; i < 4; i++) {
+		if (((gEventREDAs.usedBuffers >> i) & 1) == 0) {
+			struct REDA *buffer = gEventREDAs.buf[i];
 
-            while (count != 0)
-            {
-                *buffer++ = *redas++;
-                count--;
-            }
+			while (count != 0) {
+				*buffer++ = *redas++;
+				count--;
+			}
 
-            gEventREDAs.usedBuffers |= (1 << i);
-            return gEventREDAs.buf[i];
-        }
-    }
+			gEventREDAs.usedBuffers |= (1 << i);
+			return gEventREDAs.buf[i];
+		}
+	}
 }
 
 //! FE8U = 0x08079D40
-void ClearEventMoveBuffer(const struct REDA * redas)
+void ClearEventMoveBuffer(const struct REDA *redas)
 {
-    u8 i;
-    for (i = 0; i < 4; i++)
-    {
-        if (gEventREDAs.buf[i] == redas)
-        {
-            gEventREDAs.usedBuffers &= ~(1 << i);
-            return;
-        }
-    }
+	u8 i;
+
+	for (i = 0; i < 4; i++) {
+		if (gEventREDAs.buf[i] == redas) {
+			gEventREDAs.usedBuffers &= ~(1 << i);
+			return;
+		}
+	}
 }
 
 //! FE8U = 0x08079D74
-void MuCtr_StartDefinedMove(struct Unit * unit, const struct REDA * redas, s16 count, u16 flags)
+void MuCtr_StartDefinedMove(struct Unit *unit, const struct REDA *redas, s16 count, u16 flags)
 {
-    struct MuCtrlProc * proc = Proc_Start(ProcScr_MuCtrl, PROC_TREE_5);
-    switch (count) {
-    case 0:
-        redas = NULL;
-        break;
+	struct MuCtrlProc *proc = Proc_Start(ProcScr_MuCtrl, PROC_TREE_5);
 
-    case 1:
-        proc->reda_cur = *redas;
-        redas = &proc->reda_cur;
-        break;
+	switch (count) {
+	case 0:
+		redas = NULL;
+		break;
 
-    default:
-        redas = CopyEventMoveREDAs(redas, count);
-        break;
-    }
+	case 1:
+		proc->reda_cur = *redas;
+		redas = &proc->reda_cur;
+		break;
 
-    MuCtr_InitDefinedMove(proc, unit, redas, count, flags);
+	default:
+		redas = CopyEventMoveREDAs(redas, count);
+		break;
+	}
+
+	MuCtr_InitDefinedMove(proc, unit, redas, count, flags);
 }
 
 //! FE8U = 0x08079DDC
-void MuCtr_StartMoveTowards(struct Unit * unit, s8 x, s8 y, u8 flagsA, u16 flagsB)
+void MuCtr_StartMoveTowards(struct Unit *unit, s8 x, s8 y, u8 flagsA, u16 flagsB)
 {
-    struct REDA * reda;
-    int x_;
-    int y_;
+	struct REDA *reda;
+	int x_;
+	int y_;
 
-    struct MuCtrlProc * proc = Proc_Start(ProcScr_MuCtrl, PROC_TREE_5);
+	struct MuCtrlProc *proc = Proc_Start(ProcScr_MuCtrl, PROC_TREE_5);
 
-    reda = &proc->reda_cur;
+	reda = &proc->reda_cur;
 
-    x_ = x;
-    reda->x = x_;
-    y_ = y;
-    reda->y = y_;
+	x_ = x;
+	reda->x = x_;
+	y_ = y;
+	reda->y = y_;
 
-    reda->flags = flagsA;
+	reda->flags = flagsA;
 
-    reda->a = 0;
-    reda->b = 0;
-    reda->delayFrames = 0;
+	reda->a = 0;
+	reda->b = 0;
+	reda->delayFrames = 0;
 
-    MuCtr_InitDefinedMove(proc, unit, reda, 1, flagsB);
+	MuCtr_InitDefinedMove(proc, unit, reda, 1, flagsB);
 }
 
 //! FE8U = 0x08079E78
-void MuCtr_InitDefinedMove(struct MuCtrlProc * proc, struct Unit * unit, const struct REDA * redas, s16 count, u16 flags)
+void MuCtr_InitDefinedMove(struct MuCtrlProc *proc, struct Unit *unit, const struct REDA *redas, s16 count, u16 flags)
 {
-    struct Vec2 pos;
-    const struct REDA * reda;
-    s8 x = unit->xPos;
-    s8 y = unit->yPos;
+	struct Vec2 pos;
 
-    // ????
-    reda = &redas[count + 1];
-    reda -= 2;
+	const struct REDA *reda;
+	s8 x = unit->xPos;
+	s8 y = unit->yPos;
 
-    pos.x = reda->x;
-    pos.y = reda->y;
+	// ????
+	reda = &redas[count + 1];
+	reda -= 2;
 
-    AdjustNewUnitPosition(unit, &pos, flags);
+	pos.x = reda->x;
+	pos.y = reda->y;
 
-    proc->unit = unit;
-    proc->muProc = StartMu(unit);
-    proc->redas = redas;
-    proc->redaCount = count;
-    proc->timer = 0;
-    proc->delayFrames = redas->delayFrames;
-    proc->flags = flags;
-    proc->x = pos.x;
-    proc->y = pos.y;
-    proc->unk_42 = x;
-    proc->unk_43 = y;
+	AdjustNewUnitPosition(unit, &pos, flags);
 
-    HideUnitSprite(unit);
+	proc->unit = unit;
+	proc->muProc = StartMu(unit);
+	proc->redas = redas;
+	proc->redaCount = count;
+	proc->timer = 0;
+	proc->delayFrames = redas->delayFrames;
+	proc->flags = flags;
+	proc->x = pos.x;
+	proc->y = pos.y;
+	proc->unk_42 = x;
+	proc->unk_43 = y;
 
-    unit->state |= US_HIDDEN;
+	HideUnitSprite(unit);
 
-    if (gBmMapUnit[unit->yPos][unit->xPos] == (u8)unit->index)
-    {
-        gBmMapUnit[unit->yPos][unit->xPos] = 0;
-    }
+	unit->state |= US_HIDDEN;
 
-    gBmMapOther[y][x] = 0;
-    gBmMapOther[pos.y][pos.x] = unit->pCharacterData->number;
+	if (gBmMapUnit[unit->yPos][unit->xPos] == (u8)unit->index)
+		gBmMapUnit[unit->yPos][unit->xPos] = 0;
 
-    HideMu(proc->muProc);
+	gBmMapOther[y][x] = 0;
+	gBmMapOther[pos.y][pos.x] = unit->pCharacterData->number;
+
+	HideMu(proc->muProc);
 }
 
 //! FE8U = 0x08079F84
 s8 MuCtrExists(void)
 {
-    return Proc_Find(ProcScr_MuCtrl) ? 1 : 0;
+	return Proc_Find(ProcScr_MuCtrl) ? 1 : 0;
 }
 
 //! FE8U = 0x08079F9C
 void SetMuMaxWalkSpeed_(void)
 {
-    SetMuMaxWalkSpeed();
+	SetMuMaxWalkSpeed();
 }
 
 //! FE8U = 0x08079FA8
-void MoveUnitExt(struct Unit * unit, const struct REDA * redas, s16 count, u16 flags)
+void MoveUnitExt(struct Unit *unit, const struct REDA *redas, s16 count, u16 flags)
 {
-    struct Vec2 pos;
+	struct Vec2 pos;
 
-    const struct REDA * reda = redas - 1 + count;
+	const struct REDA * reda = redas - 1 + count;
 
-    pos.x = reda->x;
-    pos.y = reda->y;
+	pos.x = reda->x;
+	pos.y = reda->y;
 
-    unit->xPos = pos.x;
-    unit->yPos = pos.y;
+	unit->xPos = pos.x;
+	unit->yPos = pos.y;
 
-    AdjustNewUnitPosition(unit, &pos, flags);
+	AdjustNewUnitPosition(unit, &pos, flags);
 
-    unit->xPos = pos.x;
-    unit->yPos = pos.y;
+	unit->xPos = pos.x;
+	unit->yPos = pos.y;
 
-    UnitFinalizeMovement(unit);
+	UnitFinalizeMovement(unit);
 
-    if (!(unit->state & US_UNDER_A_ROOF))
-    {
-        unit->state &= ~US_HIDDEN;
-        RefreshEntityBmMaps();
-        RefreshUnitSprites();
-    }
+	if (!(unit->state & US_UNDER_A_ROOF)) {
+		unit->state &= ~US_HIDDEN;
+		RefreshEntityBmMaps();
+		RefreshUnitSprites();
+	}
 }
 
 //! FE8U = 0x0807A014
-void MoveUnit_(struct Unit * unit, s8 x, s8 y, u16 flags)
+void MoveUnit_(struct Unit *unit, s8 x, s8 y, u16 flags)
 {
-    struct REDA reda;
+	struct REDA reda;
 
-    reda.x = x;
-    reda.y = y;
+	reda.x = x;
+	reda.y = y;
 
-    MoveUnitExt(unit, &reda, 1, flags);
+	MoveUnitExt(unit, &reda, 1, flags);
 }
 
 //! FE8U = 0x0807A054
-void GenUnitDefinitionFinalPosition(const struct UnitDefinition * def, s8 * xOut, s8 * yOut, s8 findNearest)
+void GenUnitDefinitionFinalPosition(const struct UnitDefinition *def, s8 *xOut, s8 *yOut, s8 findNearest)
 {
-    struct Unit * unit;
-    const struct REDA * reda;
-    struct Vec2 pos;
+	struct Unit *unit;
 
-    if (def->redaCount != 0)
-    {
-        u32 tmp = (-findNearest | findNearest);
-        u16 flags = tmp >> 0x1f;
+	const struct REDA *reda;
+	struct Vec2 pos;
 
-        if (def->sumFlag != 0)
-        {
-            flags |= 2;
-        }
+	if (def->redaCount != 0) {
+		u32 tmp = (-findNearest | findNearest);
+		u16 flags = tmp >> 0x1f;
 
-        unit = GetUnit(def->charIndex);
+		if (def->sumFlag != 0)
+			flags |= 2;
 
-        reda = (struct REDA *)(def->redas) - 1 + def->redaCount;
+		unit = GetUnit(def->charIndex);
 
-        pos.x = reda->x;
-        pos.y = reda->y;
+		reda = (struct REDA *)(def->redas) - 1 + def->redaCount;
 
-        AdjustNewUnitPosition(unit, &pos, flags);
-        *xOut = pos.x;
-        *yOut = pos.y;
-    }
-    else
-    {
-        *xOut = def->xPosition;
-        *yOut = def->yPosition;
-    }
+		pos.x = reda->x;
+		pos.y = reda->y;
 
-    return;
+		AdjustNewUnitPosition(unit, &pos, flags);
+		*xOut = pos.x;
+		*yOut = pos.y;
+	} else {
+		*xOut = def->xPosition;
+		*yOut = def->yPosition;
+	}
+
+	return;
 }
 
 //! FE8U = 0x0807A0E4
-s8 sub_807A0E4(struct MuCtrlProc * proc)
+s8 sub_807A0E4(struct MuCtrlProc *proc)
 {
-    const struct REDA * reda = proc->redas + proc->timer;
+	const struct REDA * reda = proc->redas + proc->timer;
 
-    SortMus();
+	SortMus();
 
-    if (proc->muProc->fast_walk_b != 0)
-    {
-        Proc_Goto(proc, 1);
-        return false;
-    }
+	if (proc->muProc->fast_walk_b != 0) {
+		Proc_Goto(proc, 1);
+		return false;
+	}
 
-    if (sub_807A294(reda->a, reda->b) == 1)
-    {
-        if (gKeyStatusPtr->heldKeys & A_BUTTON)
-            proc->delayFrames -= 4;
-        else
-            proc->delayFrames--;
+	if (sub_807A294(reda->a, reda->b) == 1) {
+		if (gKeyStatusPtr->heldKeys & A_BUTTON)
+			proc->delayFrames -= 4;
+		else
+			proc->delayFrames--;
 
-        if (proc->delayFrames < 1)
-        {
-            MuCtr_ExecREDA_807A358(proc);
-            return false;
-        }
-    }
+		if (proc->delayFrames < 1) {
+			MuCtr_ExecREDA_807A358(proc);
+			return false;
+		}
+	}
 
-    if (proc->timer != 0)
-    {
-        struct Unit * unit = proc->unit;
+	if (proc->timer != 0) {
+		struct Unit *unit = proc->unit;
 
-        ShowUnitSprite(unit);
-        unit->state &= ~US_HIDDEN;
-        HideMu(proc->muProc);
-        gBmMapUnit[unit->yPos][unit->xPos] = unit->index;
-        RefreshUnitSprites();
-    }
+		ShowUnitSprite(unit);
+		unit->state &= ~US_HIDDEN;
+		HideMu(proc->muProc);
+		gBmMapUnit[unit->yPos][unit->xPos] = unit->index;
+		RefreshUnitSprites();
+	}
 
-    return true;
+	return true;
 }
 
 //! FE8U = 0x0807A194
-bool sub_807A194(struct MuCtrlProc * proc)
+bool sub_807A194(struct MuCtrlProc *proc)
 {
-    struct MuProc * muProc = proc->muProc;
+	struct MuProc *muProc = proc->muProc;
 
-    SortMus();
+	SortMus();
 
-    if (!IsMuActive(muProc))
-    {
-        struct Unit * unit = proc->unit;
-        unit->xPos = proc->unk_42;
-        unit->yPos = proc->unk_43;
+	if (!IsMuActive(muProc)) {
+		struct Unit *unit = proc->unit;
 
-        proc->timer++;
+		unit->xPos = proc->unk_42;
+		unit->yPos = proc->unk_43;
 
-        if ((proc->timer < proc->redaCount && muProc->fast_walk_b == 0))
-        {
-            proc->delayFrames = (proc->timer + proc->redas)->delayFrames;
-            return false;
-        }
+		proc->timer++;
 
-        Proc_Goto(proc, 1);
-        return false;
-    }
+		if ((proc->timer < proc->redaCount && muProc->fast_walk_b == 0)) {
+			proc->delayFrames = (proc->timer + proc->redas)->delayFrames;
+			return false;
+		}
 
-    return true;
+		Proc_Goto(proc, 1);
+		return false;
+	}
+
+	return true;
 }
 
 //! FE8U = 0x0807A1FC
-void MuCtr_OnEnd(struct MuCtrlProc * proc)
+void MuCtr_OnEnd(struct MuCtrlProc *proc)
 {
-    struct MuProc * muProc = proc->muProc;
-    struct Unit * unit = proc->unit;
+	struct MuProc *muProc = proc->muProc;
+	struct Unit *unit = proc->unit;
 
-    if ((muProc->fast_walk_b != 0) && (proc->redaCount != 0))
-    {
-        MoveUnit_(unit, proc->x, proc->y, proc->flags & 0xFFFE);
-    }
-    else
-    {
-        unit->xPos = proc->x;
-        unit->yPos = proc->y;
-        UnitFinalizeMovement(unit);
+	if ((muProc->fast_walk_b != 0) && (proc->redaCount != 0)) {
+		MoveUnit_(unit, proc->x, proc->y, proc->flags & 0xFFFE);
+	} else {
+		unit->xPos = proc->x;
+		unit->yPos = proc->y;
+		UnitFinalizeMovement(unit);
 
-        ShowUnitSprite(unit);
-        unit->state &= ~US_HIDDEN;
+		ShowUnitSprite(unit);
+		unit->state &= ~US_HIDDEN;
 
-        gBmMapUnit[unit->yPos][unit->xPos] = unit->index;
+		gBmMapUnit[unit->yPos][unit->xPos] = unit->index;
 
-        RefreshEntityBmMaps();
-        RefreshUnitSprites();
-    }
+		RefreshEntityBmMaps();
+		RefreshUnitSprites();
+	}
 
-    EndMu(muProc);
-    SortMus();
+	EndMu(muProc);
+	SortMus();
 
-    ClearEventMoveBuffer(proc->redas);
+	ClearEventMoveBuffer(proc->redas);
 
-    return;
+	return;
 }
 
 // clang-format off
 
 struct ProcCmd CONST_DATA ProcScr_MuCtrl[] =
 {
-    PROC_NAME("E_MuCtr"),
-    PROC_SET_END_CB(MuCtr_OnEnd),
-    PROC_YIELD,
+	PROC_NAME("E_MuCtr"),
+	PROC_SET_END_CB(MuCtr_OnEnd),
+	PROC_YIELD,
 
-    PROC_WHILE(sub_807A0E4),
+	PROC_WHILE(sub_807A0E4),
 
 PROC_LABEL(0),
-    PROC_WHILE(sub_807A194),
-    PROC_WHILE(sub_807A0E4),
+	PROC_WHILE(sub_807A194),
+	PROC_WHILE(sub_807A0E4),
 
-    PROC_GOTO(0),
+	PROC_GOTO(0),
 
 PROC_LABEL(1),
-    PROC_END,
+	PROC_END,
 };
 
 // clang-format on
@@ -360,221 +343,190 @@ PROC_LABEL(1),
 //! FE8U = 0x0807A294
 s8 sub_807A294(u8 pid, u16 b)
 {
-    if (pid == 0)
-    {
-        return true;
-    }
+	if (pid == 0)
+		return true;
 
-    gUnknown_03001C35 = pid;
-    gUnknown_03001C34 = true;
+	gUnknown_03001C35 = pid;
+	gUnknown_03001C34 = true;
 
-    Proc_ForEach(ProcScr_MuCtrl, (ProcFunc)sub_807A300);
+	Proc_ForEach(ProcScr_MuCtrl, (ProcFunc)sub_807A300);
 
-    if ((gUnknown_03001C34 == 0) && (b != 0xFFFF))
-    {
-        gUnknown_03001C36 = b;
-        gUnknown_03001C34 = 0;
-        Proc_ForEach(ProcScr_MuCtrl, (ProcFunc)sub_807A324);
-    }
+	if ((gUnknown_03001C34 == 0) && (b != 0xFFFF)) {
+		gUnknown_03001C36 = b;
+		gUnknown_03001C34 = 0;
+		Proc_ForEach(ProcScr_MuCtrl, (ProcFunc)sub_807A324);
+	}
 
-    return gUnknown_03001C34;
+	return gUnknown_03001C34;
 }
 
 //! FE8U = 0x0807A300
-void sub_807A300(struct MuCtrlProc * proc)
+void sub_807A300(struct MuCtrlProc *proc)
 {
-    if (proc->unit->pCharacterData->number == gUnknown_03001C35)
-        gUnknown_03001C34 = 0;
+	if (proc->unit->pCharacterData->number == gUnknown_03001C35)
+		gUnknown_03001C34 = 0;
 }
 
 //! FE8U = 0x0807A324
-void sub_807A324(struct MuCtrlProc * proc)
+void sub_807A324(struct MuCtrlProc *proc)
 {
-    if (proc->unit->pCharacterData->number == gUnknown_03001C35 && gUnknown_03001C36 < proc->timer)
-        gUnknown_03001C34 = true;
+	if (proc->unit->pCharacterData->number == gUnknown_03001C35 && gUnknown_03001C36 < proc->timer)
+		gUnknown_03001C34 = true;
 }
 
 //! FE8U = 0x0807A358
-void MuCtr_ExecREDA_807A358(struct MuCtrlProc * proc)
+void MuCtr_ExecREDA_807A358(struct MuCtrlProc *proc)
 {
-    u8 * commands;
-    u8 config;
-    struct Vec2 pos;
+	u8 *commands;
+	u8 config;
+	struct Vec2 pos;
 
-    struct Unit * unit = proc->unit;
-    const struct REDA * reda = proc->redas + proc->timer;
-    u16 flagsA = proc->flags;
-    int flagsB = flagsA;
+	struct Unit *unit = proc->unit;
 
-    gBmMapOther[proc->y][proc->x] = 0;
+	const struct REDA * reda = proc->redas + proc->timer;
+	u16 flagsA = proc->flags;
+	int flagsB = flagsA;
 
-    if (proc->timer < (proc->redaCount - 1))
-    {
-        pos.x = reda->x;
-        pos.y = reda->y;
-        flagsB &= 0xfffe;
-    }
-    else
-    {
-        pos.x = proc->x;
-        pos.y = proc->y;
+	gBmMapOther[proc->y][proc->x] = 0;
 
-        if ((flagsA & 2) != 0)
-        {
-            flagsB &= 0xfffe;
-        }
-    }
+	if (proc->timer < (proc->redaCount - 1)) {
+		pos.x = reda->x;
+		pos.y = reda->y;
+		flagsB &= 0xfffe;
+	} else {
+		pos.x = proc->x;
+		pos.y = proc->y;
 
-    commands = sub_807A644(unit, &pos, flagsB & 1);
+		if ((flagsA & 2) != 0)
+			flagsB &= 0xfffe;
+	}
 
-    gBmMapOther[proc->y][proc->x] = unit->pCharacterData->number;
+	commands = sub_807A644(unit, &pos, flagsB & 1);
 
-    if ((proc->unk_42 != pos.x) || (proc->unk_43 != pos.y))
-    {
-        struct MuProc * muProc = proc->muProc;
+	gBmMapOther[proc->y][proc->x] = unit->pCharacterData->number;
 
-        ShowMu(muProc);
-        SetMuMoveScript(muProc, commands);
+	if ((proc->unk_42 != pos.x) || (proc->unk_43 != pos.y)) {
+		struct MuProc *muProc = proc->muProc;
 
-        config = reda->flags;
+		ShowMu(muProc);
+		SetMuMoveScript(muProc, commands);
 
-        if ((flagsB & 8) != 0)
-        {
-            config |= 0x40;
-        }
+		config = reda->flags;
 
-        SetMuConfig(muProc, config);
+		if ((flagsB & 8) != 0)
+			config |= 0x40;
 
-        if ((flagsB & 4) != 0)
-        {
-            EnableMuCamera(muProc);
-        }
-        else
-        {
-            DisableMuCamera(muProc);
-        }
+		SetMuConfig(muProc, config);
 
-        HideUnitSprite(unit);
-        unit->state |= US_HIDDEN;
+		if ((flagsB & 4) != 0) {
+			EnableMuCamera(muProc);
+		} else {
+			DisableMuCamera(muProc);
+		}
 
-        if (gBmMapUnit[unit->yPos][unit->xPos] == (u8)unit->index)
-        {
-            gBmMapUnit[unit->yPos][unit->xPos] = 0;
-        }
+		HideUnitSprite(unit);
+		unit->state |= US_HIDDEN;
 
-        RefreshUnitSprites();
+		if (gBmMapUnit[unit->yPos][unit->xPos] == (u8)unit->index)
+			gBmMapUnit[unit->yPos][unit->xPos] = 0;
 
-        proc->unk_42 = pos.x;
-        proc->unk_43 = pos.y;
-    }
+		RefreshUnitSprites();
 
-    return;
+		proc->unk_42 = pos.x;
+		proc->unk_43 = pos.y;
+	}
+
+	return;
 }
 
 //! FE8U = 0x0807A4E8
-void AdjustNewUnitPosition(struct Unit * unit, struct Vec2 * pos, u16 flags)
+void AdjustNewUnitPosition(struct Unit *unit, struct Vec2 *pos, u16 flags)
 {
-    struct Vec2 buf[8];
+	struct Vec2 buf[8];
 
-    if ((flags & 2) != 0)
-    {
-        s8 ix;
-        s8 iy;
+	if ((flags & 2) != 0) {
+		s8 ix;
+		s8 iy;
 
-        u8 idx = 0;
+		u8 idx = 0;
 
-        GenerateExtendedMovementMapOnRange(pos->x, pos->y, GetUnitMovementCost(unit));
+		GenerateExtendedMovementMapOnRange(pos->x, pos->y, GetUnitMovementCost(unit));
 
-        for (iy = -1; iy <= 1; iy++)
-        {
-            for (ix = -1; ix <= 1; ix++)
-            {
-                s8 xCur = pos->x + ix;
-                s8 yCur = pos->y + iy;
+		for (iy = -1; iy <= 1; iy++) {
+			for (ix = -1; ix <= 1; ix++) {
+				s8 xCur = pos->x + ix;
+				s8 yCur = pos->y + iy;
 
-                if ((ix == 0) && (iy == 0))
-                    continue;
+				if ((ix == 0) && (iy == 0))
+					continue;
 
-                if (gBmMapUnit[yCur][xCur] != 0)
-                    continue;
+				if (gBmMapUnit[yCur][xCur] != 0)
+					continue;
 
-                if (gBmMapOther[yCur][xCur] != 0)
-                    continue;
+				if (gBmMapOther[yCur][xCur] != 0)
+					continue;
 
-                if (gBmMapHidden[yCur][xCur] != 0)
-                    continue;
+				if (gBmMapHidden[yCur][xCur] != 0)
+					continue;
 
-                if (gMapRangeSigned[yCur][xCur] < 0)
-                    continue;
+				if (gMapRangeSigned[yCur][xCur] < 0)
+					continue;
 
-                buf[idx].x = xCur;
-                buf[idx].y = yCur;
+				buf[idx].x = xCur;
+				buf[idx].y = yCur;
 
-                idx++;
-            }
-        }
+				idx++;
+			}
+		}
 
-        if (idx != 0)
-        {
-            u8 random = NextRN_N(idx);
-            pos->x = buf[random].x;
-            pos->y = buf[random].y;
-        }
-    }
-    else
-    {
-        if ((flags & 1) != 0)
-        {
-            if (gBmMapTerrain[(s8)pos->y][(s8)pos->x] != 0)
-            {
-                AiGetUnitClosestValidPosition(unit, (s8)pos->x, (s8)pos->y, pos);
-            }
-        }
-    }
+		if (idx != 0) {
+			u8 random = NextRN_N(idx);
 
-    return;
+			pos->x = buf[random].x;
+			pos->y = buf[random].y;
+		}
+	} else {
+		if ((flags & 1) != 0) {
+			if (gBmMapTerrain[(s8)pos->y][(s8)pos->x] != 0)
+				AiGetUnitClosestValidPosition(unit, (s8)pos->x, (s8)pos->y, pos);
+		}
+	}
+
+	return;
 }
 
 //! FE8U = 0x0807A644
-u8 * sub_807A644(struct Unit * unit, struct Vec2 * pos, s8 flag)
+u8 * sub_807A644(struct Unit *unit, struct Vec2 *pos, s8 flag)
 {
-    s8 terrainFlag;
+	s8 terrainFlag;
 
-    s8 x = pos->x;
-    s8 y = pos->y;
+	s8 x = pos->x;
+	s8 y = pos->y;
 
-    if (flag == 0)
-    {
-        GenerateExtendedMovementMapOnRange(unit->xPos, unit->yPos, unit->pClassData->pMovCostTable[0]);
-        GenerateBestMovementScript(x, y, gWorkingMovementScript);
-    }
-    else
-    {
-        DisableAllLightRunes();
+	if (flag == 0) {
+		GenerateExtendedMovementMapOnRange(unit->xPos, unit->yPos, unit->pClassData->pMovCostTable[0]);
+		GenerateBestMovementScript(x, y, gWorkingMovementScript);
+	} else {
+		DisableAllLightRunes();
 
-        if (gBmMapTerrain[y][x] == 0)
-        {
-            gBmMapTerrain[y][x] = 1;
-            terrainFlag = 1;
-        }
-        else
-        {
-            AiGetUnitClosestValidPosition(unit, x, y, pos);
-            x = pos->x;
-            y = pos->y;
-            terrainFlag = 0;
-        }
+		if (gBmMapTerrain[y][x] == 0) {
+			gBmMapTerrain[y][x] = 1;
+			terrainFlag = 1;
+		} else {
+			AiGetUnitClosestValidPosition(unit, x, y, pos);
+			x = pos->x;
+			y = pos->y;
+			terrainFlag = 0;
+		}
 
-        GenerateExtendedMovementMapOnRange(unit->xPos, unit->yPos, unit->pClassData->pMovCostTable[0]);
-        GenerateBestMovementScript(x, y, gWorkingMovementScript);
+		GenerateExtendedMovementMapOnRange(unit->xPos, unit->yPos, unit->pClassData->pMovCostTable[0]);
+		GenerateBestMovementScript(x, y, gWorkingMovementScript);
 
-        if (terrainFlag != 0)
-        {
-            gBmMapTerrain[y][x] = 0;
-        }
+		if (terrainFlag != 0)
+			gBmMapTerrain[y][x] = 0;
 
-        EnableAllLightRunes();
-    }
+		EnableAllLightRunes();
+	}
 
-    return gWorkingMovementScript;
+	return gWorkingMovementScript;
 }

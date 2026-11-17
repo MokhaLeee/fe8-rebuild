@@ -189,6 +189,12 @@ def convert_text(text):
                 depth += delta
                 i += 1
                 continue
+            # 注释行（`// ...`）后面不能并 `{`，否则 `{` 会变成注释内容
+            if prev_stripped.startswith("//") or prev_stripped.startswith("/*") or prev_stripped.endswith("*/"):
+                out.append(line)
+                depth += delta
+                i += 1
+                continue
             # do { ... } while 的 do 也是深度 >=1；函数体在深度 0
             if depth >= 1 and prev_stripped and not prev_stripped.endswith(";"):
                 out[-1] = prev.rstrip("\n") + " {\n"
