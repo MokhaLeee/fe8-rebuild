@@ -189,9 +189,17 @@ def convert_text(text):
                 depth += delta
                 i += 1
                 continue
-            # 注释行（`// ...`）后面不能并 `{`，否则 `{` 会变成注释内容
+            # 整行注释后面不能并 `{`（`{` 会成为注释内容）
             if prev_stripped.startswith("//") or prev_stripped.startswith("/*") or prev_stripped.endswith("*/"):
                 out.append(line)
+                depth += delta
+                i += 1
+                continue
+            # 行尾带 `//` 注释的代码行：把 `{` 插到注释**前面**
+            # `if (x) // c` + `{`  ->  `if (x) { // c`
+            if "//" in prev_stripped and depth >= 1:
+                head, _, comment = prev.rstrip("\n").partition("//")
+                out[-1] = head.rstrip() + " { //" + comment + "\n"
                 depth += delta
                 i += 1
                 continue
@@ -239,7 +247,13 @@ def convert_text(text):
         depth += delta
         i += 1
 
-    return "".join(strip_single_braces(out))
+    # 注意：不调用 strip_single_braces。
+    #
+    # 实测（2026-11-17，src/mu.c 的 ResetMuAnims）：把 `if (x) { stmt; }`
+    # 改成 `if (x) stmt;` 之后，agbcc 生成的机器码**不同**（寄存器分配变化），
+    # ROM 不再与基线一致。M3 的前提是字节一致，所以去大括号这一步在本阶段
+    # 一律不做；kernel style 那边以「保留多余大括号」为代价。
+    return "".join(out)
 
 
 def main(argv):

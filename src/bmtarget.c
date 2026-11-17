@@ -16,1348 +16,1417 @@
 #include "constants/classes.h"
 #include "constants/terrains.h"
 
-struct Unit* EWRAM_DATA gSubjectUnit = NULL;
+struct Unit *EWRAM_DATA gSubjectUnit = NULL;
 
-s8 CanUnitCrossTerrain(struct Unit* unit, int terrain);
+s8 CanUnitCrossTerrain(struct Unit *unit, int terrain);
 
-void ForEachUnitInMovement(void(*func)(struct Unit* unit)) {
-    int ix;
-    int iy;
+void ForEachUnitInMovement(void(*func)(struct Unit *unit))
+{
+	int ix;
+	int iy;
 
-    for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
-        for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
+	for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
+		for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
 
-            if (gMapMovementSigned[iy][ix] == 0) {
-                continue;
-            }
+			if (gMapMovementSigned[iy][ix] == 0) {
+				continue;
+			}
 
-            if (gBmMapUnit[iy][ix] == 0) {
-                continue;
-            }
+			if (gBmMapUnit[iy][ix] == 0) {
+				continue;
+			}
 
-            func(GetUnit(gBmMapUnit[iy][ix]));
-        }
-    }
+			func(GetUnit(gBmMapUnit[iy][ix]));
+		}
+	}
 
-    return;
+	return;
 }
 
-void ForEachUnitInRange(void(*func)(struct Unit* unit)) {
-    int ix;
-    int iy;
+void ForEachUnitInRange(void(*func)(struct Unit *unit))
+{
+	int ix;
+	int iy;
 
-    for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
-        for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
+	for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
+		for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
 
-            if (gMapRangeSigned[iy][ix] == 0) {
-                continue;
-            }
+			if (gMapRangeSigned[iy][ix] == 0) {
+				continue;
+			}
 
-            if (gBmMapUnit[iy][ix] == 0) {
-                continue;
-            }
+			if (gBmMapUnit[iy][ix] == 0) {
+				continue;
+			}
 
-            func(GetUnit(gBmMapUnit[iy][ix]));
-        }
-    }
+			func(GetUnit(gBmMapUnit[iy][ix]));
+		}
+	}
 
-    return;
+	return;
 }
 
-void ForEachPosInRange(void(*func)(int x, int y)) {
-    int ix;
-    int iy;
+void ForEachPosInRange(void(*func)(int x, int y))
+{
+	int ix;
+	int iy;
 
-    for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
-        for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
+	for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
+		for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
 
-            if (gMapRangeSigned[iy][ix] == 0) {
-                continue;
-            }
+			if (gMapRangeSigned[iy][ix] == 0) {
+				continue;
+			}
 
-            func(ix, iy);
-        }
-    }
+			func(ix, iy);
+		}
+	}
 
-    return;
+	return;
 }
 
-void ForEachAdjacentUnit(int x, int y, void(*func)(struct Unit* unit)) {
-    InitTargets(x, y);
+void ForEachAdjacentUnit(int x, int y, void(*func)(struct Unit *unit))
+{
+	InitTargets(x, y);
 
-    MapAddInRange(x, y, 1, 1);
-    MapAddInRange(x, y, 0, -1);
+	MapAddInRange(x, y, 1, 1);
+	MapAddInRange(x, y, 0, -1);
 
-    ForEachUnitInRange(func);
+	ForEachUnitInRange(func);
 
-    return;
+	return;
 }
 
-void ForEachAdjacentPosition(int x, int y, void(*func)(int x, int y)) {
-    InitTargets(x, y);
+void ForEachAdjacentPosition(int x, int y, void(*func)(int x, int y))
+{
+	InitTargets(x, y);
 
-    MapAddInRange(x, y, 1, 1);
-    MapAddInRange(x, y, 0, -1);
+	MapAddInRange(x, y, 1, 1);
+	MapAddInRange(x, y, 0, -1);
 
-    ForEachPosInRange(func);
+	ForEachPosInRange(func);
 
-    return;
+	return;
 }
 
-void sub_8024FD8(int x, int y, void(*func)(int x, int y)) {
-    s8 ix;
-    s8 iy;
+void sub_8024FD8(int x, int y, void(*func)(int x, int y))
+{
+	s8 ix;
+	s8 iy;
 
-    InitTargets(x, y);
+	InitTargets(x, y);
 
-    for (iy = -1; iy < 2; iy++) {
-        for (ix = -1; ix < 2; ix++) {
-            if ((x >= 0) && (y >= 0)) {
-                gWorkingBmMap[y][x]++;
-            }
-        }
-    }
+	for (iy = -1; iy < 2; iy++) {
+		for (ix = -1; ix < 2; ix++) {
+			if ((x >= 0) && (y >= 0)) {
+				gWorkingBmMap[y][x]++;
+			}
+		}
+	}
 
-    ForEachPosInRange(func);
+	ForEachPosInRange(func);
 
-    return;
+	return;
 }
 
-void ForEachPosIn12Range(int x, int y, void(*func)(int x, int y)) {
-    InitTargets(x, y);
+void ForEachPosIn12Range(int x, int y, void(*func)(int x, int y))
+{
+	InitTargets(x, y);
 
-    MapAddInRange(x, y, 2, 1);
-    MapAddInRange(x, y, 0, -1);
+	MapAddInRange(x, y, 2, 1);
+	MapAddInRange(x, y, 0, -1);
 
-    ForEachPosInRange(func);
+	ForEachPosInRange(func);
 
-    return;
+	return;
 }
 
-void ForEachUnitInMagBy2Range(void(*func)(struct Unit* unit)) {
-    int x = gSubjectUnit->xPos;
-    int y = gSubjectUnit->yPos;
+void ForEachUnitInMagBy2Range(void(*func)(struct Unit *unit))
+{
+	int x = gSubjectUnit->xPos;
+	int y = gSubjectUnit->yPos;
 
-    InitTargets(x, y);
+	InitTargets(x, y);
 
-    MapAddInRange(x, y, GetUnitMagBy2Range(gSubjectUnit), 1);
-    MapAddInRange(x, y, 0, -1);
+	MapAddInRange(x, y, GetUnitMagBy2Range(gSubjectUnit), 1);
+	MapAddInRange(x, y, 0, -1);
 
-    ForEachUnitInRange(func);
+	ForEachUnitInRange(func);
 
-    return;
+	return;
 }
 
-void TryAddTrapsToTargetList() {
-    struct Trap* trap;
+void TryAddTrapsToTargetList()
+{
+	struct Trap *trap;
 
-    for (trap = GetTrap(0); trap->type != TRAP_NONE; ++trap) {
-        if (trap->type != TRAP_OBSTACLE) {
-            continue;
-        }
+	for (trap = GetTrap(0); trap->type != TRAP_NONE; ++trap) {
+		if (trap->type != TRAP_OBSTACLE) {
+			continue;
+		}
 
-        if ((gBmMapTerrain[trap->yPos][trap->xPos] == TERRAIN_WALL_DAMAGED) && (gMapRangeSigned[trap->yPos][trap->xPos] != 0)) {
-            AddTarget(trap->xPos, trap->yPos, 0, trap->extra);
-        }
+		if ((gBmMapTerrain[trap->yPos][trap->xPos] == TERRAIN_WALL_DAMAGED) && (gMapRangeSigned[trap->yPos][trap->xPos] != 0)) {
+			AddTarget(trap->xPos, trap->yPos, 0, trap->extra);
+		}
 
-        if ((gBmMapTerrain[trap->yPos + 1][trap->xPos] == TERRAIN_WALL_DAMAGED) && (gMapRangeSigned[trap->yPos + 1][trap->xPos] != 0)) {
-            AddTarget(trap->xPos, trap->yPos + 1, 0, trap->extra);
-        }
+		if ((gBmMapTerrain[trap->yPos + 1][trap->xPos] == TERRAIN_WALL_DAMAGED) && (gMapRangeSigned[trap->yPos + 1][trap->xPos] != 0)) {
+			AddTarget(trap->xPos, trap->yPos + 1, 0, trap->extra);
+		}
 
-        if ((gBmMapTerrain[trap->yPos][trap->xPos] == TERRAIN_SNAG) && (gMapRangeSigned[trap->yPos][trap->xPos] != 0)) {
-            AddTarget(trap->xPos, trap->yPos, 0, trap->extra);
-        }
-    }
+		if ((gBmMapTerrain[trap->yPos][trap->xPos] == TERRAIN_SNAG) && (gMapRangeSigned[trap->yPos][trap->xPos] != 0)) {
+			AddTarget(trap->xPos, trap->yPos, 0, trap->extra);
+		}
+	}
 
-    return;
+	return;
 }
 
-void AddUnitToTargetListIfNotAllied(struct Unit* unit) {
+void AddUnitToTargetListIfNotAllied(struct Unit *unit)
+{
 
-    if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
-        AddTarget(unit->xPos, unit->yPos, unit->index, 0);
-    }
+	if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
+		AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	}
 
-    return;
+	return;
 }
 
-void MakeTargetListForWeapon(struct Unit* unit, int item) {
+void MakeTargetListForWeapon(struct Unit *unit, int item)
+{
 
-    int x = unit->xPos;
-    int y = unit->yPos;
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    InitTargets(x, y);
+	InitTargets(x, y);
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    MapAddInBoundedRange(x, y, GetItemMinRange(item), GetItemMaxRange(item));
+	MapAddInBoundedRange(x, y, GetItemMinRange(item), GetItemMaxRange(item));
 
-    ForEachUnitInRange(AddUnitToTargetListIfNotAllied);
+	ForEachUnitInRange(AddUnitToTargetListIfNotAllied);
 
-    TryAddTrapsToTargetList();
+	TryAddTrapsToTargetList();
 
-    return;
+	return;
 }
 
-void TryAddUnitToTradeTargetList(struct Unit* unit) {
+void TryAddUnitToTradeTargetList(struct Unit *unit)
+{
 
-    if (!IsSameAllegiance(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (!IsSameAllegiance(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    if (gSubjectUnit->pClassData->number == CLASS_PHANTOM || unit->pClassData->number == CLASS_PHANTOM) {
-        return;
-    }
+	if (gSubjectUnit->pClassData->number == CLASS_PHANTOM || unit->pClassData->number == CLASS_PHANTOM) {
+		return;
+	}
 
-    if (unit->statusIndex != UNIT_STATUS_BERSERK) {
+	if (unit->statusIndex != UNIT_STATUS_BERSERK) {
 
-        if (gSubjectUnit->items[0] != 0 || unit->items[0] != 0) {
+		if (gSubjectUnit->items[0] != 0 || unit->items[0] != 0) {
 
-            if (!(UNIT_CATTRIBUTES(unit) & CA_SUPPLY)) {
-                AddTarget(unit->xPos, unit->yPos, unit->index, 0);
-            }
-        }
-    }
+			if (!(UNIT_CATTRIBUTES(unit) & CA_SUPPLY)) {
+				AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+			}
+		}
+	}
 
-    if (unit->state & US_RESCUING) {
-        struct Unit* rescue = GetUnit(unit->rescue);
+	if (unit->state & US_RESCUING) {
+		struct Unit *rescue = GetUnit(unit->rescue);
 
-        if (UNIT_FACTION(rescue) != FACTION_BLUE) {
-            return;
-        }
+		if (UNIT_FACTION(rescue) != FACTION_BLUE) {
+			return;
+		}
 
-        if (gSubjectUnit->items[0] == 0 && rescue->items[0] == 0 ) {
-            return;
-        }
+		if (gSubjectUnit->items[0] == 0 && rescue->items[0] == 0 ) {
+			return;
+		}
 
-        AddTarget(unit->xPos, unit->yPos, rescue->index, 0);
-    }
+		AddTarget(unit->xPos, unit->yPos, rescue->index, 0);
+	}
 
-    return;
+	return;
 }
 
-void MakeTradeTargetList(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTradeTargetList(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
-    ForEachAdjacentUnit(x, y, TryAddUnitToTradeTargetList);
+	BmMapFill(gBmMapRange, 0);
+	ForEachAdjacentUnit(x, y, TryAddUnitToTradeTargetList);
 
-    if (gSubjectUnit->state & US_RESCUING) {
-        int count = GetSelectTargetCount();
-        TryAddUnitToTradeTargetList(GetUnit(gSubjectUnit->rescue));
+	if (gSubjectUnit->state & US_RESCUING) {
+		int count = GetSelectTargetCount();
 
-        if (count != GetSelectTargetCount()) {
-            GetTarget(count)->x = gSubjectUnit->xPos;
-            GetTarget(count)->y = gSubjectUnit->yPos;
-        }
-    }
+		TryAddUnitToTradeTargetList(GetUnit(gSubjectUnit->rescue));
 
-    return;
+		if (count != GetSelectTargetCount()) {
+			GetTarget(count)->x = gSubjectUnit->xPos;
+			GetTarget(count)->y = gSubjectUnit->yPos;
+		}
+	}
+
+	return;
 }
 
-void TryAddUnitToRescueTargetList(struct Unit* unit) {
+void TryAddUnitToRescueTargetList(struct Unit *unit)
+{
 
-    if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    if (gSubjectUnit->pClassData->number == CLASS_PHANTOM || unit->pClassData->number == CLASS_PHANTOM) {
-        return;
-    }
+	if (gSubjectUnit->pClassData->number == CLASS_PHANTOM || unit->pClassData->number == CLASS_PHANTOM) {
+		return;
+	}
 
-    if (unit->statusIndex == UNIT_STATUS_BERSERK) {
-        return;
-    }
+	if (unit->statusIndex == UNIT_STATUS_BERSERK) {
+		return;
+	}
 
-    if (unit->state & (US_RESCUING | US_RESCUED)) {
-        return;
-    }
+	if (unit->state & (US_RESCUING | US_RESCUED)) {
+		return;
+	}
 
-    if (!CanUnitRescue(gSubjectUnit, unit)) {
-        return;
-    }
+	if (!CanUnitRescue(gSubjectUnit, unit)) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeRescueTargetList(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeRescueTargetList(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, TryAddUnitToRescueTargetList);
+	ForEachAdjacentUnit(x, y, TryAddUnitToRescueTargetList);
 
-    return;
+	return;
 }
 
-void TryAddToDropTargetList(int x, int y) {
+void TryAddToDropTargetList(int x, int y)
+{
 
-    if (gBmMapUnit[y][x] != 0) {
-        return;
-    }
+	if (gBmMapUnit[y][x] != 0) {
+		return;
+	}
 
-    if (!CanUnitCrossTerrain(GetUnit(gSubjectUnit->rescue), gBmMapTerrain[y][x])) {
-        return;
-    }
+	if (!CanUnitCrossTerrain(GetUnit(gSubjectUnit->rescue), gBmMapTerrain[y][x])) {
+		return;
+	}
 
-    AddTarget(x, y, 0, 0);
+	AddTarget(x, y, 0, 0);
 
-    return;
+	return;
 }
 
-void MakeDropTargetList(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeDropTargetList(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentPosition(x, y, TryAddToDropTargetList);
-    return;
+	ForEachAdjacentPosition(x, y, TryAddToDropTargetList);
+	return;
 }
 
-void TryAddRescuedUnitToTakeTargetList(struct Unit* unit) {
+void TryAddRescuedUnitToTakeTargetList(struct Unit *unit)
+{
 
-    if (!IsSameAllegiance(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (!IsSameAllegiance(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    if (!(unit->state & US_RESCUING)) {
-        return;
-    }
+	if (!(unit->state & US_RESCUING)) {
+		return;
+	}
 
-    if (UNIT_CATTRIBUTES(unit) & CA_SUPPLY) {
-        return;
-    }
+	if (UNIT_CATTRIBUTES(unit) & CA_SUPPLY) {
+		return;
+	}
 
-    if (!CanUnitRescue(gSubjectUnit, GetUnit(unit->rescue))) {
-        return;
-    }
+	if (!CanUnitRescue(gSubjectUnit, GetUnit(unit->rescue))) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeTakeTargetList(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTakeTargetList(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, TryAddRescuedUnitToTakeTargetList);
+	ForEachAdjacentUnit(x, y, TryAddRescuedUnitToTakeTargetList);
 
-    return;
+	return;
 }
 
-void TryAddUnitToGiveTargetList(struct Unit* unit) {
+void TryAddUnitToGiveTargetList(struct Unit *unit)
+{
 
-    if (!IsSameAllegiance(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (!IsSameAllegiance(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    if (unit->state & US_RESCUING) {
-        return;
-    }
+	if (unit->state & US_RESCUING) {
+		return;
+	}
 
-    if (unit->statusIndex == UNIT_STATUS_BERSERK || unit->statusIndex == UNIT_STATUS_SLEEP) {
-        return;
-    }
+	if (unit->statusIndex == UNIT_STATUS_BERSERK || unit->statusIndex == UNIT_STATUS_SLEEP) {
+		return;
+	}
 
-    if (UNIT_CATTRIBUTES(unit) & CA_SUPPLY) {
-        return;
-    }
+	if (UNIT_CATTRIBUTES(unit) & CA_SUPPLY) {
+		return;
+	}
 
-    if (!CanUnitRescue(unit, GetUnit(gSubjectUnit->rescue))) {
-        return;
-    }
+	if (!CanUnitRescue(unit, GetUnit(gSubjectUnit->rescue))) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeGiveTargetList(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeGiveTargetList(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, TryAddUnitToGiveTargetList);
+	ForEachAdjacentUnit(x, y, TryAddUnitToGiveTargetList);
 
-    return;
+	return;
 }
 
-void TryAddUnitToTalkTargetList(struct Unit* unit) {
-    if (unit->statusIndex == UNIT_STATUS_BERSERK || unit->statusIndex == UNIT_STATUS_SLEEP) {
-        return;
-    }
+void TryAddUnitToTalkTargetList(struct Unit *unit)
+{
+	if (unit->statusIndex == UNIT_STATUS_BERSERK || unit->statusIndex == UNIT_STATUS_SLEEP) {
+		return;
+	}
 
-    if (!CheckForCharacterEvents(gSubjectUnit->pCharacterData->number, unit->pCharacterData->number)) {
-        return;
-    }
+	if (!CheckForCharacterEvents(gSubjectUnit->pCharacterData->number, unit->pCharacterData->number)) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, unit->pCharacterData->number);
+	AddTarget(unit->xPos, unit->yPos, unit->index, unit->pCharacterData->number);
 
-    return;
+	return;
 }
 
-void MakeTalkTargetList(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTalkTargetList(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, TryAddUnitToTalkTargetList);
+	ForEachAdjacentUnit(x, y, TryAddUnitToTalkTargetList);
 
-    return;
+	return;
 }
 
-void MakeTargetListForSupport(struct Unit* unit) {
-    int i;
-    int count;
+void MakeTargetListForSupport(struct Unit *unit)
+{
+	int i;
+	int count;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    InitTargets(unit->xPos, unit->yPos);
+	InitTargets(unit->xPos, unit->yPos);
 
-    count = GetUnitSupporterCount(gSubjectUnit);
+	count = GetUnitSupporterCount(gSubjectUnit);
 
-    for (i = 0; i < count; i++) {
+	for (i = 0; i < count; i++) {
 
-        struct Unit* other = GetUnitSupporterUnit(gSubjectUnit, i);
+		struct Unit *other = GetUnitSupporterUnit(gSubjectUnit, i);
 
-        if (other == 0) {
-            continue;
-        }
+		if (other == 0) {
+			continue;
+		}
 
-        if (RECT_DISTANCE(gSubjectUnit->xPos, gSubjectUnit->yPos, other->xPos, other->yPos) != 1) {
-            continue;
-        }
+		if (RECT_DISTANCE(gSubjectUnit->xPos, gSubjectUnit->yPos, other->xPos, other->yPos) != 1) {
+			continue;
+		}
 
-        if (!CanUnitSupportNow(gSubjectUnit, i)) {
-            continue;
-        }
+		if (!CanUnitSupportNow(gSubjectUnit, i)) {
+			continue;
+		}
 
-        if (other->state & (US_DEAD | US_NOT_DEPLOYED | US_RESCUED | US_BIT16)) {
-            continue;
-        }
+		if (other->state & (US_DEAD | US_NOT_DEPLOYED | US_RESCUED | US_BIT16)) {
+			continue;
+		}
 
-        if (other->statusIndex == UNIT_STATUS_BERSERK || other->statusIndex == UNIT_STATUS_SLEEP) {
-            continue;
-        }
+		if (other->statusIndex == UNIT_STATUS_BERSERK || other->statusIndex == UNIT_STATUS_SLEEP) {
+			continue;
+		}
 
-        AddTarget(other->xPos, other->yPos, other->index, i);
-    }
+		AddTarget(other->xPos, other->yPos, other->index, i);
+	}
 
-    return;
+	return;
 }
 
-void AddUnitToTargetListIfAllied(struct Unit* unit) {
-    if (AreUnitsAllied(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+void AddUnitToTargetListIfAllied(struct Unit *unit)
+{
+	if (AreUnitsAllied(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 1);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 1);
 
-    return;
+	return;
 }
 
-void FillBallistaRangeMaybe(struct Unit* unit) {
+void FillBallistaRangeMaybe(struct Unit *unit)
+{
 
-    int unk;
+	int unk;
 
-    int x = unit->xPos;
-    int y = unit->yPos;
-    gSubjectUnit = unit;
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    InitTargets(x, y);
+	gSubjectUnit = unit;
 
-    unk = GetSomeBallistaItemAt(x, y);
-    if (unk != 0) {
-        BmMapFill(gBmMapRange, 0);
+	InitTargets(x, y);
 
-        MapAddInBoundedRange(x, y, GetItemMinRange(unk), GetItemMaxRange(unk));
+	unk = GetSomeBallistaItemAt(x, y);
+	if (unk != 0) {
+		BmMapFill(gBmMapRange, 0);
 
-        ForEachUnitInRange(AddUnitToTargetListIfAllied);
+		MapAddInBoundedRange(x, y, GetItemMinRange(unk), GetItemMaxRange(unk));
 
-        TryAddTrapsToTargetList();
-    }
+		ForEachUnitInRange(AddUnitToTargetListIfAllied);
 
-    return;
+		TryAddTrapsToTargetList();
+	}
+
+	return;
 }
 
-void TryAddClosedDoorToTargetList(int x, int y) {
+void TryAddClosedDoorToTargetList(int x, int y)
+{
 
-    if (gBmMapTerrain[y][x] != TERRAIN_DOOR) {
-        return;
-    }
+	if (gBmMapTerrain[y][x] != TERRAIN_DOOR) {
+		return;
+	}
 
-    if (!IsThereClosedDoorAt(x, y)) {
-        return;
-    }
+	if (!IsThereClosedDoorAt(x, y)) {
+		return;
+	}
 
-    AddTarget(x, y, TERRAIN_DOOR, 0);
+	AddTarget(x, y, TERRAIN_DOOR, 0);
 
-    return;
+	return;
 }
 
-void TryAddBridgeToTargetList(int x, int y) {
+void TryAddBridgeToTargetList(int x, int y)
+{
 
-    if (gBmMapTerrain[y][x] != TERRAIN_BRIDGE_14) {
-        return;
-    }
+	if (gBmMapTerrain[y][x] != TERRAIN_BRIDGE_14) {
+		return;
+	}
 
-    if (!IsThereClosedDoorAt(x, y)) {
-        return;
-    }
+	if (!IsThereClosedDoorAt(x, y)) {
+		return;
+	}
 
-    AddTarget(x, y, TERRAIN_BRIDGE_14, 0);
+	AddTarget(x, y, TERRAIN_BRIDGE_14, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForDoorAndBridges(struct Unit* unit, int terrainId) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForDoorAndBridges(struct Unit *unit, int terrainId)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    switch (terrainId) {
-        case TERRAIN_DOOR:
-            ForEachAdjacentPosition(x, y, TryAddClosedDoorToTargetList);
-            return;
-        case TERRAIN_BRIDGE_14:
-            ForEachAdjacentPosition(x, y, TryAddBridgeToTargetList);
-            return;
-    }
+	switch (terrainId) {
+		case TERRAIN_DOOR:
+			ForEachAdjacentPosition(x, y, TryAddClosedDoorToTargetList);
+			return;
+		case TERRAIN_BRIDGE_14:
+			ForEachAdjacentPosition(x, y, TryAddBridgeToTargetList);
+			return;
+	}
 
-    return;
+	return;
 }
 
-void sub_8025864(int x, int y) {
-    switch (gBmMapTerrain[y][x]) {
-        case TERRAIN_DOOR:
-            AddTarget(x, y, TERRAIN_DOOR, 0);
-            return;
-        case TERRAIN_BRIDGE_14:
-            AddTarget(x, y, TERRAIN_BRIDGE_14, 0);
-            return;
-    }
+void sub_8025864(int x, int y)
+{
+	switch (gBmMapTerrain[y][x]) {
+		case TERRAIN_DOOR:
+			AddTarget(x, y, TERRAIN_DOOR, 0);
+			return;
+		case TERRAIN_BRIDGE_14:
+			AddTarget(x, y, TERRAIN_BRIDGE_14, 0);
+			return;
+	}
 
-    return;
+	return;
 }
 
-void MakeTargetListForPick(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForPick(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentPosition(x, y, sub_8025864);
+	ForEachAdjacentPosition(x, y, sub_8025864);
 
-    if (gBmMapTerrain[unit->yPos][unit->xPos] == TERRAIN_CHEST_FULL) {
-        AddTarget(x, y, TERRAIN_CHEST_FULL, 0);
-    }
+	if (gBmMapTerrain[unit->yPos][unit->xPos] == TERRAIN_CHEST_FULL) {
+		AddTarget(x, y, TERRAIN_CHEST_FULL, 0);
+	}
 
-    return;
+	return;
 }
 
-void MakeTerrainHealTargetList(int faction) {
-    int i;
+void MakeTerrainHealTargetList(int faction)
+{
+	int i;
 
-    InitTargets(0, 0);
+	InitTargets(0, 0);
 
-    for (i = faction + 1; i < faction + 0x40; i++) {
-        struct Unit* unit = GetUnit(i);
-        int terrainId;
-        int amount;
+	for (i = faction + 1; i < faction + 0x40; i++) {
+		struct Unit *unit = GetUnit(i);
+		int terrainId;
+		int amount;
 
-        if (!UNIT_IS_VALID(unit)) {
-            continue;
-        }
+		if (!UNIT_IS_VALID(unit)) {
+			continue;
+		}
 
-        if (unit->state & (US_DEAD | US_NOT_DEPLOYED | US_RESCUED | US_BIT16)) {
-            continue;
-        }
+		if (unit->state & (US_DEAD | US_NOT_DEPLOYED | US_RESCUED | US_BIT16)) {
+			continue;
+		}
 
-        terrainId = gBmMapTerrain[unit->yPos][unit->xPos];
+		terrainId = gBmMapTerrain[unit->yPos][unit->xPos];
 
-        if (GetTerrainHealAmount(terrainId) != 0 && (GetUnitCurrentHp(unit) != GetUnitMaxHp(unit))) {
-            amount = (GetTerrainHealAmount(terrainId) * GetUnitMaxHp(unit)) / 100;
-            AddTarget(unit->xPos, unit->yPos, unit->index, amount);
-        }
+		if (GetTerrainHealAmount(terrainId) != 0 && (GetUnitCurrentHp(unit) != GetUnitMaxHp(unit))) {
+			amount = (GetTerrainHealAmount(terrainId) * GetUnitMaxHp(unit)) / 100;
+			AddTarget(unit->xPos, unit->yPos, unit->index, amount);
+		}
 
-        if (GetTerrainHealsStatus(terrainId) == 0) {
-            continue;
-        }
+		if (GetTerrainHealsStatus(terrainId) == 0) {
+			continue;
+		}
 
-        if (unit->statusIndex == UNIT_STATUS_NONE) {
-            continue;
-        }
+		if (unit->statusIndex == UNIT_STATUS_NONE) {
+			continue;
+		}
 
-        if (unit->statusIndex == UNIT_STATUS_13) {
-            unit->statusIndex = UNIT_STATUS_PETRIFY;
-        }
+		if (unit->statusIndex == UNIT_STATUS_13) {
+			unit->statusIndex = UNIT_STATUS_PETRIFY;
+		}
 
-        AddTarget(unit->xPos, unit->yPos, unit->index, -1);
-    }
+		AddTarget(unit->xPos, unit->yPos, unit->index, -1);
+	}
 
-    return;
+	return;
 }
 
-void MakePoisonDamageTargetList(int faction) {
+void MakePoisonDamageTargetList(int faction)
+{
 
-    int i;
+	int i;
 
-    InitTargets(0, 0);
+	InitTargets(0, 0);
 
-    for (i = faction + 1; i < faction + 0x40; i++) {
-        struct Unit* unit = GetUnit(i);
+	for (i = faction + 1; i < faction + 0x40; i++) {
+		struct Unit *unit = GetUnit(i);
 
-        if (!UNIT_IS_VALID(unit)) {
-            continue;
-        }
+		if (!UNIT_IS_VALID(unit)) {
+			continue;
+		}
 
-        if (unit->state & (US_DEAD | US_NOT_DEPLOYED | US_RESCUED | US_BIT16)) {
-            continue;
-        }
+		if (unit->state & (US_DEAD | US_NOT_DEPLOYED | US_RESCUED | US_BIT16)) {
+			continue;
+		}
 
-        if (unit->statusIndex != UNIT_STATUS_POISON) {
-            continue;
-        }
+		if (unit->statusIndex != UNIT_STATUS_POISON) {
+			continue;
+		}
 
-        AddTarget(unit->xPos, unit->yPos, unit->index, NextRN_N(3) + 1);
-    }
+		AddTarget(unit->xPos, unit->yPos, unit->index, NextRN_N(3) + 1);
+	}
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08025A64
 void MakeGorgonEggHatchTargetList(int faction)
 {
-    int i;
-    s8 damage;
+	int i;
+	s8 damage;
 
-    InitTargets(0, 0);
+	InitTargets(0, 0);
 
-    // Amount that the Gorgon Egg "heals" per turn
-    damage = 5;
+	// Amount that the Gorgon Egg "heals" per turn
+	damage = 5;
 
-    for (i = faction + 1; i < faction + 0x40; i++)
-    {
-        struct Unit * unit = GetUnit(i);
-        struct Trap * trap;
-        int delay;
+	for (i = faction + 1; i < faction + 0x40; i++) {
+		struct Unit *unit = GetUnit(i);
+		struct Trap *trap;
+		int delay;
 
-        if (!UNIT_IS_VALID(unit))
-        {
-            continue;
-        }
+		if (!UNIT_IS_VALID(unit)) {
+			continue;
+		}
 
-        if (unit->state & (US_DEAD | US_NOT_DEPLOYED | US_RESCUED | US_BIT16))
-        {
-            continue;
-        }
+		if (unit->state & (US_DEAD | US_NOT_DEPLOYED | US_RESCUED | US_BIT16)) {
+			continue;
+		}
 
-        if (unit->statusIndex != UNIT_STATUS_RECOVER)
-        {
-            continue;
-        }
+		if (unit->statusIndex != UNIT_STATUS_RECOVER) {
+			continue;
+		}
 
-        trap = GetTypedTrapAt(unit->xPos, unit->yPos, TRAP_GORGON_EGG);
+		trap = GetTypedTrapAt(unit->xPos, unit->yPos, TRAP_GORGON_EGG);
 
-        if (trap == NULL)
-        {
-            continue;
-        }
+		if (trap == NULL) {
+			continue;
+		}
 
-        // If the egg was assigned a "delay", count down this value first.
-        // The egg does not start healing until the "delay" is 0.
+		// If the egg was assigned a "delay", count down this value first.
+		// The egg does not start healing until the "delay" is 0.
 
-        delay = (u8)trap->data[TRAP_EXTDATA_TRAP_TURNFIRST] - 1;
+		delay = (u8)trap->data[TRAP_EXTDATA_TRAP_TURNFIRST] - 1;
 
-        if (delay > 0)
-        {
-            trap->data[TRAP_EXTDATA_TRAP_TURNFIRST] = delay;
-            trap->data[TRAP_EXTDATA_TRAP_COUNTER] = trap->data[TRAP_EXTDATA_TRAP_TURNNEXT];
+		if (delay > 0) {
+			trap->data[TRAP_EXTDATA_TRAP_TURNFIRST] = delay;
+			trap->data[TRAP_EXTDATA_TRAP_COUNTER] = trap->data[TRAP_EXTDATA_TRAP_TURNNEXT];
 
-            continue;
-        }
+			continue;
+		}
 
-        trap->data[TRAP_EXTDATA_TRAP_TURNFIRST] = 0;
+		trap->data[TRAP_EXTDATA_TRAP_TURNFIRST] = 0;
 
-        trap->data[TRAP_EXTDATA_TRAP_COUNTER]++;
+		trap->data[TRAP_EXTDATA_TRAP_COUNTER]++;
 
-        // Only heal the egg if the turn counter is greater than the interval.
-        // In vanilla FE8, the interval is hard-coded to 1 (i.e. the egg heals every turn).
+		// Only heal the egg if the turn counter is greater than the interval.
+		// In vanilla FE8, the interval is hard-coded to 1 (i.e. the egg heals every turn).
 
-        if (trap->data[TRAP_EXTDATA_TRAP_COUNTER] < trap->data[TRAP_EXTDATA_TRAP_TURNNEXT])
-        {
-            continue;
-        }
+		if (trap->data[TRAP_EXTDATA_TRAP_COUNTER] < trap->data[TRAP_EXTDATA_TRAP_TURNNEXT]) {
+			continue;
+		}
 
-        trap->data[TRAP_EXTDATA_TRAP_COUNTER] = 0;
-        AddTarget(unit->xPos, unit->yPos, unit->index, damage);
-    }
+		trap->data[TRAP_EXTDATA_TRAP_COUNTER] = 0;
+		AddTarget(unit->xPos, unit->yPos, unit->index, damage);
+	}
 
-    return;
+	return;
 }
 
-void TryAddUnitToRefreshTargetList(struct Unit* unit) {
+void TryAddUnitToRefreshTargetList(struct Unit *unit)
+{
 
-    if (!IsSameAllegiance(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (!IsSameAllegiance(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    if (!(unit->state & US_UNSELECTABLE)) {
-        return;
-    }
+	if (!(unit->state & US_UNSELECTABLE)) {
+		return;
+	}
 
-    if (unit->statusIndex == UNIT_STATUS_PETRIFY || unit->statusIndex == UNIT_STATUS_13) {
-        return;
-    }
+	if (unit->statusIndex == UNIT_STATUS_PETRIFY || unit->statusIndex == UNIT_STATUS_13) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForRefresh(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForRefresh(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, TryAddUnitToRefreshTargetList);
+	ForEachAdjacentUnit(x, y, TryAddUnitToRefreshTargetList);
 
-    return;
+	return;
 }
 
-void AddAsTarget_IfCanStealFrom(struct Unit* unit) {
-    int i;
+void AddAsTarget_IfCanStealFrom(struct Unit *unit)
+{
+	int i;
 
-    if (UNIT_FACTION(unit) != FACTION_RED) {
-        return;
-    }
+	if (UNIT_FACTION(unit) != FACTION_RED) {
+		return;
+	}
 
-    if (gActiveUnit->spd < unit->spd) {
-        return;
-    }
+	if (gActiveUnit->spd < unit->spd) {
+		return;
+	}
 
-    for (i = 0; i < UNIT_ITEM_COUNT; i++) {
-        u16 item = unit->items[i];
+	for (i = 0; i < UNIT_ITEM_COUNT; i++) {
+		u16 item = unit->items[i];
 
-        if (item == 0) {
-            return;
-        }
+		if (item == 0) {
+			return;
+		}
 
-        if (!IsItemStealable(item)) {
-            continue;
-        }
+		if (!IsItemStealable(item)) {
+			continue;
+		}
 
-        AddTarget(unit->xPos, unit->yPos, unit->index, 0);
-        return;
-    }
+		AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+		return;
+	}
 
-    return;
+	return;
 }
 
-void MakeTargetListForSteal(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForSteal(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, AddAsTarget_IfCanStealFrom);
+	ForEachAdjacentUnit(x, y, AddAsTarget_IfCanStealFrom);
 
-    return;
+	return;
 }
 
-void AddAsTarget_IfPositionCleanForSummon(int x, int y) {
+void AddAsTarget_IfPositionCleanForSummon(int x, int y)
+{
 
-    if (gBmMapUnit[y][x] != 0) {
-        return;
-    }
+	if (gBmMapUnit[y][x] != 0) {
+		return;
+	}
 
-    if (gPlaySt.chapterVisionRange != 0 && gBmMapFog[y][x] == 0) {
-        return;
-    }
+	if (gPlaySt.chapterVisionRange != 0 && gBmMapFog[y][x] == 0) {
+		return;
+	}
 
-    if (!CanUnitCrossTerrain(gSubjectUnit, gBmMapTerrain[y][x])) {
-        return;
-    }
+	if (!CanUnitCrossTerrain(gSubjectUnit, gBmMapTerrain[y][x])) {
+		return;
+	}
 
-    AddTarget(x, y, 0, 0);
+	AddTarget(x, y, 0, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForSummon(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForSummon(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentPosition(x, y, AddAsTarget_IfPositionCleanForSummon);
+	ForEachAdjacentPosition(x, y, AddAsTarget_IfPositionCleanForSummon);
 
-    return;
+	return;
 }
 
-void sub_8025CD8(int x, int y) {
+void sub_8025CD8(int x, int y)
+{
 
-    if (gBmMapUnit[y][x] != 0) {
-        return;
-    }
+	if (gBmMapUnit[y][x] != 0) {
+		return;
+	}
 
-    if (gPlaySt.chapterVisionRange != 0 && gBmMapFog[y][x] == 0) {
-        return;
-    }
+	if (gPlaySt.chapterVisionRange != 0 && gBmMapFog[y][x] == 0) {
+		return;
+	}
 
-    if (!CanUnitCrossTerrain(gSubjectUnit, gBmMapTerrain[y][x])) {
-        return;
-    }
+	if (!CanUnitCrossTerrain(gSubjectUnit, gBmMapTerrain[y][x])) {
+		return;
+	}
 
-    AddTarget(x, y, 0, 0);
+	AddTarget(x, y, 0, 0);
 
-    return;
+	return;
 }
 
-void sub_8025D48(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void sub_8025D48(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    sub_8024FD8(x, y + 4, sub_8025CD8);
+	sub_8024FD8(x, y + 4, sub_8025CD8);
 
-    return;
+	return;
 }
 
-void sub_8025D80(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void sub_8025D80(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    sub_8024FD8(x - 4, y, sub_8025CD8);
+	sub_8024FD8(x - 4, y, sub_8025CD8);
 
-    return;
+	return;
 }
 
-void sub_8025DB8(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void sub_8025DB8(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    sub_8024FD8(x + 4, y, sub_8025CD8);
+	sub_8024FD8(x + 4, y, sub_8025CD8);
 
-    return;
+	return;
 }
 
-void sub_8025DF0(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void sub_8025DF0(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    sub_8024FD8(x, y - 4, sub_8025CD8);
+	sub_8024FD8(x, y - 4, sub_8025CD8);
 
-    return;
+	return;
 }
 
-void TryAddUnitToHealTargetList(struct Unit* unit) {
+void TryAddUnitToHealTargetList(struct Unit *unit)
+{
 
-    if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    if (unit->state & US_RESCUED) {
-        return;
-    }
+	if (unit->state & US_RESCUED) {
+		return;
+	}
 
-    if (GetUnitCurrentHp(unit) == GetUnitMaxHp(unit)) {
-        return;
-    }
+	if (GetUnitCurrentHp(unit) == GetUnitMaxHp(unit)) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForAdjacentHeal(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForAdjacentHeal(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, TryAddUnitToHealTargetList);
+	ForEachAdjacentUnit(x, y, TryAddUnitToHealTargetList);
 
-    return;
+	return;
 }
 
-void MakeTargetListForRangedHeal(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForRangedHeal(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    InitTargets(x, y);
+	InitTargets(x, y);
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    MapAddInRange(x, y, GetUnitMagBy2Range(gSubjectUnit), 1);
+	MapAddInRange(x, y, GetUnitMagBy2Range(gSubjectUnit), 1);
 
-    ForEachUnitInRange(TryAddUnitToHealTargetList);
+	ForEachUnitInRange(TryAddUnitToHealTargetList);
 
-    return;
+	return;
 }
 
-void AddToTargetListIfNotAllied(struct Unit* unit) {
+void AddToTargetListIfNotAllied(struct Unit *unit)
+{
 
-    if (AreUnitsAllied(gSubjectUnit->index, unit->index) == 1) {
-        return;
-    }
+	if (AreUnitsAllied(gSubjectUnit->index, unit->index) == 1) {
+		return;
+	}
 
-    if (unit->statusIndex != UNIT_STATUS_NONE) {
-        return;
-    }
+	if (unit->statusIndex != UNIT_STATUS_NONE) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForFuckingNightmare(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForFuckingNightmare(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    InitTargets(x, y);
+	InitTargets(x, y);
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    MapAddInRange(x, y, 3, 1);
-    MapAddInRange(x, y, 0, -1);
+	MapAddInRange(x, y, 3, 1);
+	MapAddInRange(x, y, 0, -1);
 
-    ForEachUnitInRange(AddToTargetListIfNotAllied);
+	ForEachUnitInRange(AddToTargetListIfNotAllied);
 
-    return;
+	return;
 }
 
-void TryAddUnitToRestoreTargetList(struct Unit* unit) {
+void TryAddUnitToRestoreTargetList(struct Unit *unit)
+{
 
-    if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    if (unit->state & US_RESCUED) {
-        return;
-    }
+	if (unit->state & US_RESCUED) {
+		return;
+	}
 
-    if (unit->statusIndex == UNIT_STATUS_NONE) {
-        return;
-    }
+	if (unit->statusIndex == UNIT_STATUS_NONE) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForRestore(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForRestore(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, TryAddUnitToRestoreTargetList);
+	ForEachAdjacentUnit(x, y, TryAddUnitToRestoreTargetList);
 
-    return;
+	return;
 }
 
-void TryAddUnitToBarrierTargetList(struct Unit* unit) {
+void TryAddUnitToBarrierTargetList(struct Unit *unit)
+{
 
-    if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    if (unit->state & US_RESCUED) {
-        return;
-    }
+	if (unit->state & US_RESCUED) {
+		return;
+	}
 
-    if (unit->barrierDuration >= 7) {
-        return;
-    }
+	if (unit->barrierDuration >= 7) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForBarrier(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForBarrier(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, TryAddUnitToBarrierTargetList);
+	ForEachAdjacentUnit(x, y, TryAddUnitToBarrierTargetList);
 
-    return;
+	return;
 }
 
-void TryAddUnitToRescueStaffTargetList(struct Unit* unit) {
+void TryAddUnitToRescueStaffTargetList(struct Unit *unit)
+{
 
-    if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForRescueStaff(struct Unit* unit) {
-    gSubjectUnit = unit;
+void MakeTargetListForRescueStaff(struct Unit *unit)
+{
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachUnitInMagBy2Range(TryAddUnitToRescueStaffTargetList);
+	ForEachUnitInMagBy2Range(TryAddUnitToRescueStaffTargetList);
 
-    return;
+	return;
 }
 
-void TryAddUnitToSilenceTargetList(struct Unit* unit) {
+void TryAddUnitToSilenceTargetList(struct Unit *unit)
+{
 
-    if (AreUnitsAllied(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (AreUnitsAllied(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    if (unit->statusIndex != UNIT_STATUS_NONE && unit->statusIndex != UNIT_STATUS_SILENCED) {
-        return;
-    }
+	if (unit->statusIndex != UNIT_STATUS_NONE && unit->statusIndex != UNIT_STATUS_SILENCED) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void TryAddUnitToSleepTargetList(struct Unit* unit) {
+void TryAddUnitToSleepTargetList(struct Unit *unit)
+{
 
-    if (AreUnitsAllied(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (AreUnitsAllied(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    if (unit->statusIndex != UNIT_STATUS_NONE && unit->statusIndex != UNIT_STATUS_SLEEP) {
-        return;
-    }
+	if (unit->statusIndex != UNIT_STATUS_NONE && unit->statusIndex != UNIT_STATUS_SLEEP) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void TryAddUnitToBerserkTargetList(struct Unit* unit) {
+void TryAddUnitToBerserkTargetList(struct Unit *unit)
+{
 
-    if (AreUnitsAllied(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (AreUnitsAllied(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    if (unit->statusIndex != UNIT_STATUS_NONE && unit->statusIndex != UNIT_STATUS_BERSERK) {
-        return;
-    }
+	if (unit->statusIndex != UNIT_STATUS_NONE && unit->statusIndex != UNIT_STATUS_BERSERK) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForSilence(struct Unit* unit) {
-    gSubjectUnit = unit;
+void MakeTargetListForSilence(struct Unit *unit)
+{
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachUnitInMagBy2Range(TryAddUnitToSilenceTargetList);
+	ForEachUnitInMagBy2Range(TryAddUnitToSilenceTargetList);
 
-    return;
+	return;
 }
 
-void MakeTargetListForSleep(struct Unit* unit) {
-    gSubjectUnit = unit;
+void MakeTargetListForSleep(struct Unit *unit)
+{
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachUnitInMagBy2Range(TryAddUnitToSleepTargetList);
+	ForEachUnitInMagBy2Range(TryAddUnitToSleepTargetList);
 
-    return;
+	return;
 }
 
-void MakeTargetListForBerserk(struct Unit* unit) {
-    gSubjectUnit = unit;
+void MakeTargetListForBerserk(struct Unit *unit)
+{
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachUnitInMagBy2Range(TryAddUnitToBerserkTargetList);
+	ForEachUnitInMagBy2Range(TryAddUnitToBerserkTargetList);
 
-    return;
+	return;
 }
 
-void TryAddUnitToWarpTargetList(struct Unit* unit) {
-    if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+void TryAddUnitToWarpTargetList(struct Unit *unit)
+{
+	if (!AreUnitsAllied(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForWarp(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForWarp(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, TryAddUnitToWarpTargetList);
+	ForEachAdjacentUnit(x, y, TryAddUnitToWarpTargetList);
 
-    return;
+	return;
 }
 
-void MakeTargetListForUnlock(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForUnlock(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachPosIn12Range(x, y, TryAddClosedDoorToTargetList);
+	ForEachPosIn12Range(x, y, TryAddClosedDoorToTargetList);
 
-    return;
+	return;
 }
 
-void TryAddUnitToHammerneTargetList(struct Unit* unit) {
-    int i;
+void TryAddUnitToHammerneTargetList(struct Unit *unit)
+{
+	int i;
 
-    if (!IsSameAllegiance(gSubjectUnit->index, unit->index)) {
-        return;
-    }
+	if (!IsSameAllegiance(gSubjectUnit->index, unit->index)) {
+		return;
+	}
 
-    for (i = 0; i < UNIT_ITEM_COUNT; i++) {
-        if (IsItemHammernable(unit->items[i])) {
-            AddTarget(unit->xPos, unit->yPos, unit->index, 0);
-            break;
-        }
-    }
+	for (i = 0; i < UNIT_ITEM_COUNT; i++) {
+		if (IsItemHammernable(unit->items[i])) {
+			AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+			break;
+		}
+	}
 
-    return;
+	return;
 }
 
-void MakeTargetListForHammerne(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForHammerne(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, TryAddUnitToHammerneTargetList);
+	ForEachAdjacentUnit(x, y, TryAddUnitToHammerneTargetList);
 
-    return;
+	return;
 }
 
-void MakeTargetListForLatona(struct Unit* unit) {
-    int phase;
-    int i;
+void MakeTargetListForLatona(struct Unit *unit)
+{
+	int phase;
+	int i;
 
-    InitTargets(unit->xPos, unit->yPos);
+	InitTargets(unit->xPos, unit->yPos);
 
-    phase = GetCurrentPhase();
+	phase = GetCurrentPhase();
 
-    for (i = phase + 1; i < phase + 0x80; i++) {
-        struct Unit* other = GetUnit(i);
+	for (i = phase + 1; i < phase + 0x80; i++) {
+		struct Unit *other = GetUnit(i);
 
-        if (!UNIT_IS_VALID(other)) {
-            continue;
-        }
+		if (!UNIT_IS_VALID(other)) {
+			continue;
+		}
 
-        if (other->state & US_UNAVAILABLE) {
-            continue;
-        }
+		if (other->state & US_UNAVAILABLE) {
+			continue;
+		}
 
-        if ((GetUnitCurrentHp(other) == GetUnitMaxHp(other)) && (other->statusIndex == UNIT_STATUS_NONE)) {
-            continue;
-        }
+		if ((GetUnitCurrentHp(other) == GetUnitMaxHp(other)) && (other->statusIndex == UNIT_STATUS_NONE)) {
+			continue;
+		}
 
-        if (other == unit) {
-            continue;
-        }
+		if (other == unit) {
+			continue;
+		}
 
-        AddTarget(other->xPos, other->yPos, other->index, 0);
-    }
+		AddTarget(other->xPos, other->yPos, other->index, 0);
+	}
 
-    return;
+	return;
 }
 
-void sub_8026414(int unk) {
-    int i;
-    int count = GetSelectTargetCount();
+void sub_8026414(int unk)
+{
+	int i;
+	int count = GetSelectTargetCount();
 
-    for (i = 0; i < count; i++) {
-        struct SelectTarget* target = GetTarget(i);
+	for (i = 0; i < count; i++) {
+		struct SelectTarget *target = GetTarget(i);
 
-        struct Unit* unit = GetUnit(target->uid);
+		struct Unit *unit = GetUnit(target->uid);
 
-        if (GetUnitCurrentHp(unit) <= target->extra) {
-            PidStatsRecordDefeatInfo(unit->pCharacterData->number, 0, unk);
-            PidStatsRecordLoseData(unit->pCharacterData->number);
-        }
-    }
+		if (GetUnitCurrentHp(unit) <= target->extra) {
+			PidStatsRecordDefeatInfo(unit->pCharacterData->number, 0, unk);
+			PidStatsRecordLoseData(unit->pCharacterData->number);
+		}
+	}
 
-    return;
+	return;
 }
 
-void TryAddToMineTargetList(int x, int y) {
-    struct Trap* trap;
+void TryAddToMineTargetList(int x, int y)
+{
+	struct Trap *trap;
 
-    if (gBmMapUnit[y][x] != 0) {
-        return;
-    }
+	if (gBmMapUnit[y][x] != 0) {
+		return;
+	}
 
-    if ((gPlaySt.chapterVisionRange != 0) && (gBmMapFog[y][x] == 0)) {
-        return;
-    }
+	if ((gPlaySt.chapterVisionRange != 0) && (gBmMapFog[y][x] == 0)) {
+		return;
+	}
 
-    if (!CanUnitCrossTerrain(gSubjectUnit, gBmMapTerrain[y][x])) {
-        return;
-    }
+	if (!CanUnitCrossTerrain(gSubjectUnit, gBmMapTerrain[y][x])) {
+		return;
+	}
 
-    trap = GetTrapAt(x, y);
+	trap = GetTrapAt(x, y);
 
-    if ((trap != 0) && (trap->type != TRAP_TORCHLIGHT)) {
-        return;
-    }
+	if ((trap != 0) && (trap->type != TRAP_TORCHLIGHT)) {
+		return;
+	}
 
-    AddTarget(x, y, 0, 0);
+	AddTarget(x, y, 0, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForMine(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForMine(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
-    ForEachAdjacentPosition(x, y, TryAddToMineTargetList);
+	BmMapFill(gBmMapRange, 0);
+	ForEachAdjacentPosition(x, y, TryAddToMineTargetList);
 
-    return;
+	return;
 }
 
-void TryAddToLightRuneTargetList(int x, int y) {
-    struct Trap* trap;
+void TryAddToLightRuneTargetList(int x, int y)
+{
+	struct Trap *trap;
 
-    if (gBmMapUnit[y][x] != 0) {
-        return;
-    }
+	if (gBmMapUnit[y][x] != 0) {
+		return;
+	}
 
-    trap = GetTrapAt(x, y);
+	trap = GetTrapAt(x, y);
 
-    if (trap != 0) {
-        return;
-    }
+	if (trap != 0) {
+		return;
+	}
 
-    if (TerrainTable_MovCost_FlyNormal[gBmMapTerrain[y][x]] <= 0) {
-        return;
-    }
+	if (TerrainTable_MovCost_FlyNormal[gBmMapTerrain[y][x]] <= 0) {
+		return;
+	}
 
-    AddTarget(x, y, 0, 0);
+	AddTarget(x, y, 0, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForLightRune(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForLightRune(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentPosition(x, y, TryAddToLightRuneTargetList);
+	ForEachAdjacentPosition(x, y, TryAddToLightRuneTargetList);
 
-    return;
+	return;
 }
 
-void TryAddUnitToDanceRingTargetList(struct Unit* unit) {
+void TryAddUnitToDanceRingTargetList(struct Unit *unit)
+{
 
-    if (UNIT_FACTION(unit) != FACTION_BLUE) {
-        return;
-    }
+	if (UNIT_FACTION(unit) != FACTION_BLUE) {
+		return;
+	}
 
-    if (unit->statusIndex != UNIT_STATUS_NONE) {
-        return;
-    }
+	if (unit->statusIndex != UNIT_STATUS_NONE) {
+		return;
+	}
 
-    AddTarget(unit->xPos, unit->yPos, unit->index, 0);
+	AddTarget(unit->xPos, unit->yPos, unit->index, 0);
 
-    return;
+	return;
 }
 
-void MakeTargetListForDanceRing(struct Unit* unit) {
-    int x = unit->xPos;
-    int y = unit->yPos;
+void MakeTargetListForDanceRing(struct Unit *unit)
+{
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    gSubjectUnit = unit;
+	gSubjectUnit = unit;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    ForEachAdjacentUnit(x, y, TryAddUnitToDanceRingTargetList);
+	ForEachAdjacentUnit(x, y, TryAddUnitToDanceRingTargetList);
 
-    return;
+	return;
 }

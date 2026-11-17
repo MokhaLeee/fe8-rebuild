@@ -26,28 +26,28 @@
 #include "bmusemind.h"
 #include "constants/songs.h"
 
-s8 CanUnitCrossTerrain(struct Unit* unit, int terrain);
+s8 CanUnitCrossTerrain(struct Unit *unit, int terrain);
 
  struct ProcCmd CONST_DATA ProcScr_PostWarpStaffAction[] = {
-    PROC_SLEEP(0),
-    PROC_CALL_2(PostWarpStaff_ExecTrap),
-    PROC_CALL(sub_802EF80),
+	PROC_SLEEP(0),
+	PROC_CALL_2(PostWarpStaff_ExecTrap),
+	PROC_CALL(sub_802EF80),
 
-    PROC_END,
+	PROC_END,
 };
 
  struct ProcCmd CONST_DATA ProcScr_SetTargetStatus[] = {
-    PROC_SLEEP(1),
-    PROC_CALL(AfterItemUse_SetTargetStatus),
+	PROC_SLEEP(1),
+	PROC_CALL(AfterItemUse_SetTargetStatus),
 
-    PROC_END,
+	PROC_END,
 };
 
  struct ProcCmd CONST_DATA ProcScr_ExecNightmareStaff[] = {
-    PROC_SLEEP(1),
-    PROC_CALL(sub_8030050),
+	PROC_SLEEP(1),
+	PROC_CALL(sub_8030050),
 
-    PROC_END,
+	PROC_END,
 };
 
 // lightrunefx.s
@@ -57,1044 +57,1084 @@ void StartLightRuneAnim2(ProcPtr, int, int);
 // minefx.s
 void StartMineAnim(ProcPtr, int, int);
 
-void ExecStandardHeal(ProcPtr proc) {
-    int amount;
+void ExecStandardHeal(ProcPtr proc)
+{
+	int amount;
 
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
+	BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
 
-    amount = GetUnitItemHealAmount(
-        GetUnit(gActionData.subjectIndex),
-        GetUnit(gActionData.subjectIndex)->items[gActionData.itemSlotIndex]
-    );
+	amount = GetUnitItemHealAmount(
+		GetUnit(gActionData.subjectIndex),
+		GetUnit(gActionData.subjectIndex)->items[gActionData.itemSlotIndex]
+	);
 
-    AddUnitHp(GetUnit(gActionData.targetIndex), amount);
+	AddUnitHp(GetUnit(gActionData.targetIndex), amount);
 
-    gBattleHitIterator->hpChange = gBattleTarget.unit.curHP - GetUnitCurrentHp(GetUnit(gActionData.targetIndex));
+	gBattleHitIterator->hpChange = gBattleTarget.unit.curHP - GetUnitCurrentHp(GetUnit(gActionData.targetIndex));
 
-    gBattleTarget.unit.curHP = GetUnitCurrentHp(GetUnit(gActionData.targetIndex));
+	gBattleTarget.unit.curHP = GetUnitCurrentHp(GetUnit(gActionData.targetIndex));
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecRestore(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecRestore(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
+	BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
 
-    if (GetUnit(gActionData.targetIndex)->statusIndex == UNIT_STATUS_PETRIFY) {
-        SetUnitStatus(GetUnit(gActionData.targetIndex), UNIT_STATUS_NONE);
-        GetUnit(gActionData.targetIndex)->state &= ~(US_UNSELECTABLE | US_HAS_MOVED | US_HAS_MOVED_AI);
-    }
+	if (GetUnit(gActionData.targetIndex)->statusIndex == UNIT_STATUS_PETRIFY) {
+		SetUnitStatus(GetUnit(gActionData.targetIndex), UNIT_STATUS_NONE);
+		GetUnit(gActionData.targetIndex)->state &= ~(US_UNSELECTABLE | US_HAS_MOVED | US_HAS_MOVED_AI);
+	}
 
-    SetUnitStatus(GetUnit(gActionData.targetIndex), UNIT_STATUS_NONE);
+	SetUnitStatus(GetUnit(gActionData.targetIndex), UNIT_STATUS_NONE);
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecBarrierStaff(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecBarrierStaff(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
+	BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
 
-    GetUnit(gActionData.targetIndex)->barrierDuration = 7;
+	GetUnit(gActionData.targetIndex)->barrierDuration = 7;
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void GetRescueStaffeePosition(struct Unit* unit, struct Unit* target, int* xOut, int* yOut) {
-    int foundDist, dist;
-    int ix, iy;
+void GetRescueStaffeePosition(struct Unit *unit, struct Unit *target, int *xOut, int *yOut)
+{
+	int foundDist, dist;
+	int ix, iy;
 
-    *xOut = -1;
-    *yOut = -1;
+	*xOut = -1;
+	*yOut = -1;
 
-    foundDist = 9999;
+	foundDist = 9999;
 
-    GenerateUnitExtendedMovementMap(unit);
+	GenerateUnitExtendedMovementMap(unit);
 
-    gBmMapUnit[unit->yPos][unit->xPos] = -1;
+	gBmMapUnit[unit->yPos][unit->xPos] = -1;
 
-    for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
-        for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
+	for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
+		for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
 
-            if (gBmMapMovement[iy][ix] > 0x78) {
-                continue;
-            }
+			if (gBmMapMovement[iy][ix] > 0x78) {
+				continue;
+			}
 
-            if (gBmMapUnit[iy][ix] != 0) {
-                continue;
-            }
+			if (gBmMapUnit[iy][ix] != 0) {
+				continue;
+			}
 
-            if ((gBmMapHidden[iy][ix] & HIDDEN_BIT_UNIT) != 0) {
-                continue;
-            }
+			if ((gBmMapHidden[iy][ix] & HIDDEN_BIT_UNIT) != 0) {
+				continue;
+			}
 
-            if (!CanUnitCrossTerrain(target, gBmMapTerrain[iy][ix])) {
-                continue;
-            }
+			if (!CanUnitCrossTerrain(target, gBmMapTerrain[iy][ix])) {
+				continue;
+			}
 
-            dist = RECT_DISTANCE(ix, iy, unit->xPos, unit->yPos);
+			dist = RECT_DISTANCE(ix, iy, unit->xPos, unit->yPos);
 
-            if (foundDist >= dist) {
-                foundDist = dist;
-                *xOut = ix;
-                *yOut = iy;
-            }
-        }
-    }
+			if (foundDist >= dist) {
+				foundDist = dist;
+				*xOut = ix;
+				*yOut = iy;
+			}
+		}
+	}
 
-    if (*xOut >= 0 && *yOut >= 0) {
-        return;
-    }
+	if (*xOut >= 0 && *yOut >= 0) {
+		return;
+	}
 
-    foundDist = 9999;
+	foundDist = 9999;
 
-    GenerateExtendedMovementMap(unit->xPos, unit->yPos, TerrainTable_MovCost_FlyNormal);
+	GenerateExtendedMovementMap(unit->xPos, unit->yPos, TerrainTable_MovCost_FlyNormal);
 
-    gBmMapUnit[unit->yPos][unit->xPos] = -1;
+	gBmMapUnit[unit->yPos][unit->xPos] = -1;
 
-    for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
-        for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
+	for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
+		for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
 
-            if (gBmMapMovement[iy][ix] > 0x78) {
-                continue;
-            }
+			if (gBmMapMovement[iy][ix] > 0x78) {
+				continue;
+			}
 
-            if (gBmMapUnit[iy][ix] != 0) {
-                continue;
-            }
+			if (gBmMapUnit[iy][ix] != 0) {
+				continue;
+			}
 
-            if ((gBmMapHidden[iy][ix] & HIDDEN_BIT_UNIT) != 0) {
-                continue;
-            }
+			if ((gBmMapHidden[iy][ix] & HIDDEN_BIT_UNIT) != 0) {
+				continue;
+			}
 
-            if (!CanUnitCrossTerrain(target, gBmMapTerrain[iy][ix])) {
-                continue;
-            }
+			if (!CanUnitCrossTerrain(target, gBmMapTerrain[iy][ix])) {
+				continue;
+			}
 
-            dist = RECT_DISTANCE(ix, iy, unit->xPos, unit->yPos);
+			dist = RECT_DISTANCE(ix, iy, unit->xPos, unit->yPos);
 
-            if (foundDist >= dist) {
-                foundDist = dist;
-                *xOut = ix;
-                *yOut = iy;
-            }
-        }
-    }
+			if (foundDist >= dist) {
+				foundDist = dist;
+				*xOut = ix;
+				*yOut = iy;
+			}
+		}
+	}
 
-    if (*xOut >= 0 && *yOut >= 0) {
-        return;
-    }
+	if (*xOut >= 0 && *yOut >= 0) {
+		return;
+	}
 
-    *xOut = target->xPos;
-    *yOut = target->yPos;
+	*xOut = target->xPos;
+	*yOut = target->yPos;
 
-    return;
+	return;
 }
 
-void ExecRescueStaff(ProcPtr proc) {
-    int x, y;
+void ExecRescueStaff(ProcPtr proc)
+{
+	int x, y;
 
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
+	BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
 
-    GetRescueStaffeePosition(
-        GetUnit(gActionData.subjectIndex),
-        GetUnit(gActionData.targetIndex),
-        &x,
-        &y
-    );
+	GetRescueStaffeePosition(
+		GetUnit(gActionData.subjectIndex),
+		GetUnit(gActionData.targetIndex),
+		&x,
+		&y
+	);
 
-    GetUnit(gActionData.targetIndex)->xPos = x;
-    GetUnit(gActionData.targetIndex)->yPos = y;
+	GetUnit(gActionData.targetIndex)->xPos = x;
+	GetUnit(gActionData.targetIndex)->yPos = y;
 
-    gBattleTarget.changeHP = x;
-    gBattleTarget.changePow = y;
+	gBattleTarget.changeHP = x;
+	gBattleTarget.changePow = y;
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-int PostWarpStaff_ExecTrap(ProcPtr proc) {
-    return ExecTrapAfterWarp(proc);
+int PostWarpStaff_ExecTrap(ProcPtr proc)
+{
+	return ExecTrapAfterWarp(proc);
 }
 
-int sub_802EF80() {
-    EndMu(GetUnitMu(GetUnit(gActionData.targetIndex)));
+int sub_802EF80()
+{
+	EndMu(GetUnitMu(GetUnit(gActionData.targetIndex)));
 
-    RefreshEntityBmMaps();
-    RenderBmMap();
-    RefreshUnitSprites();
-    ForceSyncUnitSpriteSheet();
+	RefreshEntityBmMaps();
+	RenderBmMap();
+	RefreshUnitSprites();
+	ForceSyncUnitSpriteSheet();
 
-    // return; // BUG?
+	// return; // BUG?
 }
 
-void ExecWarpStaff(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecWarpStaff(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
+	BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
 
-    GetUnit(gActionData.targetIndex)->xPos = gActionData.xOther;
-    GetUnit(gActionData.targetIndex)->yPos = gActionData.yOther;
+	GetUnit(gActionData.targetIndex)->xPos = gActionData.xOther;
+	GetUnit(gActionData.targetIndex)->yPos = gActionData.yOther;
 
-    gBattleTarget.changeHP = gActionData.xOther;
-    gBattleTarget.changePow = gActionData.yOther;
+	gBattleTarget.changeHP = gActionData.xOther;
+	gBattleTarget.changePow = gActionData.yOther;
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    Proc_StartBlocking(ProcScr_PostWarpStaffAction, proc);
+	Proc_StartBlocking(ProcScr_PostWarpStaffAction, proc);
 
-    return;
+	return;
 }
 
-void ExecStatusStaff(ProcPtr proc) {
-    int accuracy;
+void ExecStatusStaff(ProcPtr proc)
+{
+	int accuracy;
 
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
+	BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
 
-    accuracy = GetOffensiveStaffAccuracy(
-        GetUnit(gActionData.subjectIndex),
-        GetUnit(gActionData.targetIndex)
-    );
+	accuracy = GetOffensiveStaffAccuracy(
+		GetUnit(gActionData.subjectIndex),
+		GetUnit(gActionData.targetIndex)
+	);
 
-    gBattleActor.battleEffectiveHitRate = accuracy;
+	gBattleActor.battleEffectiveHitRate = accuracy;
 
-    if (!Roll1RN(accuracy)) {
-        gBattleHitIterator->attributes |= BATTLE_HIT_ATTR_MISS;
-    } else {
-        switch (GetItemIndex(gBattleActor.weaponBefore)) {
-            case ITEM_STAFF_BERSERK:
-                gBattleTarget.statusOut = UNIT_STATUS_BERSERK;
-                break;
-            case ITEM_STAFF_SILENCE:
-                gBattleTarget.statusOut = UNIT_STATUS_SILENCED;
-                break;
-            case ITEM_STAFF_SLEEP:
-                gBattleTarget.statusOut = UNIT_STATUS_SLEEP;
-                break;
-            case ITEM_MONSTER_STONE:
-                switch (gPlaySt.faction) {
-                    case FACTION_BLUE:
-                        if (UNIT_FACTION(&gBattleTarget.unit) == FACTION_BLUE) {
-                            gBattleTarget.statusOut = UNIT_STATUS_13;
-                        } else {
-                            gBattleTarget.statusOut = UNIT_STATUS_PETRIFY;
-                        }
-                        break;
-                    case FACTION_RED:
-                        if (UNIT_FACTION(&gBattleTarget.unit) == FACTION_RED) {
-                            gBattleTarget.statusOut = UNIT_STATUS_13;
-                        } else {
-                            gBattleTarget.statusOut = UNIT_STATUS_PETRIFY;
-                        }
-                        break;
-                    case FACTION_GREEN:
-                        if (UNIT_FACTION(&gBattleTarget.unit) == FACTION_GREEN) {
-                            gBattleTarget.statusOut = UNIT_STATUS_13;
-                        } else {
-                            gBattleTarget.statusOut = UNIT_STATUS_PETRIFY;
-                        }
-                        break;
-                }
-                break;
-        }
-    }
+	if (!Roll1RN(accuracy)) {
+		gBattleHitIterator->attributes |= BATTLE_HIT_ATTR_MISS;
+	} else {
+		switch (GetItemIndex(gBattleActor.weaponBefore)) {
+			case ITEM_STAFF_BERSERK:
+				gBattleTarget.statusOut = UNIT_STATUS_BERSERK;
+				break;
+			case ITEM_STAFF_SILENCE:
+				gBattleTarget.statusOut = UNIT_STATUS_SILENCED;
+				break;
+			case ITEM_STAFF_SLEEP:
+				gBattleTarget.statusOut = UNIT_STATUS_SLEEP;
+				break;
+			case ITEM_MONSTER_STONE:
+				switch (gPlaySt.faction) {
+					case FACTION_BLUE:
+						if (UNIT_FACTION(&gBattleTarget.unit) == FACTION_BLUE) {
+							gBattleTarget.statusOut = UNIT_STATUS_13;
+						} else {
+							gBattleTarget.statusOut = UNIT_STATUS_PETRIFY;
+						}
+						break;
+					case FACTION_RED:
+						if (UNIT_FACTION(&gBattleTarget.unit) == FACTION_RED) {
+							gBattleTarget.statusOut = UNIT_STATUS_13;
+						} else {
+							gBattleTarget.statusOut = UNIT_STATUS_PETRIFY;
+						}
+						break;
+					case FACTION_GREEN:
+						if (UNIT_FACTION(&gBattleTarget.unit) == FACTION_GREEN) {
+							gBattleTarget.statusOut = UNIT_STATUS_13;
+						} else {
+							gBattleTarget.statusOut = UNIT_STATUS_PETRIFY;
+						}
+						break;
+				}
+				break;
+		}
+	}
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecFortify(ProcPtr proc) {
-    int i;
-    int amount;
-    int targetCount;
+void ExecFortify(ProcPtr proc)
+{
+	int i;
+	int amount;
+	int targetCount;
 
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    BattleInitItemEffectTarget(
-        GetUnitFromCharId(GetPlayerLeaderPid())
-    );
+	BattleInitItemEffectTarget(
+		GetUnitFromCharId(GetPlayerLeaderPid())
+	);
 
-    MakeTargetListForRangedHeal(GetUnit(gActionData.subjectIndex));
+	MakeTargetListForRangedHeal(GetUnit(gActionData.subjectIndex));
 
-    amount = GetUnitItemHealAmount(
-        GetUnit(gActionData.subjectIndex),
-        GetUnit(gActionData.subjectIndex)->items[gActionData.itemSlotIndex]
-    );
+	amount = GetUnitItemHealAmount(
+		GetUnit(gActionData.subjectIndex),
+		GetUnit(gActionData.subjectIndex)->items[gActionData.itemSlotIndex]
+	);
 
-    targetCount = GetSelectTargetCount();
+	targetCount = GetSelectTargetCount();
 
-    for (i = 0; i < targetCount; i++) {
-        AddUnitHp(GetUnit(GetTarget(i)->uid), amount);
-    }
+	for (i = 0; i < targetCount; i++) {
+		AddUnitHp(GetUnit(GetTarget(i)->uid), amount);
+	}
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecNightmare(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecNightmare(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
+	BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ApplyNightmareEffect() {
-    int i;
-    int accuracy;
-    int targetCount;
+void ApplyNightmareEffect()
+{
+	int i;
+	int accuracy;
+	int targetCount;
 
-    MakeTargetListForFuckingNightmare(GetUnit(gActionData.subjectIndex));
+	MakeTargetListForFuckingNightmare(GetUnit(gActionData.subjectIndex));
 
-    targetCount = GetSelectTargetCount();
+	targetCount = GetSelectTargetCount();
 
-    for (i = 0; i < targetCount; i++) {
-        struct Unit* target = GetUnit(GetTarget(i)->uid);
+	for (i = 0; i < targetCount; i++) {
+		struct Unit *target = GetUnit(GetTarget(i)->uid);
 
-        accuracy = GetOffensiveStaffAccuracy(
-            GetUnit(gActionData.subjectIndex),
-            target
-        );
+		accuracy = GetOffensiveStaffAccuracy(
+			GetUnit(gActionData.subjectIndex),
+			target
+		);
 
-        if (Roll1RN(accuracy) == 1) {
-            if (target->statusIndex == UNIT_STATUS_NONE) {
-                SetUnitStatus(target, UNIT_STATUS_SLEEP);
-            }
-        }
-    }
+		if (Roll1RN(accuracy) == 1) {
+			if (target->statusIndex == UNIT_STATUS_NONE) {
+				SetUnitStatus(target, UNIT_STATUS_SLEEP);
+			}
+		}
+	}
 
-    return;
+	return;
 }
 
-void ExecUnlockStaff(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecUnlockStaff(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    gBattleTarget.unit.xPos = gActionData.xOther;
-    gBattleTarget.unit.yPos = gActionData.yOther;
+	gBattleTarget.unit.xPos = gActionData.xOther;
+	gBattleTarget.unit.yPos = gActionData.yOther;
 
-    gBattleTarget.changeHP = gActionData.xOther;
-    gBattleTarget.changePow = gActionData.yOther;
+	gBattleTarget.changeHP = gActionData.xOther;
+	gBattleTarget.changePow = gActionData.yOther;
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecHammerne(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecHammerne(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
+	BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
 
-    GetUnit(gActionData.targetIndex)->items[gActionData.trapType]
-        =  MakeNewItem(
-            GetUnit(gActionData.targetIndex)->items[gActionData.trapType]
-        );
+	GetUnit(gActionData.targetIndex)->items[gActionData.trapType]
+		=  MakeNewItem(
+			GetUnit(gActionData.targetIndex)->items[gActionData.trapType]
+		);
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecLatona(ProcPtr proc) {
-    int i;
-    int targetCount;
+void ExecLatona(ProcPtr proc)
+{
+	int i;
+	int targetCount;
 
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    BattleInitItemEffectTarget(
-        GetUnitFromCharId(GetPlayerLeaderPid())
-    );
+	BattleInitItemEffectTarget(
+		GetUnitFromCharId(GetPlayerLeaderPid())
+	);
 
-    MakeTargetListForLatona(GetUnit(gActionData.subjectIndex));
+	MakeTargetListForLatona(GetUnit(gActionData.subjectIndex));
 
-    targetCount = GetSelectTargetCount();
+	targetCount = GetSelectTargetCount();
 
-    for (i = 0; i < targetCount; i++) {
-        struct Unit* target = GetUnit(GetTarget(i)->uid);
+	for (i = 0; i < targetCount; i++) {
+		struct Unit *target = GetUnit(GetTarget(i)->uid);
 
-        SetUnitHp(target, GetUnitMaxHp(target));
-        SetUnitStatus(target, UNIT_STATUS_NONE);
-    }
+		SetUnitHp(target, GetUnitMaxHp(target));
+		SetUnitStatus(target, UNIT_STATUS_NONE);
+	}
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecVulneraryItem(ProcPtr proc, int amount) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecVulneraryItem(ProcPtr proc, int amount)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    AddUnitHp(GetUnit(gActionData.subjectIndex), amount);
+	AddUnitHp(GetUnit(gActionData.subjectIndex), amount);
 
-    gBattleHitIterator->hpChange = gBattleActor.unit.curHP - GetUnitCurrentHp(GetUnit(gActionData.subjectIndex));
+	gBattleHitIterator->hpChange = gBattleActor.unit.curHP - GetUnitCurrentHp(GetUnit(gActionData.subjectIndex));
 
-    gBattleActor.unit.curHP = GetUnitCurrentHp(GetUnit(gActionData.subjectIndex));
+	gBattleActor.unit.curHP = GetUnitCurrentHp(GetUnit(gActionData.subjectIndex));
 
-    gBattleActor.weaponBefore = ITEM_VULNERARY;
+	gBattleActor.weaponBefore = ITEM_VULNERARY;
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecElixirItem(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecElixirItem(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    SetUnitHp(
-        GetUnit(gActionData.subjectIndex),
-        GetUnitMaxHp(GetUnit(gActionData.subjectIndex))
-    );
+	SetUnitHp(
+		GetUnit(gActionData.subjectIndex),
+		GetUnitMaxHp(GetUnit(gActionData.subjectIndex))
+	);
 
-    gBattleHitIterator->hpChange = gBattleActor.unit.curHP - GetUnitCurrentHp(GetUnit(gActionData.subjectIndex));
+	gBattleHitIterator->hpChange = gBattleActor.unit.curHP - GetUnitCurrentHp(GetUnit(gActionData.subjectIndex));
 
-    gBattleActor.unit.curHP = GetUnitCurrentHp(GetUnit(gActionData.subjectIndex));
+	gBattleActor.unit.curHP = GetUnitCurrentHp(GetUnit(gActionData.subjectIndex));
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecPureWaterItem(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecPureWaterItem(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    GetUnit(gActionData.subjectIndex)->barrierDuration = 7;
+	GetUnit(gActionData.subjectIndex)->barrierDuration = 7;
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecTorchItem(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecTorchItem(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    GetUnit(gActionData.subjectIndex)->torchDuration = 4;
+	GetUnit(gActionData.subjectIndex)->torchDuration = 4;
 
-    gActionData.xOther = gActionData.xMove;
-    gActionData.yOther = gActionData.yMove;
+	gActionData.xOther = gActionData.xMove;
+	gActionData.yOther = gActionData.yMove;
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecAntitoxinItem(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecAntitoxinItem(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    SetUnitStatus(GetUnit(gActionData.subjectIndex), UNIT_STATUS_NONE);SetUnitStatus(&gBattleActor.unit, UNIT_STATUS_NONE);
+	SetUnitStatus(GetUnit(gActionData.subjectIndex), UNIT_STATUS_NONE);SetUnitStatus(&gBattleActor.unit, UNIT_STATUS_NONE);
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecKeyItem() {
-    int x, y;
+void ExecKeyItem()
+{
+	int x, y;
 
-    UnitUpdateUsedItem(
-        GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex
-    );
+	UnitUpdateUsedItem(
+		GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex
+	);
 
-    x = GetUnit(gActionData.subjectIndex)->xPos;
-    y = GetUnit(gActionData.subjectIndex)->yPos;
+	x = GetUnit(gActionData.subjectIndex)->xPos;
+	y = GetUnit(gActionData.subjectIndex)->yPos;
 
-    StartAvailableDoorTileEvent(x - 1, y);
-    StartAvailableDoorTileEvent(x + 1, y);
-    StartAvailableDoorTileEvent(x, y - 1);
-    StartAvailableDoorTileEvent(x, y + 1);
+	StartAvailableDoorTileEvent(x - 1, y);
+	StartAvailableDoorTileEvent(x + 1, y);
+	StartAvailableDoorTileEvent(x, y - 1);
+	StartAvailableDoorTileEvent(x, y + 1);
 
-    StartAvailableChestTileEvent(x, y);
+	StartAvailableChestTileEvent(x, y);
 
-    PlaySoundEffect(SONG_B1);
+	PlaySoundEffect(SONG_B1);
 
-    gBattleTarget.statusOut = -1;
+	gBattleTarget.statusOut = -1;
 
-    return;
+	return;
 }
 
-void sub_802F598(struct Unit* unit, int itemIdx, s8 unk) {
+void sub_802F598(struct Unit *unit, int itemIdx, s8 unk)
+{
 
-    if (itemIdx != -1) {
-        gBattleActor.weaponBefore = gBattleTarget.weaponBefore = unit->items[itemIdx];
-    }
+	if (itemIdx != -1) {
+		gBattleActor.weaponBefore = gBattleTarget.weaponBefore = unit->items[itemIdx];
+	}
 
-    gBattleActor.weapon = gBattleTarget.weapon = GetUnitEquippedWeapon(unit);
+	gBattleActor.weapon = gBattleTarget.weapon = GetUnitEquippedWeapon(unit);
 
-    InitBattleUnitWithoutBonuses(&gBattleTarget, unit);
+	InitBattleUnitWithoutBonuses(&gBattleTarget, unit);
 
-    ApplyUnitDefaultPromotion(unit);
+	ApplyUnitDefaultPromotion(unit);
 
-    InitBattleUnitWithoutBonuses(&gBattleActor, unit);
+	InitBattleUnitWithoutBonuses(&gBattleActor, unit);
 
-    GenerateBattleUnitStatGainsComparatively(&gBattleActor, &gBattleTarget.unit);
+	GenerateBattleUnitStatGainsComparatively(&gBattleActor, &gBattleTarget.unit);
 
-    SetBattleUnitTerrainBonusesAuto(&gBattleActor);
-    SetBattleUnitTerrainBonusesAuto(&gBattleTarget);
+	SetBattleUnitTerrainBonusesAuto(&gBattleActor);
+	SetBattleUnitTerrainBonusesAuto(&gBattleTarget);
 
-    if (unk) {
-        unit->state |= US_HAS_MOVED;
-    }
+	if (unk) {
+		unit->state |= US_HAS_MOVED;
+	}
 
-    if (itemIdx != -1) {
-        UnitUpdateUsedItem(unit, itemIdx);
-    }
+	if (itemIdx != -1) {
+		UnitUpdateUsedItem(unit, itemIdx);
+	}
 
-    gBattleHitArray[0].attributes = 0;
-    gBattleHitArray[0].info = BATTLE_HIT_INFO_END;
-    gBattleHitArray[0].hpChange = 0;
+	gBattleHitArray[0].attributes = 0;
+	gBattleHitArray[0].info = BATTLE_HIT_INFO_END;
+	gBattleHitArray[0].hpChange = 0;
 
-    gBattleStats.config = BATTLE_CONFIG_PROMOTION;
+	gBattleStats.config = BATTLE_CONFIG_PROMOTION;
 
-    return;
+	return;
 }
 
-void ExecUnitPromotion(struct Unit* unit, u8 classId, int itemIdx, s8 unk) {
+void ExecUnitPromotion(struct Unit *unit, u8 classId, int itemIdx, s8 unk)
+{
 
-    if (itemIdx != -1) {
-        gBattleActor.weaponBefore = gBattleTarget.weaponBefore = unit->items[itemIdx];
-    }
+	if (itemIdx != -1) {
+		gBattleActor.weaponBefore = gBattleTarget.weaponBefore = unit->items[itemIdx];
+	}
 
-    gBattleActor.weapon = gBattleTarget.weapon = GetUnitEquippedWeapon(unit);
+	gBattleActor.weapon = gBattleTarget.weapon = GetUnitEquippedWeapon(unit);
 
-    InitBattleUnitWithoutBonuses(&gBattleTarget, unit);
+	InitBattleUnitWithoutBonuses(&gBattleTarget, unit);
 
-    ApplyUnitPromotion(unit, classId);
+	ApplyUnitPromotion(unit, classId);
 
-    InitBattleUnitWithoutBonuses(&gBattleActor, unit);
+	InitBattleUnitWithoutBonuses(&gBattleActor, unit);
 
-    GenerateBattleUnitStatGainsComparatively(&gBattleActor, &gBattleTarget.unit);
+	GenerateBattleUnitStatGainsComparatively(&gBattleActor, &gBattleTarget.unit);
 
-    SetBattleUnitTerrainBonusesAuto(&gBattleActor);
-    SetBattleUnitTerrainBonusesAuto(&gBattleTarget);
+	SetBattleUnitTerrainBonusesAuto(&gBattleActor);
+	SetBattleUnitTerrainBonusesAuto(&gBattleTarget);
 
-    if (unk) {
-        unit->state |= US_HAS_MOVED;
-    }
+	if (unk) {
+		unit->state |= US_HAS_MOVED;
+	}
 
-    if (itemIdx != -1) {
-        UnitUpdateUsedItem(unit, itemIdx);
-    }
+	if (itemIdx != -1) {
+		UnitUpdateUsedItem(unit, itemIdx);
+	}
 
-    gBattleHitArray[0].attributes = 0;
-    gBattleHitArray[0].info = BATTLE_HIT_INFO_END;
-    gBattleHitArray[0].hpChange = 0;
+	gBattleHitArray[0].attributes = 0;
+	gBattleHitArray[0].info = BATTLE_HIT_INFO_END;
+	gBattleHitArray[0].hpChange = 0;
 
-    gBattleStats.config = BATTLE_CONFIG_PROMOTION;
+	gBattleStats.config = BATTLE_CONFIG_PROMOTION;
 
-    return;
+	return;
 }
 
-void sub_802F73C() {
-    ExecUnitPromotion(GetUnit(gActionData.subjectIndex), 1, gActionData.itemSlotIndex, 1);
-    BeginBattleAnimations();
+void sub_802F73C()
+{
+	ExecUnitPromotion(GetUnit(gActionData.subjectIndex), 1, gActionData.itemSlotIndex, 1);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void sub_802F760(struct Unit* unit, int item) {
-    gBattleActor.weaponBefore = gBattleTarget.weaponBefore = item;
-    gBattleActor.weapon = gBattleTarget.weapon = item;
+void sub_802F760(struct Unit *unit, int item)
+{
+	gBattleActor.weaponBefore = gBattleTarget.weaponBefore = item;
+	gBattleActor.weapon = gBattleTarget.weapon = item;
 
-    InitBattleUnit(&gBattleTarget, unit);
+	InitBattleUnit(&gBattleTarget, unit);
 
-    ApplyUnitDefaultPromotion(unit);
+	ApplyUnitDefaultPromotion(unit);
 
-    InitBattleUnit(&gBattleActor, unit);
+	InitBattleUnit(&gBattleActor, unit);
 
-    GenerateBattleUnitStatGainsComparatively(&gBattleActor, &gBattleTarget.unit);
+	GenerateBattleUnitStatGainsComparatively(&gBattleActor, &gBattleTarget.unit);
 
-    SetBattleUnitTerrainBonusesAuto(&gBattleActor);
-    SetBattleUnitTerrainBonusesAuto(&gBattleTarget);
+	SetBattleUnitTerrainBonusesAuto(&gBattleActor);
+	SetBattleUnitTerrainBonusesAuto(&gBattleTarget);
 
-    gBattleHitArray[0].attributes = 0;
-    gBattleHitArray[0].info = BATTLE_HIT_INFO_END;
-    gBattleHitArray[0].hpChange = 0;
+	gBattleHitArray[0].attributes = 0;
+	gBattleHitArray[0].info = BATTLE_HIT_INFO_END;
+	gBattleHitArray[0].hpChange = 0;
 
-    gBattleStats.config = BATTLE_CONFIG_PROMOTION;
+	gBattleStats.config = BATTLE_CONFIG_PROMOTION;
 
-    BeginBattleAnimations();
+	BeginBattleAnimations();
 
-    unit->state |= US_HIDDEN;
+	unit->state |= US_HIDDEN;
 
-    return;
+	return;
 }
 
-int ApplyStatBoostItem(struct Unit* unit, int itemIdx) {
-    const struct ItemStatBonuses* statBonuses;
-    int messageId = 0;
+int ApplyStatBoostItem(struct Unit *unit, int itemIdx)
+{
+	const struct ItemStatBonuses *statBonuses;
+	int messageId = 0;
 
-    int item = unit->items[itemIdx];
+	int item = unit->items[itemIdx];
 
-    if (GetItemIndex(item) == ITEM_METISSTOME) {
-        unit->state |= US_GROWTH_BOOST;
-        UnitUpdateUsedItem(unit, itemIdx);
-        return 0x1D;
-    }
+	if (GetItemIndex(item) == ITEM_METISSTOME) {
+		unit->state |= US_GROWTH_BOOST;
+		UnitUpdateUsedItem(unit, itemIdx);
+		return 0x1D;
+	}
 
-    statBonuses = GetItemStatBonuses(item);
+	statBonuses = GetItemStatBonuses(item);
 
-    unit->maxHP += statBonuses->hpBonus;
-    unit->curHP += statBonuses->hpBonus;
-    unit->pow += statBonuses->powBonus;
-    unit->skl += statBonuses->sklBonus;
-    unit->spd += statBonuses->spdBonus;
-    unit->def += statBonuses->defBonus;
-    unit->res += statBonuses->resBonus;
-    unit->lck += statBonuses->lckBonus;
-    unit->movBonus += statBonuses->movBonus;
-    unit->conBonus += statBonuses->conBonus;
+	unit->maxHP += statBonuses->hpBonus;
+	unit->curHP += statBonuses->hpBonus;
+	unit->pow += statBonuses->powBonus;
+	unit->skl += statBonuses->sklBonus;
+	unit->spd += statBonuses->spdBonus;
+	unit->def += statBonuses->defBonus;
+	unit->res += statBonuses->resBonus;
+	unit->lck += statBonuses->lckBonus;
+	unit->movBonus += statBonuses->movBonus;
+	unit->conBonus += statBonuses->conBonus;
 
-    UnitCheckStatCaps(unit);
-    UnitUpdateUsedItem(unit, itemIdx);
+	UnitCheckStatCaps(unit);
+	UnitUpdateUsedItem(unit, itemIdx);
 
-    switch (GetItemIndex(item)) {
-        case ITEM_BOOSTER_SKL:
-            messageId = 0x15;
-            break;
-        case ITEM_BOOSTER_LCK:
-            messageId = 0x17;
-            break;
-        case ITEM_BOOSTER_HP:
-            messageId = 0x1C;
-            break;
-        case ITEM_BOOSTER_DEF:
-            messageId = 0x18;
-            break;
-        case ITEM_BOOSTER_SPD:
-            messageId = 0x16;
-            break;
-        case ITEM_BOOSTER_RES:
-            messageId = 0x19;
-            break;
-        case ITEM_BOOSTER_MOV:
-            messageId = 0x1A;
-            break;
-        case ITEM_BOOSTER_CON:
-            messageId = 0x1B;
-            break;
-        case ITEM_BOOSTER_POW:
-            messageId = UnitHasMagicRank(unit) ? 0x14 : 0x13;
-            break;
-    }
+	switch (GetItemIndex(item)) {
+		case ITEM_BOOSTER_SKL:
+			messageId = 0x15;
+			break;
+		case ITEM_BOOSTER_LCK:
+			messageId = 0x17;
+			break;
+		case ITEM_BOOSTER_HP:
+			messageId = 0x1C;
+			break;
+		case ITEM_BOOSTER_DEF:
+			messageId = 0x18;
+			break;
+		case ITEM_BOOSTER_SPD:
+			messageId = 0x16;
+			break;
+		case ITEM_BOOSTER_RES:
+			messageId = 0x19;
+			break;
+		case ITEM_BOOSTER_MOV:
+			messageId = 0x1A;
+			break;
+		case ITEM_BOOSTER_CON:
+			messageId = 0x1B;
+			break;
+		case ITEM_BOOSTER_POW:
+			messageId = UnitHasMagicRank(unit) ? 0x14 : 0x13;
+			break;
+	}
 
-    return messageId;
+	return messageId;
 }
 
-void ExecStatBoostItem(ProcPtr proc) {
-    int item;
-    int messageId;
-    struct Unit* unit = GetUnit(gActionData.subjectIndex);
+void ExecStatBoostItem(ProcPtr proc)
+{
+	int item;
+	int messageId;
+	struct Unit *unit = GetUnit(gActionData.subjectIndex);
 
-    item = unit->items[gActionData.itemSlotIndex];
+	item = unit->items[gActionData.itemSlotIndex];
 
-    gBattleTarget.statusOut = -1;
+	gBattleTarget.statusOut = -1;
 
-    messageId = ApplyStatBoostItem(unit, gActionData.itemSlotIndex);
+	messageId = ApplyStatBoostItem(unit, gActionData.itemSlotIndex);
 
-    PlaySoundEffect(SONG_5A);
+	PlaySoundEffect(SONG_5A);
 
-    NewPopup2_PlanA(proc, GetItemIconId(item), GetStringFromIndex(messageId));
+	NewPopup2_PlanA(proc, GetItemIconId(item), GetStringFromIndex(messageId));
 
-    return;
+	return;
 }
 
 const s8 JunaItemEffLevelLut[] = {
-    15, 25, 30, 20, 10
+	15, 25, 30, 20, 10
 };
 
-int ApplyJunaFruitItem(struct Unit* unit, int slot) {
-    int rn1 = 0;
-    int rn2;
-    u32 levelCount = 0;
+int ApplyJunaFruitItem(struct Unit *unit, int slot)
+{
+	int rn1 = 0;
+	int rn2;
+	u32 levelCount = 0;
 
-    while (levelCount <= 4) {
-        rn1 += JunaItemEffLevelLut[levelCount];
-        levelCount++;
-    }
+	while (levelCount <= 4) {
+		rn1 += JunaItemEffLevelLut[levelCount];
+		levelCount++;
+	}
 
-    rn2 = NextRN_N(rn1);
+	rn2 = NextRN_N(rn1);
 
-    levelCount = 0;
-    rn1 = JunaItemEffLevelLut[levelCount];
-    if (rn1 <= rn2) {
+	levelCount = 0;
+	rn1 = JunaItemEffLevelLut[levelCount];
+	if (rn1 <= rn2) {
 		while (++levelCount < 5) {
 			rn1 += JunaItemEffLevelLut[levelCount];
 
-            /**
+			/**
              * Got a random number in [1, 5]...
              * What a stupid method!
              */
 			if (rn1 > rn2)
 				break;
 		}
-    }
+	}
 
-    levelCount++;
-    unit->level -= levelCount;
-    unit->exp = 0;
+	levelCount++;
+	unit->level -= levelCount;
+	unit->exp = 0;
 
-    UnitUpdateUsedItem(unit, slot);
+	UnitUpdateUsedItem(unit, slot);
 
-    return levelCount;
+	return levelCount;
 }
 
-void ExecJunaFruitItem(ProcPtr proc) {
-    int levelCount;
-    struct Unit* unit = GetUnit(gActionData.subjectIndex);
-    int itemId = unit->items[gActionData.itemSlotIndex];
+void ExecJunaFruitItem(ProcPtr proc)
+{
+	int levelCount;
+	struct Unit *unit = GetUnit(gActionData.subjectIndex);
+	int itemId = unit->items[gActionData.itemSlotIndex];
 
-    gBattleTarget.statusOut = -1;
+	gBattleTarget.statusOut = -1;
 
-    levelCount = ApplyJunaFruitItem(unit, gActionData.itemSlotIndex);
+	levelCount = ApplyJunaFruitItem(unit, gActionData.itemSlotIndex);
 
-    PlaySoundEffect(SONG_5A);
+	PlaySoundEffect(SONG_5A);
 
-    NewPopup2_PlanB(proc, GetItemIconId(itemId), 0, levelCount, GetStringFromIndex(0x1E));
+	NewPopup2_PlanB(proc, GetItemIconId(itemId), 0, levelCount, GetStringFromIndex(0x1E));
 
-    return;
+	return;
 }
 
-void ExecMine(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecMine(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    AddTrap(gActionData.xOther, gActionData.yOther, TRAP_MINE, 0);
+	AddTrap(gActionData.xOther, gActionData.yOther, TRAP_MINE, 0);
 
-    BattleApplyItemEffect(proc);
+	BattleApplyItemEffect(proc);
 
-    gBattleTarget.statusOut = -1;
+	gBattleTarget.statusOut = -1;
 
-    StartMineAnim(proc, gActionData.xOther, gActionData.yOther);
+	StartMineAnim(proc, gActionData.xOther, gActionData.yOther);
 
-    return;
+	return;
 }
 
-void ExecLightRune(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecLightRune(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    AddLightRune(gActionData.xOther, gActionData.yOther);
+	AddLightRune(gActionData.xOther, gActionData.yOther);
 
-    BattleApplyItemEffect(proc);
+	BattleApplyItemEffect(proc);
 
-    StartLightRuneAnim(proc, gActionData.xOther, gActionData.yOther);
+	StartLightRuneAnim(proc, gActionData.xOther, gActionData.yOther);
 
-    gBattleTarget.statusOut = -1;
+	gBattleTarget.statusOut = -1;
 
-    return;
+	return;
 }
 
-void sub_802FAD0(ProcPtr proc) {
-    int xPos, yPos;
-    struct Unit* unit;
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void sub_802FAD0(ProcPtr proc)
+{
+	int xPos, yPos;
+	struct Unit *unit;
 
-    BattleApplyItemEffect(proc);
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    xPos = gActionData.xOther;
-    yPos = gActionData.yOther;
+	BattleApplyItemEffect(proc);
 
-    StartLightRuneAnim2(proc, xPos, yPos);
+	xPos = gActionData.xOther;
+	yPos = gActionData.yOther;
 
-    // Seems to be required
-    unit = 0;
+	StartLightRuneAnim2(proc, xPos, yPos);
 
-    gUnknown_03001788.charIndex = 0x80;
-    gUnknown_03001788.classIndex = CLASS_BERSERKER;
-    gUnknown_03001788.leaderCharIndex = 1;
+	// Seems to be required
+	unit = 0;
 
-    gUnknown_03001788.autolevel = 0;
-    gUnknown_03001788.allegiance = 0;
-    gUnknown_03001788.level = 1;
+	gUnknown_03001788.charIndex = 0x80;
+	gUnknown_03001788.classIndex = CLASS_BERSERKER;
+	gUnknown_03001788.leaderCharIndex = 1;
 
-    gUnknown_03001788.xPosition = xPos;
-    gUnknown_03001788.yPosition = yPos;
+	gUnknown_03001788.autolevel = 0;
+	gUnknown_03001788.allegiance = 0;
+	gUnknown_03001788.level = 1;
 
-    gUnknown_03001788.redaCount = 0;
-    gUnknown_03001788.redas = NULL;
+	gUnknown_03001788.xPosition = xPos;
+	gUnknown_03001788.yPosition = yPos;
 
-    gUnknown_03001788.genMonster = 0;
-    gUnknown_03001788.itemDrop = 0;
+	gUnknown_03001788.redaCount = 0;
+	gUnknown_03001788.redas = NULL;
 
-    gUnknown_03001788.items[0] = ITEM_AXE_STEEL;
-    gUnknown_03001788.items[1] = ITEM_AXE_SILVER;
-    gUnknown_03001788.items[2] = ITEM_AXE_DEVIL;
-    gUnknown_03001788.items[3] = ITEM_AXE_TOMAHAWK;
+	gUnknown_03001788.genMonster = 0;
+	gUnknown_03001788.itemDrop = 0;
 
-    gUnknown_03001788.ai[0] = 0;
-    gUnknown_03001788.ai[1] = 0;
-    gUnknown_03001788.ai[2] = 0;
-    gUnknown_03001788.ai[3] = 0;
+	gUnknown_03001788.items[0] = ITEM_AXE_STEEL;
+	gUnknown_03001788.items[1] = ITEM_AXE_SILVER;
+	gUnknown_03001788.items[2] = ITEM_AXE_DEVIL;
+	gUnknown_03001788.items[3] = ITEM_AXE_TOMAHAWK;
 
-    // TODO: Can't seem to force the extra register allocation for the return, which is required for match
-    unit = GetUnitFromCharId(1); // CHARACTER_EIRIKA
-    if (!unit) {
-        LoadUnits(&gUnknown_03001788);
-    }
+	gUnknown_03001788.ai[0] = 0;
+	gUnknown_03001788.ai[1] = 0;
+	gUnknown_03001788.ai[2] = 0;
+	gUnknown_03001788.ai[3] = 0;
 
-    gBattleTarget.statusOut = -1;
+	// TODO: Can't seem to force the extra register allocation for the return, which is required for match
+	unit = GetUnitFromCharId(1); // CHARACTER_EIRIKA
+	if (!unit) {
+		LoadUnits(&gUnknown_03001788);
+	}
 
-    return;
+	gBattleTarget.statusOut = -1;
+
+	return;
 }
 
-void ExecTorchStaff(ProcPtr proc) {
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+void ExecTorchStaff(ProcPtr proc)
+{
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    AddTrap(gActionData.xOther, gActionData.yOther, TRAP_TORCHLIGHT, 8);
+	AddTrap(gActionData.xOther, gActionData.yOther, TRAP_TORCHLIGHT, 8);
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ExecDanceRing(ProcPtr proc) {
-    int status = 0;
+void ExecDanceRing(ProcPtr proc)
+{
+	int status = 0;
 
-    BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
-        gActionData.itemSlotIndex);
+	BattleInitItemEffect(GetUnit(gActionData.subjectIndex),
+		gActionData.itemSlotIndex);
 
-    BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
+	BattleInitItemEffectTarget(GetUnit(gActionData.targetIndex));
 
-    switch (GetItemIndex(GetUnit(gActionData.subjectIndex)->items[gActionData.itemSlotIndex])) {
-        case ITEM_FILLAS_MIGHT:
-            status = UNIT_STATUS_ATTACK;
-            break;
-        case ITEM_NINISS_GRACE:
-            status = UNIT_STATUS_DEFENSE;
-            break;
-        case ITEM_THORS_IRE:
-            status = UNIT_STATUS_CRIT;
-            break;
-        case ITEM_SETS_LITANY:
-            status = UNIT_STATUS_AVOID;
-            break;
-    }
+	switch (GetItemIndex(GetUnit(gActionData.subjectIndex)->items[gActionData.itemSlotIndex])) {
+		case ITEM_FILLAS_MIGHT:
+			status = UNIT_STATUS_ATTACK;
+			break;
+		case ITEM_NINISS_GRACE:
+			status = UNIT_STATUS_DEFENSE;
+			break;
+		case ITEM_THORS_IRE:
+			status = UNIT_STATUS_CRIT;
+			break;
+		case ITEM_SETS_LITANY:
+			status = UNIT_STATUS_AVOID;
+			break;
+	}
 
-    SetUnitStatusExt(GetUnit(gActionData.targetIndex), status, 1);
+	SetUnitStatusExt(GetUnit(gActionData.targetIndex), status, 1);
 
-    gBattleStats.config = BATTLE_CONFIG_DANCERING;
+	gBattleStats.config = BATTLE_CONFIG_DANCERING;
 
-    BattleApplyItemEffect(proc);
-    BeginBattleAnimations();
+	BattleApplyItemEffect(proc);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
-void ActionStaffDoorChestUseItem(ProcPtr proc) {
-    int itemId = GetItemIndex(GetUnit(gActionData.subjectIndex)->items[gActionData.itemSlotIndex]);
+void ActionStaffDoorChestUseItem(ProcPtr proc)
+{
+	int itemId = GetItemIndex(GetUnit(gActionData.subjectIndex)->items[gActionData.itemSlotIndex]);
 
-    gBattleActor.hasItemEffectTarget = 0;
+	gBattleActor.hasItemEffectTarget = 0;
 
-    switch (itemId) {
-        case ITEM_STAFF_HEAL:
-        case ITEM_STAFF_MEND:
-        case ITEM_STAFF_RECOVER:
-        case ITEM_STAFF_PHYSIC:
-            ExecStandardHeal(proc);
-            break;
-        case ITEM_STAFF_SILENCE:
-        case ITEM_STAFF_SLEEP:
-        case ITEM_STAFF_BERSERK:
-            ExecStatusStaff(proc);
-            break;
-        case ITEM_NIGHTMARE:
-            ExecNightmare(proc);
-            break;
-        case ITEM_STAFF_FORTIFY:
-            ExecFortify(proc);
-            break;
-        case ITEM_STAFF_RESTORE:
-            ExecRestore(proc);
-            break;
-        case ITEM_STAFF_RESCUE:
-            ExecRescueStaff(proc);
-            break;
-        case ITEM_STAFF_BARRIER:
-            ExecBarrierStaff(proc);
-            break;
-        case ITEM_STAFF_WARP:
-            ExecWarpStaff(proc);
-            break;
-        case ITEM_STAFF_UNLOCK:
-            ExecUnlockStaff(proc);
-            break;
-        case ITEM_STAFF_REPAIR:
-            ExecHammerne(proc);
-            break;
-        case ITEM_TORCH:
-            ExecTorchItem(proc);
-            break;
-        case ITEM_VULNERARY:
-        case ITEM_VULNERARY_2:
-            ExecVulneraryItem(proc, 10);
-            break;
-        case ITEM_ELIXIR:
-            ExecElixirItem(proc);
-            break;
-        case ITEM_PUREWATER:
-            ExecPureWaterItem(proc);
-            break;
-        case ITEM_ANTITOXIN:
-            ExecAntitoxinItem(proc);
-            break;
-        case ITEM_CHESTKEY:
-        case ITEM_DOORKEY:
-        case ITEM_LOCKPICK:
-        case ITEM_CHESTKEY_BUNDLE:
-            ExecKeyItem();
-            break;
-        case ITEM_HEROCREST:
-        case ITEM_KNIGHTCREST:
-        case ITEM_ORIONSBOLT:
-        case ITEM_ELYSIANWHIP:
-        case ITEM_GUIDINGRING:
-        case ITEM_MASTERSEAL:
-        case ITEM_HEAVENSEAL:
-        case ITEM_OCEANSEAL:
-        case ITEM_LUNARBRACE:
-        case ITEM_SOLARBRACE:
-        case ITEM_UNK_C1:
-            gBattleActor.weaponBefore = gBattleTarget.weaponBefore = GetUnit(gActionData.subjectIndex)->items[gActionData.itemSlotIndex];
+	switch (itemId) {
+		case ITEM_STAFF_HEAL:
+		case ITEM_STAFF_MEND:
+		case ITEM_STAFF_RECOVER:
+		case ITEM_STAFF_PHYSIC:
+			ExecStandardHeal(proc);
+			break;
+		case ITEM_STAFF_SILENCE:
+		case ITEM_STAFF_SLEEP:
+		case ITEM_STAFF_BERSERK:
+			ExecStatusStaff(proc);
+			break;
+		case ITEM_NIGHTMARE:
+			ExecNightmare(proc);
+			break;
+		case ITEM_STAFF_FORTIFY:
+			ExecFortify(proc);
+			break;
+		case ITEM_STAFF_RESTORE:
+			ExecRestore(proc);
+			break;
+		case ITEM_STAFF_RESCUE:
+			ExecRescueStaff(proc);
+			break;
+		case ITEM_STAFF_BARRIER:
+			ExecBarrierStaff(proc);
+			break;
+		case ITEM_STAFF_WARP:
+			ExecWarpStaff(proc);
+			break;
+		case ITEM_STAFF_UNLOCK:
+			ExecUnlockStaff(proc);
+			break;
+		case ITEM_STAFF_REPAIR:
+			ExecHammerne(proc);
+			break;
+		case ITEM_TORCH:
+			ExecTorchItem(proc);
+			break;
+		case ITEM_VULNERARY:
+		case ITEM_VULNERARY_2:
+			ExecVulneraryItem(proc, 10);
+			break;
+		case ITEM_ELIXIR:
+			ExecElixirItem(proc);
+			break;
+		case ITEM_PUREWATER:
+			ExecPureWaterItem(proc);
+			break;
+		case ITEM_ANTITOXIN:
+			ExecAntitoxinItem(proc);
+			break;
+		case ITEM_CHESTKEY:
+		case ITEM_DOORKEY:
+		case ITEM_LOCKPICK:
+		case ITEM_CHESTKEY_BUNDLE:
+			ExecKeyItem();
+			break;
+		case ITEM_HEROCREST:
+		case ITEM_KNIGHTCREST:
+		case ITEM_ORIONSBOLT:
+		case ITEM_ELYSIANWHIP:
+		case ITEM_GUIDINGRING:
+		case ITEM_MASTERSEAL:
+		case ITEM_HEAVENSEAL:
+		case ITEM_OCEANSEAL:
+		case ITEM_LUNARBRACE:
+		case ITEM_SOLARBRACE:
+		case ITEM_UNK_C1:
+			gBattleActor.weaponBefore = gBattleTarget.weaponBefore = GetUnit(gActionData.subjectIndex)->items[gActionData.itemSlotIndex];
 
-            gBattleActor.weapon = gBattleTarget.weapon = GetUnitEquippedWeapon(GetUnit(gActionData.subjectIndex));
+			gBattleActor.weapon = gBattleTarget.weapon = GetUnitEquippedWeapon(GetUnit(gActionData.subjectIndex));
 
-            gBattleTarget.statusOut = -1;
+			gBattleTarget.statusOut = -1;
 
-            StartBmPromotion(proc);
-            break;
-        case ITEM_BOOSTER_HP:
-        case ITEM_BOOSTER_POW:
-        case ITEM_BOOSTER_SKL:
-        case ITEM_BOOSTER_SPD:
-        case ITEM_BOOSTER_LCK:
-        case ITEM_BOOSTER_DEF:
-        case ITEM_BOOSTER_RES:
-        case ITEM_BOOSTER_MOV:
-        case ITEM_BOOSTER_CON:
-        case ITEM_METISSTOME:
-            ExecStatBoostItem(proc);
-            break;
-        case ITEM_STAFF_LATONA:
-            ExecLatona(proc);
-            break;
-        case ITEM_MINE:
-            ExecMine(proc);
-            break;
-        case ITEM_LIGHTRUNE:
-            ExecLightRune(proc);
-            break;
-        case ITEM_STAFF_TORCH:
-            ExecTorchStaff(proc);
-            break;
-        case ITEM_FILLAS_MIGHT:
-        case ITEM_NINISS_GRACE:
-        case ITEM_THORS_IRE:
-        case ITEM_SETS_LITANY:
-            ExecDanceRing(proc);
-            break;
-        case ITEM_JUNAFRUIT:
-            ExecJunaFruitItem(proc);
-    }
+			StartBmPromotion(proc);
+			break;
+		case ITEM_BOOSTER_HP:
+		case ITEM_BOOSTER_POW:
+		case ITEM_BOOSTER_SKL:
+		case ITEM_BOOSTER_SPD:
+		case ITEM_BOOSTER_LCK:
+		case ITEM_BOOSTER_DEF:
+		case ITEM_BOOSTER_RES:
+		case ITEM_BOOSTER_MOV:
+		case ITEM_BOOSTER_CON:
+		case ITEM_METISSTOME:
+			ExecStatBoostItem(proc);
+			break;
+		case ITEM_STAFF_LATONA:
+			ExecLatona(proc);
+			break;
+		case ITEM_MINE:
+			ExecMine(proc);
+			break;
+		case ITEM_LIGHTRUNE:
+			ExecLightRune(proc);
+			break;
+		case ITEM_STAFF_TORCH:
+			ExecTorchStaff(proc);
+			break;
+		case ITEM_FILLAS_MIGHT:
+		case ITEM_NINISS_GRACE:
+		case ITEM_THORS_IRE:
+		case ITEM_SETS_LITANY:
+			ExecDanceRing(proc);
+			break;
+		case ITEM_JUNAFRUIT:
+			ExecJunaFruitItem(proc);
+	}
 
-    if (itemId == ITEM_NIGHTMARE) {
-        Proc_StartBlocking(ProcScr_ExecNightmareStaff, proc);
-        return;
-    }
+	if (itemId == ITEM_NIGHTMARE) {
+		Proc_StartBlocking(ProcScr_ExecNightmareStaff, proc);
+		return;
+	}
 
-    if (gBattleTarget.statusOut >= 0) {
-        Proc_StartBlocking(ProcScr_SetTargetStatus, proc);
-    }
+	if (gBattleTarget.statusOut >= 0) {
+		Proc_StartBlocking(ProcScr_SetTargetStatus, proc);
+	}
 
-    return;
+	return;
 }
 
-void ActionPick(ProcPtr proc) {
-    int xPos, yPos;
-    gBattleActor.hasItemEffectTarget = 0;
+void ActionPick(ProcPtr proc)
+{
+	int xPos, yPos;
 
-    xPos = gActionData.xOther;
-    yPos = gActionData.yOther;
+	gBattleActor.hasItemEffectTarget = 0;
 
-    StartAvailableDoorTileEvent(xPos, yPos);
+	xPos = gActionData.xOther;
+	yPos = gActionData.yOther;
 
-    StartAvailableChestTileEvent(xPos, yPos);
+	StartAvailableDoorTileEvent(xPos, yPos);
 
-    PlaySoundEffect(SONG_B1);
+	StartAvailableChestTileEvent(xPos, yPos);
 
-    gBattleTarget.statusOut = -1;
+	PlaySoundEffect(SONG_B1);
 
-    if (gBattleTarget.statusOut >= 0) {
-        Proc_StartBlocking(ProcScr_SetTargetStatus, proc);
-    }
+	gBattleTarget.statusOut = -1;
 
-    return;
+	if (gBattleTarget.statusOut >= 0) {
+		Proc_StartBlocking(ProcScr_SetTargetStatus, proc);
+	}
+
+	return;
 }
 
-void AfterItemUse_SetTargetStatus() {
-    if (gBattleTarget.statusOut < 0) {
-        return;
-    }
+void AfterItemUse_SetTargetStatus()
+{
+	if (gBattleTarget.statusOut < 0) {
+		return;
+	}
 
-    SetUnitStatus(GetUnit(gActionData.targetIndex), gBattleTarget.statusOut);
-    gBattleTarget.statusOut = -1;
+	SetUnitStatus(GetUnit(gActionData.targetIndex), gBattleTarget.statusOut);
+	gBattleTarget.statusOut = -1;
 
-    return;
+	return;
 }
 
-void sub_8030050() {
-    ApplyNightmareEffect();
-    return;
+void sub_8030050()
+{
+	ApplyNightmareEffect();
+	return;
 }

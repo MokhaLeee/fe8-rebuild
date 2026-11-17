@@ -30,14 +30,20 @@ TABSTOP = 8
 
 
 def detect_unit(text: str):
-    """推断源文件的缩进单位：最小的正缩进宽度（排除块注释续行、已经是 Tab 的行）。"""
+    """推断源文件的缩进单位。
+
+    不能用「最小正缩进」：有些文件存在对齐用的 1~3 个空格（续行对齐、
+    注释对齐），会把单位误判成 1，结果每层输出多个 Tab。
+    改用出现次数最多的缩进宽度，它通常就是第一层。
+    """
+    from collections import Counter
+
     indents = []
     in_block = False
     for line in text.splitlines():
         if not line.strip():
             continue
         stripped = line.lstrip(" \t")
-        # 块注释续行 ` * foo` 不是缩进语义
         if in_block and stripped.startswith("*"):
             if "*/" in line:
                 in_block = False
@@ -52,7 +58,15 @@ def detect_unit(text: str):
         indents.append(len(m.group()))
     if not indents:
         return None
-    return min(indents)
+    counts = Counter(indents)
+    unit = counts.most_common(1)[0][0]
+    if unit < 2:
+        # 退化情况：最小公因数兜底
+        g = indents[0]
+        for n in indents[1:]:
+            g = __import__("math").gcd(g, n)
+        unit = g if g >= 1 else 4
+    return unit
 
 
 def scan_state(line, in_block_comment, in_string, in_char):

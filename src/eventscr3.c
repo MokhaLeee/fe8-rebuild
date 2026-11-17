@@ -30,681 +30,605 @@ static u16 ItemBackupEvtBattle;
 extern struct Unknown03000600 gUnknown_03000600[0x40];
 
 //! FE8U = 0x08011CCC
-void ChangeUnitAi(struct Unit * unit, u8 ai1, u8 ai2, u8 unused)
+void ChangeUnitAi(struct Unit *unit, u8 ai1, u8 ai2, u8 unused)
 {
-    if (unit->state & (US_HIDDEN | US_DEAD))
-    {
-        return;
-    }
+	if (unit->state & (US_HIDDEN | US_DEAD)) {
+		return;
+	}
 
-    if (ai1 != AI_A_INVALID)
-    {
-        unit->ai1 = ai1;
-        unit->ai_a_pc = 0;
-    }
+	if (ai1 != AI_A_INVALID) {
+		unit->ai1 = ai1;
+		unit->ai_a_pc = 0;
+	}
 
-    if (ai2 != AI_B_INVALID)
-    {
-        unit->ai2 = ai2;
-        unit->ai_b_pc = 0;
+	if (ai2 != AI_B_INVALID) {
+		unit->ai2 = ai2;
+		unit->ai_b_pc = 0;
 
-        if (ai2 == AI_B_0C)
-        {
-            unit->aiFlags |= AI_UNIT_FLAG_3;
-        }
-    }
+		if (ai2 == AI_B_0C) {
+			unit->aiFlags |= AI_UNIT_FLAG_3;
+		}
+	}
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08011D10
 void ChangeAiForCharacter(u8 pid, u8 ai1, u8 ai2, u8 unused)
 {
-    int i;
+	int i;
 
-    for (i = FACTION_BLUE + 1; i < FACTION_PURPLE; i++)
-    {
-        struct Unit * unit = GetUnit(i);
+	for (i = FACTION_BLUE + 1; i < FACTION_PURPLE; i++) {
+		struct Unit *unit = GetUnit(i);
 
-        if (!UNIT_IS_VALID(unit))
-        {
-            continue;
-        }
+		if (!UNIT_IS_VALID(unit)) {
+			continue;
+		}
 
-        if (unit->pCharacterData->number == pid)
-        {
-            ChangeUnitAi(unit, ai1, ai2, unused);
-        }
-    }
+		if (unit->pCharacterData->number == pid) {
+			ChangeUnitAi(unit, ai1, ai2, unused);
+		}
+	}
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08011D60
-void ChangeAiForPositions(struct Vec2 * posArray, u8 length, u8 ai1, u8 ai2, u8 unused)
+void ChangeAiForPositions(struct Vec2 *posArray, u8 length, u8 ai1, u8 ai2, u8 unused)
 {
-    int i;
-    s16 j;
+	int i;
+	s16 j;
 
-    for (i = FACTION_BLUE + 1; i < FACTION_PURPLE; i++)
-    {
-        struct Unit * unit = GetUnit(i);
+	for (i = FACTION_BLUE + 1; i < FACTION_PURPLE; i++) {
+		struct Unit *unit = GetUnit(i);
 
-        if (!UNIT_IS_VALID(unit))
-        {
-            continue;
-        }
+		if (!UNIT_IS_VALID(unit)) {
+			continue;
+		}
 
-        for (j = 0; j < length; j++)
-        {
-            if (unit->xPos != posArray[j].x)
-            {
-                continue;
-            }
+		for (j = 0; j < length; j++) {
+			if (unit->xPos != posArray[j].x) {
+				continue;
+			}
 
-            if (unit->yPos != posArray[j].y)
-            {
-                continue;
-            }
+			if (unit->yPos != posArray[j].y) {
+				continue;
+			}
 
-            ChangeUnitAi(unit, ai1, ai2, unused);
-        }
-    }
+			ChangeUnitAi(unit, ai1, ai2, unused);
+		}
+	}
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08011DF4
-void EvtBattleGenerateRealInternal(struct Unit * unitA, struct Unit * unitB)
+void EvtBattleGenerateRealInternal(struct Unit *unitA, struct Unit *unitB)
 {
-    InitBattleUnit(&gBattleActor, unitA);
-    InitBattleUnit(&gBattleTarget, unitB);
+	InitBattleUnit(&gBattleActor, unitA);
+	InitBattleUnit(&gBattleTarget, unitB);
 
-    gBattleStats.range =
-        RECT_DISTANCE(gBattleActor.unit.xPos, gBattleActor.unit.yPos, gBattleTarget.unit.xPos, gBattleTarget.unit.yPos);
+	gBattleStats.range =
+		RECT_DISTANCE(gBattleActor.unit.xPos, gBattleActor.unit.yPos, gBattleTarget.unit.xPos, gBattleTarget.unit.yPos);
 
-    if (gBattleStats.config & BATTLE_CONFIG_BALLISTA)
-    {
-        SetBattleUnitWeaponBallista(&gBattleActor);
-    }
-    else
-    {
-        SetBattleUnitWeapon(&gBattleActor, -1);
-    }
+	if (gBattleStats.config & BATTLE_CONFIG_BALLISTA) {
+		SetBattleUnitWeaponBallista(&gBattleActor);
+	} else {
+		SetBattleUnitWeapon(&gBattleActor, -1);
+	}
 
-    SetBattleUnitWeapon(&gBattleTarget, -1);
+	SetBattleUnitWeapon(&gBattleTarget, -1);
 
-    BattleInitTargetCanCounter();
+	BattleInitTargetCanCounter();
 
-    BattleApplyWeaponTriangleEffect(&gBattleActor, &gBattleTarget);
+	BattleApplyWeaponTriangleEffect(&gBattleActor, &gBattleTarget);
 
-    DisableAllLightRunes();
+	DisableAllLightRunes();
 
-    SetBattleUnitTerrainBonusesAuto(&gBattleActor);
-    SetBattleUnitTerrainBonusesAuto(&gBattleTarget);
+	SetBattleUnitTerrainBonusesAuto(&gBattleActor);
+	SetBattleUnitTerrainBonusesAuto(&gBattleTarget);
 
-    BattleGenerate(unitA, unitB);
+	BattleGenerate(unitA, unitB);
 
-    EnableAllLightRunes();
+	EnableAllLightRunes();
 
-    BattleUnitTargetCheckCanCounter(&gBattleTarget);
-    BattleUnitTargetSetEquippedWeapon(&gBattleTarget);
+	BattleUnitTargetCheckCanCounter(&gBattleTarget);
+	BattleUnitTargetSetEquippedWeapon(&gBattleTarget);
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08011EC8
-void EvtBattleGenerateReal(struct Unit * unitA, struct Unit * unitB)
+void EvtBattleGenerateReal(struct Unit *unitA, struct Unit *unitB)
 {
-    gBattleStats.config = BATTLE_CONFIG_REAL;
-    EvtBattleGenerateRealInternal(unitA, unitB);
+	gBattleStats.config = BATTLE_CONFIG_REAL;
+	EvtBattleGenerateRealInternal(unitA, unitB);
 }
 
 //! FE8U = 0x08011EDC
-void EvtBattleGenerateBallistaReal(struct Unit * unitA, struct Unit * unitB)
+void EvtBattleGenerateBallistaReal(struct Unit *unitA, struct Unit *unitB)
 {
-    gBattleStats.config = (BATTLE_CONFIG_REAL | BATTLE_CONFIG_BALLISTA);
-    EvtBattleGenerateRealInternal(unitA, unitB);
+	gBattleStats.config = (BATTLE_CONFIG_REAL | BATTLE_CONFIG_BALLISTA);
+	EvtBattleGenerateRealInternal(unitA, unitB);
 }
 
 //! FE8U = 0x08011EF0
 void StartScriptBattleAnim(s8 useMapAnims)
 {
-    s8 banimEnabled;
+	s8 banimEnabled;
 
-    BG_Fill(gBG2TilemapBuffer, 0);
-    BG_EnableSyncByMask(BG2_SYNC_BIT);
+	BG_Fill(gBG2TilemapBuffer, 0);
+	BG_EnableSyncByMask(BG2_SYNC_BIT);
 
-    gPaletteBuffer[0] = 0;
-    EnablePaletteSync();
+	gPaletteBuffer[0] = 0;
+	EnablePaletteSync();
 
-    RenderBmMap();
+	RenderBmMap();
 
-    banimEnabled = sub_8055BC4();
-    if (useMapAnims)
-    {
-        banimEnabled = 0;
-    }
+	banimEnabled = sub_8055BC4();
+	if (useMapAnims) {
+		banimEnabled = 0;
+	}
 
-    if (banimEnabled)
-    {
-        SetBanimLinkArenaFlag(0);
-        BeginAnimsOnBattleAnimations();
-    }
-    else
-    {
-        EndAllMus();
-        RenderBmMap();
-        BeginBattleMapAnims();
-        gBattleStats.config |= BATTLE_CONFIG_MAPANIMS;
-    }
+	if (banimEnabled) {
+		SetBanimLinkArenaFlag(0);
+		BeginAnimsOnBattleAnimations();
+	} else {
+		EndAllMus();
+		RenderBmMap();
+		BeginBattleMapAnims();
+		gBattleStats.config |= BATTLE_CONFIG_MAPANIMS;
+	}
 }
 
 //! FE8U = 0x08011F5C
-void StartEventBattle(struct Unit * unitA, struct Unit * unitB, u8 isBallista, s8 scripted_hit, u16 item, struct BattleHit * hits, s8 useMapAnims)
+void StartEventBattle(struct Unit *unitA, struct Unit *unitB, u8 isBallista, s8 scripted_hit, u16 item, struct BattleHit *hits, s8 useMapAnims)
 {
-    int sp04;
-    int tmp;
+	int sp04;
+	int tmp;
 
-    SetBattleScripted();
+	SetBattleScripted();
 
-    sp04 = 0;
-    if (hits == NULL)
-    {
-        sp04 = 1;
-    }
+	sp04 = 0;
+	if (hits == NULL) {
+		sp04 = 1;
+	}
 
-    gActionData.scriptedBattleHits = (sp04 == 0) ? hits : NULL;
+	gActionData.scriptedBattleHits = (sp04 == 0) ? hits : NULL;
 
-    if ((GetItemType(unitA->items[0]) == ITYPE_STAFF) || (item != 0))
-    {
-        BattleInitItemEffect(unitA, 0);
-        BattleInitItemEffectTarget(unitB);
-    }
-    else if (!isBallista)
-    {
-        EvtBattleGenerateReal(unitA, unitB);
-    }
-    else
-    {
-        EvtBattleGenerateBallistaReal(unitA, unitB);
-    }
+	if ((GetItemType(unitA->items[0]) == ITYPE_STAFF) || (item != 0)) {
+		BattleInitItemEffect(unitA, 0);
+		BattleInitItemEffectTarget(unitB);
+	} else if (!isBallista) {
+		EvtBattleGenerateReal(unitA, unitB);
+	} else {
+		EvtBattleGenerateBallistaReal(unitA, unitB);
+	}
 
-    gBattleActor.weaponBefore = gBattleActor.weapon = GetUnitEquippedWeapon(unitA);
-    tmp = 0x0000FFFF;
-    gBattleTarget.weaponBefore = gBattleTarget.weapon = GetUnitEquippedWeapon(unitB);
+	gBattleActor.weaponBefore = gBattleActor.weapon = GetUnitEquippedWeapon(unitA);
+	tmp = 0x0000FFFF;
+	gBattleTarget.weaponBefore = gBattleTarget.weapon = GetUnitEquippedWeapon(unitB);
 
-    ItemBackupEvtBattle = tmp;
+	ItemBackupEvtBattle = tmp;
 
-    if (item != 0)
-    {
-        switch (GetItemType(item))
-        {
-            case ITYPE_SWORD:
-            case ITYPE_LANCE:
-            case ITYPE_AXE:
-            case ITYPE_BOW:
-            case ITYPE_ANIMA:
-            case ITYPE_LIGHT:
-            case ITYPE_DARK:
-            case ITYPE_MONSTER:
-                ItemBackupEvtBattle = unitA->items[0];
-                unitA->items[0] = MakeNewItem(item);
+	if (item != 0) {
+		switch (GetItemType(item)) {
+			case ITYPE_SWORD:
+			case ITYPE_LANCE:
+			case ITYPE_AXE:
+			case ITYPE_BOW:
+			case ITYPE_ANIMA:
+			case ITYPE_LIGHT:
+			case ITYPE_DARK:
+			case ITYPE_MONSTER:
+				ItemBackupEvtBattle = unitA->items[0];
+				unitA->items[0] = MakeNewItem(item);
 
-                if (!isBallista)
-                {
-                    EvtBattleGenerateReal(unitA, unitB);
-                }
-                else
-                {
-                    EvtBattleGenerateBallistaReal(unitA, unitB);
-                }
+				if (!isBallista) {
+					EvtBattleGenerateReal(unitA, unitB);
+				} else {
+					EvtBattleGenerateBallistaReal(unitA, unitB);
+				}
 
-                gBattleActor.weapon = MakeNewItem(item);
-                gBattleActor.weaponBefore = MakeNewItem(item);
+				gBattleActor.weapon = MakeNewItem(item);
+				gBattleActor.weaponBefore = MakeNewItem(item);
 
-                item = 0;
-                break;
+				item = 0;
+				break;
 
-            case ITYPE_STAFF:
-            case ITYPE_ITEM:
-            case ITYPE_DRAGN:
-            case ITYPE_DANCE:
-            case 0xFF:
-                gBattleActor.weaponBefore = gBattleActor.weapon = item + 0x100;
+			case ITYPE_STAFF:
+			case ITYPE_ITEM:
+			case ITYPE_DRAGN:
+			case ITYPE_DANCE:
+			case 0xFF:
+				gBattleActor.weaponBefore = gBattleActor.weapon = item + 0x100;
 
-                switch (item)
-                {
-                    case ITEM_FILLAS_MIGHT:
-                    case ITEM_NINISS_GRACE:
-                    case ITEM_THORS_IRE:
-                    case ITEM_SETS_LITANY:
-                        gBattleStats.config = BATTLE_CONFIG_DANCERING;
-                        break;
-                }
+				switch (item) {
+					case ITEM_FILLAS_MIGHT:
+					case ITEM_NINISS_GRACE:
+					case ITEM_THORS_IRE:
+					case ITEM_SETS_LITANY:
+						gBattleStats.config = BATTLE_CONFIG_DANCERING;
+						break;
+				}
 
-                break;
-        }
-    }
+				break;
+		}
+	}
 
-    gBattleActor.expGain = 0;
-    gBattleTarget.expGain = 0;
+	gBattleActor.expGain = 0;
+	gBattleTarget.expGain = 0;
 
-    if ((item != 0) && (sp04 == 0))
-    {
-        ClearBattleHits();
+	if ((item != 0) && (sp04 == 0)) {
+		ClearBattleHits();
 
-        while (1)
-        {
-            *gBattleHitIterator = *hits;
-            if (hits->info & BATTLE_HIT_INFO_END)
-            {
-                break;
-            }
+		while (1) {
+			*gBattleHitIterator = *hits;
+			if (hits->info & BATTLE_HIT_INFO_END) {
+				break;
+			}
 
-            BattleHitAdvance();
-            hits++;
-        }
+			BattleHitAdvance();
+			hits++;
+		}
 
-        BattleHitTerminate();
-    }
+		BattleHitTerminate();
+	}
 
-    if (scripted_hit == 0)
-    {
-        /* Here we can also calc battle real */
-        unitA->curHP = gBattleActor.unit.curHP;
-        unitB->curHP = gBattleTarget.unit.curHP;
+	if (scripted_hit == 0) {
+		/* Here we can also calc battle real */
+		unitA->curHP = gBattleActor.unit.curHP;
+		unitB->curHP = gBattleTarget.unit.curHP;
 
-        SetBattleUnscripted();
+		SetBattleUnscripted();
 
-        gActionData.scriptedBattleHits = NULL;
+		gActionData.scriptedBattleHits = NULL;
 
-        if (ItemBackupEvtBattle != 0x0000FFFF)
-        {
-            GetUnit(gBattleActor.unit.index)->items[0] = ItemBackupEvtBattle;
-        }
-    }
-    else
-    {
-        UnitBeginAction(unitA);
-        HideUnitSprite(gActiveUnit);
-        StartMu(gActiveUnit);
-        SetAutoMuDefaultFacing();
+		if (ItemBackupEvtBattle != 0x0000FFFF) {
+			GetUnit(gBattleActor.unit.index)->items[0] = ItemBackupEvtBattle;
+		}
+	} else {
+		UnitBeginAction(unitA);
+		HideUnitSprite(gActiveUnit);
+		StartMu(gActiveUnit);
+		SetAutoMuDefaultFacing();
 
-        if ((GetItemType(unitA->items[0]) == ITYPE_STAFF) || (item != 0))
-        {
-            gActionData.unitActionType = UNIT_ACTION_STAFF;
-        }
-        else
-        {
-            gActionData.unitActionType = UNIT_ACTION_COMBAT;
-        }
+		if ((GetItemType(unitA->items[0]) == ITYPE_STAFF) || (item != 0)) {
+			gActionData.unitActionType = UNIT_ACTION_STAFF;
+		} else {
+			gActionData.unitActionType = UNIT_ACTION_COMBAT;
+		}
 
-        StartScriptBattleAnim(useMapAnims);
+		StartScriptBattleAnim(useMapAnims);
 
-        gAiDecision.xMove = unitA->xPos;
-        gAiDecision.yMove = unitA->yPos;
-    }
+		gAiDecision.xMove = unitA->xPos;
+		gAiDecision.yMove = unitA->yPos;
+	}
 }
 
 //! FE8U = 0x080121D4
 void EventBattleReloadBmStatus(void)
 {
-    struct Unit * unitA;
-    struct Unit * unitB;
+	struct Unit *unitA;
+	struct Unit *unitB;
 
-    unitA = GetUnit(gBattleActor.unit.index);
-    unitB = GetUnit(gBattleTarget.unit.index);
+	unitA = GetUnit(gBattleActor.unit.index);
+	unitB = GetUnit(gBattleTarget.unit.index);
 
-    unitA->curHP = gBattleActor.unit.curHP;
-    unitB->curHP = gBattleTarget.unit.curHP;
+	unitA->curHP = gBattleActor.unit.curHP;
+	unitB->curHP = gBattleTarget.unit.curHP;
 
-    gActionData.scriptedBattleHits = NULL;
-    AiRefreshMap();
+	gActionData.scriptedBattleHits = NULL;
+	AiRefreshMap();
 
-    if (ItemBackupEvtBattle != 0x0000FFFF)
-    {
-        unitA->items[0] = ItemBackupEvtBattle;
-    }
+	if (ItemBackupEvtBattle != 0x0000FFFF) {
+		unitA->items[0] = ItemBackupEvtBattle;
+	}
 
-    unitA->state &= ~(US_UNSELECTABLE);
-    unitB->state &= ~(US_UNSELECTABLE);
+	unitA->state &= ~(US_UNSELECTABLE);
+	unitB->state &= ~(US_UNSELECTABLE);
 
-    if (gBattleStats.config & BATTLE_CONFIG_MAPANIMS)
-    {
-        if (unitA->curHP == 0)
-        {
-            unitA->state |= (US_HIDDEN | US_DEAD);
-        }
+	if (gBattleStats.config & BATTLE_CONFIG_MAPANIMS) {
+		if (unitA->curHP == 0) {
+			unitA->state |= (US_HIDDEN | US_DEAD);
+		}
 
-        if (unitB->curHP == 0)
-        {
-            unitB->state |= (US_HIDDEN | US_DEAD);
-        }
-    }
+		if (unitB->curHP == 0) {
+			unitB->state |= (US_HIDDEN | US_DEAD);
+		}
+	}
 
-    RefreshEntityBmMaps();
-    RefreshUnitSprites();
+	RefreshEntityBmMaps();
+	RefreshUnitSprites();
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08012270
-void EventPromoteUnitExt(struct Unit * unit, u8 jid, u8 item)
+void EventPromoteUnitExt(struct Unit *unit, u8 jid, u8 item)
 {
-    gLCDControlBuffer.bg0cnt.priority = 0;
-    gLCDControlBuffer.bg1cnt.priority = 1;
-    gLCDControlBuffer.bg2cnt.priority = 2;
-    gLCDControlBuffer.bg3cnt.priority = 3;
+	gLCDControlBuffer.bg0cnt.priority = 0;
+	gLCDControlBuffer.bg1cnt.priority = 1;
+	gLCDControlBuffer.bg2cnt.priority = 2;
+	gLCDControlBuffer.bg3cnt.priority = 3;
 
-    SetBlendDarken(0x10);
-    SetBlendTargetA(1, 1, 1, 1, 1);
+	SetBlendDarken(0x10);
+	SetBlendTargetA(1, 1, 1, 1, 1);
 
-    SetWinEnable(0, 0, 0);
+	SetWinEnable(0, 0, 0);
 
-    ExecUnitPromotion(unit, jid, -1, 0);
+	ExecUnitPromotion(unit, jid, -1, 0);
 
-    gBattleActor.weaponBefore = gBattleTarget.weaponBefore = item;
+	gBattleActor.weaponBefore = gBattleTarget.weaponBefore = item;
 
-    gBattleStats.config = (BATTLE_CONFIG_PROMOTION | BATTLE_CONFIG_PROMOTION_PREP);
-    BeginBattleAnimations();
+	gBattleStats.config = (BATTLE_CONFIG_PROMOTION | BATTLE_CONFIG_PROMOTION_PREP);
+	BeginBattleAnimations();
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08012324
 void sub_8012324(void)
 {
-    EndCgText();
+	EndCgText();
 
-    ResetDialogueScreen();
-    SetupBackgrounds(NULL);
+	ResetDialogueScreen();
+	SetupBackgrounds(NULL);
 
-    Fade_CommonCallBack();
+	Fade_CommonCallBack();
 
-    InitSystemTextFont();
-    ApplySystemGraphics();
+	InitSystemTextFont();
+	ApplySystemGraphics();
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08012344
 int GetChapterAllyUnitCount(void)
 {
-    const struct UnitDefinition * uDef = GetChapterAllyUnitDataPointer();
+	const struct UnitDefinition * uDef = GetChapterAllyUnitDataPointer();
 
-    int count = 0;
+	int count = 0;
 
-    for (; uDef->charIndex != 0; uDef++)
-    {
-        count++;
-    }
+	for (; uDef->charIndex != 0; uDef++) {
+		count++;
+	}
 
-    return count;
+	return count;
 }
 
 //! FE8U = 0x08012360
 void InitPlayerUnitPositionsForPrepScreen(void)
 {
-    int i;
-    s8 x, y;
+	int i;
+	s8 x, y;
 
-    const struct UnitDefinition * uDef = GetChapterAllyUnitDataPointer();
+	const struct UnitDefinition * uDef = GetChapterAllyUnitDataPointer();
 
-    for (i = FACTION_BLUE + 1; i < FACTION_GREEN; i++)
-    {
-        struct Unit * unit = GetUnit(i);
+	for (i = FACTION_BLUE + 1; i < FACTION_GREEN; i++) {
+		struct Unit *unit = GetUnit(i);
 
-        if (!UNIT_IS_VALID(unit))
-        {
-            continue;
-        }
+		if (!UNIT_IS_VALID(unit)) {
+			continue;
+		}
 
-        if (uDef->charIndex == 0)
-        {
-            unit->xPos = -1;
-            continue;
-        }
+		if (uDef->charIndex == 0) {
+			unit->xPos = -1;
+			continue;
+		}
 
-        if (unit->state & (US_UNAVAILABLE | US_BIT25))
-        {
-            continue;
-        }
+		if (unit->state & (US_UNAVAILABLE | US_BIT25)) {
+			continue;
+		}
 
-        if (UNIT_CATTRIBUTES(unit) & CA_SUPPLY)
-        {
-            unit->xPos = GetROMChapterStruct(gPlaySt.chapterIndex)->merchantPosX;
-            unit->yPos = GetROMChapterStruct(gPlaySt.chapterIndex)->merchantPosY;
-            continue;
-        }
+		if (UNIT_CATTRIBUTES(unit) & CA_SUPPLY) {
+			unit->xPos = GetROMChapterStruct(gPlaySt.chapterIndex)->merchantPosX;
+			unit->yPos = GetROMChapterStruct(gPlaySt.chapterIndex)->merchantPosY;
+			continue;
+		}
 
-        GenUnitDefinitionFinalPosition(uDef, &x, &y, 0);
+		GenUnitDefinitionFinalPosition(uDef, &x, &y, 0);
 
-        unit->xPos = x;
-        unit->yPos = y;
+		unit->xPos = x;
+		unit->yPos = y;
 
-        uDef++;
-    }
+		uDef++;
+	}
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0801240C
 void SyncUnitDeploymentState(void)
 {
-    int i;
+	int i;
 
-    for (i = FACTION_BLUE + 1; i < FACTION_GREEN; i++)
-    {
-        struct Unit * unit = GetUnit(i);
+	for (i = FACTION_BLUE + 1; i < FACTION_GREEN; i++) {
+		struct Unit *unit = GetUnit(i);
 
-        if (!UNIT_IS_VALID(unit))
-        {
-            continue;
-        }
+		if (!UNIT_IS_VALID(unit)) {
+			continue;
+		}
 
-        if (unit->state & US_DEAD)
-        {
-            continue;
-        }
+		if (unit->state & US_DEAD) {
+			continue;
+		}
 
-        if (unit->state & (US_NOT_DEPLOYED | US_BIT16))
-        {
-            unit->xPos = -1;
-            unit->state |= US_HIDDEN;
-            continue;
-        }
+		if (unit->state & (US_NOT_DEPLOYED | US_BIT16)) {
+			unit->xPos = -1;
+			unit->state |= US_HIDDEN;
+			continue;
+		}
 
-        unit->state &= ~(US_HIDDEN);
+		unit->state &= ~(US_HIDDEN);
 
-        if (!(gBmSt.gameStateBits & BM_FLAG_LINKARENA) && unit->xPos == -1)
-        {
-            AssignUnitToFreeDeploySlot(unit);
-        }
-    }
+		if (!(gBmSt.gameStateBits & BM_FLAG_LINKARENA) && unit->xPos == -1) {
+			AssignUnitToFreeDeploySlot(unit);
+		}
+	}
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0801247C
-void AssignUnitToFreeDeploySlot(struct Unit * unit)
+void AssignUnitToFreeDeploySlot(struct Unit *unit)
 {
-    int i;
-    s8 x;
-    s8 y;
+	int i;
+	s8 x;
+	s8 y;
 
-    const struct UnitDefinition * uDef = GetChapterAllyUnitDataPointer();
+	const struct UnitDefinition * uDef = GetChapterAllyUnitDataPointer();
 
-    if (UNIT_CATTRIBUTES(unit) & CA_SUPPLY)
-    {
-        unit->xPos = GetROMChapterStruct(gPlaySt.chapterIndex)->merchantPosX;
-        unit->yPos = GetROMChapterStruct(gPlaySt.chapterIndex)->merchantPosY;
-        return;
-    }
+	if (UNIT_CATTRIBUTES(unit) & CA_SUPPLY) {
+		unit->xPos = GetROMChapterStruct(gPlaySt.chapterIndex)->merchantPosX;
+		unit->yPos = GetROMChapterStruct(gPlaySt.chapterIndex)->merchantPosY;
+		return;
+	}
 
-    while (uDef->charIndex != 0)
-    {
-        bool found = false;
+	while (uDef->charIndex != 0) {
+		bool found = false;
 
-        for (i = FACTION_BLUE + 1; i < FACTION_GREEN; i++)
-        {
-            struct Unit * unit = GetUnit(i);
+		for (i = FACTION_BLUE + 1; i < FACTION_GREEN; i++) {
+			struct Unit *unit = GetUnit(i);
 
-            if (!UNIT_IS_VALID(unit))
-            {
-                continue;
-            }
+			if (!UNIT_IS_VALID(unit)) {
+				continue;
+			}
 
-            if (unit->state & US_UNAVAILABLE)
-            {
-                continue;
-            }
+			if (unit->state & US_UNAVAILABLE) {
+				continue;
+			}
 
-            GenUnitDefinitionFinalPosition(uDef, &x, &y, false);
+			GenUnitDefinitionFinalPosition(uDef, &x, &y, false);
 
-            if (unit->xPos != x || unit->yPos != y)
-            {
-                continue;
-            }
+			if (unit->xPos != x || unit->yPos != y) {
+				continue;
+			}
 
-            found = true;
+			found = true;
 
-            break;
-        }
+			break;
+		}
 
-        if (!found)
-        {
-            GenUnitDefinitionFinalPosition(uDef, &x, &y, false);
-            unit->xPos = x;
-            unit->yPos = y;
-            return;
-        }
+		if (!found) {
+			GenUnitDefinitionFinalPosition(uDef, &x, &y, false);
+			unit->xPos = x;
+			unit->yPos = y;
+			return;
+		}
 
-        uDef++;
-    }
+		uDef++;
+	}
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08012578
 int sub_8012578(int index)
 {
-    for (; index < FACTION_GREEN; index++)
-    {
-        struct Unit * unit = GetUnit(index);
+	for (; index < FACTION_GREEN; index++) {
+		struct Unit *unit = GetUnit(index);
 
-        if (!UNIT_IS_VALID(unit))
-        {
-            continue;
-        }
+		if (!UNIT_IS_VALID(unit)) {
+			continue;
+		}
 
-        if (unit->pCharacterData->number == GetPlayerLeaderPid())
-        {
-            continue;
-        }
+		if (unit->pCharacterData->number == GetPlayerLeaderPid()) {
+			continue;
+		}
 
-        if (unit->state & US_UNAVAILABLE)
-        {
-            continue;
-        }
+		if (unit->state & US_UNAVAILABLE) {
+			continue;
+		}
 
-        return index;
-    }
+		return index;
+	}
 
-    return 0;
+	return 0;
 }
 
 //! FE8U = 0x080125C0
-void sub_80125C0(struct UnitDefinition * uDef)
+void sub_80125C0(struct UnitDefinition *uDef)
 {
-    int pid = GetPlayerLeaderPid();
-    struct Unit * unit = GetUnitFromCharId(pid);
+	int pid = GetPlayerLeaderPid();
+	struct Unit *unit = GetUnitFromCharId(pid);
 
-    if (unit)
-    {
-        if (!(unit->state & US_NOT_DEPLOYED))
-        {
-            uDef->charIndex = unit->pCharacterData->number;
-            uDef->classIndex = unit->pClassData->number;
-            uDef->autolevel = 0;
+	if (unit) {
+		if (!(unit->state & US_NOT_DEPLOYED)) {
+			uDef->charIndex = unit->pCharacterData->number;
+			uDef->classIndex = unit->pClassData->number;
+			uDef->autolevel = 0;
 
-            uDef++;
-        }
-    }
+			uDef++;
+		}
+	}
 
-    pid = 0;
+	pid = 0;
 
-    while (uDef->charIndex != 0)
-    {
-        pid = sub_8012578(pid);
+	while (uDef->charIndex != 0) {
+		pid = sub_8012578(pid);
 
-        if (pid == 0)
-        {
-            break;
-        }
+		if (pid == 0) {
+			break;
+		}
 
-        unit = GetUnit(pid);
+		unit = GetUnit(pid);
 
-        pid++;
+		pid++;
 
-        uDef->charIndex = unit->pCharacterData->number;
-        uDef->classIndex = unit->pClassData->number;
-        uDef->autolevel = 0;
+		uDef->charIndex = unit->pCharacterData->number;
+		uDef->classIndex = unit->pClassData->number;
+		uDef->autolevel = 0;
 
-        uDef++;
-    }
+		uDef++;
+	}
 
-    uDef->charIndex = 0;
+	uDef->charIndex = 0;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x0801263C
 void StoreUnitWordStructs(void)
 {
-    int i;
-    struct Unknown03000600 * it = gUnknown_03000600;
+	int i;
+	struct Unknown03000600 *it = gUnknown_03000600;
 
-    for (i = FACTION_BLUE + 1; i < FACTION_GREEN; i++)
-    {
-        struct Unit * unit = GetUnit(i);
+	for (i = FACTION_BLUE + 1; i < FACTION_GREEN; i++) {
+		struct Unit *unit = GetUnit(i);
 
-        if (!UNIT_IS_VALID(unit))
-        {
-            continue;
-        }
+		if (!UNIT_IS_VALID(unit)) {
+			continue;
+		}
 
-        it->pid = unit->pCharacterData->number;
-        it->x = unit->xPos;
-        it->y = unit->yPos;
+		it->pid = unit->pCharacterData->number;
+		it->x = unit->xPos;
+		it->y = unit->yPos;
 
-        it++;
-    }
+		it++;
+	}
 
-    it->pid = 0;
+	it->pid = 0;
 
-    return;
+	return;
 }
 
 //! FE8U = 0x08012678
 void LoadUnitWordStructs(void)
 {
-    struct Unknown03000600 * it;
+	struct Unknown03000600 *it;
 
-    for (it = gUnknown_03000600; it->pid != 0; it++)
-    {
-        struct Unit * unit = GetUnitFromCharId(it->pid);
-        unit->xPos = it->x;
-        unit->yPos = it->y;
+	for (it = gUnknown_03000600; it->pid != 0; it++) {
+		struct Unit *unit = GetUnitFromCharId(it->pid);
 
-        if (it->x < 0)
-        {
-            unit->state |= US_NOT_DEPLOYED;
-        }
-        else
-        {
-            unit->state &= ~(US_NOT_DEPLOYED);
-        }
-    }
-    return;
+		unit->xPos = it->x;
+		unit->yPos = it->y;
+
+		if (it->x < 0) {
+			unit->state |= US_NOT_DEPLOYED;
+		} else {
+			unit->state &= ~(US_NOT_DEPLOYED);
+		}
+	}
+	return;
 }
