@@ -8,127 +8,131 @@
 #include "bmarch.h"
 
 
-inline s8 IsBallista(struct Trap* trap) {
+inline s8 IsBallista(struct Trap *trap)
+{
 
-    if (!trap) {
-        return 0;
-    }
+	if (!trap)
+		return 0;
 
-    if (trap->type != TRAP_BALLISTA) {
-        return 0;
-    }
+	if (trap->type != TRAP_BALLISTA)
+		return 0;
 
-    return 1;
+	return 1;
 }
 
-inline int sub_8037AC0(struct Trap* trap) {
-    if (!IsBallista(trap)) {
-        return 0;
-    }
+inline int sub_8037AC0(struct Trap *trap)
+{
+	if (!IsBallista(trap))
+		return 0;
 
-    return trap->extra + trap->data[TRAP_EXTDATA_BLST_ITEMUSES] * 0x100;
+	return trap->extra + trap->data[TRAP_EXTDATA_BLST_ITEMUSES] * 0x100;
 }
 
-inline int sub_8037AEC(struct Trap* trap) {
-    if (!IsBallista(trap)) {
-        return 0;
-    }
+inline int sub_8037AEC(struct Trap *trap)
+{
+	if (!IsBallista(trap))
+		return 0;
 
-    return trap->extra;
+	return trap->extra;
 }
 
-inline int GetBallistaItemUses(struct Trap* trap) {
-    if (!IsBallista(trap)) {
-        return 0;
-    }
+inline int GetBallistaItemUses(struct Trap *trap)
+{
+	if (!IsBallista(trap))
+		return 0;
 
-    return trap->data[TRAP_EXTDATA_BLST_ITEMUSES];
+	return trap->data[TRAP_EXTDATA_BLST_ITEMUSES];
 }
 
-inline void ClearBallistaOccupied(struct Trap* trap) {
-    trap->data[TRAP_EXTDATA_BLST_RIDDEN] = 0;
-    return;
+inline void ClearBallistaOccupied(struct Trap *trap)
+{
+	trap->data[TRAP_EXTDATA_BLST_RIDDEN] = 0;
+	return;
 }
 
-inline void SetBallistaOccupied(struct Trap* trap) {
-    trap->data[TRAP_EXTDATA_BLST_RIDDEN] = 1;
-    return;
+inline void SetBallistaOccupied(struct Trap *trap)
+{
+	trap->data[TRAP_EXTDATA_BLST_RIDDEN] = 1;
+	return;
 }
 
-struct Trap* GetRiddenBallistaAt(int xPos, int yPos) {
-    struct Trap* trap = GetTrapAt(xPos, yPos);
+struct Trap* GetRiddenBallistaAt(int xPos, int yPos)
+{
+	struct Trap *trap = GetTrapAt(xPos, yPos);
 
-    if (GetBallistaItemUses(trap) == 0) {
-        return 0;
-    }
+	if (GetBallistaItemUses(trap) == 0)
+		return 0;
 
-    return trap;
+	return trap;
 }
 
-int GetBallistaItemAt(int xPos, int yPos) {
-    struct Trap* trap = GetTrapAt(xPos, yPos);
+int GetBallistaItemAt(int xPos, int yPos)
+{
+	struct Trap *trap = GetTrapAt(xPos, yPos);
 
-    if (GetBallistaItemUses(trap) == 0) {
-        return 0;
-    }
+	if (GetBallistaItemUses(trap) == 0)
+		return 0;
 
-    return sub_8037AC0(trap);
+	return sub_8037AC0(trap);
 }
 
-int GetSomeBallistaItemAt(int xPos, int yPos) {
-    struct Trap* trap = GetTrapAt(xPos, yPos);
+int GetSomeBallistaItemAt(int xPos, int yPos)
+{
+	struct Trap *trap = GetTrapAt(xPos, yPos);
 
-    int unk = sub_8037AEC(trap);
+	int unk = sub_8037AEC(trap);
 
-    if (unk == 0) {
-        return 0;
-    }
+	if (unk == 0)
+		return 0;
 
-    return unk + 0x100;
+	return unk + 0x100;
 }
 
-struct Trap* AddBallista(int xPos, int yPos, int ballistaType) {
-    struct Trap* trap = AddTrap(xPos, yPos, 1, 0);
+struct Trap* AddBallista(int xPos, int yPos, int ballistaType)
+{
+	struct Trap *trap = AddTrap(xPos, yPos, 1, 0);
 
-    trap->extra = GetItemIndex(ballistaType);
-    trap->data[TRAP_EXTDATA_BLST_ITEMUSES] = GetItemUses(MakeNewItem(ballistaType));
+	trap->extra = GetItemIndex(ballistaType);
+	trap->data[TRAP_EXTDATA_BLST_ITEMUSES] = GetItemUses(MakeNewItem(ballistaType));
 
-    ClearBallistaOccupied(trap);
+	ClearBallistaOccupied(trap);
 
-    return trap;
+	return trap;
 }
 
-void RideBallista(struct Unit* unit) {
-    struct Trap* trap = GetTrapAt(unit->xPos, unit->yPos);
+void RideBallista(struct Unit *unit)
+{
+	struct Trap *trap = GetTrapAt(unit->xPos, unit->yPos);
 
-    SetBallistaOccupied(trap);
+	SetBallistaOccupied(trap);
 
-    RefreshUnitSprites();
+	RefreshUnitSprites();
 
-    unit->state |= US_IN_BALLISTA;
+	unit->state |= US_IN_BALLISTA;
 
-    unit->ballistaIndex = TRAP_INDEX(trap);
+	unit->ballistaIndex = TRAP_INDEX(trap);
 
-    return;
+	return;
 }
 
-void TryRemoveUnitFromBallista(struct Unit* unit) {
-    struct Trap* trap;
+void TryRemoveUnitFromBallista(struct Unit *unit)
+{
+	struct Trap *trap;
 
-    if ((unit->state & US_IN_BALLISTA) != 0) {
-        trap = GetTrap(unit->ballistaIndex);
+	if ((unit->state & US_IN_BALLISTA) != 0) {
+		trap = GetTrap(unit->ballistaIndex);
 
-        unit->state &= ~US_IN_BALLISTA;
+		unit->state &= ~US_IN_BALLISTA;
 
-        ClearBallistaOccupied(trap);
+		ClearBallistaOccupied(trap);
 
-        unit->ballistaIndex = 0;
+		unit->ballistaIndex = 0;
 
-        trap->xPos = unit->xPos;
-        trap->yPos = unit->yPos;
+		trap->xPos = unit->xPos;
+		trap->yPos = unit->yPos;
 
-        RefreshUnitSprites();
-    }
+		RefreshUnitSprites();
+	}
 
-    return;
+	return;
 }

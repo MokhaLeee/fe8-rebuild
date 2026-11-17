@@ -18,160 +18,160 @@ CONST_DATA struct ExtraMapInfo *gExtraMapInfo = (void *) EWRAM_START + 0x40000 -
 
 void LoadAndVerfySuspendSave(void)
 {
-    struct PlaySt playSt;
+	struct PlaySt playSt;
     
-    if (IsValidSuspendSave(SAVE_ID_SUSPEND)) {
+	if (IsValidSuspendSave(SAVE_ID_SUSPEND)) {
 
-        ReadSuspendSavePlaySt(SAVE_ID_SUSPEND, &playSt);
-        if (0x7F == playSt.chapterIndex) {
-            ReadSramFast(gpSramExtraData, &gExtraMapSaveHead, sizeof(struct ExtraMapSaveHead));
+		ReadSuspendSavePlaySt(SAVE_ID_SUSPEND, &playSt);
+		if (0x7F == playSt.chapterIndex) {
+			ReadSramFast(gpSramExtraData, &gExtraMapSaveHead, sizeof(struct ExtraMapSaveHead));
 
-            if (playSt.unk_2C_0D != gExtraMapSaveHead.unk0F)
-                InvalidateSuspendSave(SAVE_ID_SUSPEND);
-        }
-    }
+			if (playSt.unk_2C_0D != gExtraMapSaveHead.unk0F)
+				InvalidateSuspendSave(SAVE_ID_SUSPEND);
+		}
+	}
 }
 
 bool ReadExtraMapSaveHead(void)
 {
-    ReadSramFast(gpSramExtraData, &gExtraMapSaveHead, sizeof(struct ExtraMapSaveHead));
+	ReadSramFast(gpSramExtraData, &gExtraMapSaveHead, sizeof(struct ExtraMapSaveHead));
 
-    if (gExtraMapSaveHead.xmap_magic != XMAP_MAGIC)
-        return FALSE;
+	if (gExtraMapSaveHead.xmap_magic != XMAP_MAGIC)
+		return FALSE;
 
-    if (gExtraMapSaveHead.save_magic32 != SAVEMAGIC32_XMAP + (GetLang() << 24))
-        return FALSE;
+	if (gExtraMapSaveHead.save_magic32 != SAVEMAGIC32_XMAP + (GetLang() << 24))
+		return FALSE;
 
-    gExtraMapSaveHead.map_sram += (ptrdiff_t)gpSramExtraData;
-    gExtraMapSaveHead.info_sram += (ptrdiff_t)gpSramExtraData;
-    gPlaySt.unk_2C_0D = gExtraMapSaveHead.unk0F;
+	gExtraMapSaveHead.map_sram += (ptrdiff_t)gpSramExtraData;
+	gExtraMapSaveHead.info_sram += (ptrdiff_t)gpSramExtraData;
+	gPlaySt.unk_2C_0D = gExtraMapSaveHead.unk0F;
 
-    return TRUE;
+	return TRUE;
 }
 
 void const * GetExtraMapMapReadAddr(void)
 {
-    if (gExtraMapSaveHead.xmap_magic != XMAP_MAGIC)
-        return NULL;
+	if (gExtraMapSaveHead.xmap_magic != XMAP_MAGIC)
+		return NULL;
 
-    return gExtraMapSaveHead.map_sram;
+	return gExtraMapSaveHead.map_sram;
 }
 
 u32 GetExtraMapMapSize(void)
 {
-    if (gExtraMapSaveHead.xmap_magic != XMAP_MAGIC)
-        return 0;
+	if (gExtraMapSaveHead.xmap_magic != XMAP_MAGIC)
+		return 0;
 
-    return gExtraMapSaveHead.map_size;
+	return gExtraMapSaveHead.map_size;
 }
 
 void const *GetExtraMapInfoReadAddr(void)
 {
-    if (gExtraMapSaveHead.xmap_magic != XMAP_MAGIC)
-        return NULL;
+	if (gExtraMapSaveHead.xmap_magic != XMAP_MAGIC)
+		return NULL;
 
-    return gExtraMapSaveHead.info_sram;
+	return gExtraMapSaveHead.info_sram;
 }
 
 u32 GetExtraMapInfoSize(void)
 {
-    if (gExtraMapSaveHead.xmap_magic != XMAP_MAGIC)
-        return 0;
+	if (gExtraMapSaveHead.xmap_magic != XMAP_MAGIC)
+		return 0;
 
-    return gExtraMapSaveHead.info_size;
+	return gExtraMapSaveHead.info_size;
 }
 
 u16 ExtraMapChecksum(void const *data, int size)
 {
-    u16 const * data_u16 = data;
-    int i, result = 0;
+	u16 const *data_u16 = data;
+	int i, result = 0;
 
-    for (i = 0; i < size / 2; i++)
-        result += *data_u16++;
+	for (i = 0; i < size / 2; i++)
+		result += *data_u16++;
 
-    return result;
+	return result;
 }
 
 bool IsExtraMapAvailable(void)
 {
-    struct ExtraMapSaveHead *buf = (struct ExtraMapSaveHead *)gGenericBuffer;
+	struct ExtraMapSaveHead *buf = (struct ExtraMapSaveHead *)gGenericBuffer;
 
-    if (!IsSramWorking())
-        return FALSE;
+	if (!IsSramWorking())
+		return FALSE;
 
-    ReadSramFast(CART_SRAM + SRAM_OFFSET_XMAP, buf, SRAM_SIZE_XMAP);
+	ReadSramFast(CART_SRAM + SRAM_OFFSET_XMAP, buf, SRAM_SIZE_XMAP);
 
-    if (buf->xmap_magic != XMAP_MAGIC)
-        return FALSE;
+	if (buf->xmap_magic != XMAP_MAGIC)
+		return FALSE;
 
-    if (buf->save_magic32 != SAVEMAGIC32_XMAP + (GetLang() << 24))
-        return FALSE;
+	if (buf->save_magic32 != SAVEMAGIC32_XMAP + (GetLang() << 24))
+		return FALSE;
 
-    if (buf->xmap_size == 0)
-        return FALSE;
+	if (buf->xmap_size == 0)
+		return FALSE;
 
-    if (buf->xmap_checksum != ExtraMapChecksum(&buf->save_magic32, buf->xmap_size))
-        return FALSE;
+	if (buf->xmap_checksum != ExtraMapChecksum(&buf->save_magic32, buf->xmap_size))
+		return FALSE;
 
-    return TRUE;
+	return TRUE;
 }
 
 void ReadExtraMapInfo(void)
 {
-    ReadExtraMapSaveHead();
+	ReadExtraMapSaveHead();
 
-    ReadSramFast(GetExtraMapInfoReadAddr(), gGenericBuffer, GetExtraMapInfoSize());
-    Decompress(gGenericBuffer, gExtraMapInfo);
+	ReadSramFast(GetExtraMapInfoReadAddr(), gGenericBuffer, GetExtraMapInfoSize());
+	Decompress(gGenericBuffer, gExtraMapInfo);
 
-    gExtraMapInfo->play_st = &gPlaySt;
-    gExtraMapInfo->bm_st = &gBmSt;
-    gExtraMapInfo->active_unit = &gActiveUnit;
-    gExtraMapInfo->unit_lut = gUnitLookup;
-    gExtraMapInfo->bu_a = &gBattleActor;
-    gExtraMapInfo->bu_b = &gBattleTarget;
-    gExtraMapInfo->battle_hits = gBattleHitArray;
-    gExtraMapInfo->traps = GetTrap(0);
-    gExtraMapInfo->permanent_flags = GetPermanentFlagBits();
-    gExtraMapInfo->chapter_frags = GetChapterFlagBits();
+	gExtraMapInfo->play_st = &gPlaySt;
+	gExtraMapInfo->bm_st = &gBmSt;
+	gExtraMapInfo->active_unit = &gActiveUnit;
+	gExtraMapInfo->unit_lut = gUnitLookup;
+	gExtraMapInfo->bu_a = &gBattleActor;
+	gExtraMapInfo->bu_b = &gBattleTarget;
+	gExtraMapInfo->battle_hits = gBattleHitArray;
+	gExtraMapInfo->traps = GetTrap(0);
+	gExtraMapInfo->permanent_flags = GetPermanentFlagBits();
+	gExtraMapInfo->chapter_frags = GetChapterFlagBits();
 }
 
 bool sub_80A6D1C(u8 *buf)
 {
-    *buf = 0;
-    return true;
+	*buf = 0;
+	return true;
 }
 
 const char * GetChapterTitleName_(unsigned ch)
 {
-    return GetChapterTitleName(ch);
+	return GetChapterTitleName(ch);
 }
 
 bool bmsave_null_false1(void)
 {
-    return false;
+	return false;
 }
 
 bool bmsave_null_false2(void)
 {
-    return false;
+	return false;
 }
 
 void NullBmMapHidden_(void)
 {
-    GetGlobalCompletionCount();
-    gBmMapHidden = NULL;
+	GetGlobalCompletionCount();
+	gBmMapHidden = NULL;
 }
 
 struct ChapterStats *sub_80A6D4C(void)
 {
-    int time;
+	int time;
 
-    time = (GetGameClock() - gPlaySt.time_chapter_started) / 180;
-    if (time > 60000)
-        time = 60000;
+	time = (GetGameClock() - gPlaySt.time_chapter_started) / 180;
+	if (time > 60000)
+		time = 60000;
 
-    gExtraMapStatus.chapter_index = gPlaySt.chapterIndex;
-    gExtraMapStatus.chapter_turn = gPlaySt.chapterTurnNumber;
-    gExtraMapStatus.chapter_time = time;
-    return &gExtraMapStatus;
+	gExtraMapStatus.chapter_index = gPlaySt.chapterIndex;
+	gExtraMapStatus.chapter_turn = gPlaySt.chapterTurnNumber;
+	gExtraMapStatus.chapter_time = time;
+	return &gExtraMapStatus;
 }

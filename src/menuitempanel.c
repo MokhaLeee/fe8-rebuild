@@ -12,7 +12,7 @@
 #include "menuitempanel.h"
 #include "functions.h"
 
-void MenuItemPanelProcIdle(struct MenuItemPanelProc * proc);
+void MenuItemPanelProcIdle(struct MenuItemPanelProc *proc);
 
 struct ProcCmd CONST_DATA gProcCmd_MenuItemPanel[] = {
 	PROC_15,
@@ -20,7 +20,7 @@ struct ProcCmd CONST_DATA gProcCmd_MenuItemPanel[] = {
 	PROC_END,
 };
 
-void MenuItemPanelProcIdle(struct MenuItemPanelProc * proc)
+void MenuItemPanelProcIdle(struct MenuItemPanelProc *proc)
 {
 	if (0 == proc->draw_arrow)
 		return;
@@ -54,10 +54,10 @@ void MenuItemPanelProcIdle(struct MenuItemPanelProc * proc)
 
 }
 
-void ForceMenuItemPanel(ProcPtr _menu_proc, struct Unit * unit, int x, int y)
+void ForceMenuItemPanel(ProcPtr _menu_proc, struct Unit *unit, int x, int y)
 {
 	struct MenuProc *menu_proc = _menu_proc;
-	struct MenuItemPanelProc * proc;
+	struct MenuItemPanelProc *proc;
 
 	if (NULL == Proc_Find(gProcCmd_MenuItemPanel)) {
 		proc = Proc_Start(gProcCmd_MenuItemPanel, menu_proc);
@@ -84,12 +84,12 @@ void ForceMenuItemPanel(ProcPtr _menu_proc, struct Unit * unit, int x, int y)
 
 void UpdateMenuItemPanel(int slot_or_item)
 {
-	struct MenuItemPanelProc * proc = Proc_Find(gProcCmd_MenuItemPanel);
-	u16 * bg_base = BG_GetMapBuffer(0) + proc->x + 0x20 * proc->y;
-	struct Text * texts = &proc->text[0];
-	struct Unit * unit = proc->unit;
+	struct MenuItemPanelProc *proc = Proc_Find(gProcCmd_MenuItemPanel);
+	u16 *bg_base = BG_GetMapBuffer(0) + proc->x + 0x20 * proc->y;
+	struct Text *texts = &proc->text[0];
+	struct Unit *unit = proc->unit;
 	int i, item, color, icon_pal = proc->IconPalIndex;
-	char * str;
+	char *str;
 
 	ClearText(&proc->text[0]);
 	ClearText(&proc->text[1]);

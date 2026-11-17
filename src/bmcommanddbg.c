@@ -21,162 +21,155 @@
 //! FE8U = 0x08034314
 bool CanUnitUseVisit(void)
 {
-    int ix;
-    int iy;
+	int ix;
+	int iy;
 
-    if (gActiveUnit->state & US_HAS_MOVED)
-        return false;
+	if (gActiveUnit->state & US_HAS_MOVED)
+		return false;
 
-    for (iy = gBmMapSize.y - 1; iy >= 0; iy--)
-    {
-        for (ix = gBmMapSize.x - 1; ix >= 0; ix--)
-        {
-            if (gBmMapMovement[iy][ix] > MAP_MOVEMENT_MAX)
-                continue;
+	for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
+		for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
+			if (gBmMapMovement[iy][ix] > MAP_MOVEMENT_MAX)
+				continue;
 
-            if (gBmMapTerrain[iy][ix] != TERRAIN_VILLAGE_REGULAR && gBmMapTerrain[iy][ix] != TERRAIN_HOUSE &&
-                gBmMapTerrain[iy][ix] != TERRAIN_INN && gBmMapTerrain[iy][ix] != TERRAIN_RUINS_VILLAGE)
-                continue;
+			if (gBmMapTerrain[iy][ix] != TERRAIN_VILLAGE_REGULAR && gBmMapTerrain[iy][ix] != TERRAIN_HOUSE &&
+				gBmMapTerrain[iy][ix] != TERRAIN_INN && gBmMapTerrain[iy][ix] != TERRAIN_RUINS_VILLAGE)
+				continue;
 
-            if (GetAvailableTileEventCommand(ix, iy) == TILE_COMMAND_VISIT)
-                return true;
-        }
-    }
+			if (GetAvailableTileEventCommand(ix, iy) == TILE_COMMAND_VISIT)
+				return true;
+		}
+	}
 
-    return false;
+	return false;
 }
 
 //! FE8U = 0x080343A8
 bool CanUnitUseSeize(void)
 {
-    int ix;
-    int iy;
+	int ix;
+	int iy;
 
-    if (gActiveUnit->state & US_HAS_MOVED)
-        return false;
+	if (gActiveUnit->state & US_HAS_MOVED)
+		return false;
 
-    if (!CanUnitSeize(gActiveUnit))
-        return false;
+	if (!CanUnitSeize(gActiveUnit))
+		return false;
 
-    for (iy = gBmMapSize.y - 1; iy >= 0; iy--)
-    {
-        for (ix = gBmMapSize.x - 1; ix >= 0; ix--)
-        {
-            if (gBmMapMovement[iy][ix] > MAP_MOVEMENT_MAX)
-                continue;
+	for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
+		for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
+			if (gBmMapMovement[iy][ix] > MAP_MOVEMENT_MAX)
+				continue;
 
-            if (GetAvailableTileEventCommand(ix, iy) == TILE_COMMAND_SEIZE)
-                return true;
-        }
-    }
+			if (GetAvailableTileEventCommand(ix, iy) == TILE_COMMAND_SEIZE)
+				return true;
+		}
+	}
 
-    return false;
+	return false;
 }
 
 //! FE8U = 0x08034428
 bool CanUnitUseAttack(void)
 {
-    InitTargets(0, 0);
-    BmMapFill(gBmMapRange, 0);
+	InitTargets(0, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    GenerateUnitCompleteAttackRange(gActiveUnit);
+	GenerateUnitCompleteAttackRange(gActiveUnit);
 
-    gSubjectUnit = gActiveUnit;
-    ForEachUnitInRange(AddUnitToTargetListIfNotAllied);
+	gSubjectUnit = gActiveUnit;
+	ForEachUnitInRange(AddUnitToTargetListIfNotAllied);
 
-    return GetSelectTargetCount() != 0 ? true : false;
+	return GetSelectTargetCount() != 0 ? true : false;
 }
 
 //! FE8U = 0x08034470
 bool CanActiveUnitUseRescue(void)
 {
-    MakeRescueTargetList(gActiveUnit);
+	MakeRescueTargetList(gActiveUnit);
 
-    return GetSelectTargetCount() != 0 ? true : false;
+	return GetSelectTargetCount() != 0 ? true : false;
 }
 
 //! FE8U = 0x0803448C
 bool CanActiveUnitUseTrade(void)
 {
-    MakeTradeTargetList(gActiveUnit);
+	MakeTradeTargetList(gActiveUnit);
 
-    return GetSelectTargetCount() != 0 ? true : false;
+	return GetSelectTargetCount() != 0 ? true : false;
 }
 
 //! FE8U = 0x080344A8
 int GetUnitCommandUseFlags(void)
 {
-    int result = 0;
+	int result = 0;
 
-    GetGameClock();
+	GetGameClock();
 
-    result |= CanUnitUseVisit() << 15;
-    result |= CanUnitUseSeize() << 16;
-    result |= CanUnitUseAttack() << 1;
-    result |= CanActiveUnitUseRescue() << 8;
-    result |= CanActiveUnitUseTrade() << 23;
+	result |= CanUnitUseVisit() << 15;
+	result |= CanUnitUseSeize() << 16;
+	result |= CanUnitUseAttack() << 1;
+	result |= CanActiveUnitUseRescue() << 8;
+	result |= CanActiveUnitUseTrade() << 23;
 
-    return result;
+	return result;
 }
 
 //! FE8U = 0x080344E8
 int GetActiveUnitCommandFlagsAfterMove(void)
 {
-    GenerateUnitMovementMapExt(gActiveUnit, UNIT_MOV(gActiveUnit) - gActionData.moveCount);
-    return GetUnitCommandUseFlags();
+	GenerateUnitMovementMapExt(gActiveUnit, UNIT_MOV(gActiveUnit) - gActionData.moveCount);
+	return GetUnitCommandUseFlags();
 }
 
 //! FE8U = 0x08034514
 int GetActiveUnitCommandFlagsInPlace(void)
 {
-    BmMapFill(gBmMapMovement, -1);
-    gBmMapMovement[gActiveUnit->yPos][gActiveUnit->xPos] = 0;
+	BmMapFill(gBmMapMovement, -1);
+	gBmMapMovement[gActiveUnit->yPos][gActiveUnit->xPos] = 0;
 
-    return GetUnitCommandUseFlags();
+	return GetUnitCommandUseFlags();
 }
 
 //! FE8U = 0x08034550
-void ListAttackPositions(struct Unit * unit)
+void ListAttackPositions(struct Unit *unit)
 {
-    int i;
-    int ix;
-    int iy;
+	int i;
+	int ix;
+	int iy;
 
-    int reach = GetUnitWeaponReachBits(unit, -1);
+	int reach = GetUnitWeaponReachBits(unit, -1);
 
-    BmMapFill(gBmMapOther, 0);
+	BmMapFill(gBmMapOther, 0);
 
-    for (i = FACTION_RED + 1; i < FACTION_RED + 0x40; i++)
-    {
-        struct Unit * unit2 = GetUnit(i);
+	for (i = FACTION_RED + 1; i < FACTION_RED + 0x40; i++) {
+		struct Unit *unit2 = GetUnit(i);
 
-        if (!UNIT_IS_VALID(unit2))
-            continue;
+		if (!UNIT_IS_VALID(unit2))
+			continue;
 
-        GenerateUnitStandingReachRange(unit2, reach);
+		GenerateUnitStandingReachRange(unit2, reach);
 
-        gActionData.xOther = unit2->xPos;
-        gActionData.yOther = unit2->yPos;
-    }
+		gActionData.xOther = unit2->xPos;
+		gActionData.yOther = unit2->yPos;
+	}
 
-    InitTargets(0, 0);
+	InitTargets(0, 0);
 
-    for (iy = gBmMapSize.y - 1; iy >= 0; iy--)
-    {
-        for (ix = gBmMapSize.x - 1; ix >= 0; ix--)
-        {
-            if (gBmMapMovement[iy][ix] > MAP_MOVEMENT_MAX)
-                continue;
+	for (iy = gBmMapSize.y - 1; iy >= 0; iy--) {
+		for (ix = gBmMapSize.x - 1; ix >= 0; ix--) {
+			if (gBmMapMovement[iy][ix] > MAP_MOVEMENT_MAX)
+				continue;
 
-            if (gBmMapUnit[iy][ix] != 0)
-                continue;
+			if (gBmMapUnit[iy][ix] != 0)
+				continue;
 
-            if (gBmMapOther[iy][ix] == 0)
-                continue;
+			if (gBmMapOther[iy][ix] == 0)
+				continue;
 
-            AddTarget(ix, iy, 1, 1);
-        }
-    }
+			AddTarget(ix, iy, 1, 1);
+		}
+	}
 
-    return;
+	return;
 }

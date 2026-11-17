@@ -15,69 +15,69 @@
 
 void ReputConvoBg_unused(int index)
 {
-    ResetDialogueScreen();
+	ResetDialogueScreen();
 
-    BG_SetPosition(0, 0, 0);
-    BG_SetPosition(1, 0, 0);
-    BG_SetPosition(2, 0, 0);
-    BG_SetPosition(3, 0, 0);
+	BG_SetPosition(0, 0, 0);
+	BG_SetPosition(1, 0, 0);
+	BG_SetPosition(2, 0, 0);
+	BG_SetPosition(3, 0, 0);
 
-    Decompress(
-        gConvoBackgroundData[index].gfx,
-        (void*)(GetBackgroundTileDataOffset(3) + BG_VRAM));
+	Decompress(
+		gConvoBackgroundData[index].gfx,
+		(void*)(GetBackgroundTileDataOffset(3) + BG_VRAM));
 
-    CallARM_FillTileRect(gBG3TilemapBuffer, gConvoBackgroundData[index].tsa, 0x8000);
-    ApplyPalettes(gConvoBackgroundData[index].pal, 0x8, 0x8);
-    BG_EnableSyncByMask(BG3_SYNC_BIT);
-    gPaletteBuffer[PAL_BACKDROP_OFFSET] = 0;
+	CallARM_FillTileRect(gBG3TilemapBuffer, gConvoBackgroundData[index].tsa, 0x8000);
+	ApplyPalettes(gConvoBackgroundData[index].pal, 0x8, 0x8);
+	BG_EnableSyncByMask(BG3_SYNC_BIT);
+	gPaletteBuffer[PAL_BACKDROP_OFFSET] = 0;
 }
 
 void ResetDialogueScreen(void) // function: MapLevelUp_EndFace
 {
-    ClearTalkBubble();
-    Proc_EndEach(gProcScr_E_FACE);
-    ResetFaces();
-    ClearTalkFaceRefs();
+	ClearTalkBubble();
+	Proc_EndEach(gProcScr_E_FACE);
+	ResetFaces();
+	ClearTalkFaceRefs();
 }
 
 /* This is a function related to display cursor (Event3B -> proc-85908<gProc_SetCursorMayBe>) */
 u16 EventShinningCursorAdvance(s16 x, s16 y, s16 counter)
 {
-    /**
+	/**
      * I think there maybe a better compile method to handle (x << 0x14) >> 0x10.
      * For now, (x * 0x10) outputs (x << 0x10) >> 0x0C in trouble.
      */
-    u16 tmp_counter0 = counter;
-    s16 tmp_x = - gBmSt.camera.x + ((x << 0x14)>>0x10);
-    s16 tmp_y = - gBmSt.camera.y + ((y << 0x14)>>0x10);
+	u16 tmp_counter0 = counter;
+	s16 tmp_x = - gBmSt.camera.x + ((x << 0x14)>>0x10);
+	s16 tmp_y = - gBmSt.camera.y + ((y << 0x14)>>0x10);
 
-    CallARM_PushToSecondaryOAM(
-        (tmp_x + 0x200) & 0x1FF,
-        (tmp_y + 0x100) & 0xFF,
-        Obj_EventShinningCursor,
-        0x2822);
+	CallARM_PushToSecondaryOAM(
+		(tmp_x + 0x200) & 0x1FF,
+		(tmp_y + 0x100) & 0xFF,
+		Obj_EventShinningCursor,
+		0x2822);
 
-    if (tmp_counter0 <= 0xF) {
-        ShinningEventCursor(0x10, 0x0, tmp_counter0 / 2);
-        tmp_counter0++;
-    }
-    else {
-        ShinningEventCursor(0x0, 0x10, tmp_counter0 / 2 - 0x8);
-        tmp_counter0++;
+	if (tmp_counter0 <= 0xF) {
+		ShinningEventCursor(0x10, 0x0, tmp_counter0 / 2);
+		tmp_counter0++;
+	} else {
+		ShinningEventCursor(0x0, 0x10, tmp_counter0 / 2 - 0x8);
+		tmp_counter0++;
 
-        if (tmp_counter0 > 0x1F)
-            tmp_counter0 = 0;
-    }
+		if (tmp_counter0 > 0x1F)
+			tmp_counter0 = 0;
+	}
 
-    return tmp_counter0;
+	return tmp_counter0;
 }
 
 void ShinningEventCursor(int lo, int hi, int cur)
 {
-    int var = Interpolate(1, lo, hi, cur, 8);
-    CpuFastCopy(Pal_EventCursorShinning, PAL_OBJ(0x2), 0x20);
-    EfxPalWhiteInOut(gPaletteBuffer, 0x12, 1, var);
-    EnablePaletteSync();
+	int var = Interpolate(1, lo, hi, cur, 8);
+
+	CpuFastCopy(Pal_EventCursorShinning, PAL_OBJ(0x2), 0x20);
+	EfxPalWhiteInOut(gPaletteBuffer, 0x12, 1, var);
+	EnablePaletteSync();
 }
 
 struct CONST_DATA gfx_set gConvoBackgroundData[] = {
