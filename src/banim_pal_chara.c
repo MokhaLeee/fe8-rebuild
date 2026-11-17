@@ -118,7 +118,7 @@ struct BattleAnimCharaPal character_battle_animation_palette_table[] = {
 
 __attribute__((section(".data.banim_pal_head")))
 DataBlockHead banim_pal_head = {
-    sizeof(character_battle_animation_palette_table) / sizeof(character_battle_animation_palette_table)[0],
+	sizeof(character_battle_animation_palette_table) / sizeof(character_battle_animation_palette_table)[0],
 //    _banim_pal_end - _banim_pal_start
 //    + 0x8000000
 //    (int)_banim_pal_size
@@ -126,5 +126,5 @@ DataBlockHead banim_pal_head = {
 //    (int)_banim_pal_size & 0xFFFFFF
 //    (int)(unsigned short)_banim_pal_size
 //    FIXME update block size automatically, not hardcoded
-    0x32E0
+	0x32E0
 };

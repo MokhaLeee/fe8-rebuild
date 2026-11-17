@@ -123,7 +123,7 @@ struct BattleAnimTerrain battle_terrain_table[] = {
 
 __attribute__((section(".data.banim_terrain_head")))
 DataBlockHead banim_terrain_head = {
-    sizeof(battle_terrain_table) / sizeof(battle_terrain_table[0]),
-    // FIXME write the block size here rather than hardcoded value
-    0x12F18
+	sizeof(battle_terrain_table) / sizeof(battle_terrain_table[0]),
+	// FIXME write the block size here rather than hardcoded value
+	0x12F18
 };
