@@ -54,19 +54,19 @@ Pal_EventMapAnimMaskfx:  @ 0x089A18D4
 
 	.global Img_Congratulations
 Img_Congratulations:  @ 0x089A18F4
-	.incbin "graphics/event/Gfx_Congratulations.4bpp.lz"
+	.incbin "contents/event/Gfx_Congratulations.4bpp.lz"
 
 	.global Img_MapClear
 Img_MapClear:  @ 0x089A1E70
-	.incbin "graphics/event/Gfx_MapClear.4bpp.lz"
+	.incbin "contents/event/Gfx_MapClear.4bpp.lz"
 
 	.global Pal_Congratulations
 Pal_Congratulations:  @ 0x089A230C
-	.incbin "graphics/event/Gfx_Congratulations.gbapal", 0, 0x20
+	.incbin "contents/event/Gfx_Congratulations.gbapal", 0, 0x20
 
 	.global Pal_MapClear
 Pal_MapClear:  @ 0x089A232C
-	.incbin "graphics/event/Gfx_MapClear.gbapal", 0, 0x20
+	.incbin "contents/event/Gfx_MapClear.gbapal", 0, 0x20
 
 	.global gUnknown_089A234C
 gUnknown_089A234C:  @ 0x089A234C

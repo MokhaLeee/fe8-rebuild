@@ -14,24 +14,24 @@ gUnknown_08A01F24:  @ 0x08A01F24
 
 	.global Img_StatscreenEquipmentText
 Img_StatscreenEquipmentText:  @ 0x08A020F0
-	.incbin "graphics/statscreen/StatscreenEquipmentText.4bpp.lz"
+	.incbin "contents/statscreen/StatscreenEquipmentText.4bpp.lz"
 
 	.global Pal_StatscreenEquipmentText
 Pal_StatscreenEquipmentText:  @ 0x08A021E4
-	.incbin "graphics/statscreen/StatscreenEquipmentText.gbapal"
+	.incbin "contents/statscreen/StatscreenEquipmentText.gbapal"
 
 	.global Tsa_StatscreenEquipmentBG
 Tsa_StatscreenEquipmentBG:  @ 0x08A02204
-	.incbin "graphics/statscreen/StatscreenEquipmentBG.bin.lz"
+	.incbin "contents/statscreen/StatscreenEquipmentBG.bin.lz"
 
 	.global Tsa_StatscreenEquipedWeaponHighlight
 Tsa_StatscreenEquipedWeaponHighlight:  @ 0x08A02250
-	.incbin "graphics/statscreen/StatscreenEquipedWeaponHighlight.bin"
+	.incbin "contents/statscreen/StatscreenEquipedWeaponHighlight.bin"
 	.align 2, 0
 
 	.global Img_StatscreenObjs
 Img_StatscreenObjs:  @ 0x08A02274
-	.incbin "graphics/statscreen/StatscreenObjs.4bpp.lz"
+	.incbin "contents/statscreen/StatscreenObjs.4bpp.lz"
 
 	.global gUnknown_08A027FC
 gUnknown_08A027FC:  @ 0x08A027FC
@@ -119,27 +119,27 @@ gUnknown_08A03354:  @ 0x08A03354
 
 	.global Img_StatscreenBG
 Img_StatscreenBG:  @ 0x08A03368
-	.incbin "graphics/statscreen/StatscreenBG.4bpp.lz"
+	.incbin "contents/statscreen/StatscreenBG.4bpp.lz"
 
 	.global Tsa_StatscreenBG
 Tsa_StatscreenBG:  @ 0x08A05F10
-	.incbin "graphics/statscreen/StatscreenBG.bin.lz"
+	.incbin "contents/statscreen/StatscreenBG.bin.lz"
 
 	.global Pal_StatscreenBG
 Pal_StatscreenBG:  @ 0x08A06460
-	.incbin "graphics/statscreen/StatscreenBG.gbapal"
+	.incbin "contents/statscreen/StatscreenBG.gbapal"
 
 	.global Img_StatscreenHalo
 Img_StatscreenHalo:  @ 0x08A064E0
-	.incbin "graphics/statscreen/StatscreenHalo.4bpp.lz"
+	.incbin "contents/statscreen/StatscreenHalo.4bpp.lz"
 
 	.global Tsa_StatscreenHalo
 Tsa_StatscreenHalo:  @ 0x08A071FC
-	.incbin "graphics/statscreen/StatscreenHalo.bin.lz"
+	.incbin "contents/statscreen/StatscreenHalo.bin.lz"
 
 	.global Pal_StatscreenHalo
 Pal_StatscreenHalo:  @ 0x08A0731C
-	.incbin "graphics/statscreen/StatscreenHalo.gbapal"
+	.incbin "contents/statscreen/StatscreenHalo.gbapal"
 
 	.global Img_ConfigUiSprites
 Img_ConfigUiSprites:  @ 0x08A0733C

@@ -94,15 +94,15 @@ Pal_BanimUnitFlashing:  @ 0x08802D24
 
     .global Img_EkrExpBar
 Img_EkrExpBar:  @ 0x08802D44
-    .incbin "./graphics/bar_fx/ekr_expbarfx.4bpp"
+    .incbin "./contents/bar_fx/ekr_expbarfx.4bpp"
 
     .global Img_EkrExpBarChange
 Img_EkrExpBarChange:  @ 0x088030C4
-    .incbin "./graphics/bar_fx/ekr_expbarchangefx.4bpp"
+    .incbin "./contents/bar_fx/ekr_expbarchangefx.4bpp"
 
     .global Img_BarNumfx
 Img_BarNumfx:  @ 0x088033C4
-    .incbin "./graphics/bar_fx/bar_num.4bpp"
+    .incbin "./contents/bar_fx/bar_num.4bpp"
 
     .global Tsa_EkrExpBar
 Tsa_EkrExpBar:  @ 0x08803524
@@ -110,7 +110,7 @@ Tsa_EkrExpBar:  @ 0x08803524
 
     .global Pal_ExpBar
 Pal_ExpBar:  @ 0x08803590
-    .incbin "./graphics/bar_fx/bar_num.gbapal", 0x0, 0x20
+    .incbin "./contents/bar_fx/bar_num.gbapal", 0x0, 0x20
 
     .global Img_LevelUpBoxFrame
 Img_LevelUpBoxFrame:  @ 0x088035B0

@@ -80,4 +80,4 @@ gUnkUiFramePalettes:  @ 0x085B9244
 
 	.global Img_SysGrayBox
 Img_SysGrayBox:  @ 0x085B92C4
-	.incbin "./graphics/sysutils/Img_SysGrayBox.4bpp.lz"
+	.incbin "./contents/sysutils/Img_SysGrayBox.4bpp.lz"

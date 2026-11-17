@@ -79,7 +79,7 @@
 . = 0x001E30; gUnknown_03001E30 = .;
 
 . = 0x001E38;
-. = ALIGN(4); sound/music_player_table.o(.bss);
+. = ALIGN(4); contents/sounds/music_player_table.o(.bss);
 
 . = 0x002A68;
 . = ALIGN(4); src/Boot/agb_sram.o(.bss);

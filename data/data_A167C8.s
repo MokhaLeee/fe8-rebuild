@@ -2,35 +2,35 @@
 
 	.global gGfx_PlayerInterfaceFontTiles
 gGfx_PlayerInterfaceFontTiles:  @ 0x08A167C8
-	.incbin "graphics/player_interface/player_interface_font_tiles.4bpp.lz"
+	.incbin "contents/player_interface/player_interface_font_tiles.4bpp.lz"
 
 	.global gGfx_PlayerInterfaceNumbers
 gGfx_PlayerInterfaceNumbers:  @ 0x08A16D6C
-	.incbin "graphics/player_interface/player_interface_numbers.4bpp.lz"
+	.incbin "contents/player_interface/player_interface_numbers.4bpp.lz"
 
 	.global gGfx_StatusText
 gGfx_StatusText:  @ 0x08A16DEC
-	.incbin "graphics/player_interface/status_text.4bpp"
+	.incbin "contents/player_interface/status_text.4bpp"
 
 	.global gPal_PlayerInterface_Blue
 gPal_PlayerInterface_Blue:  @ 0x08A1738C
-	.incbin "graphics/player_interface/player_interface_blue.gbapal"
+	.incbin "contents/player_interface/player_interface_blue.gbapal"
 
 	.global gPal_PlayerInterface_Red
 gPal_PlayerInterface_Red:  @ 0x08A173AC
-	.incbin "graphics/player_interface/player_interface_red.gbapal"
+	.incbin "contents/player_interface/player_interface_red.gbapal"
 
 	.global gPal_PlayerInterface_Green
 gPal_PlayerInterface_Green:  @ 0x08A173CC
-	.incbin "graphics/player_interface/player_interface_green.gbapal"
+	.incbin "contents/player_interface/player_interface_green.gbapal"
 
 	.global gUnknown_08A173EC
 gUnknown_08A173EC:  @ 0x08A173EC
-	.incbin "graphics/player_interface/gUnknown_08A173EC.gbapal"
+	.incbin "contents/player_interface/gUnknown_08A173EC.gbapal"
 
 	.global gUnknown_08A1740C
 gUnknown_08A1740C:  @ 0x08A1740C
-	.incbin "graphics/player_interface/gUnknown_08A1740C.gbapal"
+	.incbin "contents/player_interface/gUnknown_08A1740C.gbapal"
 
 	.global gTSA_TerrainBox
 gTSA_TerrainBox:  @ 0x08A1742C

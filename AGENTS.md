@@ -249,6 +249,10 @@ Co-Authored-By: DeepSeek-V4.1-Flash <noreply@deepseek.com>
    `src/m4a_1.s`、`src/libagbsyscall.s` 这四个手写汇编源（它们是源码）。
 4. **`CFILES` 用 `find` 时注意顺序**：链接顺序影响少数未显式定位的段。
    当前用 `$(shell find ...)`，若发现字节不一致可改用按文件名排序。
+5. **`.gitignore` 的通配要跟着目录层级走**：`src/*.s`、`src/msg_data.c` 这类
+   单层规则只匹配 `src/` 顶层，文件移进子目录后失效，构建产物会变成「未跟踪」
+   （VS Code 显示绿色而不是灰色）。正确写法是 `src/**/*.s`、`src/**/msg_data.c`。
+   这类问题不影响构建，门禁抓不到，只有看 `git status` 才会发现。
 
 定位这类问题的有效手段：`git archive HEAD | tar -x -C /tmp/base` 导出已提交版本
 单独构建，diff 两张 `fireemblem8.map`，直接看出哪个对象的段尺寸不对。

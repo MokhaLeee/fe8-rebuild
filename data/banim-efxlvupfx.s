@@ -3,11 +3,11 @@
 
 	.global Img_LvupApfx
 Img_LvupApfx:  @ 0x085BB0C8
-	.incbin "./graphics/lvup/LvupAp.4bpp.lz"
+	.incbin "./contents/lvup/LvupAp.4bpp.lz"
 
 	.global Pal_LvupApfx
 Pal_LvupApfx:  @ 0x085BB2DC
-	.incbin "./graphics/lvup/LvupAp.gbapal", 0x0, 0x20
+	.incbin "./contents/lvup/LvupAp.gbapal", 0x0, 0x20
 
     .incbin "baserom.gba", 0x5BB2FC, 0x5BC188 - 0x5BB2FC
 

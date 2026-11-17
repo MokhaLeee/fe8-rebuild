@@ -62,9 +62,9 @@ C_SUBDIR = src
 ASM_SUBDIR = asm
 DATA_SUBDIR = data
 DATA_SRC_SUBDIR = src/data
-SAMPLE_SUBDIR = sound/direct_sound_samples
-MID_SUBDIR = sound/songs/midi
-MAP_LAYOUT_SUBDIR = graphics/map/layout
+SAMPLE_SUBDIR = contents/sounds/direct_sound_samples
+MID_SUBDIR = contents/sounds/songs/midi
+MAP_LAYOUT_SUBDIR = contents/map/layout
 
 ROM          := fireemblem8.gba
 ELF          := $(ROM:.gba=.elf)
@@ -79,7 +79,7 @@ endif
 ASM_S_FILES  := $(wildcard $(ASM_SUBDIR)/*.s)
 SRC_S_FILES  := src/rom_header.s src/crt0.s src/m4a_1.s src/libagbsyscall.s
 DATA_S_FILES := $(wildcard $(DATA_SUBDIR)/*.s)
-SOUND_S_FILES := $(wildcard sound/*.s sound/songs/*.s sound/songs/mml/*.s sound/voicegroups/*.s)
+SOUND_S_FILES := $(wildcard contents/sounds/*.s contents/sounds/songs/*.s contents/sounds/songs/mml/*.s contents/sounds/voicegroups/*.s)
 SFILES       := $(ASM_S_FILES) $(SRC_S_FILES) $(DATA_S_FILES) $(SOUND_S_FILES)
 SFILES_COMPILED := $(CFILES:.c=.s)
 C_OBJECTS    := $(CFILES:.c=.o)
@@ -127,9 +127,9 @@ check: $(ROM)
 
 .PHONY: check
 
-CLEAN_FILES := $(ROM) $(ELF) $(MAP) $(OBJECTS_LST) $(SFILES_COMPILED) graphics/*.h $(CFILES_GENERATED)
+CLEAN_FILES := $(ROM) $(ELF) $(MAP) $(OBJECTS_LST) $(SFILES_COMPILED) contents/*/*.h $(CFILES_GENERATED)
 CLEAN_DIRS := $(DEPS_DIR)
-CLEAN_BINS := graphics/statscreen/*.bin $(SAMPLE_SUBDIR)/*.bin $(MAP_LAYOUT_SUBDIR)/*.bin $(AUTO_GEN_TARGETS)
+CLEAN_BINS := contents/statscreen/*.bin $(SAMPLE_SUBDIR)/*.bin $(MAP_LAYOUT_SUBDIR)/*.bin $(AUTO_GEN_TARGETS)
 CLEAN_SONGS := $(MID_SUBDIR)/*.s
 
 # Shared clean routine
@@ -179,7 +179,7 @@ src/Common/msg_data.c: $(TEXT_SRC) $(TEXT_DEFS)
 # Graphics Recipes
 
 include graphics_file_rules.mk
-include graphics/banim/assets/img/banim_img_rules.mk
+include contents/banim/assets/img/banim_img_rules.mk
 include songs.mk
 include json_data_rules.mk
 
@@ -198,9 +198,9 @@ include json_data_rules.mk
 %.fk: % ; ./tools/scripts/compressor.py $< fk
 %.bin: %.mar  ; $(MARTOMAP)  $< $@
 # Background tile maps built from their screen PNGs (scripts/tsa_png.py). Only these eight.
-BG_TSA_MAPS := $(addsuffix .bin,$(addprefix graphics/bg/bg_,Cell Grass_Plains_2 Interior_Black Castle_Back Garden Manse_Back Serafew_Village Volcano))
+BG_TSA_MAPS := $(addsuffix .bin,$(addprefix contents/bg/bg_,Cell Grass_Plains_2 Interior_Black Castle_Back Garden Manse_Back Serafew_Village Volcano))
 $(BG_TSA_MAPS): %.bin: %.screen.png %.png ; $(PYTHON) $(PNG2TSA) build $*.screen.png $*.png $@ $(if $(wildcard $*.overrides),--overrides $*.overrides)
-sound/%.bin: sound/%.aif ; $(AIF2PCM) $< $@
+contents/sounds/%.bin: contents/sounds/%.aif ; $(AIF2PCM) $< $@
 
 %.4bpp.h: %.4bpp
 	$(BIN2C) $< $(subst .,_,$(notdir $<)) | sed 's/^const //' > $@
@@ -290,9 +290,9 @@ banim/%.o:    data_dep = $(shell $(SCANINC) -I include -I "" $*.s)
 endif
 
 ifeq ($(NODEP),1)
-sound/%.o:    data_dep :=
+contents/sounds/%.o:    data_dep :=
 else
-sound/%.o:    data_dep = $(shell $(SCANINC) -I include -I "" $*.s)
+contents/sounds/%.o:    data_dep = $(shell $(SCANINC) -I include -I "" $*.s)
 endif
 
 .SECONDEXPANSION:

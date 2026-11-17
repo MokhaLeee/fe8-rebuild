@@ -106,7 +106,7 @@ M0 基线固化
      └─ M2 瘦身清理
          └─ M3 代码风格（分批，compare 门禁）
              └─ M4a 目录重组（纯移动，compare 门禁）
-                 ├─ M4c 素材 contents 化 + incbin 外置（compare 门禁）
+                 ├─ M4c 素材 contents 化（compare 门禁；incbin 外置已取消）
                  │    └─ M5 测试基建 + testmenu（此时 compare 仍成立）
                  │        └─ M4b 合并/拆分（放弃 compare，改行为门禁）
                  │            └─ M6 agbcc → arm-none-eabi-gcc（逐模块）
@@ -322,7 +322,12 @@ sha1 才会不变。
 
 **验收**：`make check` 一致；`git ls-files | wc -l` 不变；`git log --follow` 可追溯。
 
-### M4c 素材 contents 化（3–5 天）
+### M4c 素材 contents 化（3–5 天）✅ 步骤 A/B 完成，步骤 C 取消
+
+> 步骤 C（1,293 处 `baserom.gba` incbin 外置）经用户决定**不做**：
+> `baserom.gba` 作为构建输入是 decomp 常态，外置只是把 ROM 依赖换成文件依赖，
+> 数据仍是二进制。等 M4b 按数据类型重写时再评估。详见
+> [m4c-contents-plan.md](m4c-contents-plan.md)。
 
 | # | 任务 | 说明 |
 |---|---|---|

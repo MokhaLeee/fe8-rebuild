@@ -173,602 +173,602 @@ gPal_BrownTextBox:  @ 0x08A4D0CC
 	.align 2, 0
 	.global cg_0_part_0_tiles
 cg_0_part_0_tiles: @8a4d1e8
-	.incbin "graphics/cg/cg_0_part_0.4bpp.lz"
+	.incbin "contents/cg/cg_0_part_0.4bpp.lz"
 
 	.align 2, 0
 	.global cg_0_part_1_tiles
 cg_0_part_1_tiles: @8a4d7b8
-	.incbin "graphics/cg/cg_0_part_1.4bpp.lz"
+	.incbin "contents/cg/cg_0_part_1.4bpp.lz"
 
 	.align 2, 0
 	.global cg_0_part_2_tiles
 cg_0_part_2_tiles: @8a4dfb8
-	.incbin "graphics/cg/cg_0_part_2.4bpp.lz"
+	.incbin "contents/cg/cg_0_part_2.4bpp.lz"
 
 	.align 2, 0
 	.global cg_0_part_3_tiles
 cg_0_part_3_tiles: @8a4e7dc
-	.incbin "graphics/cg/cg_0_part_3.4bpp.lz"
+	.incbin "contents/cg/cg_0_part_3.4bpp.lz"
 
 	.align 2, 0
 	.global cg_0_part_4_tiles
 cg_0_part_4_tiles: @8a4f040
-	.incbin "graphics/cg/cg_0_part_4.4bpp.lz"
+	.incbin "contents/cg/cg_0_part_4.4bpp.lz"
 
 	.align 2, 0
 	.global cg_0_part_5_tiles
 cg_0_part_5_tiles: @8a4f898
-	.incbin "graphics/cg/cg_0_part_5.4bpp.lz"
+	.incbin "contents/cg/cg_0_part_5.4bpp.lz"
 
 	.align 2, 0
 	.global cg_0_part_6_tiles
 cg_0_part_6_tiles: @8a50118
-	.incbin "graphics/cg/cg_0_part_6.4bpp.lz"
+	.incbin "contents/cg/cg_0_part_6.4bpp.lz"
 
 	.align 2, 0
 	.global cg_0_part_7_tiles
 cg_0_part_7_tiles: @8a50980
-	.incbin "graphics/cg/cg_0_part_7.4bpp.lz"
+	.incbin "contents/cg/cg_0_part_7.4bpp.lz"
 
 	.align 2, 0
 	.global cg_0_part_8_tiles
 cg_0_part_8_tiles: @8a511f0
-	.incbin "graphics/cg/cg_0_part_8.4bpp.lz"
+	.incbin "contents/cg/cg_0_part_8.4bpp.lz"
 
 	.align 2, 0
 	.global cg_0_part_9_tiles
 cg_0_part_9_tiles: @8a51a50
-	.incbin "graphics/cg/cg_0_part_9.4bpp.lz"
+	.incbin "contents/cg/cg_0_part_9.4bpp.lz"
 
 	.align 2, 0
 	.global cg_1_part_0_tiles
 cg_1_part_0_tiles: @8a52258
-	.incbin "graphics/cg/cg_1_part_0.4bpp.lz"
+	.incbin "contents/cg/cg_1_part_0.4bpp.lz"
 
 	.align 2, 0
 	.global cg_1_part_1_tiles
 cg_1_part_1_tiles: @8a529e4
-	.incbin "graphics/cg/cg_1_part_1.4bpp.lz"
+	.incbin "contents/cg/cg_1_part_1.4bpp.lz"
 
 	.align 2, 0
 	.global cg_1_part_2_tiles
 cg_1_part_2_tiles: @8a531fc
-	.incbin "graphics/cg/cg_1_part_2.4bpp.lz"
+	.incbin "contents/cg/cg_1_part_2.4bpp.lz"
 
 	.align 2, 0
 	.global cg_1_part_3_tiles
 cg_1_part_3_tiles: @8a53a10
-	.incbin "graphics/cg/cg_1_part_3.4bpp.lz"
+	.incbin "contents/cg/cg_1_part_3.4bpp.lz"
 
 	.align 2, 0
 	.global cg_1_part_4_tiles
 cg_1_part_4_tiles: @8a5421c
-	.incbin "graphics/cg/cg_1_part_4.4bpp.lz"
+	.incbin "contents/cg/cg_1_part_4.4bpp.lz"
 
 	.align 2, 0
 	.global cg_1_part_5_tiles
 cg_1_part_5_tiles: @8a54a30
-	.incbin "graphics/cg/cg_1_part_5.4bpp.lz"
+	.incbin "contents/cg/cg_1_part_5.4bpp.lz"
 
 	.align 2, 0
 	.global cg_1_part_6_tiles
 cg_1_part_6_tiles: @8a55274
-	.incbin "graphics/cg/cg_1_part_6.4bpp.lz"
+	.incbin "contents/cg/cg_1_part_6.4bpp.lz"
 
 	.align 2, 0
 	.global cg_1_part_7_tiles
 cg_1_part_7_tiles: @8a55a1c
-	.incbin "graphics/cg/cg_1_part_7.4bpp.lz"
+	.incbin "contents/cg/cg_1_part_7.4bpp.lz"
 
 	.align 2, 0
 	.global cg_1_part_8_tiles
 cg_1_part_8_tiles: @8a56210
-	.incbin "graphics/cg/cg_1_part_8.4bpp.lz"
+	.incbin "contents/cg/cg_1_part_8.4bpp.lz"
 
 	.align 2, 0
 	.global cg_1_part_9_tiles
 cg_1_part_9_tiles: @8a56a24
-	.incbin "graphics/cg/cg_1_part_9.4bpp.lz"
+	.incbin "contents/cg/cg_1_part_9.4bpp.lz"
 
 	.align 2, 0
 	.global cg_2_part_0_tiles
 cg_2_part_0_tiles: @8a57200
-	.incbin "graphics/cg/cg_2_part_0.4bpp.lz"
+	.incbin "contents/cg/cg_2_part_0.4bpp.lz"
 
 	.align 2, 0
 	.global cg_2_part_1_tiles
 cg_2_part_1_tiles: @8a57a30
-	.incbin "graphics/cg/cg_2_part_1.4bpp.lz"
+	.incbin "contents/cg/cg_2_part_1.4bpp.lz"
 
 	.align 2, 0
 	.global cg_2_part_2_tiles
 cg_2_part_2_tiles: @8a58288
-	.incbin "graphics/cg/cg_2_part_2.4bpp.lz"
+	.incbin "contents/cg/cg_2_part_2.4bpp.lz"
 
 	.align 2, 0
 	.global cg_2_part_3_tiles
 cg_2_part_3_tiles: @8a58ae4
-	.incbin "graphics/cg/cg_2_part_3.4bpp.lz"
+	.incbin "contents/cg/cg_2_part_3.4bpp.lz"
 
 	.align 2, 0
 	.global cg_2_part_4_tiles
 cg_2_part_4_tiles: @8a59358
-	.incbin "graphics/cg/cg_2_part_4.4bpp.lz"
+	.incbin "contents/cg/cg_2_part_4.4bpp.lz"
 
 	.align 2, 0
 	.global cg_2_part_5_tiles
 cg_2_part_5_tiles: @8a59bd8
-	.incbin "graphics/cg/cg_2_part_5.4bpp.lz"
+	.incbin "contents/cg/cg_2_part_5.4bpp.lz"
 
 	.align 2, 0
 	.global cg_2_part_6_tiles
 cg_2_part_6_tiles: @8a5a434
-	.incbin "graphics/cg/cg_2_part_6.4bpp.lz"
+	.incbin "contents/cg/cg_2_part_6.4bpp.lz"
 
 	.align 2, 0
 	.global cg_2_part_7_tiles
 cg_2_part_7_tiles: @8a5ac34
-	.incbin "graphics/cg/cg_2_part_7.4bpp.lz"
+	.incbin "contents/cg/cg_2_part_7.4bpp.lz"
 
 	.align 2, 0
 	.global cg_2_part_8_tiles
 cg_2_part_8_tiles: @8a5b390
-	.incbin "graphics/cg/cg_2_part_8.4bpp.lz"
+	.incbin "contents/cg/cg_2_part_8.4bpp.lz"
 
 	.align 2, 0
 	.global cg_2_part_9_tiles
 cg_2_part_9_tiles: @8a5bb54
-	.incbin "graphics/cg/cg_2_part_9.4bpp.lz"
+	.incbin "contents/cg/cg_2_part_9.4bpp.lz"
 
 	.align 2, 0
 	.global cg_3_part_0_tiles
 cg_3_part_0_tiles: @8a5c350
-	.incbin "graphics/cg/cg_3_part_0.4bpp.lz"
+	.incbin "contents/cg/cg_3_part_0.4bpp.lz"
 
 	.align 2, 0
 	.global cg_3_part_1_tiles
 cg_3_part_1_tiles: @8a5cb20
-	.incbin "graphics/cg/cg_3_part_1.4bpp.lz"
+	.incbin "contents/cg/cg_3_part_1.4bpp.lz"
 
 	.align 2, 0
 	.global cg_3_part_2_tiles
 cg_3_part_2_tiles: @8a5d2f8
-	.incbin "graphics/cg/cg_3_part_2.4bpp.lz"
+	.incbin "contents/cg/cg_3_part_2.4bpp.lz"
 
 	.align 2, 0
 	.global cg_3_part_3_tiles
 cg_3_part_3_tiles: @8a5da70
-	.incbin "graphics/cg/cg_3_part_3.4bpp.lz"
+	.incbin "contents/cg/cg_3_part_3.4bpp.lz"
 
 	.align 2, 0
 	.global cg_3_part_4_tiles
 cg_3_part_4_tiles: @8a5e27c
-	.incbin "graphics/cg/cg_3_part_4.4bpp.lz"
+	.incbin "contents/cg/cg_3_part_4.4bpp.lz"
 
 	.align 2, 0
 	.global cg_3_part_5_tiles
 cg_3_part_5_tiles: @8a5ea9c
-	.incbin "graphics/cg/cg_3_part_5.4bpp.lz"
+	.incbin "contents/cg/cg_3_part_5.4bpp.lz"
 
 	.align 2, 0
 	.global cg_3_part_6_tiles
 cg_3_part_6_tiles: @8a5f2f0
-	.incbin "graphics/cg/cg_3_part_6.4bpp.lz"
+	.incbin "contents/cg/cg_3_part_6.4bpp.lz"
 
 	.align 2, 0
 	.global cg_3_part_7_tiles
 cg_3_part_7_tiles: @8a5fb20
-	.incbin "graphics/cg/cg_3_part_7.4bpp.lz"
+	.incbin "contents/cg/cg_3_part_7.4bpp.lz"
 
 	.align 2, 0
 	.global cg_3_part_8_tiles
 cg_3_part_8_tiles: @8a602ec
-	.incbin "graphics/cg/cg_3_part_8.4bpp.lz"
+	.incbin "contents/cg/cg_3_part_8.4bpp.lz"
 
 	.align 2, 0
 	.global cg_3_part_9_tiles
 cg_3_part_9_tiles: @8a60b24
-	.incbin "graphics/cg/cg_3_part_9.4bpp.lz"
+	.incbin "contents/cg/cg_3_part_9.4bpp.lz"
 
 	.align 2, 0
 	.global cg_4_part_0_tiles
 cg_4_part_0_tiles: @8a61388
-	.incbin "graphics/cg/cg_4_part_0.4bpp.lz"
+	.incbin "contents/cg/cg_4_part_0.4bpp.lz"
 
 	.align 2, 0
 	.global cg_4_part_1_tiles
 cg_4_part_1_tiles: @8a61bc4
-	.incbin "graphics/cg/cg_4_part_1.4bpp.lz"
+	.incbin "contents/cg/cg_4_part_1.4bpp.lz"
 
 	.align 2, 0
 	.global cg_4_part_2_tiles
 cg_4_part_2_tiles: @8a62428
-	.incbin "graphics/cg/cg_4_part_2.4bpp.lz"
+	.incbin "contents/cg/cg_4_part_2.4bpp.lz"
 
 	.align 2, 0
 	.global cg_4_part_3_tiles
 cg_4_part_3_tiles: @8a62c8c
-	.incbin "graphics/cg/cg_4_part_3.4bpp.lz"
+	.incbin "contents/cg/cg_4_part_3.4bpp.lz"
 
 	.align 2, 0
 	.global cg_4_part_4_tiles
 cg_4_part_4_tiles: @8a634ec
-	.incbin "graphics/cg/cg_4_part_4.4bpp.lz"
+	.incbin "contents/cg/cg_4_part_4.4bpp.lz"
 
 	.align 2, 0
 	.global cg_4_part_5_tiles
 cg_4_part_5_tiles: @8a63d64
-	.incbin "graphics/cg/cg_4_part_5.4bpp.lz"
+	.incbin "contents/cg/cg_4_part_5.4bpp.lz"
 
 	.align 2, 0
 	.global cg_4_part_6_tiles
 cg_4_part_6_tiles: @8a645d0
-	.incbin "graphics/cg/cg_4_part_6.4bpp.lz"
+	.incbin "contents/cg/cg_4_part_6.4bpp.lz"
 
 	.align 2, 0
 	.global cg_4_part_7_tiles
 cg_4_part_7_tiles: @8a64dec
-	.incbin "graphics/cg/cg_4_part_7.4bpp.lz"
+	.incbin "contents/cg/cg_4_part_7.4bpp.lz"
 
 	.align 2, 0
 	.global cg_4_part_8_tiles
 cg_4_part_8_tiles: @8a6561c
-	.incbin "graphics/cg/cg_4_part_8.4bpp.lz"
+	.incbin "contents/cg/cg_4_part_8.4bpp.lz"
 
 	.align 2, 0
 	.global cg_4_part_9_tiles
 cg_4_part_9_tiles: @8a65e34
-	.incbin "graphics/cg/cg_4_part_9.4bpp.lz"
+	.incbin "contents/cg/cg_4_part_9.4bpp.lz"
 
 	.align 2, 0
 	.global cg_5_part_0_tiles
 cg_5_part_0_tiles: @8a66634
-	.incbin "graphics/cg/cg_5_part_0.4bpp.lz"
+	.incbin "contents/cg/cg_5_part_0.4bpp.lz"
 
 	.align 2, 0
 	.global cg_5_part_1_tiles
 cg_5_part_1_tiles: @8a66de4
-	.incbin "graphics/cg/cg_5_part_1.4bpp.lz"
+	.incbin "contents/cg/cg_5_part_1.4bpp.lz"
 
 	.align 2, 0
 	.global cg_5_part_2_tiles
 cg_5_part_2_tiles: @8a675c8
-	.incbin "graphics/cg/cg_5_part_2.4bpp.lz"
+	.incbin "contents/cg/cg_5_part_2.4bpp.lz"
 
 	.align 2, 0
 	.global cg_5_part_3_tiles
 cg_5_part_3_tiles: @8a67dc0
-	.incbin "graphics/cg/cg_5_part_3.4bpp.lz"
+	.incbin "contents/cg/cg_5_part_3.4bpp.lz"
 
 	.align 2, 0
 	.global cg_5_part_4_tiles
 cg_5_part_4_tiles: @8a685fc
-	.incbin "graphics/cg/cg_5_part_4.4bpp.lz"
+	.incbin "contents/cg/cg_5_part_4.4bpp.lz"
 
 	.align 2, 0
 	.global cg_5_part_5_tiles
 cg_5_part_5_tiles: @8a68e38
-	.incbin "graphics/cg/cg_5_part_5.4bpp.lz"
+	.incbin "contents/cg/cg_5_part_5.4bpp.lz"
 
 	.align 2, 0
 	.global cg_5_part_6_tiles
 cg_5_part_6_tiles: @8a69694
-	.incbin "graphics/cg/cg_5_part_6.4bpp.lz"
+	.incbin "contents/cg/cg_5_part_6.4bpp.lz"
 
 	.align 2, 0
 	.global cg_5_part_7_tiles
 cg_5_part_7_tiles: @8a69ec4
-	.incbin "graphics/cg/cg_5_part_7.4bpp.lz"
+	.incbin "contents/cg/cg_5_part_7.4bpp.lz"
 
 	.align 2, 0
 	.global cg_5_part_8_tiles
 cg_5_part_8_tiles: @8a6a6cc
-	.incbin "graphics/cg/cg_5_part_8.4bpp.lz"
+	.incbin "contents/cg/cg_5_part_8.4bpp.lz"
 
 	.align 2, 0
 	.global cg_5_part_9_tiles
 cg_5_part_9_tiles: @8a6ae84
-	.incbin "graphics/cg/cg_5_part_9.4bpp.lz"
+	.incbin "contents/cg/cg_5_part_9.4bpp.lz"
 
 	.align 2, 0
 	.global cg_6_part_0_tiles
 cg_6_part_0_tiles: @8a6b5c4
-	.incbin "graphics/cg/cg_6_part_0.4bpp.lz"
+	.incbin "contents/cg/cg_6_part_0.4bpp.lz"
 
 	.align 2, 0
 	.global cg_6_part_1_tiles
 cg_6_part_1_tiles: @8a6bdd8
-	.incbin "graphics/cg/cg_6_part_1.4bpp.lz"
+	.incbin "contents/cg/cg_6_part_1.4bpp.lz"
 
 	.align 2, 0
 	.global cg_6_part_2_tiles
 cg_6_part_2_tiles: @8a6c62c
-	.incbin "graphics/cg/cg_6_part_2.4bpp.lz"
+	.incbin "contents/cg/cg_6_part_2.4bpp.lz"
 
 	.align 2, 0
 	.global cg_6_part_3_tiles
 cg_6_part_3_tiles: @8a6ce80
-	.incbin "graphics/cg/cg_6_part_3.4bpp.lz"
+	.incbin "contents/cg/cg_6_part_3.4bpp.lz"
 
 	.align 2, 0
 	.global cg_6_part_4_tiles
 cg_6_part_4_tiles: @8a6d6dc
-	.incbin "graphics/cg/cg_6_part_4.4bpp.lz"
+	.incbin "contents/cg/cg_6_part_4.4bpp.lz"
 
 	.align 2, 0
 	.global cg_6_part_5_tiles
 cg_6_part_5_tiles: @8a6df50
-	.incbin "graphics/cg/cg_6_part_5.4bpp.lz"
+	.incbin "contents/cg/cg_6_part_5.4bpp.lz"
 
 	.align 2, 0
 	.global cg_6_part_6_tiles
 cg_6_part_6_tiles: @8a6e7cc
-	.incbin "graphics/cg/cg_6_part_6.4bpp.lz"
+	.incbin "contents/cg/cg_6_part_6.4bpp.lz"
 
 	.align 2, 0
 	.global cg_6_part_7_tiles
 cg_6_part_7_tiles: @8a6f040
-	.incbin "graphics/cg/cg_6_part_7.4bpp.lz"
+	.incbin "contents/cg/cg_6_part_7.4bpp.lz"
 
 	.align 2, 0
 	.global cg_6_part_8_tiles
 cg_6_part_8_tiles: @8a6f894
-	.incbin "graphics/cg/cg_6_part_8.4bpp.lz"
+	.incbin "contents/cg/cg_6_part_8.4bpp.lz"
 
 	.align 2, 0
 	.global cg_6_part_9_tiles
 cg_6_part_9_tiles: @8a700e4
-	.incbin "graphics/cg/cg_6_part_9.4bpp.lz"
+	.incbin "contents/cg/cg_6_part_9.4bpp.lz"
 
 	.align 2, 0
 	.global cg_7_part_0_tiles
 cg_7_part_0_tiles: @8a708f4
-	.incbin "graphics/cg/cg_7_part_0.4bpp.lz"
+	.incbin "contents/cg/cg_7_part_0.4bpp.lz"
 
 	.align 2, 0
 	.global cg_7_part_1_tiles
 cg_7_part_1_tiles: @8a70f04
-	.incbin "graphics/cg/cg_7_part_1.4bpp.lz"
+	.incbin "contents/cg/cg_7_part_1.4bpp.lz"
 
 	.align 2, 0
 	.global cg_7_part_2_tiles
 cg_7_part_2_tiles: @8a716e0
-	.incbin "graphics/cg/cg_7_part_2.4bpp.lz"
+	.incbin "contents/cg/cg_7_part_2.4bpp.lz"
 
 	.align 2, 0
 	.global cg_7_part_3_tiles
 cg_7_part_3_tiles: @8a71ee4
-	.incbin "graphics/cg/cg_7_part_3.4bpp.lz"
+	.incbin "contents/cg/cg_7_part_3.4bpp.lz"
 
 	.align 2, 0
 	.global cg_7_part_4_tiles
 cg_7_part_4_tiles: @8a72718
-	.incbin "graphics/cg/cg_7_part_4.4bpp.lz"
+	.incbin "contents/cg/cg_7_part_4.4bpp.lz"
 
 	.align 2, 0
 	.global cg_7_part_5_tiles
 cg_7_part_5_tiles: @8a72f44
-	.incbin "graphics/cg/cg_7_part_5.4bpp.lz"
+	.incbin "contents/cg/cg_7_part_5.4bpp.lz"
 
 	.align 2, 0
 	.global cg_7_part_6_tiles
 cg_7_part_6_tiles: @8a737a0
-	.incbin "graphics/cg/cg_7_part_6.4bpp.lz"
+	.incbin "contents/cg/cg_7_part_6.4bpp.lz"
 
 	.align 2, 0
 	.global cg_7_part_7_tiles
 cg_7_part_7_tiles: @8a73ff0
-	.incbin "graphics/cg/cg_7_part_7.4bpp.lz"
+	.incbin "contents/cg/cg_7_part_7.4bpp.lz"
 
 	.align 2, 0
 	.global cg_7_part_8_tiles
 cg_7_part_8_tiles: @8a7480c
-	.incbin "graphics/cg/cg_7_part_8.4bpp.lz"
+	.incbin "contents/cg/cg_7_part_8.4bpp.lz"
 
 	.align 2, 0
 	.global cg_7_part_9_tiles
 cg_7_part_9_tiles: @8a74ff4
-	.incbin "graphics/cg/cg_7_part_9.4bpp.lz"
+	.incbin "contents/cg/cg_7_part_9.4bpp.lz"
 
 	.align 2, 0
 	.global cg_8_part_0_tiles
 cg_8_part_0_tiles: @8a75838
-	.incbin "graphics/cg/cg_8_part_0.4bpp.lz"
+	.incbin "contents/cg/cg_8_part_0.4bpp.lz"
 
 	.align 2, 0
 	.global cg_8_part_1_tiles
 cg_8_part_1_tiles: @8a75fb0
-	.incbin "graphics/cg/cg_8_part_1.4bpp.lz"
+	.incbin "contents/cg/cg_8_part_1.4bpp.lz"
 
 	.align 2, 0
 	.global cg_8_part_2_tiles
 cg_8_part_2_tiles: @8a767fc
-	.incbin "graphics/cg/cg_8_part_2.4bpp.lz"
+	.incbin "contents/cg/cg_8_part_2.4bpp.lz"
 
 	.align 2, 0
 	.global cg_8_part_3_tiles
 cg_8_part_3_tiles: @8a77070
-	.incbin "graphics/cg/cg_8_part_3.4bpp.lz"
+	.incbin "contents/cg/cg_8_part_3.4bpp.lz"
 
 	.align 2, 0
 	.global cg_8_part_4_tiles
 cg_8_part_4_tiles: @8a778d8
-	.incbin "graphics/cg/cg_8_part_4.4bpp.lz"
+	.incbin "contents/cg/cg_8_part_4.4bpp.lz"
 
 	.align 2, 0
 	.global cg_8_part_5_tiles
 cg_8_part_5_tiles: @8a780ec
-	.incbin "graphics/cg/cg_8_part_5.4bpp.lz"
+	.incbin "contents/cg/cg_8_part_5.4bpp.lz"
 
 	.align 2, 0
 	.global cg_8_part_6_tiles
 cg_8_part_6_tiles: @8a7892c
-	.incbin "graphics/cg/cg_8_part_6.4bpp.lz"
+	.incbin "contents/cg/cg_8_part_6.4bpp.lz"
 
 	.align 2, 0
 	.global cg_8_part_7_tiles
 cg_8_part_7_tiles: @8a79188
-	.incbin "graphics/cg/cg_8_part_7.4bpp.lz"
+	.incbin "contents/cg/cg_8_part_7.4bpp.lz"
 
 	.align 2, 0
 	.global cg_8_part_8_tiles
 cg_8_part_8_tiles: @8a799ec
-	.incbin "graphics/cg/cg_8_part_8.4bpp.lz"
+	.incbin "contents/cg/cg_8_part_8.4bpp.lz"
 
 	.align 2, 0
 	.global cg_8_part_9_tiles
 cg_8_part_9_tiles: @8a7a218
-	.incbin "graphics/cg/cg_8_part_9.4bpp.lz"
+	.incbin "contents/cg/cg_8_part_9.4bpp.lz"
 
 	.align 2, 0
 	.global cg_9_part_0_tiles
 cg_9_part_0_tiles: @8a7aa0c
-	.incbin "graphics/cg/cg_9_part_0.4bpp.lz"
+	.incbin "contents/cg/cg_9_part_0.4bpp.lz"
 
 	.align 2, 0
 	.global cg_9_part_1_tiles
 cg_9_part_1_tiles: @8a7b1f4
-	.incbin "graphics/cg/cg_9_part_1.4bpp.lz"
+	.incbin "contents/cg/cg_9_part_1.4bpp.lz"
 
 	.align 2, 0
 	.global cg_9_part_2_tiles
 cg_9_part_2_tiles: @8a7ba2c
-	.incbin "graphics/cg/cg_9_part_2.4bpp.lz"
+	.incbin "contents/cg/cg_9_part_2.4bpp.lz"
 
 	.align 2, 0
 	.global cg_9_part_3_tiles
 cg_9_part_3_tiles: @8a7c280
-	.incbin "graphics/cg/cg_9_part_3.4bpp.lz"
+	.incbin "contents/cg/cg_9_part_3.4bpp.lz"
 
 	.align 2, 0
 	.global cg_9_part_4_tiles
 cg_9_part_4_tiles: @8a7cad0
-	.incbin "graphics/cg/cg_9_part_4.4bpp.lz"
+	.incbin "contents/cg/cg_9_part_4.4bpp.lz"
 
 	.align 2, 0
 	.global cg_9_part_5_tiles
 cg_9_part_5_tiles: @8a7d324
-	.incbin "graphics/cg/cg_9_part_5.4bpp.lz"
+	.incbin "contents/cg/cg_9_part_5.4bpp.lz"
 
 	.align 2, 0
 	.global cg_9_part_6_tiles
 cg_9_part_6_tiles: @8a7db70
-	.incbin "graphics/cg/cg_9_part_6.4bpp.lz"
+	.incbin "contents/cg/cg_9_part_6.4bpp.lz"
 
 	.align 2, 0
 	.global cg_9_part_7_tiles
 cg_9_part_7_tiles: @8a7e3e0
-	.incbin "graphics/cg/cg_9_part_7.4bpp.lz"
+	.incbin "contents/cg/cg_9_part_7.4bpp.lz"
 
 	.align 2, 0
 	.global cg_9_part_8_tiles
 cg_9_part_8_tiles: @8a7ec3c
-	.incbin "graphics/cg/cg_9_part_8.4bpp.lz"
+	.incbin "contents/cg/cg_9_part_8.4bpp.lz"
 
 	.align 2, 0
 	.global cg_9_part_9_tiles
 cg_9_part_9_tiles: @8a7f494
-	.incbin "graphics/cg/cg_9_part_9.4bpp.lz"
+	.incbin "contents/cg/cg_9_part_9.4bpp.lz"
 
 	.align 2, 0
 	.global cg_0_map
 cg_0_map: @8a7fcdc
-	.incbin "graphics/cg/cg_0.bin"
+	.incbin "contents/cg/cg_0.bin"
 
 	.align 2, 0
 	.global cg_1_map
 cg_1_map: @8a80190
-	.incbin "graphics/cg/cg_1.bin"
+	.incbin "contents/cg/cg_1.bin"
 
 	.align 2, 0
 	.global cg_2_map
 cg_2_map: @8a80644
-	.incbin "graphics/cg/cg_2.bin"
+	.incbin "contents/cg/cg_2.bin"
 
 	.align 2, 0
 	.global cg_3_map
 cg_3_map: @8a80af8
-	.incbin "graphics/cg/cg_3.bin"
+	.incbin "contents/cg/cg_3.bin"
 
 	.align 2, 0
 	.global cg_4_map
 cg_4_map: @8a80fac
-	.incbin "graphics/cg/cg_4.bin"
+	.incbin "contents/cg/cg_4.bin"
 
 	.align 2, 0
 	.global cg_5_map
 cg_5_map: @8a81460
-	.incbin "graphics/cg/cg_5.bin"
+	.incbin "contents/cg/cg_5.bin"
 
 	.align 2, 0
 	.global cg_6_map
 cg_6_map: @8a81914
-	.incbin "graphics/cg/cg_6.bin"
+	.incbin "contents/cg/cg_6.bin"
 
 	.align 2, 0
 	.global cg_7_map
 cg_7_map: @8a81dc8
-	.incbin "graphics/cg/cg_7.bin"
+	.incbin "contents/cg/cg_7.bin"
 
 	.align 2, 0
 	.global cg_8_map
 cg_8_map: @8a8227c
-	.incbin "graphics/cg/cg_8.bin"
+	.incbin "contents/cg/cg_8.bin"
 
 	.align 2, 0
 	.global cg_9_map
 cg_9_map: @8a82730
-	.incbin "graphics/cg/cg_9.bin"
+	.incbin "contents/cg/cg_9.bin"
 
 	.align 2, 0
 	.global cg_0_palette
 cg_0_palette: @8a82be4
-	.incbin "graphics/cg/cg_0.gbapal"
+	.incbin "contents/cg/cg_0.gbapal"
 
 	.align 2, 0
 	.global cg_1_palette
 cg_1_palette: @8a82ca4
-	.incbin "graphics/cg/cg_1.gbapal"
+	.incbin "contents/cg/cg_1.gbapal"
 
 	.align 2, 0
 	.global cg_2_palette
 cg_2_palette: @8a82d64
-	.incbin "graphics/cg/cg_2.gbapal"
+	.incbin "contents/cg/cg_2.gbapal"
 
 	.align 2, 0
 	.global cg_3_palette
 cg_3_palette: @8a82e24
-	.incbin "graphics/cg/cg_3.gbapal"
+	.incbin "contents/cg/cg_3.gbapal"
 
 	.align 2, 0
 	.global cg_4_palette
 cg_4_palette: @8a82ee4
-	.incbin "graphics/cg/cg_4.gbapal"
+	.incbin "contents/cg/cg_4.gbapal"
 
 	.align 2, 0
 	.global cg_5_palette
 cg_5_palette: @8a82fa4
-	.incbin "graphics/cg/cg_5.gbapal"
+	.incbin "contents/cg/cg_5.gbapal"
 
 	.align 2, 0
 	.global cg_6_palette
 cg_6_palette: @8a83064
-	.incbin "graphics/cg/cg_6.gbapal"
+	.incbin "contents/cg/cg_6.gbapal"
 
 	.align 2, 0
 	.global cg_7_palette
 cg_7_palette: @8a83124
-	.incbin "graphics/cg/cg_7.gbapal"
+	.incbin "contents/cg/cg_7.gbapal"
 
 	.align 2, 0
 	.global cg_8_palette
 cg_8_palette: @8a831e4
-	.incbin "graphics/cg/cg_8.gbapal"
+	.incbin "contents/cg/cg_8.gbapal"
 
 	.align 2, 0
 	.global cg_9_palette
 cg_9_palette: @8a832a4
-	.incbin "graphics/cg/cg_9.gbapal"
+	.incbin "contents/cg/cg_9.gbapal"
 
 	.global gUnknown_08A83364
 gUnknown_08A83364:  @ 0x08A83364
@@ -1056,7 +1056,7 @@ Pal_WmHighLightNationMap:  @ 0x08A9E688
 
     .global Img_WmHightLightMapFrecia
 Img_WmHightLightMapFrecia:
-    .incbin "graphics/world_map/nations/Gfx_WmNationFrecia.4bpp.lz"
+    .incbin "contents/world_map/nations/Gfx_WmNationFrecia.4bpp.lz"
 
     .global Ap_WmHightLightMapFrecia
 Ap_WmHightLightMapFrecia:

@@ -18,23 +18,23 @@ gImg_UiCursorHandBottom:  @ 0x0859EDEC
 
 	.global gPal_MapSprite
 gPal_MapSprite:
-	.incbin "graphics/unit_icon/palette/unit_icon_pal_player.agbpal"
+	.incbin "contents/unit_icon/palette/unit_icon_pal_player.agbpal"
 
 	.global unit_icon_pal_enemy
 unit_icon_pal_enemy:
-	.incbin "graphics/unit_icon/palette/unit_icon_pal_enemy.agbpal"
+	.incbin "contents/unit_icon/palette/unit_icon_pal_enemy.agbpal"
 
 	.global unit_icon_pal_npc
 unit_icon_pal_npc:
-	.incbin "graphics/unit_icon/palette/unit_icon_pal_npc.agbpal"
+	.incbin "contents/unit_icon/palette/unit_icon_pal_npc.agbpal"
 
 	.global unit_icon_pal_after_action
 unit_icon_pal_after_action:
-	.incbin "graphics/unit_icon/palette/unit_icon_pal_after_action.agbpal"
+	.incbin "contents/unit_icon/palette/unit_icon_pal_after_action.agbpal"
 
 	.global gPal_MapSpriteArena
 gPal_MapSpriteArena:
-	.incbin "graphics/unit_icon/palette/unit_icon_pal_p4.agbpal"
+	.incbin "contents/unit_icon/palette/unit_icon_pal_p4.agbpal"
 
 	.global gPal_LightRune
 gPal_LightRune:  @ 0x0859EEC0

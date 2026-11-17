@@ -35,12 +35,12 @@ Pal_085BA320:  @ 0x085BA320
 /* This is unused, called in FE7 UnitKakudai1 (although is also unused in FE7) */
 	.global Img_BanimArcherFBallistaIntro
 Img_BanimArcherFBallistaIntro:  @ 0x085BA340
-	.incbin "./graphics/efxbattle/Img_BanimSnipperFBallistaIntro.4bpp.lz"
+	.incbin "./contents/efxbattle/Img_BanimSnipperFBallistaIntro.4bpp.lz"
 
 	.global Img_BanimArcherMBallistaIntro
 Img_BanimArcherMBallistaIntro:  @ 0x085BA7B4
-	.incbin "./graphics/efxbattle/Img_BanimSnipperMBallistaIntro.4bpp.lz"
+	.incbin "./contents/efxbattle/Img_BanimSnipperMBallistaIntro.4bpp.lz"
 
 	.global Img_BanimSnipperFBallistaIntro
 Img_BanimSnipperFBallistaIntro:  @ 0x085BA340
-	.incbin "./graphics/efxbattle/Img_BanimSnipperFBallistaIntro.4bpp.lz"
+	.incbin "./contents/efxbattle/Img_BanimSnipperFBallistaIntro.4bpp.lz"

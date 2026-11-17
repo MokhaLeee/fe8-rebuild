@@ -79,7 +79,7 @@ Pal_ManimLevelUpStatGainCycling:  @ 0x089AC5CC
 
 	.global Img_ManimLevelUpText
 Img_ManimLevelUpText:  @ 0x089AC794
-	.incbin "./graphics/lvup/ManimLevelUpText.4bpp.lz"
+	.incbin "./contents/lvup/ManimLevelUpText.4bpp.lz"
 
 	.global Pal_ManimLevelUp
 Pal_ManimLevelUp:  @ 0x089AC9A8
@@ -87,11 +87,11 @@ Pal_ManimLevelUp:  @ 0x089AC9A8
 
 	.global Img_ManimLevelUpStatGain
 Img_ManimLevelUpStatGain:  @ 0x089ACA08
-	.incbin "./graphics/lvup/ManimLvupStatGain.4bpp.lz"
+	.incbin "./contents/lvup/ManimLvupStatGain.4bpp.lz"
 
 	.global Img_ManimLevelUpStatGainDigits
 Img_ManimLevelUpStatGainDigits:  @ 0x089ACC98
-	.incbin "./graphics/lvup/ManimLevelUpStatGainDigits.4bpp"
+	.incbin "./contents/lvup/ManimLevelUpStatGainDigits.4bpp"
 
 	.global gUnknown_089AD498
 gUnknown_089AD498:  @ 0x089AD498

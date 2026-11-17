@@ -2,7 +2,7 @@
 
 	.global unit_icon_move_Ephraim_Lord_sheet
 unit_icon_move_Ephraim_Lord_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Ephraim_Lord_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Ephraim_Lord_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Ephraim_Lord_motion
@@ -176,7 +176,7 @@ unit_icon_move_Ephraim_Lord_anim_4: @ +$142
 
 	.global unit_icon_move_Eirika_Lord_sheet
 unit_icon_move_Eirika_Lord_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Eirika_Lord_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Eirika_Lord_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Eirika_Lord_motion
@@ -350,7 +350,7 @@ unit_icon_move_Eirika_Lord_anim_4: @ +$142
 
 	.global unit_icon_move_Ephraim_Master_Lord_sheet
 unit_icon_move_Ephraim_Master_Lord_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Ephraim_Master_Lord_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Ephraim_Master_Lord_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Ephraim_Master_Lord_motion
@@ -526,7 +526,7 @@ unit_icon_move_Ephraim_Master_Lord_anim_4: @ +$14A
 
 	.global unit_icon_move_Eirika_Master_Lord_sheet
 unit_icon_move_Eirika_Master_Lord_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Eirika_Master_Lord_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Eirika_Master_Lord_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Eirika_Master_Lord_motion
@@ -702,7 +702,7 @@ unit_icon_move_Eirika_Master_Lord_anim_4: @ +$14A
 
 	.global unit_icon_move_Cavalier_sheet
 unit_icon_move_Cavalier_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Cavalier_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Cavalier_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Cavalier_motion
@@ -876,7 +876,7 @@ unit_icon_move_Cavalier_anim_4: @ +$142
 
 	.global unit_icon_move_Paladin_sheet
 unit_icon_move_Paladin_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Paladin_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Paladin_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Paladin_motion
@@ -1050,7 +1050,7 @@ unit_icon_move_Paladin_anim_4: @ +$142
 
 	.global unit_icon_move_Armor_Knight_sheet
 unit_icon_move_Armor_Knight_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Armor_Knight_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Armor_Knight_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Armor_Knight_motion
@@ -1224,7 +1224,7 @@ unit_icon_move_Armor_Knight_anim_4: @ +$142
 
 	.global unit_icon_move_General_sheet
 unit_icon_move_General_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_General_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_General_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_General_motion
@@ -1400,7 +1400,7 @@ unit_icon_move_General_anim_4: @ +$14A
 
 	.global unit_icon_move_Thief_sheet
 unit_icon_move_Thief_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Thief_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Thief_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Thief_motion
@@ -1574,7 +1574,7 @@ unit_icon_move_Thief_anim_4: @ +$142
 
 	.global unit_icon_move_Manakete_sheet
 unit_icon_move_Manakete_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Manakete_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Manakete_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Manakete_motion
@@ -1748,7 +1748,7 @@ unit_icon_move_Manakete_anim_4: @ +$142
 
 	.global unit_icon_move_Mercenary_sheet
 unit_icon_move_Mercenary_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Mercenary_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Mercenary_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Mercenary_motion
@@ -1922,7 +1922,7 @@ unit_icon_move_Mercenary_anim_4: @ +$142
 
 	.global unit_icon_move_Mercenary_F_sheet
 unit_icon_move_Mercenary_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Mercenary_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Mercenary_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Mercenary_F_motion
@@ -2096,7 +2096,7 @@ unit_icon_move_Mercenary_F_anim_4: @ +$142
 
 	.global unit_icon_move_Hero_sheet
 unit_icon_move_Hero_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Hero_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Hero_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Hero_motion
@@ -2272,7 +2272,7 @@ unit_icon_move_Hero_anim_4: @ +$14A
 
 	.global unit_icon_move_Hero_F_sheet
 unit_icon_move_Hero_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Hero_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Hero_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Hero_F_motion
@@ -2448,7 +2448,7 @@ unit_icon_move_Hero_F_anim_4: @ +$14A
 
 	.global unit_icon_move_Myrmidon_sheet
 unit_icon_move_Myrmidon_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Myrmidon_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Myrmidon_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Myrmidon_motion
@@ -2622,7 +2622,7 @@ unit_icon_move_Myrmidon_anim_4: @ +$142
 
 	.global unit_icon_move_Myrmidon_F_sheet
 unit_icon_move_Myrmidon_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Myrmidon_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Myrmidon_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Myrmidon_F_motion
@@ -2796,7 +2796,7 @@ unit_icon_move_Myrmidon_F_anim_4: @ +$142
 
 	.global unit_icon_move_Swordmaster_sheet
 unit_icon_move_Swordmaster_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Swordmaster_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Swordmaster_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Swordmaster_motion
@@ -2972,7 +2972,7 @@ unit_icon_move_Swordmaster_anim_4: @ +$14A
 
 	.global unit_icon_move_Swordmaster_F_sheet
 unit_icon_move_Swordmaster_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Swordmaster_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Swordmaster_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Swordmaster_F_motion
@@ -3148,7 +3148,7 @@ unit_icon_move_Swordmaster_F_anim_4: @ +$14A
 
 	.global unit_icon_move_Assassin_sheet
 unit_icon_move_Assassin_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Assassin_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Assassin_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Assassin_motion
@@ -3322,7 +3322,7 @@ unit_icon_move_Assassin_anim_4: @ +$142
 
 	.global unit_icon_move_Assassin_F_sheet
 unit_icon_move_Assassin_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Assassin_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Assassin_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Assassin_F_motion
@@ -3496,7 +3496,7 @@ unit_icon_move_Assassin_F_anim_4: @ +$142
 
 	.global unit_icon_move_Archer_sheet
 unit_icon_move_Archer_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Archer_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Archer_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Archer_motion
@@ -3670,7 +3670,7 @@ unit_icon_move_Archer_anim_4: @ +$142
 
 	.global unit_icon_move_Archer_F_sheet
 unit_icon_move_Archer_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Archer_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Archer_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Archer_F_motion
@@ -3844,7 +3844,7 @@ unit_icon_move_Archer_F_anim_4: @ +$142
 
 	.global unit_icon_move_Sniper_sheet
 unit_icon_move_Sniper_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Sniper_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Sniper_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Sniper_motion
@@ -4018,7 +4018,7 @@ unit_icon_move_Sniper_anim_4: @ +$142
 
 	.global unit_icon_move_Sniper_F_sheet
 unit_icon_move_Sniper_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Sniper_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Sniper_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Sniper_F_motion
@@ -4192,7 +4192,7 @@ unit_icon_move_Sniper_F_anim_4: @ +$142
 
 	.global unit_icon_move_Ranger_sheet
 unit_icon_move_Ranger_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Ranger_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Ranger_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Ranger_motion
@@ -4366,7 +4366,7 @@ unit_icon_move_Ranger_anim_4: @ +$142
 
 	.global unit_icon_move_Wyvern_Rider_sheet
 unit_icon_move_Wyvern_Rider_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Wyvern_Rider_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Wyvern_Rider_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Wyvern_Rider_motion
@@ -4542,7 +4542,7 @@ unit_icon_move_Wyvern_Rider_anim_4: @ +$14A
 
 	.global unit_icon_move_Wyvern_Lord_sheet
 unit_icon_move_Wyvern_Lord_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Wyvern_Lord_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Wyvern_Lord_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Wyvern_Lord_motion
@@ -4718,7 +4718,7 @@ unit_icon_move_Wyvern_Lord_anim_4: @ +$14A
 
 	.global unit_icon_move_Wyvern_Lord_F_sheet
 unit_icon_move_Wyvern_Lord_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Wyvern_Lord_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Wyvern_Lord_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Wyvern_Lord_F_motion
@@ -4896,7 +4896,7 @@ unit_icon_move_Wyvern_Lord_F_anim_4: @ +$152
 
 	.global unit_icon_move_Wyvern_Knight_sheet
 unit_icon_move_Wyvern_Knight_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Wyvern_Knight_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Wyvern_Knight_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Wyvern_Knight_motion
@@ -5070,7 +5070,7 @@ unit_icon_move_Wyvern_Knight_anim_4: @ +$142
 
 	.global unit_icon_move_Wyvern_Knight_F_sheet
 unit_icon_move_Wyvern_Knight_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Wyvern_Knight_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Wyvern_Knight_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Wyvern_Knight_F_motion
@@ -5246,7 +5246,7 @@ unit_icon_move_Wyvern_Knight_F_anim_4: @ +$14A
 
 	.global unit_icon_move_Mage_sheet
 unit_icon_move_Mage_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Mage_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Mage_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Mage_motion
@@ -5420,7 +5420,7 @@ unit_icon_move_Mage_anim_4: @ +$142
 
 	.global unit_icon_move_Mage_F_sheet
 unit_icon_move_Mage_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Mage_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Mage_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Mage_F_motion
@@ -5594,7 +5594,7 @@ unit_icon_move_Mage_F_anim_4: @ +$142
 
 	.global unit_icon_move_Sage_sheet
 unit_icon_move_Sage_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Sage_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Sage_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Sage_motion
@@ -5768,7 +5768,7 @@ unit_icon_move_Sage_anim_4: @ +$142
 
 	.global unit_icon_move_Sage_F_sheet
 unit_icon_move_Sage_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Sage_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Sage_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Sage_F_motion
@@ -5942,7 +5942,7 @@ unit_icon_move_Sage_F_anim_4: @ +$142
 
 	.global unit_icon_move_Mage_Knight_sheet
 unit_icon_move_Mage_Knight_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Mage_Knight_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Mage_Knight_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Mage_Knight_motion
@@ -6116,7 +6116,7 @@ unit_icon_move_Mage_Knight_anim_4: @ +$142
 
 	.global unit_icon_move_Mage_Knight_F_sheet
 unit_icon_move_Mage_Knight_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Mage_Knight_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Mage_Knight_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Mage_Knight_F_motion
@@ -6290,7 +6290,7 @@ unit_icon_move_Mage_Knight_F_anim_4: @ +$142
 
 	.global unit_icon_move_Bishop_sheet
 unit_icon_move_Bishop_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Bishop_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Bishop_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Bishop_motion
@@ -6466,7 +6466,7 @@ unit_icon_move_Bishop_anim_4: @ +$14A
 
 	.global unit_icon_move_Bishop_F_sheet
 unit_icon_move_Bishop_F_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Bishop_F_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Bishop_F_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Bishop_F_motion
@@ -6642,7 +6642,7 @@ unit_icon_move_Bishop_F_anim_4: @ +$14A
 
 	.global unit_icon_move_Shaman_sheet
 unit_icon_move_Shaman_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Shaman_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Shaman_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Shaman_motion
@@ -6816,7 +6816,7 @@ unit_icon_move_Shaman_anim_4: @ +$142
 
 	.global unit_icon_move_Druid_sheet
 unit_icon_move_Druid_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Druid_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Druid_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Druid_motion
@@ -6990,7 +6990,7 @@ unit_icon_move_Druid_anim_4: @ +$142
 
 	.global unit_icon_move_Summoner_sheet
 unit_icon_move_Summoner_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Summoner_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Summoner_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Summoner_motion
@@ -7164,7 +7164,7 @@ unit_icon_move_Summoner_anim_4: @ +$142
 
 	.global unit_icon_move_Rogue_sheet
 unit_icon_move_Rogue_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Rogue_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Rogue_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Rogue_motion
@@ -7338,7 +7338,7 @@ unit_icon_move_Rogue_anim_4: @ +$142
 
 	.global unit_icon_move_Gorgonegg2_sheet
 unit_icon_move_Gorgonegg2_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Gorgonegg2_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Gorgonegg2_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Gorgonegg2_motion
@@ -7512,7 +7512,7 @@ unit_icon_move_Gorgonegg2_anim_4: @ +$142
 
 	.global unit_icon_move_Great_Knight_sheet
 unit_icon_move_Great_Knight_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Great_Knight_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Great_Knight_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Great_Knight_motion
@@ -7686,7 +7686,7 @@ unit_icon_move_Great_Knight_anim_4: @ +$142
 
 	.global unit_icon_move_Recruit_T1_sheet
 unit_icon_move_Recruit_T1_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Recruit_T1_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Recruit_T1_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Recruit_T1_motion
@@ -7860,7 +7860,7 @@ unit_icon_move_Recruit_T1_anim_4: @ +$142
 
 	.global unit_icon_move_Journeyman_T2_sheet
 unit_icon_move_Journeyman_T2_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Journeyman_T2_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Journeyman_T2_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Journeyman_T2_motion
@@ -8036,7 +8036,7 @@ unit_icon_move_Journeyman_T2_anim_4: @ +$14A
 
 	.global unit_icon_move_Pupil_T2_sheet
 unit_icon_move_Pupil_T2_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Pupil_T2_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Pupil_T2_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Pupil_T2_motion
@@ -8210,7 +8210,7 @@ unit_icon_move_Pupil_T2_anim_4: @ +$142
 
 	.global unit_icon_move_Manakete_2_sheet
 unit_icon_move_Manakete_2_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Manakete_2_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Manakete_2_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Manakete_2_motion
@@ -8384,7 +8384,7 @@ unit_icon_move_Manakete_2_anim_4: @ +$142
 
 	.global unit_icon_move_Manakete_Myrrh_sheet
 unit_icon_move_Manakete_Myrrh_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Manakete_Myrrh_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Manakete_Myrrh_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Manakete_Myrrh_motion
@@ -8558,7 +8558,7 @@ unit_icon_move_Manakete_Myrrh_anim_4: @ +$142
 
 	.global unit_icon_move_Fighter_sheet
 unit_icon_move_Fighter_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Fighter_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Fighter_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Fighter_motion
@@ -8732,7 +8732,7 @@ unit_icon_move_Fighter_anim_4: @ +$142
 
 	.global unit_icon_move_Warrior_sheet
 unit_icon_move_Warrior_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Warrior_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Warrior_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Warrior_motion
@@ -8906,7 +8906,7 @@ unit_icon_move_Warrior_anim_4: @ +$142
 
 	.global unit_icon_move_Brigand_sheet
 unit_icon_move_Brigand_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Brigand_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Brigand_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Brigand_motion
@@ -9080,7 +9080,7 @@ unit_icon_move_Brigand_anim_4: @ +$142
 
 	.global unit_icon_move_Pirate_sheet
 unit_icon_move_Pirate_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Pirate_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Pirate_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Pirate_motion
@@ -9254,7 +9254,7 @@ unit_icon_move_Pirate_anim_4: @ +$142
 
 	.global unit_icon_move_Berserker_sheet
 unit_icon_move_Berserker_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Berserker_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Berserker_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Berserker_motion
@@ -9428,7 +9428,7 @@ unit_icon_move_Berserker_anim_4: @ +$142
 
 	.global unit_icon_move_Monk_sheet
 unit_icon_move_Monk_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Monk_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Monk_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Monk_motion
@@ -9602,7 +9602,7 @@ unit_icon_move_Monk_anim_4: @ +$142
 
 	.global unit_icon_move_Priest_sheet
 unit_icon_move_Priest_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Priest_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Priest_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Priest_motion
@@ -9776,7 +9776,7 @@ unit_icon_move_Priest_anim_4: @ +$142
 
 	.global unit_icon_move_Bard_sheet
 unit_icon_move_Bard_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Bard_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Bard_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Bard_motion
@@ -9987,7 +9987,7 @@ unit_icon_move_Bard_anim_5: @ +$170
 
 	.global unit_icon_move_Pegasus_Knight_sheet
 unit_icon_move_Pegasus_Knight_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Pegasus_Knight_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Pegasus_Knight_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Pegasus_Knight_motion
@@ -10161,7 +10161,7 @@ unit_icon_move_Pegasus_Knight_anim_4: @ +$142
 
 	.global unit_icon_move_Falcon_Knight_sheet
 unit_icon_move_Falcon_Knight_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Falcon_Knight_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Falcon_Knight_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Falcon_Knight_motion
@@ -10335,7 +10335,7 @@ unit_icon_move_Falcon_Knight_anim_4: @ +$142
 
 	.global unit_icon_move_Cleric_sheet
 unit_icon_move_Cleric_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Cleric_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Cleric_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Cleric_motion
@@ -10509,7 +10509,7 @@ unit_icon_move_Cleric_anim_4: @ +$142
 
 	.global unit_icon_move_Troubadour_sheet
 unit_icon_move_Troubadour_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Troubadour_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Troubadour_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Troubadour_motion
@@ -10683,7 +10683,7 @@ unit_icon_move_Troubadour_anim_4: @ +$142
 
 	.global unit_icon_move_Valkyrie_sheet
 unit_icon_move_Valkyrie_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Valkyrie_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Valkyrie_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Valkyrie_motion
@@ -10857,7 +10857,7 @@ unit_icon_move_Valkyrie_anim_4: @ +$142
 
 	.global unit_icon_move_Dancer_sheet
 unit_icon_move_Dancer_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Dancer_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Dancer_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Dancer_motion
@@ -11145,7 +11145,7 @@ unit_icon_move_Dancer_anim_6: @ +$222
 
 	.global unit_icon_move_Soldier_sheet
 unit_icon_move_Soldier_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Soldier_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Soldier_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Soldier_motion
@@ -11319,7 +11319,7 @@ unit_icon_move_Soldier_anim_4: @ +$142
 
 	.global unit_icon_move_Necromancer_sheet
 unit_icon_move_Necromancer_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Necromancer_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Necromancer_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Necromancer_motion
@@ -11493,7 +11493,7 @@ unit_icon_move_Necromancer_anim_4: @ +$142
 
 	.global unit_icon_move_Fleet_sheet
 unit_icon_move_Fleet_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Fleet_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Fleet_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Fleet_motion
@@ -11671,7 +11671,7 @@ unit_icon_move_Fleet_anim_4: @ +$152
 
 	.global unit_icon_move_Phantom_sheet
 unit_icon_move_Phantom_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Phantom_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Phantom_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Phantom_motion
@@ -11845,7 +11845,7 @@ unit_icon_move_Phantom_anim_4: @ +$142
 
 	.global unit_icon_move_Revenant_sheet
 unit_icon_move_Revenant_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Revenant_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Revenant_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Revenant_motion
@@ -12019,7 +12019,7 @@ unit_icon_move_Revenant_anim_4: @ +$142
 
 	.global unit_icon_move_Entoumbed_sheet
 unit_icon_move_Entoumbed_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Entoumbed_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Entoumbed_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Entoumbed_motion
@@ -12193,7 +12193,7 @@ unit_icon_move_Entoumbed_anim_4: @ +$142
 
 	.global unit_icon_move_Bonewalker_sheet
 unit_icon_move_Bonewalker_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Bonewalker_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Bonewalker_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Bonewalker_motion
@@ -12367,7 +12367,7 @@ unit_icon_move_Bonewalker_anim_4: @ +$142
 
 	.global unit_icon_move_Bonewalker_Bow_sheet
 unit_icon_move_Bonewalker_Bow_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Bonewalker_Bow_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Bonewalker_Bow_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Bonewalker_Bow_motion
@@ -12541,7 +12541,7 @@ unit_icon_move_Bonewalker_Bow_anim_4: @ +$142
 
 	.global unit_icon_move_Wight_sheet
 unit_icon_move_Wight_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Wight_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Wight_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Wight_motion
@@ -12715,7 +12715,7 @@ unit_icon_move_Wight_anim_4: @ +$142
 
 	.global unit_icon_move_Wight_Bow_sheet
 unit_icon_move_Wight_Bow_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Wight_Bow_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Wight_Bow_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Wight_Bow_motion
@@ -12889,7 +12889,7 @@ unit_icon_move_Wight_Bow_anim_4: @ +$142
 
 	.global unit_icon_move_Bael_sheet
 unit_icon_move_Bael_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Bael_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Bael_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Bael_motion
@@ -13063,7 +13063,7 @@ unit_icon_move_Bael_anim_4: @ +$142
 
 	.global unit_icon_move_Elder_Bael_sheet
 unit_icon_move_Elder_Bael_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Elder_Bael_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Elder_Bael_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Elder_Bael_motion
@@ -13237,7 +13237,7 @@ unit_icon_move_Elder_Bael_anim_4: @ +$142
 
 	.global unit_icon_move_Cyclops_sheet
 unit_icon_move_Cyclops_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Cyclops_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Cyclops_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Cyclops_motion
@@ -13413,7 +13413,7 @@ unit_icon_move_Cyclops_anim_4: @ +$14A
 
 	.global unit_icon_move_Mauthedoog_sheet
 unit_icon_move_Mauthedoog_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Mauthedoog_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Mauthedoog_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Mauthedoog_motion
@@ -13587,7 +13587,7 @@ unit_icon_move_Mauthedoog_anim_4: @ +$142
 
 	.global unit_icon_move_Gwyllgi_sheet
 unit_icon_move_Gwyllgi_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Gwyllgi_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Gwyllgi_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Gwyllgi_motion
@@ -13761,7 +13761,7 @@ unit_icon_move_Gwyllgi_anim_4: @ +$142
 
 	.global unit_icon_move_Tarvos_sheet
 unit_icon_move_Tarvos_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Tarvos_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Tarvos_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Tarvos_motion
@@ -13935,7 +13935,7 @@ unit_icon_move_Tarvos_anim_4: @ +$142
 
 	.global unit_icon_move_Maelduin_sheet
 unit_icon_move_Maelduin_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Maelduin_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Maelduin_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Maelduin_motion
@@ -14109,7 +14109,7 @@ unit_icon_move_Maelduin_anim_4: @ +$142
 
 	.global unit_icon_move_Mogall_sheet
 unit_icon_move_Mogall_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Mogall_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Mogall_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Mogall_motion
@@ -14283,7 +14283,7 @@ unit_icon_move_Mogall_anim_4: @ +$142
 
 	.global unit_icon_move_Arch_Mogall_sheet
 unit_icon_move_Arch_Mogall_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Arch_Mogall_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Arch_Mogall_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Arch_Mogall_motion
@@ -14457,7 +14457,7 @@ unit_icon_move_Arch_Mogall_anim_4: @ +$142
 
 	.global unit_icon_move_Gorgon_sheet
 unit_icon_move_Gorgon_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Gorgon_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Gorgon_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Gorgon_motion
@@ -14631,7 +14631,7 @@ unit_icon_move_Gorgon_anim_4: @ +$142
 
 	.global unit_icon_move_Gorgonegg_sheet
 unit_icon_move_Gorgonegg_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Gorgonegg_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Gorgonegg_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Gorgonegg_motion
@@ -14805,7 +14805,7 @@ unit_icon_move_Gorgonegg_anim_4: @ +$142
 
 	.global unit_icon_move_Gargoyle_sheet
 unit_icon_move_Gargoyle_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Gargoyle_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Gargoyle_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Gargoyle_motion
@@ -14979,7 +14979,7 @@ unit_icon_move_Gargoyle_anim_4: @ +$142
 
 	.global unit_icon_move_Deathgoyle_sheet
 unit_icon_move_Deathgoyle_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Deathgoyle_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Deathgoyle_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Deathgoyle_motion
@@ -15153,7 +15153,7 @@ unit_icon_move_Deathgoyle_anim_4: @ +$142
 
 	.global unit_icon_move_Draco_Zombie_sheet
 unit_icon_move_Draco_Zombie_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Draco_Zombie_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Draco_Zombie_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Draco_Zombie_motion
@@ -15329,7 +15329,7 @@ unit_icon_move_Draco_Zombie_anim_4: @ +$14A
 
 	.global unit_icon_move_Demon_King_sheet
 unit_icon_move_Demon_King_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Demon_King_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Demon_King_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Demon_King_motion
@@ -15503,7 +15503,7 @@ unit_icon_move_Demon_King_anim_4: @ +$142
 
 	.global unit_icon_move_Blst_Regular_Used_sheet
 unit_icon_move_Blst_Regular_Used_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Blst_Regular_Used_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Blst_Regular_Used_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Blst_Regular_Used_motion
@@ -15677,7 +15677,7 @@ unit_icon_move_Blst_Regular_Used_anim_4: @ +$142
 
 	.global unit_icon_move_Blst_Long_Used_sheet
 unit_icon_move_Blst_Long_Used_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Blst_Long_Used_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Blst_Long_Used_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Blst_Long_Used_motion
@@ -15851,7 +15851,7 @@ unit_icon_move_Blst_Long_Used_anim_4: @ +$142
 
 	.global unit_icon_move_Blst_Killer_Used_sheet
 unit_icon_move_Blst_Killer_Used_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Blst_Killer_Used_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Blst_Killer_Used_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Blst_Killer_Used_motion
@@ -16025,7 +16025,7 @@ unit_icon_move_Blst_Killer_Used_anim_4: @ +$142
 
 	.global unit_icon_move_Blst_Long_Empty_sheet
 unit_icon_move_Blst_Long_Empty_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Blst_Long_Empty_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Blst_Long_Empty_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Blst_Long_Empty_motion
@@ -16203,7 +16203,7 @@ unit_icon_move_Blst_Long_Empty_anim_4: @ +$152
 
 	.global unit_icon_move_Blst_Used_Empty_sheet
 unit_icon_move_Blst_Used_Empty_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Blst_Used_Empty_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Blst_Used_Empty_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Blst_Used_Empty_motion
@@ -16377,7 +16377,7 @@ unit_icon_move_Blst_Used_Empty_anim_4: @ +$142
 
 	.global unit_icon_move_Blst_Killer_Empty_sheet
 unit_icon_move_Blst_Killer_Empty_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Blst_Killer_Empty_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Blst_Killer_Empty_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Blst_Killer_Empty_motion
@@ -16555,7 +16555,7 @@ unit_icon_move_Blst_Killer_Empty_anim_4: @ +$152
 
 	.global unit_icon_move_Civilian_M1_sheet
 unit_icon_move_Civilian_M1_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Civilian_M1_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Civilian_M1_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Civilian_M1_motion
@@ -16729,7 +16729,7 @@ unit_icon_move_Civilian_M1_anim_4: @ +$142
 
 	.global unit_icon_move_Civilian_F1_sheet
 unit_icon_move_Civilian_F1_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Civilian_F1_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Civilian_F1_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Civilian_F1_motion
@@ -16903,7 +16903,7 @@ unit_icon_move_Civilian_F1_anim_4: @ +$142
 
 	.global unit_icon_move_Civilian_M2_sheet
 unit_icon_move_Civilian_M2_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Civilian_M2_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Civilian_M2_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Civilian_M2_motion
@@ -17077,7 +17077,7 @@ unit_icon_move_Civilian_M2_anim_4: @ +$142
 
 	.global unit_icon_move_Civilian_F2_sheet
 unit_icon_move_Civilian_F2_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Civilian_F2_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Civilian_F2_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Civilian_F2_motion
@@ -17251,7 +17251,7 @@ unit_icon_move_Civilian_F2_anim_4: @ +$142
 
 	.global unit_icon_move_Peer_sheet
 unit_icon_move_Peer_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Peer_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Peer_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Peer_motion
@@ -17425,7 +17425,7 @@ unit_icon_move_Peer_anim_4: @ +$142
 
 	.global unit_icon_move_Queen_sheet
 unit_icon_move_Queen_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Queen_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Queen_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Queen_motion
@@ -17599,7 +17599,7 @@ unit_icon_move_Queen_anim_4: @ +$142
 
 	.global unit_icon_move_Prince_sheet
 unit_icon_move_Prince_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Prince_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Prince_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Prince_motion
@@ -17773,7 +17773,7 @@ unit_icon_move_Prince_anim_4: @ +$142
 
 	.global unit_icon_move_Queen_2_sheet
 unit_icon_move_Queen_2_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Queen_2_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Queen_2_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Queen_2_motion
@@ -17947,7 +17947,7 @@ unit_icon_move_Queen_2_anim_4: @ +$142
 
 	.global unit_icon_move_Unk77_sheet
 unit_icon_move_Unk77_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Unk77_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Unk77_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Unk77_motion
@@ -18121,7 +18121,7 @@ unit_icon_move_Unk77_anim_4: @ +$142
 
 	.global unit_icon_move_Fallen_Prince_sheet
 unit_icon_move_Fallen_Prince_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Fallen_Prince_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Fallen_Prince_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Fallen_Prince_motion
@@ -18295,7 +18295,7 @@ unit_icon_move_Fallen_Prince_anim_4: @ +$142
 
 	.global unit_icon_move_Tent_sheet
 unit_icon_move_Tent_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Tent_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Tent_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Tent_motion
@@ -18469,7 +18469,7 @@ unit_icon_move_Tent_anim_4: @ +$142
 
 	.global unit_icon_move_Pontifex_sheet
 unit_icon_move_Pontifex_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Pontifex_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Pontifex_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Pontifex_motion
@@ -18643,7 +18643,7 @@ unit_icon_move_Pontifex_anim_4: @ +$142
 
 	.global unit_icon_move_Fallen_Peer_sheet
 unit_icon_move_Fallen_Peer_sheet:
-	.incbin "graphics/unit_icon/move/unit_icon_move_Fallen_Peer_sheet.4bpp.lz"
+	.incbin "contents/unit_icon/move/unit_icon_move_Fallen_Peer_sheet.4bpp.lz"
 	.align 2, 0
 
 	.global unit_icon_move_Fallen_Peer_motion

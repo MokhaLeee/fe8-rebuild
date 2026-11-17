@@ -5,7 +5,7 @@
     .global Img_EkrLvupNumBig
 Img_EkrLvupNumBig:  @ 0x085C8278
     .incbin "baserom.gba", 0x5C8278, 0x5c8a78 - 0x5C8278
-    @.incbin "./graphics/lvup/EkrLvupNumBig.4bpp"
+    @.incbin "./contents/lvup/EkrLvupNumBig.4bpp"
 
 .global AnimSprite_LvupStatup_1
 AnimSprite_LvupStatup_1:  @ 0x5C8A78

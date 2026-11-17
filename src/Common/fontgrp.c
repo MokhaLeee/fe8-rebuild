@@ -36,7 +36,7 @@ EWRAM_DATA struct Font *gActiveFont = 0;
 EWRAM_DATA u8 gLanguageMode = 0;
 EWRAM_DATA struct SpecialCharSt sSpecialCharStList[64] = {0};
 
-#include "graphics/debug_font.4bpp.h"
+#include "contents/fonts/debug_font.4bpp.h"
 
 void SetupDebugFontForBG(int bg, int tileDataOffset)
 {

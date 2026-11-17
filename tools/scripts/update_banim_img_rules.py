@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ROM_PATH = ROOT / "baserom.gba"
 LABELS_CSV = ROOT / "tools" / "extract" / "reports" / "data_banim_incbin_labels.csv"
 ASSET_MAP_CSV = ROOT / "tools" / "extract" / "reports" / "data_banim_asset_map.csv"
-RULES_MK = ROOT / "graphics" / "banim" / "assets" / "img" / "banim_img_rules.mk"
+RULES_MK = ROOT / "contents" / "banim" / "assets" / "img" / "banim_img_rules.mk"
 
 # Constraints gathered from code analysis (widths) or ROM tile counts (num_tiles)
 CONSTRAINTS = {

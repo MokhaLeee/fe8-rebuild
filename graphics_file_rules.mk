@@ -1,4 +1,4 @@
-MOVEUNITGFXDIR := graphics/unit_icon/move
+MOVEUNITGFXDIR := contents/unit_icon/move
 
 ### Move Unit Icon Animation Sheets ###
 
@@ -64,7 +64,7 @@ $(MOVEUNITGFXDIR)/unit_icon_move_Blst_Killer_Empty_sheet.4bpp: %.4bpp: %.png
 
 ## Map Tileset OBJ
 
-MAPDIR := graphics/map
+MAPDIR := contents/map
 
 $(MAPDIR)/ObjectType1.4bpp: %.4bpp: %.png
 	$(GBAGFX) $< $@ -num_tiles 1024
@@ -101,104 +101,104 @@ $(MAPDIR)/TowerOfValniObjectType.4bpp: %.4bpp: %.png
 
 ## Backgrounds
 
-graphics/bg/bg_Black_Temple_Inside.feimg2.bin graphics/bg/bg_Black_Temple_Inside.fetsa2.bin: graphics/bg/bg_Black_Temple_Inside.png
-	$(FETSATOOL) $< graphics/bg/bg_Black_Temple_Inside.feimg2.bin graphics/bg/bg_Black_Temple_Inside.fetsa2.bin --starting_index 29
+contents/bg/bg_Black_Temple_Inside.feimg2.bin contents/bg/bg_Black_Temple_Inside.fetsa2.bin: contents/bg/bg_Black_Temple_Inside.png
+	$(FETSATOOL) $< contents/bg/bg_Black_Temple_Inside.feimg2.bin contents/bg/bg_Black_Temple_Inside.fetsa2.bin --starting_index 29
 
-graphics/bg/bg_Black_Temple_Outside.feimg2.bin graphics/bg/bg_Black_Temple_Outside.fetsa2.bin: graphics/bg/bg_Black_Temple_Outside.png
-	$(FETSATOOL) $< graphics/bg/bg_Black_Temple_Outside.feimg2.bin graphics/bg/bg_Black_Temple_Outside.fetsa2.bin --starting_index 29
+contents/bg/bg_Black_Temple_Outside.feimg2.bin contents/bg/bg_Black_Temple_Outside.fetsa2.bin: contents/bg/bg_Black_Temple_Outside.png
+	$(FETSATOOL) $< contents/bg/bg_Black_Temple_Outside.feimg2.bin contents/bg/bg_Black_Temple_Outside.fetsa2.bin --starting_index 29
 
-graphics/bg/bg_Burning_Castle.feimg2.bin graphics/bg/bg_Burning_Castle.fetsa2.bin: graphics/bg/bg_Burning_Castle.png
-	$(FETSATOOL) $< graphics/bg/bg_Burning_Castle.feimg2.bin graphics/bg/bg_Burning_Castle.fetsa2.bin --starting_index 29
+contents/bg/bg_Burning_Castle.feimg2.bin contents/bg/bg_Burning_Castle.fetsa2.bin: contents/bg/bg_Burning_Castle.png
+	$(FETSATOOL) $< contents/bg/bg_Burning_Castle.feimg2.bin contents/bg/bg_Burning_Castle.fetsa2.bin --starting_index 29
 
-graphics/bg/bg_Caer_Pelyn.feimg2.bin graphics/bg/bg_Caer_Pelyn.fetsa2.bin: graphics/bg/bg_Caer_Pelyn.png
-	$(FETSATOOL) $< graphics/bg/bg_Caer_Pelyn.feimg2.bin graphics/bg/bg_Caer_Pelyn.fetsa2.bin --starting_index 597
+contents/bg/bg_Caer_Pelyn.feimg2.bin contents/bg/bg_Caer_Pelyn.fetsa2.bin: contents/bg/bg_Caer_Pelyn.png
+	$(FETSATOOL) $< contents/bg/bg_Caer_Pelyn.feimg2.bin contents/bg/bg_Caer_Pelyn.fetsa2.bin --starting_index 597
 
-graphics/bg/bg_Darkling_Woods.feimg2.bin graphics/bg/bg_Darkling_Woods.fetsa2.bin: graphics/bg/bg_Darkling_Woods.png
-	$(FETSATOOL) $< graphics/bg/bg_Darkling_Woods.feimg2.bin graphics/bg/bg_Darkling_Woods.fetsa2.bin --starting_index 29
+contents/bg/bg_Darkling_Woods.feimg2.bin contents/bg/bg_Darkling_Woods.fetsa2.bin: contents/bg/bg_Darkling_Woods.png
+	$(FETSATOOL) $< contents/bg/bg_Darkling_Woods.feimg2.bin contents/bg/bg_Darkling_Woods.fetsa2.bin --starting_index 29
 
-graphics/bg/bg_Grado_Chamber.feimg2.bin graphics/bg/bg_Grado_Chamber.fetsa2.bin: graphics/bg/bg_Grado_Chamber.png
-	$(FETSATOOL) $< graphics/bg/bg_Grado_Chamber.feimg2.bin graphics/bg/bg_Grado_Chamber.fetsa2.bin --starting_index 594
+contents/bg/bg_Grado_Chamber.feimg2.bin contents/bg/bg_Grado_Chamber.fetsa2.bin: contents/bg/bg_Grado_Chamber.png
+	$(FETSATOOL) $< contents/bg/bg_Grado_Chamber.feimg2.bin contents/bg/bg_Grado_Chamber.fetsa2.bin --starting_index 594
 
-graphics/bg/bg_Renais_Chamber.feimg2.bin graphics/bg/bg_Renais_Chamber.fetsa2.bin: graphics/bg/bg_Renais_Chamber.png
-	$(FETSATOOL) $< graphics/bg/bg_Renais_Chamber.feimg2.bin graphics/bg/bg_Renais_Chamber.fetsa2.bin --starting_index 20 --padding 1
+contents/bg/bg_Renais_Chamber.feimg2.bin contents/bg/bg_Renais_Chamber.fetsa2.bin: contents/bg/bg_Renais_Chamber.png
+	$(FETSATOOL) $< contents/bg/bg_Renais_Chamber.feimg2.bin contents/bg/bg_Renais_Chamber.fetsa2.bin --starting_index 20 --padding 1
 
-graphics/bg/bg_Stream.feimg2.bin graphics/bg/bg_Stream.fetsa2.bin: graphics/bg/bg_Stream.png
-	$(FETSATOOL) $< graphics/bg/bg_Stream.feimg2.bin graphics/bg/bg_Stream.fetsa2.bin --starting_index 480 --padding -1
+contents/bg/bg_Stream.feimg2.bin contents/bg/bg_Stream.fetsa2.bin: contents/bg/bg_Stream.png
+	$(FETSATOOL) $< contents/bg/bg_Stream.feimg2.bin contents/bg/bg_Stream.fetsa2.bin --starting_index 480 --padding -1
 
 #Opening subtitles
 
-graphics/op_subtitle/OpSubtitle_05.feimg2.bin graphics/op_subtitle/OpSubtitle_05.fetsa2.bin:  graphics/op_subtitle/OpSubtitle_05.png
-	$(FETSATOOL) $< graphics/op_subtitle/OpSubtitle_05.feimg2.bin graphics/op_subtitle/OpSubtitle_05.fetsa2.bin --padding 6
+contents/op_subtitle/OpSubtitle_05.feimg2.bin contents/op_subtitle/OpSubtitle_05.fetsa2.bin:  contents/op_subtitle/OpSubtitle_05.png
+	$(FETSATOOL) $< contents/op_subtitle/OpSubtitle_05.feimg2.bin contents/op_subtitle/OpSubtitle_05.fetsa2.bin --padding 6
 
 #Battle Backgrounds
-graphics/btl_bg/btl_bg_1.feimg3.bin graphics/btl_bg/btl_bg_1.fetsa3.bin: graphics/btl_bg/btl_bg_1.png
-	$(FETSATOOL) $< graphics/btl_bg/btl_bg_1.feimg3.bin graphics/btl_bg/btl_bg_1.fetsa3.bin --flip_y_indexes=375,376,377,378,385,386,387,388,389
+contents/btl_bg/btl_bg_1.feimg3.bin contents/btl_bg/btl_bg_1.fetsa3.bin: contents/btl_bg/btl_bg_1.png
+	$(FETSATOOL) $< contents/btl_bg/btl_bg_1.feimg3.bin contents/btl_bg/btl_bg_1.fetsa3.bin --flip_y_indexes=375,376,377,378,385,386,387,388,389
 
-graphics/btl_bg/btl_bg_10.feimg3.bin graphics/btl_bg/btl_bg_10.fetsa3.bin: graphics/btl_bg/btl_bg_10.png
-	$(FETSATOOL) $< graphics/btl_bg/btl_bg_10.feimg3.bin graphics/btl_bg/btl_bg_10.fetsa3.bin --flip_y_indexes=375,376,377,378,385,386,388,389
+contents/btl_bg/btl_bg_10.feimg3.bin contents/btl_bg/btl_bg_10.fetsa3.bin: contents/btl_bg/btl_bg_10.png
+	$(FETSATOOL) $< contents/btl_bg/btl_bg_10.feimg3.bin contents/btl_bg/btl_bg_10.fetsa3.bin --flip_y_indexes=375,376,377,378,385,386,388,389
 
-graphics/btl_bg/btl_bg_13.feimg3.bin graphics/btl_bg/btl_bg_13.fetsa3.bin: graphics/btl_bg/btl_bg_13.png
-	$(FETSATOOL) $< graphics/btl_bg/btl_bg_13.feimg3.bin graphics/btl_bg/btl_bg_13.fetsa3.bin --flip_y_indexes=50,375,376,377,378,379,380,381,382,383,384,386,387,388,389,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419
+contents/btl_bg/btl_bg_13.feimg3.bin contents/btl_bg/btl_bg_13.fetsa3.bin: contents/btl_bg/btl_bg_13.png
+	$(FETSATOOL) $< contents/btl_bg/btl_bg_13.feimg3.bin contents/btl_bg/btl_bg_13.fetsa3.bin --flip_y_indexes=50,375,376,377,378,379,380,381,382,383,384,386,387,388,389,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419
 
-graphics/btl_bg/btl_bg_32.feimg3.bin graphics/btl_bg/btl_bg_32.fetsa3.bin: graphics/btl_bg/btl_bg_32.png
-	$(FETSATOOL) $< graphics/btl_bg/btl_bg_32.feimg3.bin graphics/btl_bg/btl_bg_32.fetsa3.bin --flip_y_indexes=195,225,255
+contents/btl_bg/btl_bg_32.feimg3.bin contents/btl_bg/btl_bg_32.fetsa3.bin: contents/btl_bg/btl_bg_32.png
+	$(FETSATOOL) $< contents/btl_bg/btl_bg_32.feimg3.bin contents/btl_bg/btl_bg_32.fetsa3.bin --flip_y_indexes=195,225,255
 
-graphics/btl_bg/btl_bg_47.feimg3.bin graphics/btl_bg/btl_bg_47.fetsa3.bin: graphics/btl_bg/btl_bg_47.png
-	$(FETSATOOL) $< graphics/btl_bg/btl_bg_47.feimg3.bin graphics/btl_bg/btl_bg_47.fetsa3.bin --flip_y_indexes=15,16,17,18,19,20,21,22,23,24,25,26,27,28,29
+contents/btl_bg/btl_bg_47.feimg3.bin contents/btl_bg/btl_bg_47.fetsa3.bin: contents/btl_bg/btl_bg_47.png
+	$(FETSATOOL) $< contents/btl_bg/btl_bg_47.feimg3.bin contents/btl_bg/btl_bg_47.fetsa3.bin --flip_y_indexes=15,16,17,18,19,20,21,22,23,24,25,26,27,28,29
 
-graphics/btl_bg/btl_bg_56.feimg3.bin graphics/btl_bg/btl_bg_56.fetsa3.bin: graphics/btl_bg/btl_bg_56.png
-	$(FETSATOOL) $< graphics/btl_bg/btl_bg_56.feimg3.bin graphics/btl_bg/btl_bg_56.fetsa3.bin --blank_tile_index=298 --pop_last_tile
+contents/btl_bg/btl_bg_56.feimg3.bin contents/btl_bg/btl_bg_56.fetsa3.bin: contents/btl_bg/btl_bg_56.png
+	$(FETSATOOL) $< contents/btl_bg/btl_bg_56.feimg3.bin contents/btl_bg/btl_bg_56.fetsa3.bin --blank_tile_index=298 --pop_last_tile
 
-graphics/btl_bg/btl_bg_57.feimg3.bin graphics/btl_bg/btl_bg_57.fetsa3.bin: graphics/btl_bg/btl_bg_57.png
-	$(FETSATOOL) $< graphics/btl_bg/btl_bg_57.feimg3.bin graphics/btl_bg/btl_bg_57.fetsa3.bin --blank_tile_index=305 --pop_last_tile
+contents/btl_bg/btl_bg_57.feimg3.bin contents/btl_bg/btl_bg_57.fetsa3.bin: contents/btl_bg/btl_bg_57.png
+	$(FETSATOOL) $< contents/btl_bg/btl_bg_57.feimg3.bin contents/btl_bg/btl_bg_57.fetsa3.bin --blank_tile_index=305 --pop_last_tile
 
 #op anim
-graphics/op_anim/OpAnimWorldMap.feimg4.bin graphics/op_anim/OpAnimWorldMap.fetsa4.bin: graphics/op_anim/OpAnimWorldMap.png
-	$(FETSATOOL) $< graphics/op_anim/OpAnimWorldMap.feimg4.bin  graphics/op_anim/OpAnimWorldMap.fetsa4.bin --insert_indexes=0:23,511:1
+contents/op_anim/OpAnimWorldMap.feimg4.bin contents/op_anim/OpAnimWorldMap.fetsa4.bin: contents/op_anim/OpAnimWorldMap.png
+	$(FETSATOOL) $< contents/op_anim/OpAnimWorldMap.feimg4.bin  contents/op_anim/OpAnimWorldMap.fetsa4.bin --insert_indexes=0:23,511:1
 
-graphics/op_anim/OpAnimWorldMapFog.feimg4.bin graphics/op_anim/OpAnimWorldMapFog.fetsa4.bin: graphics/op_anim/OpAnimWorldMapFog.png
-	$(FETSATOOL) $< graphics/op_anim/OpAnimWorldMapFog.feimg4.bin  graphics/op_anim/OpAnimWorldMapFog.fetsa4.bin --blank_tile_index=255
+contents/op_anim/OpAnimWorldMapFog.feimg4.bin contents/op_anim/OpAnimWorldMapFog.fetsa4.bin: contents/op_anim/OpAnimWorldMapFog.png
+	$(FETSATOOL) $< contents/op_anim/OpAnimWorldMapFog.feimg4.bin  contents/op_anim/OpAnimWorldMapFog.fetsa4.bin --blank_tile_index=255
 
-graphics/op_anim/OpAnimGenericCharacterBG.feimg4.bin graphics/op_anim/OpAnimGenericCharacterBG.fetsa4.bin: graphics/op_anim/OpAnimGenericCharacterBG.png
-	$(FETSATOOL) $< graphics/op_anim/OpAnimGenericCharacterBG.feimg4.bin  graphics/op_anim/OpAnimGenericCharacterBG.fetsa4.bin --num_tiles=256 --insert_indexes=213:1 --padding=-1 --flip_y_indexes=16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,88,89,90,123,126,127,144,158,176,179,180,208,209,210,211,212,213,214,215,216,217,218,272,274,275,287,306,307,308,309,315,316,317,319,338,340,345,383,401,405,406,432,434,435,436,438,442,444,445,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,504,506,560,561,562,563,564,565,566,567,568,569,572,573,574,575,606,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639
+contents/op_anim/OpAnimGenericCharacterBG.feimg4.bin contents/op_anim/OpAnimGenericCharacterBG.fetsa4.bin: contents/op_anim/OpAnimGenericCharacterBG.png
+	$(FETSATOOL) $< contents/op_anim/OpAnimGenericCharacterBG.feimg4.bin  contents/op_anim/OpAnimGenericCharacterBG.fetsa4.bin --num_tiles=256 --insert_indexes=213:1 --padding=-1 --flip_y_indexes=16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,88,89,90,123,126,127,144,158,176,179,180,208,209,210,211,212,213,214,215,216,217,218,272,274,275,287,306,307,308,309,315,316,317,319,338,340,345,383,401,405,406,432,434,435,436,438,442,444,445,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,504,506,560,561,562,563,564,565,566,567,568,569,572,573,574,575,606,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639
 
-graphics/op_anim/OpAnimEphraim.feimg4.bin graphics/op_anim/OpAnimEphraim.fetsa4.bin: graphics/op_anim/OpAnimEphraim.png
-	$(FETSATOOL) $< graphics/op_anim/OpAnimEphraim.feimg4.bin  graphics/op_anim/OpAnimEphraim.fetsa4.bin --num_tiles=256 --insert_indexes=133:1
+contents/op_anim/OpAnimEphraim.feimg4.bin contents/op_anim/OpAnimEphraim.fetsa4.bin: contents/op_anim/OpAnimEphraim.png
+	$(FETSATOOL) $< contents/op_anim/OpAnimEphraim.feimg4.bin  contents/op_anim/OpAnimEphraim.fetsa4.bin --num_tiles=256 --insert_indexes=133:1
 
-graphics/op_anim/OpAnimEphraimBlur1.feimg4.bin graphics/op_anim/OpAnimEphraimBlur1.fetsa4.bin: graphics/op_anim/OpAnimEphraimBlur1.png
-	$(FETSATOOL) $< graphics/op_anim/OpAnimEphraimBlur1.feimg4.bin  graphics/op_anim/OpAnimEphraimBlur1.fetsa4.bin --num_tiles=256 --insert_indexes=149:1
+contents/op_anim/OpAnimEphraimBlur1.feimg4.bin contents/op_anim/OpAnimEphraimBlur1.fetsa4.bin: contents/op_anim/OpAnimEphraimBlur1.png
+	$(FETSATOOL) $< contents/op_anim/OpAnimEphraimBlur1.feimg4.bin  contents/op_anim/OpAnimEphraimBlur1.fetsa4.bin --num_tiles=256 --insert_indexes=149:1
 
-#graphics/op_anim/OpAnimEphraimBlur2.feimg4.bin graphics/op_anim/OpAnimEphraimBlur2.fetsa4.bin: graphics/op_anim/OpAnimEphraimBlur1.png
-#	$(FETSATOOL) $< graphics/op_anim/OpAnimEphraimBlur2.feimg4.bin  graphics/op_anim/OpAnimEphraimBlur2.fetsa4.bin --num_tiles=255 --insert_indexes=153:0
+#contents/op_anim/OpAnimEphraimBlur2.feimg4.bin contents/op_anim/OpAnimEphraimBlur2.fetsa4.bin: contents/op_anim/OpAnimEphraimBlur1.png
+#	$(FETSATOOL) $< contents/op_anim/OpAnimEphraimBlur2.feimg4.bin  contents/op_anim/OpAnimEphraimBlur2.fetsa4.bin --num_tiles=255 --insert_indexes=153:0
 
-#graphics/op_anim/OpAnimEphraimBlur3.feimg4.bin graphics/op_anim/OpAnimEphraimBlur3.fetsa4.bin: graphics/op_anim/OpAnimEphraimBlur3.png
-#	$(FETSATOOL) $< graphics/op_anim/OpAnimEphraimBlur3.feimg4.bin  graphics/op_anim/OpAnimEphraimBlur3.fetsa4.bin --num_tiles=256 --insert_indexes=167:1
+#contents/op_anim/OpAnimEphraimBlur3.feimg4.bin contents/op_anim/OpAnimEphraimBlur3.fetsa4.bin: contents/op_anim/OpAnimEphraimBlur3.png
+#	$(FETSATOOL) $< contents/op_anim/OpAnimEphraimBlur3.feimg4.bin  contents/op_anim/OpAnimEphraimBlur3.fetsa4.bin --num_tiles=256 --insert_indexes=167:1
 
-graphics/op_anim/OpAnimEirika.feimg4.bin graphics/op_anim/OpAnimEirika.fetsa4.bin: graphics/op_anim/OpAnimEirika.png
-	$(FETSATOOL) $< graphics/op_anim/OpAnimEirika.feimg4.bin  graphics/op_anim/OpAnimEirika.fetsa4.bin --num_tiles=256 --insert_indexes=114:1
+contents/op_anim/OpAnimEirika.feimg4.bin contents/op_anim/OpAnimEirika.fetsa4.bin: contents/op_anim/OpAnimEirika.png
+	$(FETSATOOL) $< contents/op_anim/OpAnimEirika.feimg4.bin  contents/op_anim/OpAnimEirika.fetsa4.bin --num_tiles=256 --insert_indexes=114:1
 
-graphics/op_anim/OpAnimEirikaBlur1.feimg4.bin graphics/op_anim/OpAnimEirikaBlur1.fetsa4.bin: graphics/op_anim/OpAnimEirikaBlur1.png
-	$(FETSATOOL) $< graphics/op_anim/OpAnimEirikaBlur1.feimg4.bin  graphics/op_anim/OpAnimEirikaBlur1.fetsa4.bin --num_tiles=256 --insert_indexes=119:1
+contents/op_anim/OpAnimEirikaBlur1.feimg4.bin contents/op_anim/OpAnimEirikaBlur1.fetsa4.bin: contents/op_anim/OpAnimEirikaBlur1.png
+	$(FETSATOOL) $< contents/op_anim/OpAnimEirikaBlur1.feimg4.bin  contents/op_anim/OpAnimEirikaBlur1.fetsa4.bin --num_tiles=256 --insert_indexes=119:1
 
-graphics/op_anim/OpAnimEirikaBlur2.feimg4.bin graphics/op_anim/OpAnimEirikaBlur2.fetsa4.bin: graphics/op_anim/OpAnimEirikaBlur2.png
-	$(FETSATOOL) $< graphics/op_anim/OpAnimEirikaBlur2.feimg4.bin  graphics/op_anim/OpAnimEirikaBlur2.fetsa4.bin --num_tiles=256 --insert_indexes=136:1
+contents/op_anim/OpAnimEirikaBlur2.feimg4.bin contents/op_anim/OpAnimEirikaBlur2.fetsa4.bin: contents/op_anim/OpAnimEirikaBlur2.png
+	$(FETSATOOL) $< contents/op_anim/OpAnimEirikaBlur2.feimg4.bin  contents/op_anim/OpAnimEirikaBlur2.fetsa4.bin --num_tiles=256 --insert_indexes=136:1
 
-graphics/op_anim/OpAnimEirikaBlur3.feimg4.bin graphics/op_anim/OpAnimEirikaBlur3.fetsa4.bin: graphics/op_anim/OpAnimEirikaBlur3.png
-	$(FETSATOOL) $< graphics/op_anim/OpAnimEirikaBlur3.feimg4.bin  graphics/op_anim/OpAnimEirikaBlur3.fetsa4.bin --num_tiles=256 --insert_indexes=161:1
+contents/op_anim/OpAnimEirikaBlur3.feimg4.bin contents/op_anim/OpAnimEirikaBlur3.fetsa4.bin: contents/op_anim/OpAnimEirikaBlur3.png
+	$(FETSATOOL) $< contents/op_anim/OpAnimEirikaBlur3.feimg4.bin  contents/op_anim/OpAnimEirikaBlur3.fetsa4.bin --num_tiles=256 --insert_indexes=161:1
 
 ## Statscreen
 
-graphics/statscreen/StatscreenObjs.4bpp: %.4bpp: %.png
+contents/statscreen/StatscreenObjs.4bpp: %.4bpp: %.png
 	$(GBAGFX) $< $@ -num_tiles 134
 
-graphics/statscreen/StatscreenBG.bin: %.bin: %.tmap
+contents/statscreen/StatscreenBG.bin: %.bin: %.tmap
 	$(TMAP2TSA) $< $@ --width 29 --height 19
 
-graphics/statscreen/StatscreenHalo.bin: %.bin: %.tmap
+contents/statscreen/StatscreenHalo.bin: %.bin: %.tmap
 	$(TMAP2TSA) $< $@ --width 17 --height 6
 
-graphics/statscreen/StatscreenEquipmentBG.bin: %.bin: %.tmap
+contents/statscreen/StatscreenEquipmentBG.bin: %.bin: %.tmap
 	$(TMAP2TSA) $< $@ --width 15 --height 5
 
-graphics/statscreen/StatscreenEquipedWeaponHighlight.bin: %.bin: %.tmap
+contents/statscreen/StatscreenEquipedWeaponHighlight.bin: %.bin: %.tmap
 	$(TMAP2TSA) $< $@ --width 15 --height 0
