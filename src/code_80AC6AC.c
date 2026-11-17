@@ -8,39 +8,33 @@
 //! FE8U = 0x080AC6AC
 int sub_80AC6AC(int a, int b, int c, int d, int e)
 {
-    u64 accum;
+	u64 accum;
+	u64 tmpA = (e - 0x400) * (e - 0x400) * (e * 2 + 0x400);
+	u64 tmpB = e * e * (0xc00 - e * 2);
+	u64 tmpC = (0x400 - e) * (0x400 - e) * e;
+	u64 tmpD = e * (e - 0x400) * e;
 
-    u64 tmpA = (e - 0x400) * (e - 0x400) * (e * 2 + 0x400);
-    u64 tmpB = e * e * (0xc00 - e * 2);
-    u64 tmpC = (0x400 - e) * (0x400 - e) * e;
-    u64 tmpD = e * (e - 0x400) * e;
+	accum = (tmpA * b)
+		+ (tmpB * c)
+		+ (tmpC * ((c - a) >> 1))
+		+ (tmpD * ((d - b) >> 1));
 
-    // clang-format off
-    accum = (tmpA * b)
-        + (tmpB * c)
-        + (tmpC * ((c - a) >> 1))
-        + (tmpD * ((d - b) >> 1));
-    // clang-format on
-
-    return accum >> 30;
+	return accum >> 30;
 }
 
 //! FE8U = 0x080AC784
 int sub_80AC784(int a, int b, int c, int d, int e)
 {
-    u64 accum;
+	u64 accum;
+	u64 tmpA = e * 6 * e - e * 0x1800;
+	u64 tmpB = e * 0x1800 - e * 6 * e;
+	u64 tmpC = e * 3 * e - e * 0x1000 + 0x100000;
+	u64 tmpD = e * 3 * e - e * 0x800;
 
-    u64 tmpA = e * 6 * e - e * 0x1800;
-    u64 tmpB = e * 0x1800 - e * 6 * e;
-    u64 tmpC = e * 3 * e - e * 0x1000 + 0x100000;
-    u64 tmpD = e * 3 * e - e * 0x800;
+	accum = (tmpA * b)
+		+ (tmpB * c)
+		+ (tmpC * ((c - a) >> 1))
+		+ (tmpD * ((d - b) >> 1));
 
-    // clang-format off
-    accum = (tmpA * b)
-        + (tmpB * c)
-        + (tmpC * ((c - a) >> 1))
-        + (tmpD * ((d - b) >> 1));
-    // clang-format on
-
-    return accum >> 20;
+	return accum >> 20;
 }
