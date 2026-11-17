@@ -11,7 +11,7 @@ def extract_files():
     with open("baserom.gba", "rb") as f:
         rom_data = f.read()
 
-    with open("graphic_extract.yml", "r") as stream:
+    with open("tools/extract/graphic_extract.yml", "r") as stream:
         yaml_data = yaml.safe_load(stream)
 
     yaml_files = yaml_data["files"]

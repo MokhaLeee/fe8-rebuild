@@ -103,8 +103,6 @@ scripts/__pycache__/*
 # Edit at https://www.gitignore.io/?templates=c,vim,tags,linux,macos,clion,emacs,python,windows,eclipse,assembler,visualstudio,visualstudiocode
 
 ### Assembler ###
-*.exe
-*.o
 *.obj
 *.bc
 
@@ -114,11 +112,9 @@ scripts/__pycache__/*
 
 # Object files
 *.ko
-*.elf
 
 # Linker output
 *.ilk
-*.map
 *.exp
 
 # Precompiled Headers
@@ -253,7 +249,6 @@ bin/
 tmp/
 *.tmp
 *.bak
-*.swp
 *~.nib
 local.properties
 .settings/
@@ -383,31 +378,16 @@ flycheck_*.el
 
 ### macOS ###
 # General
-.DS_Store
-.AppleDouble
-.LSOverride
 
 # Icon must end with two \r
 Icon
 
 # Thumbnails
-._*
 
 # Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
 .com.apple.timemachine.donotpresent
 
 # Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -566,9 +546,7 @@ Sessionx.vim
 
 ### Windows ###
 # Windows thumbnail cache files
-Thumbs.db
 Thumbs.db:encryptable
-ehthumbs.db
 ehthumbs_vista.db
 
 # Dump file
@@ -578,17 +556,11 @@ ehthumbs_vista.db
 [Dd]esktop.ini
 
 # Recycle Bin used on file shares
-$RECYCLE.BIN/
 
 # Windows Installer files
-*.cab
-*.msi
 *.msix
-*.msm
-*.msp
 
 # Windows shortcuts
-*.lnk
 
 ### VisualStudio ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -948,8 +920,8 @@ MigrationBackup/
 gccdump/
 
 # Artifact of dump_sound
-!scripts/dump_sound/Program.cs
-scripts/dump_sound/
+!tools/extract/dump_sound/Program.cs
+tools/extract/dump_sound/
 
 # Converted sound samples
 sound/direct_sound_samples/*.bin
@@ -968,7 +940,7 @@ include/msg_data.h
 !src/m4a_1.s
 !src/libagbsyscall.s
 
-# Generated from graphics/bg/*.screen.png by scripts/tsa_png.py
+# Generated from graphics/bg/*.screen.png by tools/scripts/tsa_png.py
 graphics/bg/bg_Cell.bin
 graphics/bg/bg_Grass_Plains_2.bin
 graphics/bg/bg_Interior_Black.bin

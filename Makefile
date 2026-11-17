@@ -33,10 +33,10 @@ AIF2PCM    := tools/aif2pcm/aif2pcm$(EXE)
 MID2AGB    := tools/mid2agb/mid2agb$(EXE)
 TEXTENCODE := tools/textencode/textencode$(EXE)
 JSONPROC   := tools/jsonproc/jsonproc$(EXE)
-FETSATOOL  := scripts/gfxtools/tsa_generator.py
-TMAP2TSA   := scripts/tmap2tsa.py
-PNG2TSA    := scripts/tsa_png.py
-MARTOMAP   := scripts/mar_to_map.py
+FETSATOOL  := tools/scripts/gfxtools/tsa_generator.py
+TMAP2TSA   := tools/scripts/tmap2tsa.py
+PNG2TSA    := tools/scripts/tsa_png.py
+MARTOMAP   := tools/scripts/mar_to_map.py
 PYTHON    ?= python3
 PAL2GBAPAL := $(GBAGFX)
 
@@ -103,10 +103,27 @@ src/menu_def.o: CC1FLAGS += -Wno-error
 
 #### Main Targets ####
 
-compare: $(ROM)
-	$(SHASUM) -c checksum.sha1
+# 默认目标：构建 ROM。
+all: $(ROM)
 
-.PHONY: compare
+.PHONY: all
+
+# 字节门禁：M1–M4a 期间每次改动后都应通过。
+# 基线 sha1 见 docs/baseline.md；改基线时同步改这里。
+ROM_SHA1 := c25b145e37456171ada4b0d440bf88a19f4d509f
+
+check: $(ROM)
+	@actual=$$($(SHASUM) $(ROM) | cut -d' ' -f1); \
+	if [ "$$actual" = "$(ROM_SHA1)" ]; then \
+		echo "$(ROM): OK"; \
+	else \
+		echo "$(ROM): MISMATCH"; \
+		echo "  expected $(ROM_SHA1)"; \
+		echo "  actual   $$actual"; \
+		exit 1; \
+	fi
+
+.PHONY: check
 
 CLEAN_FILES := $(ROM) $(ELF) $(MAP) $(OBJECTS_LST) $(SFILES_COMPILED) graphics/*.h $(CFILES_GENERATED)
 CLEAN_DIRS := $(DEPS_DIR)
@@ -132,22 +149,6 @@ clean: clean_common
 
 .PHONY: clean
 
-# Hard clean: remove every untracked and ignored file in the working tree,
-# preserving only baserom.gba (and embedded git repos like .deps/agbcc).
-# After this you must rebuild the tools (and reinstall agbcc into tools/agbcc
-# via .deps/agbcc/install.sh) before `make` will work again.
-clean_all:
-	git clean -dfx -e baserom.gba
-
-.PHONY: clean_all
-
-tag:
-	gtags
-	ctags -R
-	cscope -Rbkq
-
-.PHONY: tag
-
 #### Recipes ####
 
 # Comprssed Texts Recipes
@@ -156,7 +157,7 @@ tag:
 # = Texts =
 # =========
 TEXT_DIR := texts
-TEXT_TOOLS := scripts/texttools
+TEXT_TOOLS := tools/scripts/texttools
 
 TEXT_DECODER := $(PYTHON)  $(TEXT_TOOLS)/textdecoder.py
 TEXT_DPARSER := $(PYTHON) $(TEXT_TOOLS)/textdeparser.py
@@ -191,7 +192,7 @@ include json_data_rules.mk
 %.gbapal: %.png ; $(GBAGFX) $< $@
 %.lz: % ; $(GBAGFX) $< $@
 %.rl: % ; $(GBAGFX) $< $@
-%.fk: % ; ./scripts/compressor.py $< fk
+%.fk: % ; ./tools/scripts/compressor.py $< fk
 %.bin: %.mar  ; $(MARTOMAP)  $< $@
 # Background tile maps built from their screen PNGs (scripts/tsa_png.py). Only these eight.
 BG_TSA_MAPS := $(addsuffix .bin,$(addprefix graphics/bg/bg_,Cell Grass_Plains_2 Interior_Black Castle_Back Garden Manse_Back Serafew_Village Volcano))
@@ -215,8 +216,8 @@ sound/%.bin: sound/%.aif ; $(AIF2PCM) $< $@
 
 # Battle Animation Recipes
 
-$(BANIM_OBJECT): $(shell ./scripts/arm_compressing_linker.py -t linker_script_banim.txt -m)
-	./scripts/arm_compressing_linker.py -o $@ -t linker_script_banim.txt -b 0x8c02000 -l $(LD) --objcopy $(OBJCOPY) -c ./scripts/compressor.py
+$(BANIM_OBJECT): $(shell ./tools/scripts/arm_compressing_linker.py -t linker_script_banim.txt -m)
+	./tools/scripts/arm_compressing_linker.py -o $@ -t linker_script_banim.txt -b 0x8c02000 -l $(LD) --objcopy $(OBJCOPY) -c ./tools/scripts/compressor.py
 
 %_modes.bin: %_motion.o
 	$(OBJCOPY) -O binary -j .data.modes $< $@
@@ -255,7 +256,7 @@ $(C_OBJECTS): %.o: %.c $(DEPS_DIR)/%.d
 	$(CPP) $(CPPFLAGS) $< | iconv -f UTF-8 -t CP932 | $(CC1) $(CC1FLAGS) -o $*.s
 	echo '.ALIGN 2, 0' >> $*.s
 ifeq ($(UNAME),Darwin)
-	$(SED) -f scripts/align_2_before_debug_section_for_osx.sed $*.s
+	$(SED) -f tools/extract/align_2_before_debug_section_for_osx.sed $*.s
 else
 	$(SED) '/.section	.debug_line/i\.align 2, 0' $*.s
 endif

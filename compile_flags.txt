@@ -1,7 +1,15 @@
 -Wimplicit
--WParentheses
+-Wparentheses
 -Werror
+-std=gnu99
+-mcpu=arm7tdmi
+-mthumb
+-mthumb-interwork
 -I
 tools/agbcc/include
 -I
 include
+-iquote
+include
+-iquote
+.
