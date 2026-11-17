@@ -202,7 +202,7 @@ void FireTrapSpriteAnim_Init(struct TrapfxProc *proc)
 void StartFireTrapAnim(ProcPtr parent, int x, int y)
 {
 	struct TrapfxProc *proc;
-    
+
 	ApplyPalette(Pal_FireTrap, 0x10 + OBJPAL_TRAPFX);
 	proc = Proc_StartBlocking(ProcScr_FireTrapAnim, parent);
 
@@ -213,7 +213,7 @@ void StartFireTrapAnim(ProcPtr parent, int x, int y)
 void StartFireTrapAnim2(ProcPtr parent, int x, int y)
 {
 	struct TrapfxProc *proc;
-    
+
 	ApplyPalette(Pal_FireTrap2, 0x10 + OBJPAL_TRAPFX);
 	proc = Proc_StartBlocking(ProcScr_FireTrapAnim, parent);
 

@@ -184,7 +184,7 @@ void NewEkrBattle(void)
 void InBattleMainRoutine(void)
 {
 	UpdateKeyStatus(gKeyStatusPtr);
-    
+
 	if (gEkrDebugUnk1 == 0)
 		MainUpdateEkrBattle();
 	else if (gEkrDebugUnk2 == 1)
@@ -227,7 +227,7 @@ void MainUpdateEkrBattle(void)
 
 	if (GetGameLock() == 0)
 		Proc_Run(gProcTreeRootArray[2]);
-    
+
 	Proc_Run(gProcTreeRootArray[3]);
 	Proc_Run(gProcTreeRootArray[5]);
 

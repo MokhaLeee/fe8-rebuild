@@ -1,5 +1,5 @@
 // some characters have their own palette set for battle animation
-// each set has 5 palettes: 
+// each set has 5 palettes:
 // player, enemy, npc, p4, independent
 
 #include "banim_data.h"

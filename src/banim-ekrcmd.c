@@ -224,7 +224,7 @@ bool EkrCheckAttackRound(u16 round)
 
 	for (i = round; i < 0x14; i = i + 2) {
 		cur = gAnimRoundData[i];
-        
+
 		if (cur == ANIM_ROUND_HIT_CLOSE)
 			return true;
 

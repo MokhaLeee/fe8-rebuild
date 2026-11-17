@@ -112,12 +112,12 @@ void EventEngine_OnUpdate(struct EventEngineProc *proc)
 		case EVC_UNK4:
 		case EVC_ERROR:
 			break;
-        
+
 		case EVC_ADVANCE_YIELD:
 			proc->pEventCurrent += ((*proc->pEventCurrent) >> 4)&0xF;
 		case EVC_STOP_YIELD:
 			return;
-        
+
 		case EVC_END:
 			Proc_Break(proc);
 			return;

@@ -532,7 +532,7 @@ void NewEfxPierceNormalEffectBG(struct Anim *anim)
 	proc->frame_config = frames;
 	proc->tsal = TSAs_EfxPierceNormalEffectBG;
 	proc->tsar = TSAs_EfxPierceNormalEffectBG;
-    
+
 	SpellFx_RegisterBgPal(Pal_EfxPierceNormalEffectBG, 0x20);
 	SpellFx_RegisterBgGfx(Img_EfxPierceNormalEffectBG, 0x2000);
 	SpellFx_SetSomeColorEffect();

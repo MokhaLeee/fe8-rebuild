@@ -1060,7 +1060,7 @@ int GetProperAnimSoundLocation(struct Anim *anim)
 
 	for (; it->header != 1; it++) {
 		int a, b, c;
-        
+
 		a = it->as.object.x;
 		a += (GetAnimSpriteRotScaleX(it->header) << 0x10) >> 0x11;
 		b = GetAnimSpriteRotScaleX(it->header);

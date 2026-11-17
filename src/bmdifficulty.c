@@ -299,7 +299,7 @@ void UpdateDungeonStats(struct Dungeon *dungeon)
 
 	dungeon->unitsUsed = val;
 
-	val = dungeon->turnCount; 
+	val = dungeon->turnCount;
 	val += gPlaySt.chapterTurnNumber;
 
 	if (val > 500) {

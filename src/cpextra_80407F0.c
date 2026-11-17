@@ -106,7 +106,7 @@ void AiSpecialItemDoorKey(int item)
 	if (!(gAiState.specialItemFlags & 0x80000001)) {
 		return;
 	}
-    
+
 	if (sub_8040B38(gActiveUnit, &pos) == 0) {
 		return;
 	}
@@ -179,7 +179,7 @@ void AiSpecialItemAntitoxin(int item)
 	if (!(gAiState.specialItemFlags & 4)) {
 		return;
 	}
-    
+
 	if (gActiveUnit->statusIndex != UNIT_STATUS_POISON) {
 		return;
 	}
@@ -223,7 +223,7 @@ s8 sub_8040B38(struct Unit *unit, struct Vec2 *pos)
 	if (gMapRangeSigned[pos->y][pos->x] >= MAP_MOVEMENT_MAX) {
 		return 0;
 	}
-    
+
 	return 1;
 }
 
@@ -328,7 +328,7 @@ void AiSetMovCostTableWithPassableWalls(const s8 *cost)
 			gWorkingTerrainMoveCosts[i] = 1;
 		}
 	}
-    
+
 	return;
 }
 
@@ -540,7 +540,7 @@ int AiDetermineNightmareEffectiveness(int *numValidTargets, int *numHit, u8 thre
 			(*numHit)++;
 		}
 	}
-    
+
 	return unitId;
 }
 
@@ -588,7 +588,7 @@ s8 AiTryUseNightmareStaff(struct UnknownAiInputA *input)
 			if (item == 0) {
 				break;
 			}
-            
+
 			if (GetItemIndex(item) == ITEM_NIGHTMARE) {
 				foundItem = 1;
 				break;
@@ -669,7 +669,7 @@ struct UnknownAiInputB {
 	u8 unk_00;
 	u8 unk_01;
 	u8 unk_02;
-    
+
 	struct UnitDefinition *unk_04;
 };
 
@@ -703,15 +703,15 @@ s8 AiTryDKSummon(struct UnknownAiInputB *input)
 				struct UnitDefinition *iter;
 
 				u8 unitId = gBmMapUnit[iy][ix];
-                
+
 				if (unitId == 0) {
 					continue;
 				}
-                
+
 				if (unitId == gActiveUnitId) {
 					continue;
 				}
-                
+
 				if (!AreUnitsAllied(gActiveUnitId, unitId)) {
 					continue;
 				}
@@ -721,8 +721,8 @@ s8 AiTryDKSummon(struct UnknownAiInputB *input)
 				for (iter = input->unk_04; iter->charIndex != 0; ++iter) {
 					if (unit->pCharacterData->number != iter->charIndex) {
 						continue;
-					} 
-                    
+					}
+
 					if (unit->pClassData->number != iter->classIndex) {
 						continue;
 					}

@@ -362,7 +362,7 @@ void TsaModifyFirstPalMaybe(s16 end, s16 start, s16 unused, u16 bg, u16 *src1, u
 
 	if (start == 0)
 		start -= 8;
-    
+
 	for (i = (start >> 3) + 1; i < (end >> 3) + 1; i++) {
 		if ((i < 0 || i >= 0x40) || (i >= 0x20 && src2 == 0)) {
 			ClearFirstPalDirectly(dst + (i & 0x1f));
@@ -373,7 +373,7 @@ void TsaModifyFirstPalMaybe(s16 end, s16 start, s16 unused, u16 bg, u16 *src1, u
 			src = src1;
 		else
 			src = src2;
-        
+
 		if (flag == 0)
 			CopyFirstPalDirectly(src + (i & 0x1f), dst + (i & 0x1f));
 		else

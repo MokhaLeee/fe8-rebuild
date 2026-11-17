@@ -201,7 +201,7 @@ struct GameSavePackedUnit {       /* Save Data */
              u32 item3      : 14;
              u32 item4      : 14;
              u32 item5      : 14;
-    
+
     /* 14 */ u8 pid;
     /* 15 */ u8 wpnRanks[0x8];
     /* 1D */ u8 supports[UNIT_SUPPORT_MAX_COUNT];
@@ -229,7 +229,7 @@ struct SuspendSavePackedUnit {     /* Suspend Data */
     /* 08 */ u16 item1;
     /* 0A */ u16 item2;
     /* 0C */ u16 item3;
-    
+
     /* 0E */ s8 maxHP;
     /* 0F */ s8 curHP;
     /* 10 */ u8 exp;
@@ -255,13 +255,13 @@ struct SuspendSavePackedUnit {     /* Suspend Data */
              u32 statusDuration     : 3;
              u32 torchDuration      : 3;
              u32 barrierDuration    : 3;
-    
+
     /* 2C */ u32 movBonus   : 4;
              u32 item4      : 14;
              u32 item5      : 14;
-    
+
     /* 30 */ u8 ballistaIndex;
-    
+
     /* 31 */ u8 ai_counter;
     /* 32 */ u16 ai_config;
     /* 34 */

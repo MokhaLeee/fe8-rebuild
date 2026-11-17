@@ -77,7 +77,7 @@ struct Proc
     /* 4A */ short unk4A;
 
     // Is this part of that?
-    /* 4C */ short unk4C; 
+    /* 4C */ short unk4C;
     /* 4E */ short unk4E;
     /* 50 */ short unk50;
 

@@ -113,7 +113,7 @@ void ekrDispUPMain(struct ProcEkrDispUP *proc)
 	FillBGRect(gBG0TilemapBuffer, 30, 7, 0, 128);
 
 	if (height > 0) {
-		if (proc->unk4C == 0) { 
+		if (proc->unk4C == 0) {
 			EfxTmCpyBG(&gUnknown_0880210C[map_idx], &gBG0TilemapBuffer2D[iy][ix1], 15, height, -1, -1);
 			ModifyBGRectTileRefs(&gBG0TilemapBuffer2D[iy][ix1], 15, height, 2, 128);
 		}

@@ -46,7 +46,7 @@ u8 sub_8084880()
 
 	if (0 == loc)
 		return -1;
-    
+
 	return buf[(GetGameClock() % 0x40) % loc];
 }
 
@@ -64,7 +64,7 @@ u8 sub_80848E0()
 
 	if (0 == loc)
 		return -1;
-    
+
 	return buf[(GetGameClock() % 0x40) % loc];
 }
 
@@ -132,7 +132,7 @@ int sub_8084A68()
 
 	for (i = 1; i < 0x40; i++)
 		GetUnit(i);
-    
+
 	return 0;
 }
 
@@ -172,14 +172,14 @@ int sub_8084AF4()
 
 	for (i = 1; i < 0x40; i++)
 		GetUnit(i);
-    
+
 	return 0;
 }
 
 void sub_8084B0C()
 {
 	struct Trap *cur;
-    
+
 	for (cur = GetTrap(0); TRAP_NONE != cur->type; cur++)
 		if (TRAP_LIGHT_RUNE == cur->type) {
 			RemoveLightRune(cur);
@@ -235,10 +235,10 @@ void sub_8084BCC(struct Unit *unit)
 {
 	if (unit->maxHP > 0)
 		unit->maxHP -= 1;
-    
+
 	if (unit->pow > 0)
 		unit->pow -= 1;
-    
+
 	if (unit->skl > 0)
 		unit->skl -= 1;
 
@@ -271,7 +271,7 @@ s8 sub_8084C4C(u8 pid)
 		unit = GetUnit(i);
 		if (NULL == unit)
 			continue;
-        
+
 		chara = unit->pCharacterData;
 		if (NULL == chara)
 			continue;
@@ -298,7 +298,7 @@ s8 sub_8084CAC(u8 pid)
 		unit = GetUnit(i);
 		if (NULL == unit)
 			continue;
-        
+
 		chara = unit->pCharacterData;
 		if (NULL == chara)
 			continue;
@@ -349,7 +349,7 @@ s8 sub_8084E88(u8 pid)
 		unit = GetUnit(i);
 		if (NULL == unit)
 			continue;
-        
+
 		chara = unit->pCharacterData;
 		if (NULL == chara)
 			continue;

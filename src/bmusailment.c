@@ -445,7 +445,7 @@ void StatusHealEffect_PalSpriteAnim_LoopIn(struct UnknownBMUSAilmentProc *proc)
 {
 
 	StatusHealEffect_PalSpriteAnim_SetOutlineIntensity(proc, proc->unk_4C);
-    
+
 	proc->unk_4C++;
 
 	if (proc->unk_4C == 32) {

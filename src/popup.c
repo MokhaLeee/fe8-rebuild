@@ -171,7 +171,7 @@ int ParsePopupInstAndGetLen(struct PopupProc *proc)
 		case POPUP_OP_SOUND:
 			proc->soundId = inst->data;
 			break;
-        
+
 		case POPUP_OP_NUM:
 			len += NumberToStringAscii(gPopupNumber, str) * 8;
 			break;
@@ -334,9 +334,9 @@ void PopupProc_MaybeResetVolume(struct PopupProc *proc)
 
 void PopupIconUpdateProc_Loop(struct PopupIconUpdateProc *proc)
 {
-	CallARM_PushToSecondaryOAM(proc->unk_2C, 
-							   proc->unk_30, 
-							   gObject_16x16, 
+	CallARM_PushToSecondaryOAM(proc->unk_2C,
+							   proc->unk_30,
+							   gObject_16x16,
 							   proc->unk_4A);
 }
 
@@ -406,7 +406,7 @@ void PopupProc_WaitForPress(struct PopupProc *proc)
 		if (0 != gKeyStatusPtr->newKeys) {
 			Proc_Break(proc);
 			return;
-		} 
+		}
 	} else if (0 != proc->clock) {
 		proc->clock--;
 		if (0 == proc->clock)

@@ -212,7 +212,7 @@ void PhaseIntroUnk_Loop(struct PhaseIntroSubProc *proc)
 	switch (proc->stat_index) {
 	case 0:
 		val = Interpolate(INTERPOLATE_RSQUARE, 0x10, 0x100, proc->timer, 0xF);
-        
+
 		if (proc->timer > 0xE) {
 			proc->timer = 0;
 			proc->stat_index++;
@@ -240,7 +240,7 @@ void PhaseIntroUnk_Loop(struct PhaseIntroSubProc *proc)
 		else
 			Proc_Break(proc);
 		break;
-    
+
 	default:
 		break;
 	}

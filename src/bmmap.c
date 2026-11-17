@@ -76,7 +76,7 @@ void InitChapterMap(int chapterId)
 	InitBaseTilesBmMap();
 	ApplyEnabledMapChanges();
 	RefreshTerrainBmMap();
-    
+
 	if (gPlaySt.chapterIndex == CHAPTER_75)
 		sub_8019624();
 }
@@ -632,7 +632,7 @@ void RefreshUnitsOnBmMap(void)
 void RefreshTorchlightsOnBmMap(void)
 {
 	struct Trap *trap;
-    
+
 	for (trap = GetTrap(0); trap->type != TRAP_NONE; ++trap) {
 		switch (trap->type) {
 
@@ -647,7 +647,7 @@ void RefreshTorchlightsOnBmMap(void)
 void RefreshMinesOnBmMap(void)
 {
 	struct Trap *trap;
-    
+
 	for (trap = GetTrap(0); trap->type != TRAP_NONE; ++trap) {
 		switch (trap->type) {
 

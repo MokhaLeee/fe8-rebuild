@@ -84,7 +84,7 @@ u8 ClassChgMenuSelOnPressB(struct MenuProc *pmenu, struct MenuItemProc *pmitem)
 	gparent = parent->proc_parent;
 	ggparent = gparent->proc_parent;
 	gggparent = ggparent->proc_parent;
-	if (gggparent->bmtype == PROMO_HANDLER_TYPE_TRANINEE) 
+	if (gggparent->bmtype == PROMO_HANDLER_TYPE_TRANINEE)
 		return 0;
 
 	if (gggparent->bmtype == PROMO_HANDLER_TYPE_BM) {

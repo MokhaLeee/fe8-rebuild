@@ -42,7 +42,7 @@ static const u8 sConvySavePackMask2[] = {
 CONST_DATA struct SaveBlocks *gSram = CART_SRAM;
 
 CONST_DATA int sSupportUnkLut[][2] = {
-	{ 0x0100, 0x0100 }, 
+	{ 0x0100, 0x0100 },
 	{ 0x0000, 0x0000 }
 };
 
@@ -69,7 +69,7 @@ void SramInit()
 	REG_IE |= INTR_FLAG_GAMEPAK;
 	WriteSramFast((u8 *)&buf[0], gSram->reserved, sizeof(gSram->reserved));
 	ReadSramFast(gSram->reserved, &buf[1], sizeof(buf[1]));
-    
+
 	gBoolSramWorking = (buf[1] == buf[0])
 					 ? true
 					 : false;
@@ -221,7 +221,7 @@ bool ReadSaveBlockInfo(struct SaveBlockInfo *chunk, int index)
 		magic = SAVEMAGIC32;
 		break;
 
-	case SAVE_ID_SUSPEND:    
+	case SAVE_ID_SUSPEND:
 	case SAVE_ID_SUSPEND_ALT:
 		magic = SAVEMAGIC32;
 		break;
@@ -233,7 +233,7 @@ bool ReadSaveBlockInfo(struct SaveBlockInfo *chunk, int index)
 	case SAVE_ID_XMAP:
 		magic = SAVEMAGIC32_XMAP;
 		break;
-    
+
 	default:
 		return false;
 		break;
@@ -401,7 +401,7 @@ void WriteSupplyItems(void *sram_dest)
 		buf[i] = items[0];
 		item_use = ITEM_USES(items[0]) & 0x3F;
 		var0 = var1 & 0x7;
-		*cur = 
+		*cur =
 			(*cur & sConvySavePackMask1[var0]) |
 			(item_use << var0);
 
@@ -496,19 +496,19 @@ u32 GetRankDataValidBitMap(void)
 	if (LoadAndVerfyRankData(&buf)) {
 		if (buf.pack[0].valid)
 			attr  = 1 << 0x0;
-    
+
 		if (buf.pack[1].valid)
 			attr |= 1 << 0x1;
-    
+
 		if (buf.pack[2].valid)
 			attr |= 1 << 0x2;
-    
+
 		if (buf.pack[3].valid)
 			attr |= 1 << 0x3;
-    
+
 		if (buf.pack[4].valid)
 			attr |= 1 << 0x4;
-    
+
 		if (buf.pack[5].valid)
 			attr |= 1 << 0x5;
 	}
@@ -552,11 +552,11 @@ bool IsExtraBonusClaimEnabled(void)
 
 		ret = 0;
 		buf1 = (void*)gGenericBuffer;
-    
+
 		for (i = 0; i < 0x10; i++) {
 			if (!buf1[i].unseen)
 				continue;
-    
+
 			if (BONUSKIND_ITEM0 == buf1[i].kind)
 				ret = true;
 
@@ -585,7 +585,7 @@ int GetUnitsAverageSupportValue(const int unitA, const int unitB)
 		if (sSupportUnkLut[i][0] == unitB)
 			if (sSupportUnkLut[i][1] != unitA)
 				return 2;
-            
+
 		if (sSupportUnkLut[i][1] == unitA)
 			if (sSupportUnkLut[i][0] != unitB)
 				return 2;
@@ -643,7 +643,7 @@ int GetTotalSupportCollection(void)
 
 	if (tmp0 > 100)
 		tmp0 = 100;
-    
+
 	return tmp0;
 }
 
@@ -662,10 +662,10 @@ int GetGlobalBestSupport(int unitA, int unitB, struct GlobalSaveInfo *info)
 	}
 
 	for (; cur->unitA != 0xFFFF; i++, cur++) {
-        
+
 		if (cur->unitA == unitA && cur->unitB == unitB)
 			break;
-    
+
 		if (cur->unitA == unitB && cur->unitB == unitA)
 			break;
 	}
@@ -776,23 +776,23 @@ bool UpdateBestGlobalSupportValue(int unitA, int unitB, int supportRank)
 
 void SGM_SetCharacterKnown(s32 charId, struct GlobalSaveInfo *buf)
 {
-  s32 boolLoadedSecureHeader = 0;
-  struct GlobalSaveInfo tmp_header;
-  
-  if (charId > 256) {
+	s32 boolLoadedSecureHeader = 0;
+	struct GlobalSaveInfo tmp_header;
+
+	if (charId > 256) {
 	return;
-  }
-  if (buf == NULL) {
+	}
+	if (buf == NULL) {
 	buf = &tmp_header;
 	ReadGlobalSaveInfo(buf);
 	boolLoadedSecureHeader = 1;
-  }
-  
-  buf->charKnownFlags[charId >> 3] |= 1 << (charId & 7);
-  
-  if (boolLoadedSecureHeader) {
+	}
+
+	buf->charKnownFlags[charId >> 3] |= 1 << (charId & 7);
+
+	if (boolLoadedSecureHeader) {
 	WriteGlobalSaveInfo(buf);
-  }
+	}
 }
 
 bool GGM_IsCharacterKnown(int index, struct GlobalSaveInfo *buf)
@@ -873,7 +873,7 @@ bool LoadAndVerfyRankData(void *buf)
 bool LoadBonusContentData(void *buf)
 {
 	struct BonusClaimSaveData *_buf = buf;
-    
+
 	if (!IsSramWorking())
 		return 0;
 
@@ -940,7 +940,7 @@ int sub_80A39E4(void *buf, int chapter_mode, int difficulty)
 		*dest = *src;
 		return 1;
 	}
-    
+
 	return 0;
 }
 
@@ -958,7 +958,7 @@ void SaveNewRankData(void *buf, int chapter_mode, int difficulty)
 u8 JudgeGameRankSaveData(struct GameRankSaveData *old, struct GameRankSaveData *new)
 {
 	int newtime, oldtime;
-    
+
 	if (0 == old->valid)
 		return 1;
 
@@ -1005,7 +1005,7 @@ void GenerateGameRankSaveData(struct GameRankSaveData *buf, int chapter_mode, in
 	buf->chapter_stat = difficulty;
 
 	buf->gold = GetPartyTotalGoldValue();
-    
+
 	buf->unk00_16 = gPlaySt.unk_2B_00;
 	buf->unk00_17 = gPlaySt.unk_2C_04;
 
@@ -1026,7 +1026,7 @@ void GenerateGameRankSaveData(struct GameRankSaveData *buf, int chapter_mode, in
 		if (US_GROWTH_BOOST & unit->state) {
 			if (US_DEAD & unit->state)
 				break;
-            
+
 			buf->luckydog = unit->pCharacterData->number;
 			break;
 		}
@@ -1076,7 +1076,7 @@ void SaveEndgameRankings()
 void EraseSoundRoomSaveData(void)
 {
 	struct SoundRoomSaveData buf;
-    
+
 	CpuFill16(0, &buf, sizeof(buf));
 	WriteSoundRoomSaveData(&buf);
 }
@@ -1125,7 +1125,7 @@ void UnlockSoundRoomSong(struct SoundRoomSaveData *buf, int val)
 {
 	struct SoundRoomSaveData tmp;
 	u32 _val = val;
-    
+
 	if (buf == NULL) {
 		buf = &tmp;
 		if (!LoadAndVerifySoundRoomData(&tmp))
@@ -1153,7 +1153,7 @@ void UnlockSoundRoomSong(struct SoundRoomSaveData *buf, int val)
 void EraseLinkArenaStruct2()
 {
 	struct bmsave_unkstruct2 buf;
-    
+
 	CpuFill16(0, (void*)&buf, sizeof(buf));
 	WriteLinkArenaStruct2(&buf);
 }
@@ -1207,10 +1207,10 @@ void ModifySaveLinkArenaStruct2B(struct bmsave_unkstruct2 *buf, int val)
 {
 	struct bmsave_unkstruct2 tmp;
 	u32 _val = val;
-    
+
 	if (NULL == buf) {
 		buf = &tmp;
-        
+
 		if (!LoadAndVerfyLinkArenaStruct2(&tmp))
 			return;
 	}
@@ -1229,15 +1229,15 @@ void EraseSramDataIfInvalid()
 
 	if (!LoadBonusContentData(NULL))
 		EraseBonusContentData();
-    
+
 	if (!LoadAndVerfyRankData(NULL))
 		EraseSaveRankData();
-    
+
 	if (!LoadAndVerifySoundRoomData(NULL))
 		EraseSoundRoomSaveData();
-    
+
 	if (!LoadAndVerfyLinkArenaStruct2(NULL))
 		EraseLinkArenaStruct2();
-    
+
 	LoadAndVerfySuspendSave();
 }

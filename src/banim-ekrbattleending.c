@@ -46,7 +46,7 @@ void EkrBaEnd_BgPaletteOut(struct ProcEkrBattleEnding *proc)
 	case EKRDRGON_TYPE_DEMON_KING:
 		Proc_Break(proc);
 		return;
-    
+
 	case EKRDRGON_TYPE_MYRRH:
 		break;
 	}
@@ -74,7 +74,7 @@ void EkrBaEnd_RestoreChapterMap(struct ProcEkrBattleEnding *proc)
 	case EKRDRGON_TYPE_DEMON_KING:
 		Proc_Break(proc);
 		return;
-    
+
 	case EKRDRGON_TYPE_MYRRH:
 		break;
 	}
@@ -98,7 +98,7 @@ void ekrBattleEnding_80561C8(struct ProcEkrBattleEnding *proc)
 	case EKRDRGON_TYPE_DEMON_KING:
 		Proc_Break(proc);
 		return;
-    
+
 	case EKRDRGON_TYPE_MYRRH:
 		break;
 	}
@@ -139,7 +139,7 @@ void ekrBattleEnding_8056288(struct ProcEkrBattleEnding *proc)
 		EndEkrGauge();
 		Proc_Break(proc);
 		InitBmBgLayers();
-        
+
 		SetWinEnable(1, 0, 0);
 		SetWin0Box(0, 0, 0, 0);
 		SetWin0Layers(1, 1, 1, 1, 1);
@@ -168,7 +168,7 @@ void ekrBattleEnding_8056310(struct ProcEkrBattleEnding *proc)
 
 	if (GetBanimLinkArenaFlag() == 1)
 		LoadLinkArenaFogPlaceholder();
-    
+
 	Proc_Break(proc);
 }
 

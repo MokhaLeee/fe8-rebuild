@@ -3,7 +3,7 @@
 #include "constants/characters.h"
 
 CONST_DATA struct SupportData SupportData_Eirika = {
-    .characters = {
+	.characters = {
 	CHARACTER_EPHRAIM,
 	CHARACTER_SETH,
 	CHARACTER_SALEH,
@@ -11,8 +11,8 @@ CONST_DATA struct SupportData SupportData_Eirika = {
 	CHARACTER_TANA,
 	CHARACTER_INNES,
 	CHARACTER_FORDE,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	30,
 	25,
 	5,
@@ -20,8 +20,8 @@ CONST_DATA struct SupportData SupportData_Eirika = {
 	20,
 	10,
 	20,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	4,
 	3,
 	2,
@@ -29,12 +29,12 @@ CONST_DATA struct SupportData SupportData_Eirika = {
 	2,
 	2,
 	2,
-    },
-    .supportCount = 7,
+	},
+	.supportCount = 7,
 };
 
 CONST_DATA struct SupportData SupportData_Ephraim = {
-    .characters = {
+	.characters = {
 	CHARACTER_EIRIKA,
 	CHARACTER_KYLE,
 	CHARACTER_FORDE,
@@ -42,8 +42,8 @@ CONST_DATA struct SupportData SupportData_Ephraim = {
 	CHARACTER_LARACHEL,
 	CHARACTER_DUESSEL,
 	CHARACTER_TANA,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	30,
 	20,
 	20,
@@ -51,8 +51,8 @@ CONST_DATA struct SupportData SupportData_Ephraim = {
 	5,
 	30,
 	25,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	4,
 	3,
 	3,
@@ -60,772 +60,772 @@ CONST_DATA struct SupportData SupportData_Ephraim = {
 	3,
 	3,
 	3,
-    },
-    .supportCount = 7,
+	},
+	.supportCount = 7,
 };
 
 CONST_DATA struct SupportData SupportData_Seth = {
-    .characters = {
+	.characters = {
 	CHARACTER_FRANZ,
 	CHARACTER_EIRIKA,
 	CHARACTER_GARCIA,
 	CHARACTER_NATASHA,
 	CHARACTER_CORMAG,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	15,
 	25,
 	10,
 	5,
 	0,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	2,
 	3,
 	2,
 	2,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Franz = {
-    .characters = {
+	.characters = {
 	CHARACTER_SETH,
 	CHARACTER_GILLIAM,
 	CHARACTER_FORDE,
 	CHARACTER_AMELIA,
 	CHARACTER_NATASHA,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	15,
 	10,
 	25,
 	5,
 	10,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	2,
 	2,
 	3,
 	3,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Gilliam = {
-    .characters = {
+	.characters = {
 	CHARACTER_GARCIA,
 	CHARACTER_FRANZ,
 	CHARACTER_SYRENE,
 	CHARACTER_MOULDER,
 	CHARACTER_NEIMI,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	0,
 	10,
 	20,
 	10,
 	0,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	2,
 	2,
 	3,
 	2,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Moulder = {
-    .characters = {
+	.characters = {
 	CHARACTER_VANESSA,
 	CHARACTER_COLM,
 	CHARACTER_GILLIAM,
 	CHARACTER_SYRENE,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	15,
 	0,
 	10,
 	10,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	2,
 	2,
 	2,
 	2,
-    },
-    .supportCount = 4,
+	},
+	.supportCount = 4,
 };
 
 CONST_DATA struct SupportData SupportData_Vanessa = {
-    .characters = {
+	.characters = {
 	CHARACTER_MOULDER,
 	CHARACTER_SYRENE,
 	CHARACTER_LUTE,
 	CHARACTER_FORDE,
 	CHARACTER_INNES,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	15,
 	20,
 	10,
 	5,
 	10,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	2,
 	3,
 	2,
 	2,
 	3,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Garcia = {
-    .characters = {
+	.characters = {
 	CHARACTER_ROSS,
 	CHARACTER_DOZLA,
 	CHARACTER_SETH,
 	CHARACTER_NEIMI,
 	CHARACTER_GILLIAM,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	35,
 	10,
 	10,
 	10,
 	0,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	4,
 	2,
 	2,
 	2,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Ross = {
-    .characters = {
+	.characters = {
 	CHARACTER_GARCIA,
 	CHARACTER_LUTE,
 	CHARACTER_AMELIA,
 	CHARACTER_EWAN,
 	CHARACTER_GERIK,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	35,
 	5,
 	5,
 	5,
 	0,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	4,
 	2,
 	2,
 	3,
 	3,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Colm = {
-    .characters = {
+	.characters = {
 	CHARACTER_NEIMI,
 	CHARACTER_MARISA,
 	CHARACTER_RENNAC,
 	CHARACTER_MOULDER,
 	CHARACTER_KYLE,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	80,
 	0,
 	5,
 	0,
 	5,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	2,
 	2,
 	2,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Neimi = {
-    .characters = {
+	.characters = {
 	CHARACTER_COLM,
 	CHARACTER_GARCIA,
 	CHARACTER_AMELIA,
 	CHARACTER_ARTUR,
 	CHARACTER_GILLIAM,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	80,
 	10,
 	15,
 	5,
 	0,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	2,
 	3,
 	3,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Artur = {
-    .characters = {
+	.characters = {
 	CHARACTER_LUTE,
 	CHARACTER_TETHYS,
 	CHARACTER_CORMAG,
 	CHARACTER_NEIMI,
 	CHARACTER_JOSHUA,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	15,
 	10,
 	5,
 	5,
 	5,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	2,
 	2,
 	3,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Lute = {
-    .characters = {
+	.characters = {
 	CHARACTER_ARTUR,
 	CHARACTER_ROSS,
 	CHARACTER_KNOLL,
 	CHARACTER_KYLE,
 	CHARACTER_VANESSA,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	15,
 	5,
 	5,
 	5,
 	10,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	2,
 	2,
 	3,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Natasha = {
-    .characters = {
+	.characters = {
 	CHARACTER_JOSHUA,
 	CHARACTER_KNOLL,
 	CHARACTER_CORMAG,
 	CHARACTER_SETH,
 	CHARACTER_FRANZ,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	20,
 	10,
 	5,
 	5,
 	10,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	2,
 	2,
 	2,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Joshua = {
-    .characters = {
+	.characters = {
 	CHARACTER_NATASHA,
 	CHARACTER_INNES,
 	CHARACTER_ARTUR,
 	CHARACTER_LARACHEL,
 	CHARACTER_MARISA,
 	CHARACTER_GERIK,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	20,
 	0,
 	5,
 	5,
 	10,
 	15,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	2,
 	2,
 	2,
 	3,
 	3,
-    },
-    .supportCount = 6,
+	},
+	.supportCount = 6,
 };
 
 CONST_DATA struct SupportData SupportData_Kyle = {
-    .characters = {
+	.characters = {
 	CHARACTER_FORDE,
 	CHARACTER_EPHRAIM,
 	CHARACTER_SYRENE,
 	CHARACTER_COLM,
 	CHARACTER_LUTE,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	30,
 	20,
 	5,
 	5,
 	5,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	3,
 	3,
 	2,
 	3,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Forde = {
-    .characters = {
+	.characters = {
 	CHARACTER_KYLE,
 	CHARACTER_VANESSA,
 	CHARACTER_EPHRAIM,
 	CHARACTER_FRANZ,
 	CHARACTER_EIRIKA,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	30,
 	5,
 	20,
 	25,
 	20,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	2,
 	3,
 	3,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Tana = {
-    .characters = {
+	.characters = {
 	CHARACTER_EPHRAIM,
 	CHARACTER_SYRENE,
 	CHARACTER_CORMAG,
 	CHARACTER_INNES,
 	CHARACTER_EIRIKA,
 	CHARACTER_MARISA,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	25,
 	20,
 	0,
 	25,
 	20,
 	10,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	3,
 	2,
 	3,
 	2,
 	2,
-    },
-    .supportCount = 6,
+	},
+	.supportCount = 6,
 };
 
 CONST_DATA struct SupportData SupportData_Innes = {
-    .characters = {
+	.characters = {
 	CHARACTER_GERIK,
 	CHARACTER_VANESSA,
 	CHARACTER_TANA,
 	CHARACTER_JOSHUA,
 	CHARACTER_LARACHEL,
 	CHARACTER_EIRIKA,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	15,
 	10,
 	25,
 	0,
 	5,
 	10,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	3,
 	3,
 	2,
 	2,
 	2,
-    },
-    .supportCount = 6,
+	},
+	.supportCount = 6,
 };
 
 CONST_DATA struct SupportData SupportData_Gerik = {
-    .characters = {
+	.characters = {
 	CHARACTER_INNES,
 	CHARACTER_TETHYS,
 	CHARACTER_MARISA,
 	CHARACTER_SALEH,
 	CHARACTER_JOSHUA,
 	CHARACTER_ROSS,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	15,
 	30,
 	20,
 	25,
 	15,
 	0,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	4,
 	3,
 	3,
 	3,
 	3,
-    },
-    .supportCount = 6,
+	},
+	.supportCount = 6,
 };
 
 CONST_DATA struct SupportData SupportData_Tethys = {
-    .characters = {
+	.characters = {
 	CHARACTER_EWAN,
 	CHARACTER_GERIK,
 	CHARACTER_MARISA,
 	CHARACTER_RENNAC,
 	CHARACTER_ARTUR,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	25,
 	30,
 	10,
 	5,
 	10,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	4,
 	2,
 	1,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Marisa = {
-    .characters = {
+	.characters = {
 	CHARACTER_TANA,
 	CHARACTER_TETHYS,
 	CHARACTER_GERIK,
 	CHARACTER_JOSHUA,
 	CHARACTER_COLM,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	10,
 	10,
 	20,
 	10,
 	0,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	2,
 	2,
 	3,
 	3,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Saleh = {
-    .characters = {
+	.characters = {
 	CHARACTER_MYRRH,
 	CHARACTER_EWAN,
 	CHARACTER_GERIK,
 	CHARACTER_EIRIKA,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	30,
 	15,
 	25,
 	5,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	3,
 	3,
 	2,
-    },
-    .supportCount = 4,
+	},
+	.supportCount = 4,
 };
 
 CONST_DATA struct SupportData SupportData_Ewan = {
-    .characters = {
+	.characters = {
 	CHARACTER_TETHYS,
 	CHARACTER_SALEH,
 	CHARACTER_DOZLA,
 	CHARACTER_AMELIA,
 	CHARACTER_ROSS,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	25,
 	15,
 	0,
 	5,
 	5,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	3,
 	3,
 	3,
 	3,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_LArachel = {
-    .characters = {
+	.characters = {
 	CHARACTER_DOZLA,
 	CHARACTER_RENNAC,
 	CHARACTER_JOSHUA,
 	CHARACTER_EIRIKA,
 	CHARACTER_EPHRAIM,
 	CHARACTER_INNES,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	25,
 	10,
 	5,
 	10,
 	5,
 	5,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	2,
 	2,
 	2,
 	3,
 	2,
-    },
-    .supportCount = 6,
+	},
+	.supportCount = 6,
 };
 
 CONST_DATA struct SupportData SupportData_Dozla = {
-    .characters = {
+	.characters = {
 	CHARACTER_LARACHEL,
 	CHARACTER_MYRRH,
 	CHARACTER_RENNAC,
 	CHARACTER_EWAN,
 	CHARACTER_GARCIA,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	25,
 	0,
 	10,
 	0,
 	10,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	2,
 	2,
 	3,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Cormag = {
-    .characters = {
+	.characters = {
 	CHARACTER_DUESSEL,
 	CHARACTER_TANA,
 	CHARACTER_NATASHA,
 	CHARACTER_ARTUR,
 	CHARACTER_SETH,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	10,
 	0,
 	5,
 	5,
 	0,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	2,
 	2,
 	2,
 	2,
 	2,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Amelia = {
-    .characters = {
+	.characters = {
 	CHARACTER_NEIMI,
 	CHARACTER_DUESSEL,
 	CHARACTER_EWAN,
 	CHARACTER_ROSS,
 	CHARACTER_FRANZ,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	15,
 	10,
 	5,
 	5,
 	5,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	3,
 	3,
 	2,
 	3,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };
 
 CONST_DATA struct SupportData SupportData_Rennac = {
-    .characters = {
+	.characters = {
 	CHARACTER_TETHYS,
 	CHARACTER_LARACHEL,
 	CHARACTER_DOZLA,
 	CHARACTER_COLM,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	5,
 	10,
 	10,
 	5,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	1,
 	2,
 	2,
 	2,
-    },
-    .supportCount = 4,
+	},
+	.supportCount = 4,
 };
 
 CONST_DATA struct SupportData SupportData_Duessel = {
-    .characters = {
+	.characters = {
 	CHARACTER_CORMAG,
 	CHARACTER_AMELIA,
 	CHARACTER_KNOLL,
 	CHARACTER_EPHRAIM,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	10,
 	10,
 	0,
 	30,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	2,
 	3,
 	2,
 	3,
-    },
-    .supportCount = 4,
+	},
+	.supportCount = 4,
 };
 
 CONST_DATA struct SupportData SupportData_Myrrh = {
-    .characters = {
+	.characters = {
 	CHARACTER_SALEH,
 	CHARACTER_DOZLA,
 	CHARACTER_EPHRAIM,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	30,
 	0,
 	10,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	2,
 	4,
-    },
-    .supportCount = 3,
+	},
+	.supportCount = 3,
 };
 
 CONST_DATA struct SupportData SupportData_Knoll = {
-    .characters = {
+	.characters = {
 	CHARACTER_NATASHA,
 	CHARACTER_DUESSEL,
 	CHARACTER_LUTE,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	10,
 	0,
 	5,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	2,
 	2,
 	2,
-    },
-    .supportCount = 3,
+	},
+	.supportCount = 3,
 };
 
 CONST_DATA struct SupportData SupportData_Syrene = {
-    .characters = {
+	.characters = {
 	CHARACTER_KYLE,
 	CHARACTER_VANESSA,
 	CHARACTER_MOULDER,
 	CHARACTER_GILLIAM,
 	CHARACTER_TANA,
-    },
-    .supportExpBase = {
+	},
+	.supportExpBase = {
 	5,
 	20,
 	10,
 	20,
 	20,
-    },
-    .supportExpGrowth = {
+	},
+	.supportExpGrowth = {
 	3,
 	3,
 	2,
 	3,
 	3,
-    },
-    .supportCount = 5,
+	},
+	.supportCount = 5,
 };

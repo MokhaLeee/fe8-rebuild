@@ -74,7 +74,7 @@ void EfxDeadEvent_CallEvent(struct ProcEfxDead *proc)
 		BG_EnableSyncByMask(BG0_SYNC_BIT);
 
 		EkrGauge_Set4C50();
-        
+
 		/* Maybe triger death event */
 		DisplayDefeatTalkForPid(gEkrPids[GetAnimPosition(proc->anim1)]);
 		Proc_Break(proc);
@@ -159,7 +159,7 @@ void EfxDead_StartAlpha(struct ProcEfxDead *proc)
 	if (time == 0x1E) {
 		if (CheckEkrDragonDead(anim) == true)
 			return;
-        
+
 		if (CheckEkrDragonSkipTransfer(proc->anim1) != false) {
 			NewEfxDeadDragonAlpha(proc->anim1, proc->anim2);
 			EfxPlaySE(SONG_D6, 0x100);
@@ -193,7 +193,7 @@ void NewEfxDeadPika(struct Anim *anim1, struct Anim *anim2)
 	struct ProcEfxDead *proc;
 
 	proc = Proc_Start(ProcScr_efxDeadPika, PROC_TREE_3);
-    
+
 	proc->anim1 = anim1;
 	proc->anim2 = anim2;
 	proc->timer = 0;
@@ -234,7 +234,7 @@ void NewEfxDeadAlpha(struct Anim *anim1, struct Anim *anim2)
 	struct ProcEfxDead *proc;
 
 	proc = Proc_Start(ProcScr_efxDeadAlpha, PROC_TREE_3);
-    
+
 	proc->anim1 = anim1;
 	proc->anim2 = anim2;
 	proc->timer = 0;
@@ -322,7 +322,7 @@ void EfxDeadDragonAlphaMain(struct ProcEfxDead *proc)
 		Proc_Break(proc);
 		return;
 	}
-        
+
 	SetBlendConfig(
 		1,
 		Interpolate(INTERPOLATE_LINEAR, 0x10, 0, proc->timer, 0x3C),

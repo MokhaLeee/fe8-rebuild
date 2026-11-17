@@ -81,7 +81,7 @@ void EfxWeaponIcon_Loop(struct ProcEfxWeaponIcon *proc)
 
 	if (true == proc->invalid)
 		return;
-    
+
 	ResetIconGraphics_();
 	ret = EfxAdvanceFrameLut(&proc->timer, (s16 *)&proc->frame, proc->frame_lut);
 	if (ret >= 0)
@@ -106,10 +106,10 @@ void EfxWeaponIcon_End(struct ProcEfxWeaponIcon *proc)
 
 	if (proc->eff1 != 0)
 		LoadIconPalette(0, 0x1D);
-    
+
 	if (proc->eff2 != 0)
 		LoadIconPalette(0, 0x1E);
-    
+
 	EnablePaletteSync();
 }
 
@@ -128,7 +128,7 @@ void NewEfxSpellCast(void)
 
 	if (GetBanimDragonStatusType() != EKRDRGON_TYPE_NORMAL)
 		return;
-    
+
 	proc = Proc_Start(ProcScr_efxSpellCast, PROC_TREE_4);
 	proc->done = 0;
 	proc->timer = 0;
@@ -146,7 +146,7 @@ void RegisterEfxSpellCastEnd(void)
 {
 	if (NULL == gpProcEfxSpellCast)
 		return;
-    
+
 	gpProcEfxSpellCast->done = true;
 }
 
@@ -156,7 +156,7 @@ void EndEfxSpellCast(void)
 
 	if (NULL == proc)
 		return;
-    
+
 	gpProcEfxSpellCast = NULL;
 
 #if BUGFIX
@@ -170,7 +170,7 @@ void EndEfxSpellCast(void)
 void sub_8055038(struct ProcEfxSpellCast *proc)
 {
 	int val = Interpolate(INTERPOLATE_LINEAR, 0, 0x8, proc->timer, proc->terminator);
-    
+
 	CpuFastCopy(gPal_Banim, PAL_BG(0x6), 0x140);
 	EfxPalBlackInOut(PAL_BG(0x0), 0x6, 0xA, val);
 	EnablePaletteSync();

@@ -94,7 +94,7 @@ int CONST_DATA gUnused_08A196E4[] = {
 void sub_80A0724(struct PrepProcA1962C *proc)
 {
 	StartCgText(10, 7, 17, 4, proc->unk_2c, OBJ_VRAM0 + 0x1000, -1, 0);
-	SetCgTextFlags(CG_TEXT_FLAG_2 | CG_TEXT_FLAG_3 | CG_TEXT_FLAG_4 | CG_TEXT_FLAG_5 | CG_TEXT_FLAG_6); 
+	SetCgTextFlags(CG_TEXT_FLAG_2 | CG_TEXT_FLAG_3 | CG_TEXT_FLAG_4 | CG_TEXT_FLAG_5 | CG_TEXT_FLAG_6);
 	return;
 }
 

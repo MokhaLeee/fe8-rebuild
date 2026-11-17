@@ -62,7 +62,7 @@ void ProcWhiteCircleFx_Loop(struct ProcWhiteCircleFx *proc)
 			wight = 0xF - (wight >> 2);
 
 			LIMIT_AREA(wight, 0, 0xF);
-            
+
 			gBG0TilemapBuffer[TILEMAP_INDEX(x, y)] =
 				TILEREF(BGCHR_BMFX_IMG + wight, BGPAL_WHILTECIRCLE_FADE);
 		}
@@ -98,7 +98,7 @@ void StartCircularFadeAnim(ProcPtr parent, int x, int y)
 		val += 0x11111111;
 	}
 
-    
+
 	for (i = 0; i < 0x10; i++) {
 		r = RGB(i * 2, 0, 0);
 		b = RGB(0, 0, i * 2);

@@ -269,7 +269,7 @@ void GmapTimeMons_ExecMonsterMergeMu(struct ProcGmapTimeMons *proc)
 
 			*&x2 = GM_SCREEN->x;
 			*&y2 = GM_SCREEN->y;
-        
+
 			x = x1 - x2;
 			y = y1 - y2 + 8;
 

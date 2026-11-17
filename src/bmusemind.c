@@ -28,7 +28,7 @@
 
 s8 CanUnitCrossTerrain(struct Unit *unit, int terrain);
 
- struct ProcCmd CONST_DATA ProcScr_PostWarpStaffAction[] = {
+	struct ProcCmd CONST_DATA ProcScr_PostWarpStaffAction[] = {
 	PROC_SLEEP(0),
 	PROC_CALL_2(PostWarpStaff_ExecTrap),
 	PROC_CALL(sub_802EF80),
@@ -36,14 +36,14 @@ s8 CanUnitCrossTerrain(struct Unit *unit, int terrain);
 	PROC_END,
 };
 
- struct ProcCmd CONST_DATA ProcScr_SetTargetStatus[] = {
+	struct ProcCmd CONST_DATA ProcScr_SetTargetStatus[] = {
 	PROC_SLEEP(1),
 	PROC_CALL(AfterItemUse_SetTargetStatus),
 
 	PROC_END,
 };
 
- struct ProcCmd CONST_DATA ProcScr_ExecNightmareStaff[] = {
+	struct ProcCmd CONST_DATA ProcScr_ExecNightmareStaff[] = {
 	PROC_SLEEP(1),
 	PROC_CALL(sub_8030050),
 

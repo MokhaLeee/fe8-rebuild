@@ -62,7 +62,7 @@ void PrepItemUseBooster_OnInit(struct ProcPrepItemUseBooster *proc)
 	item = parent->unit->items[parent->slot];
 
 	msg = ApplyStatBoostItem(parent->unit, parent->slot);
-    
+
 	DrawPrepScreenItemUseStatBars(parent->unit, 0);
 	DrawPrepScreenItemUseStatValues(parent->unit);
 

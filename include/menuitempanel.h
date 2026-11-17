@@ -6,7 +6,7 @@
 
 struct MenuItemPanelProc {
 	PROC_HEADER;
-	
+
 	/* 2C */ struct Unit *unit;
 	/* 30 */ u8 x;
 	/* 31 */ u8 y;

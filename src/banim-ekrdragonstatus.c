@@ -113,7 +113,7 @@ void EkrDragonTmCpyExt(int x, int y)
 
 	if (GetBanimDragonStatusType() == EKRDRGON_TYPE_MYRRH)
 		return;
-    
+
 	if (GetBanimDragonStatusType() == EKRDRGON_TYPE_DEMON_KING) {
 		tmp1 = x - 0x70;
 		x = tmp1 - gEkrXQuakeOff;

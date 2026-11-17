@@ -895,7 +895,7 @@ void BgAffinScaling(u8 bg, s16 sy, s16 sx)
      *
      * Both of which are 8.8 fixed point numbers:
      * a halfword with 8 integer bits and 8 fractional bits.
-     * 
+     *
      * See tonc 10.4.1: https://www.coranac.com/tonc/text/affine.htm
      */
 
@@ -1015,7 +1015,7 @@ void sub_80AE044(int a, u16 *buf, int c, int d, int e, int f, int g, int h)
 	}
 }
 
-void sub_80AE0F0(int a, int b, int c, int d, int e, u16 f) 
+void sub_80AE0F0(int a, int b, int c, int d, int e, u16 f)
 {
 	int i, r8 = 0x78;
 	u16 *r5 = (void *)BG_VRAM + a * 0xA000;

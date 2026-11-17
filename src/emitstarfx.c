@@ -87,7 +87,7 @@ void ProcEmitSingleStar_Init(struct ProcEmitSingleStarFx *proc)
 	proc->xdiff_cur = 0;
 	proc->ydiff_cur = 0;
 	proc->xdiff_const = 0;
-    
+
 	ydiff_tmp = AdvanceGetLCGRNValue() % 0x400;
 	ydiff = ydiff_tmp + 0xC00 + ((struct ProcEmitStars*)proc->proc_parent)->stars * 0x10;
 
@@ -132,12 +132,12 @@ void LetsEmitStars(struct ProcEmitStars *proc)
 {
 	int val;
 	struct ProcEmitSingleStarFx *child;
-    
+
 	if (0 == GetGameClock() % 4)
 		return;
 
 	val = 0;
-    
+
 	if (proc->counter > 0x28)
 		return;
 
@@ -158,7 +158,7 @@ void LetsEmitStars(struct ProcEmitStars *proc)
 
 		proc->counter++;
 		val++;
-    
+
 		if (val > 0)
 			break;
 
@@ -187,7 +187,7 @@ void LetsEmitStars(struct ProcEmitStars *proc)
 
 	if (proc->stars >= 0)
 		proc->stars = proc->stars + 8;
-    
+
 	if (proc->stars > 0x140) {
 		Proc_Break(proc);
 		proc->stars = 0;

@@ -78,7 +78,7 @@ void OnMainBas(void)
 
 	if (GetGameLock() == 0)
 		Proc_Run(gProcTreeRootArray[2]);
-    
+
 	Proc_Run(gProcTreeRootArray[3]);
 	Proc_Run(gProcTreeRootArray[5]);
 
@@ -126,7 +126,7 @@ void ekrBaStart_InitScreen(struct ProcEkrBattleStarting *proc)
 
 	SetWin0Layers(1, 1, 1, 1, 1);
 	SetWOutLayers(1, 1, 1, 1, 0);
-    
+
 	gLCDControlBuffer.wincnt.win0_enableBlend = 0;
 	gLCDControlBuffer.wincnt.wout_enableBlend = 1;
 
@@ -136,7 +136,7 @@ void ekrBaStart_InitScreen(struct ProcEkrBattleStarting *proc)
 void ekrBaStart_SreenFailIn(struct ProcEkrBattleStarting *proc)
 {
 	int left, top, right, bottom;
-    
+
 	if (proc->timer != proc->terminator)
 		proc->timer++;
 

@@ -17,7 +17,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 32,
 	.xFlagOrigin = 19,
 	.yFlagOrigin = 1,
-    }, {
+	}, {
 	.sheetTileId = 0x0084,
 	.pSpriteData = gObject_32x32,
 	.xCenter = 16,
@@ -26,7 +26,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 32,
 	.xFlagOrigin = 15,
 	.yFlagOrigin = 8,
-    }, {
+	}, {
 	.sheetTileId = 0x0088,
 	.pSpriteData = gObject_32x32,
 	.xCenter = 16,
@@ -35,7 +35,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 32,
 	.xFlagOrigin = 15,
 	.yFlagOrigin = 8,
-    }, {
+	}, {
 	.sheetTileId = 0x0088,
 	.pSpriteData = gObject_32x32,
 	.xCenter = 16,
@@ -44,7 +44,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 32,
 	.xFlagOrigin = 15,
 	.yFlagOrigin = 8,
-    }, {
+	}, {
 	.sheetTileId = 0x0088,
 	.pSpriteData = gObject_32x32,
 	.xCenter = 16,
@@ -53,7 +53,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 32,
 	.xFlagOrigin = 15,
 	.yFlagOrigin = 8,
-    }, {
+	}, {
 	.sheetTileId = 0x0092,
 	.pSpriteData = gObject_16x16,
 	.xCenter = 8,
@@ -62,7 +62,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 16,
 	.xFlagOrigin = 8,
 	.yFlagOrigin = 1,
-    }, {
+	}, {
 	.sheetTileId = 0x009A,
 	.pSpriteData = gObject_32x32,
 	.xCenter = 16,
@@ -71,7 +71,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 32,
 	.xFlagOrigin = 16,
 	.yFlagOrigin = 5,
-    }, {
+	}, {
 	.sheetTileId = 0x0014,
 	.pSpriteData = gObject_32x32,
 	.xCenter = 16,
@@ -80,7 +80,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 32,
 	.xFlagOrigin = 16,
 	.yFlagOrigin = 4,
-    }, {
+	}, {
 	.sheetTileId = 0x0018,
 	.pSpriteData = gObject_32x32,
 	.xCenter = 16,
@@ -89,7 +89,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 32,
 	.xFlagOrigin = 16,
 	.yFlagOrigin = 4,
-    }, {
+	}, {
 	.sheetTileId = 0x0098,
 	.pSpriteData = gObject_16x16,
 	.xCenter = 8,
@@ -98,7 +98,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 16,
 	.xFlagOrigin = 8,
 	.yFlagOrigin = 3,
-    }, {
+	}, {
 	.sheetTileId = 0x00D2,
 	.pSpriteData = gObject_16x16,
 	.xCenter = 8,
@@ -107,7 +107,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 16,
 	.xFlagOrigin = 6,
 	.yFlagOrigin = 2,
-    }, {
+	}, {
 	.sheetTileId = 0x0094,
 	.pSpriteData = gObject_16x16,
 	.xCenter = 8,
@@ -116,7 +116,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 16,
 	.xFlagOrigin = 10,
 	.yFlagOrigin = 2,
-    }, {
+	}, {
 	.sheetTileId = 0x001C,
 	.pSpriteData = gObject_32x32,
 	.xCenter = 16,
@@ -125,7 +125,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 32,
 	.xFlagOrigin = 16,
 	.yFlagOrigin = 11,
-    }, {
+	}, {
 	.sheetTileId = 0x0090,
 	.pSpriteData = gObject_16x32,
 	.xCenter = 8,
@@ -134,7 +134,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 32,
 	.xFlagOrigin = 8,
 	.yFlagOrigin = 24,
-    }, {
+	}, {
 	.sheetTileId = 0x008C,
 	.pSpriteData = gObject_32x32,
 	.xCenter = 16,
@@ -143,7 +143,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 32,
 	.xFlagOrigin = 16,
 	.yFlagOrigin = 24,
-    }, {
+	}, {
 	.sheetTileId = 0x00D4,
 	.pSpriteData = gObject_8x8,
 	.xCenter = 4,
@@ -152,7 +152,7 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 8,
 	.xFlagOrigin = 4,
 	.yFlagOrigin = 4,
-    }, {
+	}, {
 	.sheetTileId = 0x0092,
 	.pSpriteData = gObject_16x16,
 	.xCenter = 8,
@@ -161,12 +161,12 @@ const struct NodeIcon gWMNodeIconData[] =
 	.height = 16,
 	.xFlagOrigin = 8,
 	.yFlagOrigin = 8,
-    },
+	},
 };
 
 const struct GMapNodeData gWMNodeData[] =
 {
-    [NODE_BORDER_MULAN] = {
+	[NODE_BORDER_MULAN] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x0B,
@@ -182,8 +182,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 88,
 	.nameTextId = MSG_650, // "Border Mulan"
 	.shipTravelFlag = 0,
-    },
-    [NODE_CASTLE_FRELIA] = {
+	},
+	[NODE_CASTLE_FRELIA] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_FRELIA,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x02,
@@ -199,8 +199,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 72,
 	.nameTextId = MSG_651, // "Castle Frelia[.]"
 	.shipTravelFlag = 0,
-    },
-    [NODE_IDE] = {
+	},
+	[NODE_IDE] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0A,
@@ -216,8 +216,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 120,
 	.nameTextId = MSG_652, // "Ide[.]"
 	.shipTravelFlag = 0,
-    },
-    [NODE_BORGO_RIDGE] = {
+	},
+	[NODE_BORGO_RIDGE] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0B,
@@ -233,8 +233,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 152,
 	.nameTextId = MSG_653, // "Borgo Ridge[.]"
 	.shipTravelFlag = 0,
-    },
-    [NODE_ZAHA_WOODS] = {
+	},
+	[NODE_ZAHA_WOODS] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0F,
@@ -250,8 +250,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 152,
 	.nameTextId = MSG_654, // "Za'ha Woods[.]"
 	.shipTravelFlag = 0,
-    },
-    [NODE_SERAFEW] = {
+	},
+	[NODE_SERAFEW] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x0A,
@@ -267,8 +267,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 183,
 	.nameTextId = MSG_655, // "Serafew[.]"
 	.shipTravelFlag = 0,
-    },
-    [NODE_ADLAS_PLAINS] = {
+	},
+	[NODE_ADLAS_PLAINS] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0F,
@@ -284,8 +284,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 200,
 	.nameTextId = MSG_656, // "Adlas Plains"
 	.shipTravelFlag = 0,
-    },
-    [NODE_RENVALL_07] = {
+	},
+	[NODE_RENVALL_07] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x05,
@@ -301,8 +301,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 216,
 	.nameTextId = MSG_657, // "Renvall[.]"
 	.shipTravelFlag = 0,
-    },
-    [NODE_RENVALL_08] = {
+	},
+	[NODE_RENVALL_08] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x05,
@@ -318,8 +318,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 216,
 	.nameTextId = MSG_658, // "Renvall[.]"
 	.shipTravelFlag = 0,
-    },
-    [NODE_PORT_KIRIS] = {
+	},
+	[NODE_PORT_KIRIS] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x0A,
@@ -335,8 +335,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 56,
 	.nameTextId = MSG_659, // "Port Kiris"
 	.shipTravelFlag = 1,
-    },
-    [NODE_TERAZ_PLATEAU] = {
+	},
+	[NODE_TERAZ_PLATEAU] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0F,
@@ -352,8 +352,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 104,
 	.nameTextId = MSG_65A, // "Teraz Plateau[.]"
 	.shipTravelFlag = 0,
-    },
-    [NODE_CAER_PELYN] = {
+	},
+	[NODE_CAER_PELYN] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x09,
@@ -369,8 +369,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 104,
 	.nameTextId = MSG_65B, // "Caer Pelyn"
 	.shipTravelFlag = 0,
-    },
-    [NODE_HAMILL_CANYON] = {
+	},
+	[NODE_HAMILL_CANYON] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0F,
@@ -386,8 +386,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 136,
 	.nameTextId = MSG_65C, // "Hamill Canyon[.]"
 	.shipTravelFlag = 0,
-    },
-    [NODE_JEHANNA_HALL_0D] = {
+	},
+	[NODE_JEHANNA_HALL_0D] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x07,
@@ -403,8 +403,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 200,
 	.nameTextId = MSG_65D, // "Jehanna Hall"
 	.shipTravelFlag = 0,
-    },
-    [NODE_FORT_RIGWALD] = {
+	},
+	[NODE_FORT_RIGWALD] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0B,
@@ -420,8 +420,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 152,
 	.nameTextId = MSG_65E, // "Fort Rigwald"
 	.shipTravelFlag = 0,
-    },
-    [NODE_BETHROEN] = {
+	},
+	[NODE_BETHROEN] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0F,
@@ -437,8 +437,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 232,
 	.nameTextId = MSG_65F, // "Bethroen"
 	.shipTravelFlag = 1,
-    },
-    [NODE_TAIZEL] = {
+	},
+	[NODE_TAIZEL] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x0A,
@@ -454,8 +454,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 248,
 	.nameTextId = MSG_660, // "Taizel"
 	.shipTravelFlag = 1,
-    },
-    [NODE_ZAALBUL_MARSH] = {
+	},
+	[NODE_ZAALBUL_MARSH] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0F,
@@ -471,8 +471,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 264,
 	.nameTextId = MSG_661, // "Za'albul Marsh"
 	.shipTravelFlag = 0,
-    },
-    [NODE_GRADO_KEEP] = {
+	},
+	[NODE_GRADO_KEEP] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x08,
@@ -488,8 +488,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 264,
 	.nameTextId = MSG_662, // "Grado Keep"
 	.shipTravelFlag = 0,
-    },
-    [NODE_JEHANNA_HALL_13] = {
+	},
+	[NODE_JEHANNA_HALL_13] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x07,
@@ -505,8 +505,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 200,
 	.nameTextId = MSG_663, // "Jehanna Hall"
 	.shipTravelFlag = 0,
-    },
-    [NODE_RENAIS_CASTLE] = {
+	},
+	[NODE_RENAIS_CASTLE] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x06,
@@ -522,8 +522,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 152,
 	.nameTextId = MSG_664, // "Renais Castle[.]"
 	.shipTravelFlag = 0,
-    },
-    [NODE_NARUBE_RIVER] = {
+	},
+	[NODE_NARUBE_RIVER] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0F,
@@ -539,8 +539,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 168,
 	.nameTextId = MSG_665, // "Narube River"
 	.shipTravelFlag = 0,
-    },
-    [NODE_NELERAS_PEAK] = {
+	},
+	[NODE_NELERAS_PEAK] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0F,
@@ -556,8 +556,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 120,
 	.nameTextId = MSG_666, // "Neleras Peak"
 	.shipTravelFlag = 0,
-    },
-    [NODE_RAUSTEN_COURT] = {
+	},
+	[NODE_RAUSTEN_COURT] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x03,
@@ -573,8 +573,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 88,
 	.nameTextId = MSG_667, // "Rausten Court[.]"
 	.shipTravelFlag = 0,
-    },
-    [NODE_DARKLING_WOODS] = {
+	},
+	[NODE_DARKLING_WOODS] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0F,
@@ -590,8 +590,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 72,
 	.nameTextId = MSG_668, // "Darkling Woods"
 	.shipTravelFlag = 0,
-    },
-    [NODE_BLACK_TEMPLE] = {
+	},
+	[NODE_BLACK_TEMPLE] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_PROGRESSION,
 	.encounters = GMAP_ENCOUNTERS_NONE,
 	.iconPreClear = 0x0C,
@@ -607,8 +607,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 88,
 	.nameTextId = MSG_669, // "Black Temple"
 	.shipTravelFlag = 0,
-    },
-    [NODE_TOWER_OF_VALNI] = {
+	},
+	[NODE_TOWER_OF_VALNI] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_DUNGEON,
 	.encounters = GMAP_ENCOUNTERS_DUNGEON,
 	.iconPreClear = 0x0D,
@@ -624,8 +624,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 56,
 	.nameTextId = MSG_66A, // "Tower of Valni"
 	.shipTravelFlag = 0,
-    },
-    [NODE_LAGDOU_RUINS] = {
+	},
+	[NODE_LAGDOU_RUINS] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_DUNGEON,
 	.encounters = GMAP_ENCOUNTERS_DUNGEON,
 	.iconPreClear = 0x0E,
@@ -641,8 +641,8 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 184,
 	.nameTextId = MSG_66B, // "Lagdou Ruins"
 	.shipTravelFlag = 0,
-    },
-    [NODE_MELKAEN_COAST] = {
+	},
+	[NODE_MELKAEN_COAST] = {
 	.placementFlag = GMAP_NODE_PLACEMENT_MONSTERSPAWN,
 	.encounters = GMAP_ENCOUNTERS_MONSTERS,
 	.iconPreClear = 0x0F,
@@ -658,5 +658,5 @@ const struct GMapNodeData gWMNodeData[] =
 	.y = 40,
 	.nameTextId = MSG_66C, // "Melkaen Coast[.]"
 	.shipTravelFlag = 1,
-    },
+	},
 };

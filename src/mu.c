@@ -35,7 +35,7 @@ const u16 * CONST_DATA gMuFlashPalLut[] = {
 	[MU_FLASH_YELLOW]     = Pal_AllYellow,
 };
 
- struct ProcCmd CONST_DATA ProcScr_MuStepSe[] = {
+	struct ProcCmd CONST_DATA ProcScr_MuStepSe[] = {
 	PROC_CALL(MuStepSe_Init),
 	PROC_YIELD,
 	PROC_CALL(MuStepSe_PlaySeA),
@@ -44,7 +44,7 @@ const u16 * CONST_DATA gMuFlashPalLut[] = {
 	PROC_END
 };
 
- struct ProcCmd CONST_DATA ProcScr_MuFogBump[] = {
+	struct ProcCmd CONST_DATA ProcScr_MuFogBump[] = {
 	PROC_CALL(MuFogBump_Init),
 	PROC_REPEAT(MuFogBump_ScaleLoop),
 	PROC_REPEAT(MuFogBump_EndLoop),
@@ -197,7 +197,7 @@ CONST_DATA vu8 static sUnknown_089A2CA8[0x40] = {
 	0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F
 };
 
- struct ProcCmd CONST_DATA ProcScr_MuPixelEffect[] = {
+	struct ProcCmd CONST_DATA ProcScr_MuPixelEffect[] = {
 	PROC_REPEAT(MuPixelEffect_OnLoop),
 	PROC_END
 };
@@ -208,7 +208,7 @@ struct ProcCmd CONST_DATA ProcScr_MuRestorePalInfo[] = {
 	PROC_END
 };
 
- struct ProcCmd CONST_DATA ProcScr_MuCritFlash[] = {
+	struct ProcCmd CONST_DATA ProcScr_MuCritFlash[] = {
 	PROC_CALL(MuCritFlash_Init),
 	PROC_SLEEP(1),
 
@@ -236,7 +236,7 @@ struct ProcCmd CONST_DATA ProcScr_MuRestorePalInfo[] = {
 	PROC_END
 };
 
- struct ProcCmd CONST_DATA ProcScr_MuHitFlash[] = {
+	struct ProcCmd CONST_DATA ProcScr_MuHitFlash[] = {
 	PROC_SLEEP(17),
 	PROC_CALL(MuFlashFadeFrom_RestorePal),
 	PROC_END
@@ -253,7 +253,7 @@ void InitMus(void)
 struct MuProc * StartMuExt(struct Unit *unit, unsigned jid, unsigned pal)
 {
 	struct MuProc *proc;
-    
+
 	proc = StartMuInternal(unit->xPos, unit->yPos, jid, -1, pal);
 	proc->unit = unit;
 	proc->cam_b = true;

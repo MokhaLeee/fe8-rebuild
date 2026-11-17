@@ -92,7 +92,7 @@ void efxYushaSpinShieldOBJ_806CD14(struct ProcEfxOBJ *proc)
 
 	if (++proc->timer != 0x45)
 		return;
-    
+
 	if (proc->unk29 == 0) {
 		if (GetAnimPosition(proc->anim) == EKR_POS_L) {
 			anim2->pScrStart = AnimScr_YushaSpinShieldOBJ2_LeftTypeA;
@@ -176,7 +176,7 @@ void NewEfxHurtmutEff00(struct Anim *anim)
 
 	if (gEfxBgSemaphore != 0)
 		return;
-    
+
 	proc = Proc_Start(ProcScr_efxHurtmutEff00, PROC_TREE_3);
 	proc->anim = anim;
 	proc->timer = 0;
@@ -644,7 +644,7 @@ void NewEfxSunakemuriOBJ(struct Anim *anim, int type)
 	case TERRAIN_MAST:
 		SpellFx_RegisterObjPal(Pal_EfxSunakemuriOBJ1, 0x20);
 		break;
-    
+
 	case TERRAIN_BRIDGE_14:
 		if (IsAnimSoundInPositionMaybe(proc->anim) != EKR_POS_L)
 			SpellFx_RegisterObjPal(Pal_EfxSunakemuriOBJ1, 0x20);
@@ -754,7 +754,7 @@ void NewEfxLokmsunaOBJ(struct Anim *anim)
 		anim2->oam2Base |= 0x7000;
 	else
 		anim2->oam2Base |= 0x9000;
-    
+
 	SpellFx_RegisterObjGfx(Img_EfxLokmsunaObj, 0x1000);
 }
 
@@ -1010,7 +1010,7 @@ void EfxSRankWeaponEffectMain(struct ProcEfx *proc)
 
 		anim1 = gAnims[GetAnimPosition(proc->anim) * 2];
 		anim2 = gAnims[GetAnimPosition(proc->anim) * 2 + 1];
-        
+
 		anim1->state3 |= ANIM_BIT3_BLOCKEND;
 		anim2->state3 |= ANIM_BIT3_BLOCKEND;
 		Proc_Break(proc);
@@ -1086,7 +1086,7 @@ CONST_DATA s16 gUnknown_085D9154[] = {
 	0x00E1, 0x00E5, 0x00EA, 0x00EE, 0x00F2, 0x00F7, 0x00FB, 0x0100,
 };
 
- void EfxSRankWeaponEffectSCRMain(struct ProcEfx *proc)
+	void EfxSRankWeaponEffectSCRMain(struct ProcEfx *proc)
 {
 	u32 i;
 
@@ -1128,7 +1128,7 @@ void EfxSRankWeaponEffectSCR2Main(struct ProcEfxSRankSCR2 *proc)
 {
 	struct ProcEfx *seff_scr = proc->seff_scr1;
 
-	seff_scr->unk44 = 
+	seff_scr->unk44 =
 		Interpolate(INTERPOLATE_LINEAR, 0, 0x40000, proc->timer, proc->terminator);
 
 	if (++proc->timer > proc->terminator) {
@@ -1323,7 +1323,7 @@ void NewEfxMantBatabata(struct Anim *anim)
 		anim2->oam2Base |= 0x7200;
 	else
 		anim2->oam2Base |= 0x9300;
-    
+
 	SetAnimStateHidden(GetAnimPosition(proc->anim));
 }
 
@@ -1568,7 +1568,7 @@ void NewEfxChillAnime(struct Anim *anim, int arg1)
 		anim2->oam2Base |= 0x7200;
 	else
 		anim2->oam2Base |= 0x9300;
-    
+
 	SetAnimStateHidden(GetAnimPosition(proc->anim));
 }
 
@@ -1582,7 +1582,7 @@ void EfxChillAnime_Loop(struct ProcEfxOBJ *proc)
 		SetAnimStateUnHidden(GetAnimPosition(proc->anim));
 		AnimDelete(proc->anim2);
 		gUnknown_02000010[GetAnimPosition(proc->anim)] = NULL;
-        
+
 		_anim1 = gAnims[GetAnimPosition(proc->anim) * 2];
 		_anim2 = gAnims[GetAnimPosition(proc->anim) * 2 + 1];
 

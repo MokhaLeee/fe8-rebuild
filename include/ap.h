@@ -10,7 +10,7 @@ struct APProc {
     PROC_HEADER;
 
     u8 _pad[0x50-0x29];
-    
+
     struct APHandle* pHandle;
 
     u32 xPosition;

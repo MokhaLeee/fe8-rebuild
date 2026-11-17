@@ -58,9 +58,9 @@ void EkrTriangleMain(struct ProcEkrTriangle *proc)
 	ewtype1 = 0;
 	ewtype2 = 0;
 
-	jid = (GetAnimPosition(proc->anim) == EKR_POS_L) 
+	jid = (GetAnimPosition(proc->anim) == EKR_POS_L)
 		? gpEkrBattleUnitLeft->unit.pClassData->number
-		: gpEkrBattleUnitRight->unit.pClassData->number; 
+		: gpEkrBattleUnitRight->unit.pClassData->number;
 
 	if (jid >= nine) {
 		if (jid <= 0xC) {

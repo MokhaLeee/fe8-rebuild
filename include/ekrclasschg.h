@@ -12,7 +12,7 @@ struct ProcEkrClasschg {
     STRUCT_PAD(0x2A, 0x2C);
 
     /* 2C */ s16 timer;
-    
+
     STRUCT_PAD(0x2E, 0x5C);
 
     /* 5C */ struct Anim * anim;

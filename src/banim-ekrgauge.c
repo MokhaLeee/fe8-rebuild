@@ -20,10 +20,10 @@ void sub_8050E40(void *_src, void *_dst)
  * buf[0] = val % 100
  * buf[1] = (val - [val]) % 10
  * buf[1] = (val - [val]) % 1
- * 
+ *
  * example:
  * in 312, out 3, 1, 2
- * 
+ *
  * in 458, out 4, 5, 8
  */
 void ModDec(s16 val, u16 buf[])

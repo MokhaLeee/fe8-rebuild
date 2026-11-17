@@ -1099,7 +1099,7 @@ void Guide_MainLoop(struct GuideProc *proc)
 						}
 					} else {
 						if (gGuideSt->categoryIdx <
-							((gGuideSt->sortMode != GUIDE_SORT_MODE_TOPIC ? 
+							((gGuideSt->sortMode != GUIDE_SORT_MODE_TOPIC ?
 								gGuideSt->unk_3c : gGuideSt->unk_3d) - 1)) {
 							gGuideSt->categoryIdx++;
 

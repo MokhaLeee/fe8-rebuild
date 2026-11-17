@@ -832,7 +832,7 @@ void DisplayEventMapAnim(ProcPtr parent, int val)
 
 	SetDispEnable(0, 0, 1, 1, 1);
 	FlushLCDControl();
-    
+
 	BG_SetPosition(0, 0, 0xFFD4);
 	BG_SetPosition(1, 0, 0);
 
@@ -974,7 +974,7 @@ void sub_8085F88(struct ProcEventMapAnim *proc)
 				TILEREF(BGCHR_PHASE_CHANGE_SQUARES + val + 0x20, BGPAL_PHASE_CHANGE) + TILE_HFLIP;
 		}
 	}
-    
+
 	proc->timer++;
 	BG_EnableSyncByMask(2);
 
@@ -1040,7 +1040,7 @@ void sub_808613C(struct Proc89EEA28 *proc)
 		Div(+SIN(0) * 0x10, 0x100),
 		Div(+COS(0) * 0x10, val2)
 	);
-    
+
 	PutSprite(
 		0, 0x1FF & (val1 + 0x18), 0x40,
 		Obj_089EE99C, 0

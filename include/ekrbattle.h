@@ -284,7 +284,7 @@ enum anim_round_type {
     ANIM_ROUND_SILENCER = 0x1000,
     ANIM_ROUND_POISON = 0x2000,
     ANIM_ROUND_BIT14 = 0x4000,
-    ANIM_ROUND_DEVIL = 0x8000,    
+    ANIM_ROUND_DEVIL = 0x8000,
 };
 
 extern u16 gAnimRoundData[];

@@ -154,7 +154,7 @@ struct UnitInfoWindowProc* UnitInfoWindow_DrawBase(struct UnitInfoWindowProc *pr
 		gBG1TilemapBuffer[TILEMAP_INDEX(x+7, y+0)] = src[0];
 		gBG1TilemapBuffer[TILEMAP_INDEX(x+7, y+1)] = src[4];
 		gBG1TilemapBuffer[TILEMAP_INDEX(x+7, y+2)] = src[8];
-        
+
 		gBG1TilemapBuffer[TILEMAP_INDEX(x+width-1, y+0)] = src[3];
 		gBG1TilemapBuffer[TILEMAP_INDEX(x+width-1, y+1)] = src[7];
 		gBG1TilemapBuffer[TILEMAP_INDEX(x+width-1, y+2)] = src[11];

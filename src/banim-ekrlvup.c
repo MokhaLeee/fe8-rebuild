@@ -142,7 +142,7 @@ void EkrLvup_InitStatusText(struct ProcEkrLevelup *proc)
 		if (&gpEkrBattleUnitLeft == &gpEkrBattleUnitLeft)
 			gpEkrLvupBattleUnit = bunit = gpEkrBattleUnitLeft;
 	}
-    
+
 	if (proc->is_promotion == false) {
 		unit = GetUnit(unit->index);
 
@@ -519,7 +519,7 @@ void EkrLvup_PrepareApGfx(struct ProcEkrLevelup *proc)
 
 	for (i = 0; i < 8; i++)
 		gUnknown_020200B8[i] = 0;
-    
+
 	Proc_Break(proc);
 }
 
@@ -537,7 +537,7 @@ void EkrLvup_Promo_WindowScroll0(struct ProcEkrLevelup *proc)
 
 	EfxPlaySE(SONG_2CD, 0x100);
 	M4aPlayWithPostionCtrl(SONG_2CD, 0x38, 0);
-    
+
 	proc->timer = 0;
 	proc->index = 8;
 	Proc_Break(proc);

@@ -30,7 +30,7 @@ void EfxDracoZombiePrepareTSA(int x, int y, s8 pos)
 		LZ77UnCompVram(Tsa_EfxDracoZombieBaseRight, gEkrTsaBuffer);
 	else
 		LZ77UnCompVram(Tsa_EfxDracoZombieBaseLeft, gEkrTsaBuffer);
-    
+
 	EkrDragonTmCpyWithDistance();
 
 	x += gEkrBgPosition;
@@ -186,7 +186,7 @@ void EkrDZ_ReloadCustomBg(struct ProcEkrDragon *proc)
 	}
 
 	EnablePaletteSync();
-    
+
 	if (++proc->timer == 0x9) {
 		proc->timer = 0;
 		gBanimValid[GetAnimPosition(proc->anim)] = false;

@@ -167,7 +167,7 @@ void EfxTmModifyPal(u16 *tm, u16 width, u16 height)
 #else
 	u32 _tileref;
 #endif
-    
+
 	for (i = height; i != 0; i--) {
 		u16 len = 0x20 - width;
 
@@ -747,7 +747,7 @@ void BanimUpdateSpriteRotScale(void *src, struct AnimSpriteData *out, s16 x, s16
 	for (; scr->header != 1; out++, scr++) {
 		s16 r8, r5;
 		int val1, val2, val, _val, header;
-    
+
 		r8 = x;
 		r5 = y;
 

@@ -53,7 +53,7 @@ bool CheckEkrPopupEnded(void)
 {
 	if (gEkrPopupEnded == true)
 		return true;
-    
+
 	return false;
 }
 
@@ -92,7 +92,7 @@ void MakeBattlePopupTileMapFromTSA(u16 *tm, u16 width)
 	tm[0x61] = ekrTsaBuf[0x4F] + constant;
 
 	for (i = 0; i < width; i++) {
-  
+
 		tm[0x02 + i] = ekrTsaBuf[0x02 + i] + constant;
 		tm[0x22 + i] = ekrTsaBuf[0x1C + i] + constant;
 		tm[0x42 + i] = ekrTsaBuf[0x36 + i] + constant;
@@ -308,29 +308,29 @@ void NewEkrPopup(void)
 	} else {
 		gpProcEkrPopup = proc = Proc_Start(ProcScr_ekrPopup, PROC_TREE_3);
 		gEkrPopupEnded = 0;
-    
+
 		proc->timer = 0;
 		proc->ldebuf = 0;
 		proc->lbuff = 0;
 		proc->rdebuf = 0;
 		proc->rbuf = 0;
-    
+
 		if (gBanimFactionPal[EKR_POS_L] == FACTION_ID_BLUE) {
 			if (HasBattleUnitGainedWeaponLevel(gpEkrBattleUnitLeft) == true)
 				proc->lbuff = gpEkrBattleUnitLeft->weaponBefore;
-    
+
 			if (DidBattleUnitBreakWeapon(gpEkrBattleUnitLeft) == true)
 				proc->ldebuf = gpEkrBattleUnitLeft->weaponBefore;
 		}
-    
+
 		if (gBanimFactionPal[EKR_POS_R] == FACTION_ID_BLUE) {
 			if (HasBattleUnitGainedWeaponLevel(gpEkrBattleUnitRight) == true)
 				proc->rbuf = gpEkrBattleUnitRight->weaponBefore;
-    
+
 			if (DidBattleUnitBreakWeapon(gpEkrBattleUnitRight) == true)
 				proc->rdebuf = gpEkrBattleUnitRight->weaponBefore;
 		}
-    
+
 		if (proc->lbuff + proc->ldebuf + proc->rbuf + proc->rdebuf == 0) {
 			gEkrPopupEnded = true;
 			DeleteAnimsOnPopup();
@@ -367,7 +367,7 @@ void ekrPopup_WaitWRankUp(struct ProcEkrPopup *proc)
 		Proc_Break(proc);
 		return;
 	}
-    
+
 	if (++proc->timer > proc->terminator) {
 		AnimDelete(proc->anim);
 		SpellFx_ClearBG1();
@@ -382,7 +382,7 @@ void ekrPopup_DrawWRankUp2(struct ProcEkrPopup *proc)
 	if (priv != 0) {
 		DrawBattlePopup(proc, 0, priv);
 		EfxPlaySound5AVol100();
-        
+
 		proc->timer = 0;
 		proc->terminator = 0x60;
 	}
@@ -411,7 +411,7 @@ void ekrPopup_DrawWpnBroke(struct ProcEkrPopup *proc)
 	if (priv != 0) {
 		DrawBattlePopup(proc, 1, priv);
 		EfxPlaySound5CVol100();
-        
+
 		proc->timer = 0;
 		proc->terminator = 0x6C;
 	}
@@ -440,7 +440,7 @@ void ekrPopup_DrawWpnBroke2(struct ProcEkrPopup *proc)
 	if (priv != 0) {
 		DrawBattlePopup(proc, 1, priv);
 		EfxPlaySound5CVol100();
-        
+
 		proc->timer = 0;
 		proc->terminator = 0x6C;
 	}

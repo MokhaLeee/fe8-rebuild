@@ -274,7 +274,7 @@ void MapInfoBoxShake(struct MAInfoFrameProc *proc)
 	}
 }
 
-/** 
+/**
  * section.data
 */
 

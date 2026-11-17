@@ -119,7 +119,7 @@ void RegisterChapterTimeAndTurnCount(struct PlaySt *play_st)
 {
 	struct ChapterStats *chstat = GetChapterStats(GetNextChapterStatsSlot());
 	int time, turn;
-    
+
 	time = (GetGameClock() - play_st->time_chapter_started) / (FRAMES_PER_SECOND * 3);
 	if (time > 50 * 60 * 20)
 		time = 50 * 60 * 20;
@@ -131,7 +131,7 @@ void RegisterChapterTimeAndTurnCount(struct PlaySt *play_st)
 	chstat->chapter_index = play_st->chapterIndex;
 	chstat->chapter_turn = turn;
 	chstat->chapter_time = time;
-    
+
 }
 
 int GetGameTotalTime_unused()
@@ -222,19 +222,19 @@ inline struct UnitUsageStats *GetPidStats(u8 pid)
 	else if (0 == GetCharacterData(pid)->affinity)
 		return 0;
 	else
-		return &gBWLDataArray[pid];  
+		return &gBWLDataArray[pid];
 }
 
 void PidStatsAddBattleAmt(struct Unit *unit)
 {
 	u32 pid;
 	struct UnitUsageStats *bwl;
-    
+
 	if (FACTION_BLUE != UNIT_FACTION(unit))
 		return;
 
 	pid = UNIT_CHAR_ID(unit);
-    
+
 	bwl = GetPidStats(pid);
 	if (NULL == bwl)
 		return;
@@ -264,47 +264,47 @@ void PidStatsRecordLoseData(u8 pid)
 	int chunk_index;
 	struct SuspendSaveBlock *ssb;
 	struct GameSaveBlock *gsb;
-    
+
 	if (IsSramWorking()) {
 
 		struct UnitUsageStats *bwl = GetPidStats(pid);
 
 		if (NULL == bwl)
 			return;
-    
+
 		if (true == gBmSt.just_resumed)
 			return;
 
 		if (PLAY_FLAG_TUTORIAL & gPlaySt.chapterStateBits)
 			return;
-    
+
 		if (BM_FLAG_LINKARENA & gBmSt.gameStateBits)
 			return;
-    
+
 		if (BM_FLAG_5 & gBmSt.gameStateBits)
 			return;
-    
+
 		if (PLAY_FLAG_EXTRA_MAP & gPlaySt.chapterStateBits)
 			return;
-    
+
 		if (bwl->lossAmt >= 200)
 			return;
-        
+
 		bwl->lossAmt++;
-    
+
 		PidStatsAddFavval(pid, -0x80);
-    
+
 		chunk_index = GetLastSuspendSaveId() + SAVE_ID_SUSPEND;
 
 		ssb = GetSaveWriteAddr(chunk_index);
 		WriteAndVerifySramFast(bwl, &ssb->pidStats[pid - 1], 1);
-    
+
 		ReadSaveBlockInfo(&buf, chunk_index);
 		WriteSaveBlockInfo(&buf, chunk_index);
-    
+
 		gsb = GetSaveWriteAddr(gPlaySt.gameSaveSlot);
 		WriteAndVerifySramFast(bwl, &gsb->pidStats[pid - 1], 3);
-    
+
 		ReadSaveBlockInfo(&buf, gPlaySt.gameSaveSlot);
 		WriteSaveBlockInfo(&buf, gPlaySt.gameSaveSlot);
 	}
@@ -361,7 +361,7 @@ void PidStatsAddStatViewAmt(u8 pid)
 
 	if (bwl->statViewAmt < 200)
 		bwl->statViewAmt++;
-    
+
 	PidStatsAddFavval(pid, 2);
 }
 
@@ -374,7 +374,7 @@ void PidStatsAddDeployAmt(u8 pid)
 
 	if (bwl->deployAmt < 60)
 		bwl->deployAmt++;
-    
+
 	PidStatsAddFavval(pid, 0x40);
 }
 
@@ -391,7 +391,7 @@ void PidStatsAddSquaresMoved(u8 pid, int amount)
 		move_count = 1000;
 
 	bwl->moveAmt = move_count;
-    
+
 	PidStatsAddFavval(pid, 2);
 }
 
@@ -408,7 +408,7 @@ void PidStatsAddExpGained(u8 pid, int expGain)
 		exp = 4000;
 
 	bwl->expGained = exp;
-    
+
 	PidStatsAddFavval(pid, expGain);
 }
 
@@ -495,14 +495,14 @@ int PidStatsGetFavval(u8 pid)
 void PidStatsAddFavval(u8 pid, int val)
 {
 	int cur;
-    
+
 	struct UnitUsageStats *bwl = GetPidStats(pid);
 
 	if (NULL == bwl)
 		return;
 
 	cur = bwl->favval + val;
-    
+
 	if (cur > 0x4000)
 		bwl->favval = 0x4000;
 	else if (cur < 0)
@@ -557,7 +557,7 @@ bool IsPlaythroughIdUnique(int index)
 		if (ram_ch.playthroughIdentifier == index)
 			return 0;
 	}
-    
+
 	return 1;
 }
 
@@ -605,7 +605,7 @@ bool RegisterCompletedPlaythrough(struct GlobalSaveInfo *info, int index)
 			return true;
 		}
 
-	return false;    
+	return false;
 }
 
 int GetCurerentGameMode(void)
@@ -617,7 +617,7 @@ void SavePlayThroughData(void)
 {
 	struct GlobalSaveInfo info;
 	int mode, difficult, isTutorial;
-    
+
 	mode = GetCurerentGameMode();
 
 	/* Maybe flag definition should be modified? */
@@ -642,7 +642,7 @@ void SavePlayThroughData(void)
 		else
 			info.Eirk_mode_norm = true;
 		break;
-    
+
 	case CHAPTER_MODE_EPHRAIM:
 		if (!isTutorial)
 			info.Ephy_mode_easy = true;
@@ -652,7 +652,7 @@ void SavePlayThroughData(void)
 			info.Ephy_mode_norm = true;
 		break;
 
-        
+
 	case CHAPTER_MODE_COMMON:
 	default:
 		break;

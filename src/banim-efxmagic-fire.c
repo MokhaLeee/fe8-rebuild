@@ -204,7 +204,7 @@ void NewEfxFireOBJ(struct Anim *anim)
 		anim2->xPosition = anim->xPosition - 0x8;
 	else
 		anim2->xPosition = anim->xPosition + 0x8;
-    
+
 	anim2->yPosition = anim->yPosition + 0x8;
 
 	SpellFx_RegisterObjPal(Pal_FireSpellSprites, 0x20);
@@ -309,7 +309,7 @@ void StartSubSpell_efxFireHITBG(struct Anim *anim)
 
 	if (gEkrDistanceType == EKR_DISTANCE_CLOSE)
 		return;
-    
+
 	if (GetAnimPosition(proc->anim) == EKR_POS_L)
 		BG_SetPosition(BG_1, 0x18, 0x0);
 	else
@@ -359,12 +359,12 @@ void StartSubSpell_efxElfireBG(struct Anim *anim)
 
 	if (gEkrDistanceType == EKR_DISTANCE_CLOSE)
 		return;
-    
+
 	if (GetAnimPosition(proc->anim) == EKR_POS_L)
 		BG_SetPosition(BG_1, 0x18, 0x0);
 	else
 		BG_SetPosition(BG_1, 0xE8, 0x0);
-    
+
 	sub_8070DBC(TILEMAP_LOCATED(gBG1TilemapBuffer, 0x1E, 0x0), 2, 0x14, 0x1, 0x100);
 }
 
@@ -447,7 +447,7 @@ void StartSubSpell_efxElfireOBJ(struct Anim *anim)
 		anim2->xPosition = anim2->xPosition - 0x8;
 	else
 		anim2->xPosition = anim2->xPosition + 0x8;
-    
+
 	anim2->oamBase = anim2->oamBase | 0x400;
 
 	SpellFx_RegisterObjPal(Pal_EfxElfireOBJ, 0x20);

@@ -18,152 +18,152 @@ static void RevertMovementScript(u8* begin, u8* end);
 
 inline void SetWorkingBmMap(u8**map)
 {
-    gWorkingBmMap = map;
+	gWorkingBmMap = map;
 }
 
 void GenerateUnitMovementMap(struct Unit *unit)
 {
-    SetWorkingMoveCosts(GetUnitMovementCost(unit));
-    SetWorkingBmMap(gBmMapMovement);
+	SetWorkingMoveCosts(GetUnitMovementCost(unit));
+	SetWorkingBmMap(gBmMapMovement);
 
-    GenerateMovementMap(unit->xPos, unit->yPos, UNIT_MOV(unit), unit->index);
+	GenerateMovementMap(unit->xPos, unit->yPos, UNIT_MOV(unit), unit->index);
 }
 
 void GenerateUnitMovementMapExt(struct Unit *unit, s8 movement)
 {
-    SetWorkingMoveCosts(GetUnitMovementCost(unit));
-    SetWorkingBmMap(gBmMapMovement);
+	SetWorkingMoveCosts(GetUnitMovementCost(unit));
+	SetWorkingBmMap(gBmMapMovement);
 
-    GenerateMovementMap(unit->xPos, unit->yPos, movement, unit->index);
+	GenerateMovementMap(unit->xPos, unit->yPos, movement, unit->index);
 }
 
 void GenerateUnitExtendedMovementMap(struct Unit *unit)
 {
-    SetWorkingMoveCosts(GetUnitMovementCost(unit));
-    SetWorkingBmMap(gBmMapMovement);
+	SetWorkingMoveCosts(GetUnitMovementCost(unit));
+	SetWorkingBmMap(gBmMapMovement);
 
-    GenerateMovementMap(unit->xPos, unit->yPos, MAP_MOVEMENT_EXTENDED, 0);
+	GenerateMovementMap(unit->xPos, unit->yPos, MAP_MOVEMENT_EXTENDED, 0);
 }
 
 void GenerateExtendedMovementMapOnRange(int x, int y, const s8 mct[TERRAIN_COUNT])
 {
-    SetWorkingMoveCosts(mct);
-    SetWorkingBmMap(gBmMapRange);
+	SetWorkingMoveCosts(mct);
+	SetWorkingBmMap(gBmMapRange);
 
-    GenerateMovementMap(x, y, MAP_MOVEMENT_EXTENDED, 0);
+	GenerateMovementMap(x, y, MAP_MOVEMENT_EXTENDED, 0);
 }
 
 void GenerateExtendedMovementMap(int x, int y, const s8 mct[TERRAIN_COUNT])
 {
-    SetWorkingMoveCosts(mct);
-    SetWorkingBmMap(gBmMapMovement);
+	SetWorkingMoveCosts(mct);
+	SetWorkingBmMap(gBmMapMovement);
 
-    GenerateMovementMap(x, y, MAP_MOVEMENT_EXTENDED, 0);
+	GenerateMovementMap(x, y, MAP_MOVEMENT_EXTENDED, 0);
 }
 
 void GenerateMovementMapOnWorkingMap(struct Unit *unit, int x, int y, int movement)
 {
-    SetWorkingMoveCosts(GetUnitMovementCost(unit));
+	SetWorkingMoveCosts(GetUnitMovementCost(unit));
 
-    GenerateMovementMap(x, y, movement, unit->index);
+	GenerateMovementMap(x, y, movement, unit->index);
 }
 
 void SetWorkingMoveCosts(const s8 mct[TERRAIN_COUNT])
 {
-    int i;
+	int i;
 
-    for (i = 0; i < TERRAIN_COUNT; ++i)
+	for (i = 0; i < TERRAIN_COUNT; ++i)
 	gWorkingTerrainMoveCosts[i] = mct[i];
 }
 
 void GenerateMovementMap(int x, int y, int movement, int unitId)
 {
-    gMovMapFillState.dst = gMovMapFillStPool1;
-    gMovMapFillState.src = gMovMapFillStPool2;
+	gMovMapFillState.dst = gMovMapFillStPool1;
+	gMovMapFillState.src = gMovMapFillStPool2;
 
-    gMovMapFillState.movement = movement;
+	gMovMapFillState.movement = movement;
 
-    if (unitId == 0) {
+	if (unitId == 0) {
 	gMovMapFillState.hasUnit = FALSE;
-    } else {
+	} else {
 	gMovMapFillState.hasUnit = TRUE;
 	gMovMapFillState.unitId = unitId;
-    }
+	}
 
-    gMovMapFillState.maxMovementValue = MAP_MOVEMENT_MAX;
+	gMovMapFillState.maxMovementValue = MAP_MOVEMENT_MAX;
 
-    BmMapFill(gWorkingBmMap, -1);
+	BmMapFill(gWorkingBmMap, -1);
 
-    gMovMapFillState.dst->xPos = x;
-    gMovMapFillState.dst->yPos = y;
-    gMovMapFillState.dst->connexion = 5;
-    gMovMapFillState.dst->leastMoveCost = 0;
+	gMovMapFillState.dst->xPos = x;
+	gMovMapFillState.dst->yPos = y;
+	gMovMapFillState.dst->connexion = 5;
+	gMovMapFillState.dst->leastMoveCost = 0;
 
-    gWorkingBmMap[y][x] = 0;
+	gWorkingBmMap[y][x] = 0;
 
-    gMovMapFillState.dst++;
-    gMovMapFillState.dst->connexion = 4;
+	gMovMapFillState.dst++;
+	gMovMapFillState.dst->connexion = 4;
 
-    CallARM_FillMovementMap();
+	CallARM_FillMovementMap();
 }
 
 void sub_801A570(int connexion, int x, int y)
 {
-    // This is a C implementation of the ARM (asm) function MapFloodCoreStep
-    // Probably used during testing before switching to the a more "optimal" version.
+	// This is a C implementation of the ARM (asm) function MapFloodCoreStep
+	// Probably used during testing before switching to the a more "optimal" version.
 
-    short tileMovementCost;
+	short tileMovementCost;
 
-    x += gMovMapFillState.src->xPos;
-    y += gMovMapFillState.src->yPos;
+	x += gMovMapFillState.src->xPos;
+	y += gMovMapFillState.src->yPos;
 
-    tileMovementCost = gWorkingTerrainMoveCosts[gBmMapTerrain[y][x]]
+	tileMovementCost = gWorkingTerrainMoveCosts[gBmMapTerrain[y][x]]
 	+ (s8) gWorkingBmMap[(u8) gMovMapFillState.src->yPos][(u8) gMovMapFillState.src->xPos];
 
-    if (tileMovementCost >= gWorkingBmMap[y][x])
+	if (tileMovementCost >= gWorkingBmMap[y][x])
 	return;
 
-    if (gMovMapFillState.hasUnit && gBmMapUnit[y][x])
+	if (gMovMapFillState.hasUnit && gBmMapUnit[y][x])
 	if ((gBmMapUnit[y][x] ^ gMovMapFillState.unitId) & 0x80)
 	    return;
 
-    if (tileMovementCost > gMovMapFillState.movement)
+	if (tileMovementCost > gMovMapFillState.movement)
 	return;
 
-    gMovMapFillState.dst->xPos = x;
-    gMovMapFillState.dst->yPos = y;
-    gMovMapFillState.dst->connexion = connexion;
-    gMovMapFillState.dst->leastMoveCost = tileMovementCost;
+	gMovMapFillState.dst->xPos = x;
+	gMovMapFillState.dst->yPos = y;
+	gMovMapFillState.dst->connexion = connexion;
+	gMovMapFillState.dst->leastMoveCost = tileMovementCost;
 
-    gMovMapFillState.dst++;
+	gMovMapFillState.dst++;
 
-    gWorkingBmMap[y][x] = tileMovementCost;
+	gWorkingBmMap[y][x] = tileMovementCost;
 }
 
 void GenerateBestMovementScript(int x, int y, u8 output[])
 {
-    u8 *outputStart = output;
+	u8 *outputStart = output;
 
-    short bestCost;
-    short bestDirectionCount;
+	short bestCost;
+	short bestDirectionCount;
 
-    u8 neighbourCosts[4];
-    u8 bestDirections[4];
+	u8 neighbourCosts[4];
+	u8 bestDirections[4];
 
-    short nextDirection = 0;
+	short nextDirection = 0;
 
-    int i;
+	int i;
 
-    // The basic algorithm here is:
-    // 1. start from the end point
-    // 2. get on the point that's closest to the origin (lowest cost)
-    // 3. write direction to output
-    // 4. repeat 2-4 until we reached origin (cost = 0)
-    // 5. reverse and terminate output
+	// The basic algorithm here is:
+	// 1. start from the end point
+	// 2. get on the point that's closest to the origin (lowest cost)
+	// 3. write direction to output
+	// 4. repeat 2-4 until we reached origin (cost = 0)
+	// 5. reverse and terminate output
 
-    // As we build the list *in reverse*, the directions are also "reversed" as we traverse the path.
+	// As we build the list *in reverse*, the directions are also "reversed" as we traverse the path.
 
-    while (((s8**) gWorkingBmMap)[y][x] != 0) {
+	while (((s8**) gWorkingBmMap)[y][x] != 0) {
 	// Build neighbor cost list
 
 	if (x == (gBmMapSize.x - 1))
@@ -249,34 +249,34 @@ void GenerateBestMovementScript(int x, int y, u8 output[])
 	    break;
 
 	} // switch (nextDirection)
-    }
+	}
 
-    // reverse and terminate output
-    RevertMovementScript(outputStart, output);
+	// reverse and terminate output
+	RevertMovementScript(outputStart, output);
 }
 
 void RevertMovementScript(u8 *begin, u8 *end)
 {
-    u8 buffer[MOVE_CMD_MAX_COUNT];
+	u8 buffer[MOVE_CMD_MAX_COUNT];
 
-    u8 *it = buffer;
+	u8 *it = buffer;
 
-    while (end > begin)
+	while (end > begin)
 	*it++ = *--end;
 
-    *it = MOVE_CMD_HALT;
+	*it = MOVE_CMD_HALT;
 
-    for (it = buffer; *it != MOVE_CMD_HALT;)
+	for (it = buffer; *it != MOVE_CMD_HALT;)
 	*begin++ = *it++;
 
-    *begin = MOVE_CMD_HALT;
+	*begin = MOVE_CMD_HALT;
 }
 
 void UnitApplyWorkingMovementScript(struct Unit *unit, int x, int y)
 {
-    u8 *it = gWorkingMovementScript;
+	u8 *it = gWorkingMovementScript;
 
-    for (;;) {
+	for (;;) {
 	gActionData.xMove = x;
 	gActionData.yMove = y;
 
@@ -325,14 +325,14 @@ void UnitApplyWorkingMovementScript(struct Unit *unit, int x, int y)
 	    break;
 
 	it++;
-    }
+	}
 }
 
 void MarkMovementMapEdges(void)
 {
-    int ix, iy;
+	int ix, iy;
 
-    for (iy = gBmMapSize.y - 1; iy >= 0; --iy) {
+	for (iy = gBmMapSize.y - 1; iy >= 0; --iy) {
 	for (ix = gBmMapSize.x - 1; ix >= 0; --ix) {
 	    if (gBmMapMovement[iy][ix] > MAP_MOVEMENT_MAX)
 		continue;
@@ -352,16 +352,16 @@ void MarkMovementMapEdges(void)
 	    if (gMapMovementSigned[iy + 1][ix] < 0 && (iy != (gBmMapSize.y - 1)))
 		gBmMapMovement[iy + 1][ix] = gMovMapFillState.maxMovementValue;
 	}
-    }
+	}
 
-    gMovMapFillState.maxMovementValue++;
+	gMovMapFillState.maxMovementValue++;
 }
 
 void MarkWorkingMapEdges(void)
 {
-    int ix, iy;
+	int ix, iy;
 
-    for (iy = gBmMapSize.y - 1; iy >= 0; --iy) {
+	for (iy = gBmMapSize.y - 1; iy >= 0; --iy) {
 	for (ix = gBmMapSize.x - 1; ix >= 0; --ix) {
 	    if (gWorkingBmMap[iy][ix] > MAP_MOVEMENT_MAX)
 		continue;
@@ -381,18 +381,18 @@ void MarkWorkingMapEdges(void)
 	    if ((s8) gWorkingBmMap[iy + 1][ix] < 0 && (iy != (gBmMapSize.y - 1)))
 		gWorkingBmMap[iy + 1][ix] = gMovMapFillState.maxMovementValue;
 	}
-    }
+	}
 
-    gMovMapFillState.maxMovementValue++;
+	gMovMapFillState.maxMovementValue++;
 }
 
 void MapAddInRange(int x, int y, int range, int value)
 {
-    int ix, iy, iRange;
+	int ix, iy, iRange;
 
-    // Handles rows [y, y+range]
-    // For each row, decrement range
-    for (iRange = range, iy = y; (iy <= y + range) && (iy < gBmMapSize.y); --iRange, ++iy) {
+	// Handles rows [y, y+range]
+	// For each row, decrement range
+	for (iRange = range, iy = y; (iy <= y + range) && (iy < gBmMapSize.y); --iRange, ++iy) {
 	int xMin, xMax, xRange;
 
 	xMin = x - iRange;
@@ -413,11 +413,11 @@ void MapAddInRange(int x, int y, int range, int value)
 	for (ix = xMin; ix < xMax; ++ix) {
 	    gWorkingBmMap[iy][ix] += value;
 	}
-    }
+	}
 
-    // Handle rows [y-range, y-1], starting from the bottom most row
-    // For each row, decrement range
-    for (iRange = (range - 1), iy = (y - 1); (iy >= y - range) && (iy >= 0); --iRange, --iy) {
+	// Handle rows [y-range, y-1], starting from the bottom most row
+	// For each row, decrement range
+	for (iRange = (range - 1), iy = (y - 1); (iy >= y - range) && (iy >= 0); --iRange, --iy) {
 	int xMin, xMax, xRange;
 
 	xMin = x - iRange;
@@ -438,16 +438,16 @@ void MapAddInRange(int x, int y, int range, int value)
 	for (ix = xMin; ix < xMax; ++ix) {
 	    gWorkingBmMap[iy][ix] += value;
 	}
-    }
+	}
 }
 
 void MapSetInRange(int x, int y, int range, int value)
 {
-    int ix, iy, iRange;
+	int ix, iy, iRange;
 
-    // Handles rows [y, y+range]
-    // For each row, decrement range
-    for (iRange = range, iy = y; (iy <= y + range) && (iy < gBmMapSize.y); --iRange, ++iy) {
+	// Handles rows [y, y+range]
+	// For each row, decrement range
+	for (iRange = range, iy = y; (iy <= y + range) && (iy < gBmMapSize.y); --iRange, ++iy) {
 	int xMin, xMax, xRange;
 
 	xMin = x - iRange;
@@ -468,11 +468,11 @@ void MapSetInRange(int x, int y, int range, int value)
 	for (ix = xMin; ix < xMax; ++ix) {
 	    gWorkingBmMap[iy][ix] = value;
 	}
-    }
+	}
 
-    // Handle rows [y-range, y-1], starting from the bottom most row
-    // For each row, decrement range
-    for (iRange = (range - 1), iy = (y - 1); (iy >= y - range) && (iy >= 0); --iRange, --iy) {
+	// Handle rows [y-range, y-1], starting from the bottom most row
+	// For each row, decrement range
+	for (iRange = (range - 1), iy = (y - 1); (iy >= y - range) && (iy >= 0); --iRange, --iy) {
 	int xMin, xMax, xRange;
 
 	xMin = x - iRange;
@@ -493,20 +493,20 @@ void MapSetInRange(int x, int y, int range, int value)
 	for (ix = xMin; ix < xMax; ++ix) {
 	    gWorkingBmMap[iy][ix] = value;
 	}
-    }
+	}
 }
 
 inline void MapAddInBoundedRange(short x, short y, short minRange, short maxRange)
 {
-    MapAddInRange(x, y, maxRange,     +1);
-    MapAddInRange(x, y, minRange - 1, -1);
+	MapAddInRange(x, y, maxRange,     +1);
+	MapAddInRange(x, y, minRange - 1, -1);
 }
 
 void GenerateUnitCompleteAttackRange(struct Unit *unit)
 {
-    int ix, iy;
+	int ix, iy;
 
-    #define FOR_EACH_IN_MOVEMENT_RANGE(block) \
+	#define FOR_EACH_IN_MOVEMENT_RANGE(block) \
 	for (iy = gBmMapSize.y - 1; iy >= 0; --iy) \
 	{ \
 	    for (ix = gBmMapSize.x - 1; ix >= 0; --ix) \
@@ -521,58 +521,58 @@ void GenerateUnitCompleteAttackRange(struct Unit *unit)
 	    } \
 	}
 
-    switch (GetUnitWeaponReachBits(unit, -1)) {
+	switch (GetUnitWeaponReachBits(unit, -1)) {
 
-    case REACH_RANGE1:
+	case REACH_RANGE1:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 1, 1);
 	})
 
 	break;
 
-    case REACH_RANGE1 | REACH_RANGE2:
+	case REACH_RANGE1 | REACH_RANGE2:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 1, 2);
 	})
 
 	break;
 
-    case REACH_RANGE1 | REACH_RANGE2 | REACH_RANGE3:
+	case REACH_RANGE1 | REACH_RANGE2 | REACH_RANGE3:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 1, 3);
 	})
 
 	break;
 
-    case REACH_RANGE2:
+	case REACH_RANGE2:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 2, 2);
 	})
 
 	break;
 
-    case REACH_RANGE2 | REACH_RANGE3:
+	case REACH_RANGE2 | REACH_RANGE3:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 2, 3);
 	})
 
 	break;
 
-    case REACH_RANGE3:
+	case REACH_RANGE3:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 3, 3);
 	})
 
 	break;
 
-    case REACH_RANGE3 | REACH_TO10:
+	case REACH_RANGE3 | REACH_TO10:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 3, 10);
 	})
 
 	break;
 
-    case REACH_RANGE1 | REACH_RANGE3:
+	case REACH_RANGE1 | REACH_RANGE3:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 1, 1);
 	    MapAddInBoundedRange(ix, iy, 3, 3);
@@ -580,7 +580,7 @@ void GenerateUnitCompleteAttackRange(struct Unit *unit)
 
 	break;
 
-    case REACH_RANGE1 | REACH_RANGE3 | REACH_TO10:
+	case REACH_RANGE1 | REACH_RANGE3 | REACH_TO10:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 1, 1);
 	    MapAddInBoundedRange(ix, iy, 3, 10);
@@ -588,23 +588,23 @@ void GenerateUnitCompleteAttackRange(struct Unit *unit)
 
 	break;
 
-    case REACH_RANGE1 | REACH_RANGE2 | REACH_RANGE3 | REACH_TO10:
+	case REACH_RANGE1 | REACH_RANGE2 | REACH_RANGE3 | REACH_TO10:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 1, 10);
 	})
 
 	break;
 
-    case REACH_RANGE1 | REACH_TO10:
+	case REACH_RANGE1 | REACH_TO10:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 1, 4);
 	})
 
 	break;
 
-    } // switch (GetUnitWeaponReachBits(unit, -1))
+	} // switch (GetUnitWeaponReachBits(unit, -1))
 
-    if (UNIT_CATTRIBUTES(unit) & CA_BALLISTAE) {
+	if (UNIT_CATTRIBUTES(unit) & CA_BALLISTAE) {
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    int item = GetBallistaItemAt(ix, iy);
 
@@ -613,81 +613,81 @@ void GenerateUnitCompleteAttackRange(struct Unit *unit)
 		    GetItemMinRange(item), GetItemMaxRange(item));
 	    }
 	})
-    }
+	}
 
-    #undef FOR_EACH_IN_MOVEMENT_RANGE
+	#undef FOR_EACH_IN_MOVEMENT_RANGE
 
-    SetWorkingBmMap(gBmMapMovement);
+	SetWorkingBmMap(gBmMapMovement);
 }
 
 void GenerateUnitStandingReachRange(struct Unit *unit, int reach)
 {
-    int x = unit->xPos;
-    int y = unit->yPos;
+	int x = unit->xPos;
+	int y = unit->yPos;
 
-    switch (reach) {
+	switch (reach) {
 
-    case REACH_RANGE1:
+	case REACH_RANGE1:
 	MapAddInBoundedRange(x, y, 1, 1);
 	break;
 
-    case REACH_RANGE1 | REACH_RANGE2:
+	case REACH_RANGE1 | REACH_RANGE2:
 	MapAddInBoundedRange(x, y, 1, 2);
 	break;
 
-    case REACH_RANGE1 | REACH_RANGE2 | REACH_RANGE3:
+	case REACH_RANGE1 | REACH_RANGE2 | REACH_RANGE3:
 	MapAddInBoundedRange(x, y, 1, 3);
 	break;
 
-    case REACH_RANGE2:
+	case REACH_RANGE2:
 	MapAddInBoundedRange(x, y, 2, 2);
 	break;
 
-    case REACH_RANGE2 | REACH_RANGE3:
+	case REACH_RANGE2 | REACH_RANGE3:
 	MapAddInBoundedRange(x, y, 2, 3);
 	break;
 
-    case REACH_RANGE3:
+	case REACH_RANGE3:
 	MapAddInBoundedRange(x, y, 3, 3);
 	break;
 
-    case REACH_RANGE3 | REACH_TO10:
+	case REACH_RANGE3 | REACH_TO10:
 	MapAddInBoundedRange(x, y, 3, 10);
 	break;
 
-    case REACH_RANGE1 | REACH_RANGE3:
+	case REACH_RANGE1 | REACH_RANGE3:
 	MapAddInBoundedRange(x, y, 1, 1);
 	MapAddInBoundedRange(x, y, 3, 3);
 	break;
 
-    case REACH_RANGE1 | REACH_RANGE3 | REACH_TO10:
+	case REACH_RANGE1 | REACH_RANGE3 | REACH_TO10:
 	MapAddInBoundedRange(x, y, 1, 1);
 	MapAddInBoundedRange(x, y, 3, 10);
 	break;
 
-    case REACH_RANGE1 | REACH_RANGE2 | REACH_RANGE3 | REACH_TO10:
+	case REACH_RANGE1 | REACH_RANGE2 | REACH_RANGE3 | REACH_TO10:
 	MapAddInBoundedRange(x, y, 1, 10);
 	break;
 
-    case REACH_RANGE1 | REACH_TO10:
+	case REACH_RANGE1 | REACH_TO10:
 	MapAddInBoundedRange(x, y, 1, 4);
 	break;
 
-    case REACH_MAGBY2:
+	case REACH_MAGBY2:
 	MapAddInBoundedRange(x, y, 1, GetUnitMagBy2Range(unit));
 	break;
 
-    } // switch (reach)
+	} // switch (reach)
 }
 
 void GenerateUnitCompleteStaffRange(struct Unit *unit)
 {
-    int ix, iy;
+	int ix, iy;
 
-    int reach = GetUnitStaffReachBits(unit);
-    int magBy2Range = GetUnitMagBy2Range(unit);
+	int reach = GetUnitStaffReachBits(unit);
+	int magBy2Range = GetUnitMagBy2Range(unit);
 
-    #define FOR_EACH_IN_MOVEMENT_RANGE(block) \
+	#define FOR_EACH_IN_MOVEMENT_RANGE(block) \
 	for (iy = gBmMapSize.y - 1; iy >= 0; --iy) \
 	{ \
 	    for (ix = gBmMapSize.x - 1; ix >= 0; --ix) \
@@ -702,50 +702,50 @@ void GenerateUnitCompleteStaffRange(struct Unit *unit)
 	    } \
 	}
 
-    switch (reach) {
+	switch (reach) {
 
-    case REACH_RANGE1:
+	case REACH_RANGE1:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 1, 1);
 	})
 
 	break;
 
-    case REACH_RANGE1 | REACH_RANGE2:
+	case REACH_RANGE1 | REACH_RANGE2:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 1, 2);
 	})
 
 	break;
 
-    case REACH_MAGBY2:
+	case REACH_MAGBY2:
 	FOR_EACH_IN_MOVEMENT_RANGE({
 	    MapAddInBoundedRange(ix, iy, 1, magBy2Range);
 	})
 
 	break;
 
-    default:
+	default:
 	break;
 
-    } // switch (reach)
+	} // switch (reach)
 
-    #undef FOR_EACH_IN_MOVEMENT_RANGE
+	#undef FOR_EACH_IN_MOVEMENT_RANGE
 }
 
 void GenerateDangerZoneRange(s8 boolDisplayStaffRange)
 {
-    int i, enemyFaction;
-    int hasMagicRank, prevHasMagicRank;
-    u8 savedUnitId;
+	int i, enemyFaction;
+	int hasMagicRank, prevHasMagicRank;
+	u8 savedUnitId;
 
-    prevHasMagicRank = -1;
+	prevHasMagicRank = -1;
 
-    BmMapFill(gBmMapRange, 0);
+	BmMapFill(gBmMapRange, 0);
 
-    enemyFaction = GetNonActiveFaction();
+	enemyFaction = GetNonActiveFaction();
 
-    for (i = enemyFaction + 1; i < enemyFaction + 0x80; ++i) {
+	for (i = enemyFaction + 1; i < enemyFaction + 0x80; ++i) {
 	struct Unit *unit = GetUnit(i);
 
 	if (!UNIT_IS_VALID(unit))
@@ -787,14 +787,14 @@ void GenerateDangerZoneRange(s8 boolDisplayStaffRange)
 	    GenerateUnitCompleteAttackRange(unit);
 
 	gBmMapUnit[unit->yPos][unit->xPos] = savedUnitId;
-    }
+	}
 }
 
 void GenerateMagicSealMap(int value)
 {
-    int i;
+	int i;
 
-    for (i = FACTION_RED + 1; i < FACTION_RED + 0x40; ++i) {
+	for (i = FACTION_RED + 1; i < FACTION_RED + 0x40; ++i) {
 	struct Unit *unit = GetUnit(i);
 
 	if (!UNIT_IS_VALID(unit))
@@ -802,10 +802,10 @@ void GenerateMagicSealMap(int value)
 
 	if (UNIT_CATTRIBUTES(unit) & CA_MAGICSEAL)
 	    MapSetInRange(unit->xPos, unit->yPos, 10, value);
-    }
+	}
 }
 
 inline s8* GetWorkingMoveCosts(void)
 {
-    return gWorkingTerrainMoveCosts;
+	return gWorkingTerrainMoveCosts;
 }

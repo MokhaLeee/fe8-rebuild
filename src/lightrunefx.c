@@ -160,7 +160,7 @@ void ProcLightRuneAnim_Loop(struct ProcBmFx *proc)
 
 	TileMap_CopyRect(TILEMAP_LOCATED(gUiTmScratchA, x, y), gBG0TilemapBuffer, 8, 9);
 	BG_EnableSyncByMask(BG0_SYNC_BIT);
-    
+
 }
 
 void ProcBmFx_CommonEnd(struct ProcBmFx *proc)
@@ -223,7 +223,7 @@ void ProcLightRuneAnim2_Loop(struct ProcBmFx *proc)
 
 	TileMap_CopyRect(TILEMAP_LOCATED(gUiTmScratchA, x, y), gBG0TilemapBuffer, 8, 9);
 	BG_EnableSyncByMask(BG0_SYNC_BIT);
-    
+
 }
 
 void ProcLightRuneAnim2_End(struct ProcBmFx *proc)
@@ -286,7 +286,7 @@ void ProcLightRuneAnim3_Loop(struct ProcBmFx *proc)
 
 	TileMap_CopyRect(TILEMAP_LOCATED(gUiTmScratchA, x, y), gBG0TilemapBuffer, 8, 9);
 	BG_EnableSyncByMask(BG0_SYNC_BIT);
-    
+
 }
 
 void ProcLightRuneAnim3_End(struct ProcBmFx *proc)

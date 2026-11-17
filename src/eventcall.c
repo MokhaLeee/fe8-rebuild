@@ -130,7 +130,7 @@ void HideAllAlliesExceptLeader(void)
 
 		if (unit->xPos != x || unit->yPos != y)
 			continue;
-        
+
 		if ((US_RESCUING | US_RESCUED) & unit->state)
 			continue;
 
@@ -467,7 +467,7 @@ void WorldFlushInit(struct ProcWorldFlush *proc)
 void WorldFlushOut(struct ProcWorldFlush *proc)
 {
 	int val0, val1, val2, val3, count, max_count;
-    
+
 	val2 = 0x40;
 	val1 = 0xF0;
 
@@ -536,7 +536,7 @@ void WorldFlushCallBack(void)
 {
 	SetPrimaryHBlankHandler(0);
 	SetBlendConfig(0, 0, 0, 0);
-    
+
 	SetWinEnable(0, 0, 0);
 	gLCDControlBuffer.wincnt.win0_enableBlend = 1;
 	gLCDControlBuffer.wincnt.wout_enableBlend = 1;

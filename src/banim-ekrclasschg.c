@@ -578,7 +578,7 @@ void EfxClasschgFinMain(struct ProcEfxBG *proc)
 	struct Anim *anim = proc->anim;
 
 	gLCDControlBuffer.bgoffset[1].y--;
-    
+
 	if (++proc->timer == proc->terminator) {
 		SpellFx_ClearBG1();
 		SetDefaultColorEffects_();
@@ -616,7 +616,7 @@ void EfxClasschgCloneMain(struct ProcEfxBG *proc)
 	_anim.pSpriteData = anim->pSpriteData;
 	_anim.oamBase = anim->oamBase & ~0x0800;
 	_anim.oam2Base = anim->oam2Base;
-    
+
 	_anim.oam2Base &= 0xF3FF;
 	_anim.oam2Base |= 0x0800;
 

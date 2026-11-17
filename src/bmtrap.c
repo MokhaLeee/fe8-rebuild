@@ -107,7 +107,7 @@ void ApplyTrapDamageReal(struct ProcBmTrap *proc)
 		struct Unit *tmp = gActiveUnit;
 
 		gActiveUnit = unit;
-        
+
 		PidStatsRecordDefeatInfo(unit->pCharacterData->number, 0, 3);
 
 		if (CheckForWaitEvents() != 0)

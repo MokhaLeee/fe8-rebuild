@@ -68,7 +68,7 @@ void sub_8077E6C(struct Proc08801810 *proc)
 	if (++proc->timer1 == 0x18) {
 		sub_8077EEC(proc->timer2, proc);
 		proc->timer1 = 0;
-        
+
 		if (++proc->timer2 > 0xF)
 			Proc_Break(proc);
 	}
@@ -88,7 +88,7 @@ void sub_8077EAC(int x, int y)
 	case EKR_DISTANCE_CLOSE:
 		x += 0x8;
 		break;
-    
+
 	case EKR_DISTANCE_FAR:
 		x += 0x20;
 		break;
@@ -238,7 +238,7 @@ void EfxSelfThunderBGUpdateAnimTSA(struct Anim *anim, const u16 *tsa_close, cons
 		EfxTmCpyBG(buffer, gBG1TilemapBuffer, 32, 20, 1, 256);
 	else
 		EfxTmCpyBgHFlip(buffer, gBG1TilemapBuffer, 32, 20, 1, 256);
-    
+
 	BG_EnableSyncByMask(BG1_SYNC_BIT);
 }
 

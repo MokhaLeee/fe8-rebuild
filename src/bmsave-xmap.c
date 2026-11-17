@@ -19,7 +19,7 @@ CONST_DATA struct ExtraMapInfo *gExtraMapInfo = (void *) EWRAM_START + 0x40000 -
 void LoadAndVerfySuspendSave(void)
 {
 	struct PlaySt playSt;
-    
+
 	if (IsValidSuspendSave(SAVE_ID_SUSPEND)) {
 
 		ReadSuspendSavePlaySt(SAVE_ID_SUSPEND, &playSt);

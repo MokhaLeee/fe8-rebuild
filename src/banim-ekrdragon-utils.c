@@ -61,11 +61,11 @@ void EfxBgFlashingForDragon(struct Anim *anim)
 		case EKRDRGON_TYPE_NORMAL:
 		case EKRDRGON_TYPE_MYRRH:
 			return;
-        
+
 		case EKRDRGON_TYPE_DRACO_ZOMBIE:
 			pal = Pal_BanimUnitFlashing;
 			break;
-    
+
 		case EKRDRGON_TYPE_DEMON_KING:
 			pal = Pal_BanimUnitFlashing;
 			break;
@@ -140,7 +140,7 @@ CONST_DATA struct ProcCmd ProcScr_ekrDragonQuake[] = {
 void NewEkrDragonQuake(struct EkrDragonQuakePriv *priv, int b, int c, ProcPtr parent)
 {
 	struct ProcEkrDragonQuake *proc;
-    
+
 	proc = Proc_Start(ProcScr_ekrDragonQuake, parent);
 	proc->priv = priv;
 	proc->subproc = NewEfxQuakePure(c, 0);
@@ -161,15 +161,15 @@ void EkrDragonQuakeMain(struct ProcEkrDragonQuake *proc)
 			BG_0,
 			gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x,
 			gEkrBg2QuakeVec.y + gEkrBg0QuakeVec.y);
-    
+
 		EkrGauge_Setxy323A(
 			-(gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x),
 			-(gEkrBg2QuakeVec.y + gEkrBg0QuakeVec.y));
-    
+
 		EkrDispUP_SetPositionSync(
 			-(gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x),
 			-(gEkrBg2QuakeVec.y + gEkrBg0QuakeVec.y));
-    
+
 		BG_SetPosition(BG_3, gEkrBg2QuakeVec.x, gEkrBg2QuakeVec.y);
 	} while (0);
 

@@ -490,7 +490,7 @@ void SpellWarpStartImplosion(ProcPtr proc)
 	struct Unit *unit;
 
 	PlaySoundEffect(SONG_B5);
-    
+
 	unit = gManimSt.actor[gManimSt.targetActorId].unit;
 	StartStarImplosionEffect(
 		unit->xPos * 0x10 - gBmSt.camera.x + 0x8,

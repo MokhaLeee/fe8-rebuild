@@ -62,7 +62,7 @@ void NewPopup2_PlanA(ProcPtr parent, int IconIndex, char *str)
 
 	if (IconIndex >= 0)
 		len += 0x10;
-    
+
 	len += 0x18;
 
 	x_tile = 0xF0 - len;
@@ -98,16 +98,16 @@ void NewPopup2_PlanB(ProcPtr proc, int icon_index, char *str0, int num, char *st
 
 	if (0 != str0)
 		len += GetStringTextLen(str0) + 2;
-    
+
 	if (0 != str1)
 		len += GetStringTextLen(str1) + 2;
 
 	tiles = 8;
 	tmp = num;
-    
+
 	while (1) {
 		tmp = tmp / 0xA;
-        
+
 		if (tmp == 0)
 			break;
 

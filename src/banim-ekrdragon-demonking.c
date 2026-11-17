@@ -107,7 +107,7 @@ void EkrDK_BgMovement(struct ProcEkrDragon *proc)
 	int val2 = Interpolate(INTERPOLATE_RCUBIC, -0x50, 0, proc->tcounter, 0x78);
 
 	EkrDragonTmCpyExt(gEkrBgPosition + val1, val2);
-    
+
 	if (proc->tcounter == 0x78) {
 		Proc_Break(proc);
 	} else
@@ -120,7 +120,7 @@ void EkrDK_PrepareBanimfx(struct ProcEkrDragon *proc)
 		EkrPrepareBanimfx(proc->anim, 0xC2);    /* index for DK Ravager in banim table */
 	else
 		EkrPrepareBanimfx(proc->anim, 0xC1);    /* index for DK Demon Light in banim table */
-    
+
 	SetAnimStateUnHidden(GetAnimPosition(proc->anim));
 	gEkrSpellAnimIndex[0] = 0x40;
 	AddEkrDragonStatusAttr(proc->anim, EKRDRGON_ATTR_BANIMFX_PREPARED);
@@ -391,9 +391,9 @@ void sub_8076C54(struct ProcEfxDKBody1 *proc)
 	s16 val1;
 	s16 val2;
 	u32 val3;
-    
+
 	GetAnimAnotherSide(proc->fxproc->anim);
-    
+
 	val1 = 0;
 	val2 = 0;
 
@@ -884,7 +884,7 @@ void sub_80773E4(struct ProcEfxDKfx *proc)
 	sub_8077DB4(val1, val2);
 
 	++proc->timer;
-    
+
 	time = proc->timer;
 	if (time == 480) {
 		StartPalFade(Pal_AllBlack, 0x17, 0xF0, proc);
@@ -1106,7 +1106,7 @@ ProcPtr NewEkrDragonTunk(struct Anim *anim)
 		proc->unk32 = -8;
 	else
 		proc->unk32 = -32;
-    
+
 	Sound_FadeOutBGM(1);
 	return proc;
 }
@@ -1149,7 +1149,7 @@ void sub_807789C(struct ProcEkrDragonTunk *proc)
 
 	if (proc->timer2 <=0x18A)
 		EfxBG3TmSetPosition(gEkrBg2QuakeVec.x, gEkrBg2QuakeVec.y);
-    
+
 	BG_SetPosition(BG_2, gEkrBg2QuakeVec.x, gEkrBg2QuakeVec.y);
 	BG_SetPosition(BG_0,
 		gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x,
@@ -1160,11 +1160,11 @@ void sub_807789C(struct ProcEkrDragonTunk *proc)
 	EkrGauge_Setxy323A(
 		-(gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x),
 		-(gEkrBg2QuakeVec.y + gEkrBg0QuakeVec.y));
-    
+
 	EkrDispUP_SetPositionSync(
 		-(gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x),
 		-(gEkrBg2QuakeVec.y + gEkrBg0QuakeVec.y));
-    
+
 	if (++proc->timer2 == 0x2) {
 		proc->qproc = NewEfxQuakePure(0xC, 0);
 		PlaySFX(0x142, 0x100, 0x78, 0x0);
@@ -1203,7 +1203,7 @@ void sub_807789C(struct ProcEkrDragonTunk *proc)
 
 	if (proc->timer2 == 0xF0)
 		NewEkrWhiteOUT(0x7D, 0x1E, 0x78);
-    
+
 	if (proc->timer2 == 0x18B) {
 		Proc_End(proc->fproc);
 		Proc_End(proc->qproc);

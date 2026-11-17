@@ -494,7 +494,7 @@ void PointsSpriteText_LoopIn(struct PointsSpriteTextProc *proc)
 		// clang-format off
 		SetObjAffine(
 			1,
-			Div(+COS(0) * 16, 0x100), 
+			Div(+COS(0) * 16, 0x100),
 			Div(-SIN(0) * 16, scale),
 			Div(+SIN(0) * 16, 0x100),
 			Div(+COS(0) * 16, scale)
@@ -527,7 +527,7 @@ void PointsSpriteText_LoopOut(struct PointsSpriteTextProc *proc)
 		// clang-format off
 		SetObjAffine(
 			1,
-			Div(+COS(0) * 16, 0x100), 
+			Div(+COS(0) * 16, 0x100),
 			Div(-SIN(0) * 16, scale),
 			Div(+SIN(0) * 16, 0x100),
 			Div(+COS(0) * 16, scale)

@@ -1108,7 +1108,7 @@ PROC_LABEL(2),
 	PROC_REPEAT(SoundRoomUi_Loop_ShufflePlayKeyHandler),
 
 	PROC_REPEAT(SoundRoomUi_Loop_ShufflePlayUiSlideOut),
- 
+
 	PROC_CALL(SoundRoomUi_80AFCE4),
 	PROC_REPEAT(SoundRoomUi_Loop_MainUiSlideIn),
 

@@ -12,7 +12,7 @@ enum
 
 #define MAX_PROC_COUNT 64
 
-EWRAM_DATA static struct Proc sProcArray[MAX_PROC_COUNT] = {0}; 
+EWRAM_DATA static struct Proc sProcArray[MAX_PROC_COUNT] = {0};
 
 EWRAM_DATA static struct Proc *sProcAllocList[MAX_PROC_COUNT + 1] = {0};
 EWRAM_DATA static struct Proc **sProcAllocListHead = NULL; // pointer to next entry in sProcAllocList

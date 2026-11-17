@@ -27,7 +27,7 @@ void MenuItemPanelProcIdle(struct MenuItemPanelProc *proc)
 
 	if (proc->ItemSlotIndex < 0)
 		return;
-    
+
 	/* atk */
 	if (gBattleActor.battleAttack > gBattleTarget.battleAttack)
 		UpdateStatArrowSprites(proc->x * 8 + 0x33, (proc->y + 3) * 8, 0);
@@ -134,7 +134,7 @@ void UpdateMenuItemPanel(int slot_or_item)
 			str++;
 			i++;
 		}
-		
+
 		gBattleActor.battleAttack = gBattleTarget.battleAttack;
 		gBattleActor.battleHitRate = gBattleTarget.battleHitRate;
 		gBattleActor.battleCritRate = gBattleTarget.battleCritRate;
@@ -144,7 +144,7 @@ void UpdateMenuItemPanel(int slot_or_item)
 		PutText(&texts[1], TILEMAP_LOCATED(bg_base, 1, 3));
 		PutText(&texts[2], TILEMAP_LOCATED(bg_base, 1, 5));
 		break;
-	
+
 	default:
 		BattleGenerateUiStats(unit, slot_or_item);
 
@@ -162,7 +162,7 @@ void UpdateMenuItemPanel(int slot_or_item)
 		Text_InsertDrawString(&texts[2], 0x02, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(0x4F4));
 		Text_InsertDrawString(&texts[1], 0x32, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(0x501));
 		Text_InsertDrawString(&texts[2], 0x32, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(0x4F5));
-		
+
 		Text_InsertDrawNumberOrBlank(&texts[1], 0x24, color, gBattleActor.battleAttack);
 		Text_InsertDrawNumberOrBlank(&texts[2], 0x24, color, gBattleActor.battleHitRate);
 		Text_InsertDrawNumberOrBlank(&texts[1], 0x54, color, gBattleActor.battleCritRate);
@@ -171,7 +171,7 @@ void UpdateMenuItemPanel(int slot_or_item)
 		PutText(&proc->text[0], TILEMAP_LOCATED(gBG0TilemapBuffer, proc->x + 1, proc->y + 0x1));
 		PutText(&proc->text[1], TILEMAP_LOCATED(gBG0TilemapBuffer, proc->x + 1, proc->y + 0x3));
 		PutText(&proc->text[2], TILEMAP_LOCATED(gBG0TilemapBuffer, proc->x + 1, proc->y + 0x5));
-		
+
 		DrawIcon(
 			TILEMAP_LOCATED(bg_base, 8, 1),
 			GetItemType(gBattleActor.weapon) + 0x70,

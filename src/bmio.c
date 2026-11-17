@@ -634,7 +634,7 @@ void WfxFlamesInitGradientPublic(void)
 				if (r > 31)
 					r = 31;
 
-				sGradientEffect.fireGradient[k][0x10 * i + j] = 
+				sGradientEffect.fireGradient[k][0x10 * i + j] =
 					(b << 10) + (g << 5) + r;
 			}
 		}
@@ -661,7 +661,7 @@ void WfxFlamesInitGradient(void)
 				if (r > 31)
 					r = 31;
 
-				sGradientEffect.fireGradient[k][0x10 * i + j] = 
+				sGradientEffect.fireGradient[k][0x10 * i + j] =
 					(b << 10) + (g << 5) + r;
 			}
 		}
@@ -717,7 +717,7 @@ void WfxFlamesUpdateGradient(void)
 			if (r > 31)
 				r = 31;
 
-			sGradientEffect.fireGradient[j][0x10 * 2 + i] = 
+			sGradientEffect.fireGradient[j][0x10 * 2 + i] =
 				(b << 10) + (g << 5) + r;
 		}
 

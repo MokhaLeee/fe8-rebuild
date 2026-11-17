@@ -22,7 +22,7 @@ CONST_DATA struct MenuItemDef gDebugClearMenuItems[] = {
 };
 
 CONST_DATA struct MenuItemDef gDebugChargeMenuItems[] = {
-	{"", 0, 0, 0, 8, MenuAlwaysEnabled, DebugChargeMenu_Draw, 0, DebugChargeMenu_Idle, 0, 0 
+	{"", 0, 0, 0, 8, MenuAlwaysEnabled, DebugChargeMenu_Draw, 0, DebugChargeMenu_Idle, 0, 0
 },
 	{"", 0, 0, 0, 9, MenuAlwaysEnabled, DebugChargeMenu_Draw, 0, DebugChargeMenu_Idle, 0, 0},
 	MenuItemsEnd
@@ -53,10 +53,10 @@ CONST_DATA struct MenuItemDef gDebugMenuItems[] = {
 };
 
 CONST_DATA struct MenuItemDef gItemUseMenuItems[] = {
-	{"", 0, 0, 0, 0x1a, RepairMenuItemIsAvailable, RepairMenuItemDraw, RepairMenuItemSelect, 0, RepairMenuItemOnChange, RepairMenuItemOnChangeOut}, 
-	{"", 0, 0, 0, 0x1b, RepairMenuItemIsAvailable, RepairMenuItemDraw, RepairMenuItemSelect, 0, RepairMenuItemOnChange, RepairMenuItemOnChangeOut}, 
-	{"", 0, 0, 0, 0x1c, RepairMenuItemIsAvailable, RepairMenuItemDraw, RepairMenuItemSelect, 0, RepairMenuItemOnChange, RepairMenuItemOnChangeOut}, 
-	{"", 0, 0, 0, 0x1d, RepairMenuItemIsAvailable, RepairMenuItemDraw, RepairMenuItemSelect, 0, RepairMenuItemOnChange, RepairMenuItemOnChangeOut}, 
+	{"", 0, 0, 0, 0x1a, RepairMenuItemIsAvailable, RepairMenuItemDraw, RepairMenuItemSelect, 0, RepairMenuItemOnChange, RepairMenuItemOnChangeOut},
+	{"", 0, 0, 0, 0x1b, RepairMenuItemIsAvailable, RepairMenuItemDraw, RepairMenuItemSelect, 0, RepairMenuItemOnChange, RepairMenuItemOnChangeOut},
+	{"", 0, 0, 0, 0x1c, RepairMenuItemIsAvailable, RepairMenuItemDraw, RepairMenuItemSelect, 0, RepairMenuItemOnChange, RepairMenuItemOnChangeOut},
+	{"", 0, 0, 0, 0x1d, RepairMenuItemIsAvailable, RepairMenuItemDraw, RepairMenuItemSelect, 0, RepairMenuItemOnChange, RepairMenuItemOnChangeOut},
 	{"", 0, 0, 0, 0x1e, RepairMenuItemIsAvailable, RepairMenuItemDraw, RepairMenuItemSelect, 0, RepairMenuItemOnChange, RepairMenuItemOnChangeOut},
 	MenuItemsEnd
 };
@@ -164,18 +164,18 @@ CONST_DATA struct MenuItemDef gUnitActionMenuItems[] = {
 	{"　訪問", 0x682, 0x6CB, 0, 0x5C, VisitCommandUsability, 0, VisitCommandEffect, 0, 0, 0}, // Visit
 	{"　宝箱", 0x683, 0x6CE, 0, 0x5D, ChestCommandUsability, 0, ChestCommandEffect, 0, 0, 0}, // Chest
 	{"　扉", 0x684, 0x6CD, 0, 0x5E, DoorCommandUsability, 0, DoorCommandEffect, 0, 0, 0}, // Door >
-	{"　武器屋", 0x685, 0x6CF, 0, 0x5F, ArmoryCommandUsability, 0, ArmoryCommandEffect, 0, 0, 0}, //Armory > 
-	{"　道具屋", 0x686, 0x6D0, 0, 0x60, VendorCommandUsability, 0, VendorCommandEffect, 0, 0, 0}, //Vendor > 
-	{"　秘密店", 0x687, 0x6D1, 0, 0x61, SecretShopCommandUsability, 0, SecretShopCommandEffect, 0, 0, 0}, //SecretShop > 
+	{"　武器屋", 0x685, 0x6CF, 0, 0x5F, ArmoryCommandUsability, 0, ArmoryCommandEffect, 0, 0, 0}, //Armory >
+	{"　道具屋", 0x686, 0x6D0, 0, 0x60, VendorCommandUsability, 0, VendorCommandEffect, 0, 0, 0}, //Vendor >
+	{"　秘密店", 0x687, 0x6D1, 0, 0x61, SecretShopCommandUsability, 0, SecretShopCommandEffect, 0, 0, 0}, //SecretShop >
 	{"　闘技場", 0x688, 0x6D2, 0, 0x62, ArenaCommandUsability, 0, ArenaCommandEffect, 0, 0, 0}, // Arena
-	{"　救出", 0x689, 0x6C5, 0, 0x63, RescueUsability, 0, RescueEffect, 0, 0, 0}, // Rescue > 
-	{"　降ろす", 0x68A, 0x6C6, 0, 0x64, DropUsability, 0, DropEffect, 0, 0, 0}, // Drop > 
-	{"　引受け", 0x68B, 0x6C8, 4, 0x65, TakeUsability, 0, TakeEffect, 0, 0, 0}, // Take > 
-	{"　引渡し", 0x68C, 0x6C7, 4, 0x66, GiveUsability, 0, GiveEffect, 0, 0, 0}, // Give > 
-	{"　持ち物", 0x68D, 0x6D3, 0, 0x67, ItemCommandUsability, 0, ItemCommandEffect, 0, 0, 0}, // Item > 
-	{"　交換", 0x68E, 0x6D4, 4, 0x68, ItemSubMenu_IsTradeAvailable, 0, TradeCommandEffect, 0, 0, 0}, // Trade > 
-	{"　輸送隊", 0x68F, 0x6D5, 4, 0x69, SupplyUsability, 0, SupplyCommandEffect, 0, 0, 0}, // Supply > 
-	{"　待機", 0x695, 0x6BF, 0, 0x6B, MenuAlwaysEnabled, 0, EffectWait, 0, 0, 0}, // Wait > 
+	{"　救出", 0x689, 0x6C5, 0, 0x63, RescueUsability, 0, RescueEffect, 0, 0, 0}, // Rescue >
+	{"　降ろす", 0x68A, 0x6C6, 0, 0x64, DropUsability, 0, DropEffect, 0, 0, 0}, // Drop >
+	{"　引受け", 0x68B, 0x6C8, 4, 0x65, TakeUsability, 0, TakeEffect, 0, 0, 0}, // Take >
+	{"　引渡し", 0x68C, 0x6C7, 4, 0x66, GiveUsability, 0, GiveEffect, 0, 0, 0}, // Give >
+	{"　持ち物", 0x68D, 0x6D3, 0, 0x67, ItemCommandUsability, 0, ItemCommandEffect, 0, 0, 0}, // Item >
+	{"　交換", 0x68E, 0x6D4, 4, 0x68, ItemSubMenu_IsTradeAvailable, 0, TradeCommandEffect, 0, 0, 0}, // Trade >
+	{"　輸送隊", 0x68F, 0x6D5, 4, 0x69, SupplyUsability, 0, SupplyCommandEffect, 0, 0, 0}, // Supply >
+	{"　待機", 0x695, 0x6BF, 0, 0x6B, MenuAlwaysEnabled, 0, EffectWait, 0, 0, 0}, // Wait >
 	MenuItemsEnd
 };
 
@@ -232,7 +232,7 @@ CONST_DATA struct MenuDef gDebugMenuDef = {
 	0,
 	gDebugMenuItems,
 	MISMATCHED_SIGNATURE(DebugMenuInit),
-	NULL, 
+	NULL,
 	NULL,
 	EndMenuAndClear,
 	NULL,
@@ -244,7 +244,7 @@ CONST_DATA struct MenuDef gMenuInfo_RepairItems = {
 	0,
 	gItemUseMenuItems,
 	0, 0, 0,
-	ItemMenu_ButtonBPressed, 
+	ItemMenu_ButtonBPressed,
 	MenuAutoHelpBoxSelect,
 	ItemMenu_HelpBox
 };
@@ -254,7 +254,7 @@ CONST_DATA struct MenuDef gStealItemMenuDef = {
 	0,
 	gStealItemMenuItems,
 	0, 0, 0,
-	ItemMenu_ButtonBPressed, 
+	ItemMenu_ButtonBPressed,
 	MenuAutoHelpBoxSelect,
 	ItemMenu_HelpBox
 };

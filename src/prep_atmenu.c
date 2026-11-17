@@ -115,7 +115,7 @@ void sub_8095C00(int msg, ProcPtr parent)
 	proc = Proc_Find(ProcScr_PrepMenuDescHandler);
 	if (proc)
 		Proc_End(proc);
-    
+
 	proc = Proc_Start(ProcScr_PrepMenuDescHandler, parent);
 	proc->msg = msg;
 }
@@ -147,7 +147,7 @@ void AtMenu_Reinitialize(struct ProcAtMenu *proc)
 	SetDispEnable(0, 0, 0, 0, 0);
 	LoadObjUIGfx();
 	ResetUnitSprites();
-    
+
 	MakePrepUnitList();
 	PrepAutoCapDeployUnits(proc);
 	ReorderPlayerUnitsBasedOnDeployment();
@@ -167,7 +167,7 @@ void AtMenu_Reinitialize(struct ProcAtMenu *proc)
 	/* "Menu", "Start" button */
 	Decompress(gUnknown_08A1D510, (void*)0x6016000);
 	ApplyPalettes(Pal_SysBrownBox, 0x19, 2);
-    
+
 	sub_8095C50(0x7000, 0x6);
 	ApplyPalette(gUnknown_08A1D4C8, 0x14);
 	EnablePaletteSync();

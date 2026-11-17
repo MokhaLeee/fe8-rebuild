@@ -230,7 +230,7 @@ void EfxleveluphbMain(ProcPtr proc)
 			gEkrBg2ScrollFlip = 1;
 			gpBg2ScrollOffsetStart = gpBg2ScrollOffsetTable2;
 		}
-    
+
 		if (gEkrBg1ScrollFlip == 1) {
 			gEkrBg1ScrollFlip = 0;
 			gpBg1ScrollOffsetStart = gpBg1ScrollOffsetList1;

@@ -9,31 +9,31 @@
 
 void BattleAIS_ExecCommands(void)
 {
-    int type;
-    u32 i, idx, frame_front;
-    struct Anim *anim, *anim1, *anim2;
+	int type;
+	u32 i, idx, frame_front;
+	struct Anim *anim, *anim1, *anim2;
 
-    for (i = 0; i < 4; i++) {
-        gBanimDebugCurrentIndex = i;
+	for (i = 0; i < 4; i++) {
+		gBanimDebugCurrentIndex = i;
 
-        anim = gAnims[i];
-        if (!anim)
-            continue;
+		anim = gAnims[i];
+		if (!anim)
+			continue;
 
-        type = anim->state2 & ANIM_BIT2_CMD_MASK;
-        if (type == 0)
-            continue;
+		type = anim->state2 & ANIM_BIT2_CMD_MASK;
+		if (type == 0)
+			continue;
 
-        if (type & ANIM_BIT2_COMMAND) {
-            while (1) {
-                if (anim->commandQueueSize == 0)
+		if (type & ANIM_BIT2_COMMAND) {
+			while (1) {
+	if (anim->commandQueueSize == 0)
 	goto end_exec_loop;
 
-                switch (anim->commandQueue[anim->commandQueueSize - 1]) {
-                case 0:
+	switch (anim->commandQueue[anim->commandQueueSize - 1]) {
+	case 0:
 	break;
 
-                /**
+	/**
                  * C01
                  * End of anim
                  *
@@ -41,13 +41,13 @@ void BattleAIS_ExecCommands(void)
                  * Since this mode is used both in:
                  *      - on battle starting
                  *      - on unit get hitted
-                 * 
+                 *
                  * So we need to ensure that C01 can freeze banim in both of two cases.
                  *
                  * - On battle starting, set bit [gCtrlC01Blocking] to freeze anim
                  * - In battle, set bit [anim::state3::BIT2] to freeze anim
                  */
-                case ANIM_CMD_WAIT_01:
+	case ANIM_CMD_WAIT_01:
 	if (C01_BLOCKING_PRE_BATTLE(anim)) {
 	    anim->pScrCurrent = anim->pScrStart;
 	} else if (!C01_BLOCKING_IN_BATTLE(anim)) {
@@ -67,19 +67,19 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                case ANIM_CMD_WAIT_02:
+	case ANIM_CMD_WAIT_02:
 	if (anim->state3 & ANIM_BIT3_TAKE_BACK_ENABLE) {
 	    anim->state3 &= ~ANIM_BIT3_TAKE_BACK_ENABLE;
 	    anim->pScrCurrent = anim->pScrCurrent + 1;
 	}
 	break;
 
-                /**
+	/**
                  * C03
                  * 1. Unset some debuff flashing effect
                  * 2. Exec shinning effect for legend weapon
                  */
-                case ANIM_CMD_WAIT_03:
+	case ANIM_CMD_WAIT_03:
 	if (GetUnitEfxDebuff(gAnims[0]) & 0xC)
 	    SetUnitEfxDebuff(gAnims[0], 0);
 
@@ -91,7 +91,7 @@ void BattleAIS_ExecCommands(void)
 
 	if (GetUnitEfxDebuff(gAnims[3]) & 0xC)
 	    SetUnitEfxDebuff(gAnims[3], 0);
-                    
+
 	if (!(anim->state3 & ANIM_BIT3_BLOCKING)) {
 	    anim->state3 |= ANIM_BIT3_BLOCKING;
 	    if (GetAISLayerId(anim) == 0)
@@ -105,11 +105,11 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                /**
+	/**
                  * C04
                  * Start normal hitted effect if not MISS
                  */
-                case ANIM_CMD_WAIT_04:
+	case ANIM_CMD_WAIT_04:
 	if (!(anim->state3 & ANIM_BIT3_BLOCKING)) {
 	    anim->state3 |= ANIM_BIT3_BLOCKING;
 	    anim->state3 |= ANIM_BIT3_BLOCKEND;
@@ -134,11 +134,11 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                /**
+	/**
                  * C05
                  * Start spell anim (efxmagic)
                  */
-                case ANIM_CMD_WAIT_05:
+	case ANIM_CMD_WAIT_05:
 	if (!(anim->state3 & ANIM_BIT3_BLOCKING)) {
 	    anim->state3 |= ANIM_BIT3_BLOCKING;
 	    anim->state3 |= ANIM_BIT3_BLOCKEND;
@@ -159,16 +159,16 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                /**
+	/**
                  * C06
                  * Attacker anim trigger opponent's next round anim.
-                 * 
+                 *
                  * Usually, atttacker anim is written in:
                  * C06
                  * C0D
                  * in end.
                  */
-                case 0x06:
+	case 0x06:
 	anim1 = GetAnimAnotherSide(anim);
 	if (anim1) {
 	    type = GetAnimNextRoundTypeAnotherSide(anim1);
@@ -177,11 +177,11 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                /**
+	/**
                  * C07
                  * Start attack animation
                  */
-                case 0x07:
+	case 0x07:
 	if (GetRoundFlagByAnim(anim) & ANIM_ROUND_SURE_SHOT) {
 	    if (!(anim->state3 & ANIM_BIT3_BLOCKING)) {
 	        anim->state3 |= ANIM_BIT3_BLOCKING;
@@ -203,7 +203,7 @@ void BattleAIS_ExecCommands(void)
 	else if (GetRoundFlagByAnim(anim) & ANIM_ROUND_PIERCE) {
 	    if (!(anim->state3 & ANIM_BIT3_BLOCKING)) {
 	        anim->state3 |= ANIM_BIT3_BLOCKING;
-                
+
 	        if (GetAISLayerId(anim) == 0) {
 	            NewEfxSkillType01BG(anim);
 	            gAnims[2]->state3 &= ANIM_BIT3_BLOCKING;
@@ -224,15 +224,15 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                /**
+	/**
                  * C08
                  * Critical hit
                  */
-                case 0x08:
-                case 0x09:
-                case 0x0A:
-                case 0x0B:
-                case 0x0C:
+	case 0x08:
+	case 0x09:
+	case 0x0A:
+	case 0x0B:
+	case 0x0C:
 	if (GetAISLayerId(anim) == 0) {
 	    anim1 = GetAnimAnotherSide(anim);
 	    type = GetAnimRoundTypeAnotherSide(anim);
@@ -253,11 +253,11 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                /**
+	/**
                  * C0D
                  * Attack start its own next round anim.
                 */
-                case 0x0D:
+	case 0x0D:
 	type = GetAnimNextRoundType(anim);
 	anim1 = gAnims[GetAnimPosition(anim) * 2];
 	anim2 = gAnims[GetAnimPosition(anim) * 2 + 1];
@@ -337,11 +337,11 @@ void BattleAIS_ExecCommands(void)
 	} /* switch (type) */
 	break;
 
-                /**
+	/**
                  * C13
                  * efxTeonoOBJ?
                  */
-                case ANIM_CMD_WAIT_13:
+	case ANIM_CMD_WAIT_13:
 	if (!(anim->state3 & ANIM_BIT3_BLOCKING)) {
 	    anim->state3 |= ANIM_BIT3_BLOCKING;
 	} else if (gEfxTeonoState == 1) {
@@ -351,29 +351,29 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                /**
+	/**
                  * C14
                  * Heavy vibration of screen
                  */
-                case 0x14:
+	case 0x14:
 	if (GetAISLayerId(anim) == 0)
 	    NewEfxQuake(3);
 	break;
 
-                /**
+	/**
                  * C15
                  * Slight vibration of screen
                  */
-                case 0x15:
+	case 0x15:
 	if (GetAISLayerId(anim) == 0)
 	    NewEfxQuake(0);
 	break;
 
-                /**
+	/**
                  * C18
                  * Start of dodge toward the foreground
                  */
-                case ANIM_CMD_WAIT_18:
+	case ANIM_CMD_WAIT_18:
 	if (anim->state3 & ANIM_BIT3_TAKE_BACK_ENABLE) {
 	    anim->state3 &= ~ANIM_BIT3_TAKE_BACK_ENABLE;
 	    anim->pScrCurrent = anim->pScrCurrent + 1;
@@ -383,11 +383,11 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                /**
+	/**
                  * C1A
                  * Normal hit effect
                  */
-                case 0x1A:
+	case 0x1A:
 	if (GetAISLayerId(anim) == 0) {
 	    anim1 = GetAnimAnotherSide(anim);
 	    if (anim1) {
@@ -405,22 +405,22 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                case 0x26:
+	case 0x26:
 	if (GetAISLayerId(anim) == 0)
 	    NewEfxYushaSpinShield(anim, 0x0);
 	break;
 
-                case 0x27:
+	case 0x27:
 	if (GetAISLayerId(anim) == 0)
 	    NewEfxYushaSpinShield(anim, 0x1);
 	break;
 
-                case 0x2C:
+	case 0x2C:
 	if (GetAISLayerId(anim) == 0)
 	    NewEfxHurtmutEff00(anim);
 	break;
 
-                case ANIM_CMD_WAIT_2D:
+	case ANIM_CMD_WAIT_2D:
 	if (GetRoundFlagByAnim(anim) & ANIM_ROUND_SILENCER) {
 	    if (!(anim->state3 & ANIM_BIT3_BLOCKING)) {
 	        anim->state3 |= ANIM_BIT3_BLOCKING;
@@ -439,52 +439,52 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                /**
+	/**
                  * C2E
                  * Sage's normal magic
                  */
-                case 0x2E:
+	case 0x2E:
 	if (GetAISLayerId(anim) == 0)
 	    NewEfxMagfcast(anim, 0);
 	break;
 
-                /**
+	/**
                  * C2F
                  * Sage's critical magic
                  */
-                case 0x2F:
+	case 0x2F:
 	if (GetAISLayerId(anim) == 0)
 	    NewEfxMagfcast(anim, 1);
 	break;
 
-                /**
+	/**
                  * C30
                  * Dirt kicking (as from dashing forward) animation
                  */
-                case 0x30:
+	case 0x30:
 	if (GetAISLayerId(anim) == 0)
 	    NewEfxSunakemuri(anim, 0);
 	break;
 
-                /**
+	/**
                  * C31
                  * Dirt wave (as from horse kicking forward from ground) animation
                  */
-                case 0x31:
+	case 0x31:
 	if (GetAISLayerId(anim) == 0)
 	    NewEfxSunakemuri(anim, 1);
 	break;
 
-                /**
+	/**
                  * C32
                  * Medium sized dirt wave moving backward animation
                  */
-                case 0x32:
+	case 0x32:
 	if (GetAISLayerId(anim) == 0)
 	    NewEfxSunakemuri(anim, 2);
 	break;
 
-                case ANIM_CMD_WAIT_39:
+	case ANIM_CMD_WAIT_39:
 	if (!(anim->state3 & ANIM_BIT3_BLOCKING)) {
 	    anim->state3 |= ANIM_BIT3_BLOCKING;
 	    if (GetAISLayerId(anim) == 0)
@@ -498,12 +498,12 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                case 0x3D:
+	case 0x3D:
 	if (!(anim->state3 & ANIM_BIT3_BLOCKING)) {
 	    anim->state3 |= ANIM_BIT3_BLOCKING;
 	    if (GetAISLayerId(anim) == 0)
 	        Set0201FAC8(1);
-                        
+
 	    nullsub_17(anim);
 	    NewEfxspdquake(anim);
 	}
@@ -515,15 +515,15 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                case 0x47:
+	case 0x47:
 	NewEfxMantBatabata(anim);
 	break;
 
-                case 0x4E:
+	case 0x4E:
 	NewEfxLokmsuna(anim);
 	break;
-                
-                case 0x51:
+
+	case 0x51:
 	if (!(anim->state3 & ANIM_BIT3_BLOCKING)) {
 	    anim->state3 |= ANIM_BIT3_BLOCKING;
 	    if (GetAISLayerId(anim) == 0)
@@ -537,7 +537,7 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                case ANIM_CMD_WAIT_52:
+	case ANIM_CMD_WAIT_52:
 	if (GetRoundFlagByAnim(anim) & ANIM_ROUND_SILENCER) {
 	    if (!(anim->state3 & ANIM_BIT3_BLOCKING)) {
 	        anim->state3 |= ANIM_BIT3_BLOCKING;
@@ -555,105 +555,105 @@ void BattleAIS_ExecCommands(void)
 	}
 	break;
 
-                case 25:
-                case 27:
-                case 28:
-                case 29:
-                case 30:
-                case 31:
-                case 32:
-                case 33:
-                case 34:
-                case 35:
-                case 36:
-                case 37:
-                case 40:
-                case 41:
-                case 42:
-                case 43:
-                case 51:
-                case 52:
-                case 53:
-                case 54:
-                case 55:
-                case 56:
-                case 58:
-                case 60:
-                case 62:
-                case 63:
-                case 64:
-                case 65:
-                case 66:
-                case 67:
-                case 68:
-                case 69:
-                case 70:
-                case 72:
-                case 73:
-                case 74:
-                case 75:
-                case 76:
-                case 77:
-                case 79:
-                case 86:
-                case 87:
-                case 88:
-                case 89:
-                case 90:
-                case 91:
-                case 92:
-                case 93:
-                case 94:
-                case 95:
-                case 96:
-                case 97:
-                case 98:
-                case 99:
-                case 100:
-                case 101:
-                case 102:
-                case 103:
-                case 104:
-                case 106:
-                case 107:
-                case 108:
-                case 109:
-                case 110:
-                case 111:
-                case 112:
-                case 115:
-                case 116:
-                case 117:
-                case 118:
-                case 119:
-                case 120:
-                case 121:
-                case 122:
-                case 123:
+	case 25:
+	case 27:
+	case 28:
+	case 29:
+	case 30:
+	case 31:
+	case 32:
+	case 33:
+	case 34:
+	case 35:
+	case 36:
+	case 37:
+	case 40:
+	case 41:
+	case 42:
+	case 43:
+	case 51:
+	case 52:
+	case 53:
+	case 54:
+	case 55:
+	case 56:
+	case 58:
+	case 60:
+	case 62:
+	case 63:
+	case 64:
+	case 65:
+	case 66:
+	case 67:
+	case 68:
+	case 69:
+	case 70:
+	case 72:
+	case 73:
+	case 74:
+	case 75:
+	case 76:
+	case 77:
+	case 79:
+	case 86:
+	case 87:
+	case 88:
+	case 89:
+	case 90:
+	case 91:
+	case 92:
+	case 93:
+	case 94:
+	case 95:
+	case 96:
+	case 97:
+	case 98:
+	case 99:
+	case 100:
+	case 101:
+	case 102:
+	case 103:
+	case 104:
+	case 106:
+	case 107:
+	case 108:
+	case 109:
+	case 110:
+	case 111:
+	case 112:
+	case 115:
+	case 116:
+	case 117:
+	case 118:
+	case 119:
+	case 120:
+	case 121:
+	case 122:
+	case 123:
 	EfxPlaySEwithCmdCtrl(anim, anim->commandQueue[anim->commandQueueSize - 1]);
 	break;
 
-                case 0x71:
+	case 0x71:
 	if (GetAISLayerId(anim) == 0) {
 	    anim->drawLayerPriority = 0x14;
 	    AnimSort();
 	}
 	break;
 
-                case 0x72:
+	case 0x72:
 	if (GetAISLayerId(anim) == 0) {
 	    anim->drawLayerPriority = 0x64;
 	    AnimSort();
 	}
 	break;
-                } /* switch */
+	} /* switch */
 
-                anim->commandQueueSize--;
-            }
+	anim->commandQueueSize--;
+			}
 
-        // _080596D6
-        end_exec_loop:
-            anim->state2 &= ~(ANIM_BIT2_COMMAND |
+		// _080596D6
+		end_exec_loop:
+			anim->state2 &= ~(ANIM_BIT2_COMMAND |
 	          ANIM_BIT2_0800 |
 	          ANIM_BIT2_0080 |
 	          ANIM_BIT2_0040 |
@@ -663,20 +663,20 @@ void BattleAIS_ExecCommands(void)
 	          ANIM_BIT2_0004 |
 	          ANIM_BIT2_0002 |
 	          ANIM_BIT2_0001);
-        } /* ANIM_BIT2_COMMAND */
+		} /* ANIM_BIT2_COMMAND */
 
-        // _080596E0
-        if (type & ANIM_BIT2_FRAME) {
-            if (GetAISLayerId(anim) == 0) {
-                if (gBanimForceUnitChgDebug[GetAnimPosition(anim)] == NULL)
+		// _080596E0
+		if (type & ANIM_BIT2_FRAME) {
+			if (GetAISLayerId(anim) == 0) {
+	if (gBanimForceUnitChgDebug[GetAnimPosition(anim)] == NULL)
 	if (!(anim->state3 & ANIM_BIT3_4000))
 	    if (gpImgSheet[GetAnimPosition(anim)] != anim->pImgSheet) {
 	        RegisterAISSheetGraphics(anim);
 	        gpImgSheet[GetAnimPosition(anim)] = anim->pImgSheet;
 	    }
-            }
+			}
 
-            anim->state2 &= ~(ANIM_BIT2_FRAME |
+			anim->state2 &= ~(ANIM_BIT2_FRAME |
 	          ANIM_BIT2_0800 |
 	          ANIM_BIT2_0080 |
 	          ANIM_BIT2_0040 |
@@ -686,40 +686,40 @@ void BattleAIS_ExecCommands(void)
 	          ANIM_BIT2_0004 |
 	          ANIM_BIT2_0002 |
 	          ANIM_BIT2_0001);
-        }
+		}
 
-        if (!(type & ANIM_BIT2_STOP) && gCtrlC01Blocking != 1)
-            continue;
+		if (!(type & ANIM_BIT2_STOP) && gCtrlC01Blocking != 1)
+			continue;
 
-        if (anim->state3 & ANIM_BIT3_NEXT_ROUND_START) {
-            type = GetAnimNextRoundType(anim);
-            if (type != ANIM_ROUND_INVALID) {
-                anim1 = gAnims[GetAnimPosition(anim) * 2];
-                SwitchAISFrameDataFromBARoundType(anim1, type);
-                anim1->state3 &= ~ANIM_BIT3_NEXT_ROUND_START;
-                anim1->state3 |= ANIM_BIT3_C01_BLOCKING_IN_BATTLE;
+		if (anim->state3 & ANIM_BIT3_NEXT_ROUND_START) {
+			type = GetAnimNextRoundType(anim);
+			if (type != ANIM_ROUND_INVALID) {
+	anim1 = gAnims[GetAnimPosition(anim) * 2];
+	SwitchAISFrameDataFromBARoundType(anim1, type);
+	anim1->state3 &= ~ANIM_BIT3_NEXT_ROUND_START;
+	anim1->state3 |= ANIM_BIT3_C01_BLOCKING_IN_BATTLE;
 
-                anim2 = gAnims[GetAnimPosition(anim) * 2 + 1];
-                SwitchAISFrameDataFromBARoundType(anim2, type);
-                anim2->state3 &= ~ANIM_BIT3_NEXT_ROUND_START;
-                anim2->state3 |= ANIM_BIT3_C01_BLOCKING_IN_BATTLE;
+	anim2 = gAnims[GetAnimPosition(anim) * 2 + 1];
+	SwitchAISFrameDataFromBARoundType(anim2, type);
+	anim2->state3 &= ~ANIM_BIT3_NEXT_ROUND_START;
+	anim2->state3 |= ANIM_BIT3_C01_BLOCKING_IN_BATTLE;
 
-                anim1->nextRoundId = anim1->nextRoundId + 1;
-                anim2->nextRoundId = anim2->nextRoundId + 1;
+	anim1->nextRoundId = anim1->nextRoundId + 1;
+	anim2->nextRoundId = anim2->nextRoundId + 1;
 
-                AnimScrAdvance(anim1);
-                AnimScrAdvance(anim2);
-            } else {
-                anim1 = gAnims[GetAnimPosition(anim) * 2 + 0];
-                anim1->state3 &= ~ANIM_BIT3_NEXT_ROUND_START;
+	AnimScrAdvance(anim1);
+	AnimScrAdvance(anim2);
+			} else {
+	anim1 = gAnims[GetAnimPosition(anim) * 2 + 0];
+	anim1->state3 &= ~ANIM_BIT3_NEXT_ROUND_START;
 
-                anim2 = gAnims[GetAnimPosition(anim) * 2 + 1];
-                anim2->state3 &= ~ANIM_BIT3_NEXT_ROUND_START;
-            } /* ANIM_ROUND_INVALID */
-        } else {
-            if (anim->state3 & ANIM_BIT3_NEW_ROUND_START) {
-                type = GetAnimNextRoundType(anim);
-                if (type != ANIM_ROUND_INVALID) {
+	anim2 = gAnims[GetAnimPosition(anim) * 2 + 1];
+	anim2->state3 &= ~ANIM_BIT3_NEXT_ROUND_START;
+			} /* ANIM_ROUND_INVALID */
+		} else {
+			if (anim->state3 & ANIM_BIT3_NEW_ROUND_START) {
+	type = GetAnimNextRoundType(anim);
+	if (type != ANIM_ROUND_INVALID) {
 	anim1 = gAnims[GetAnimPosition(anim) * 2];
 	SwitchAISFrameDataFromBARoundType(anim1, type);
 	anim1->state3 &= ~ANIM_BIT3_NEW_ROUND_START;
@@ -735,14 +735,14 @@ void BattleAIS_ExecCommands(void)
 
 	AnimScrAdvance(anim1);
 	AnimScrAdvance(anim2);
-                }
-            } else {
-                if (GetAISLayerId(anim) == 0) {
+	}
+			} else {
+	if (GetAISLayerId(anim) == 0) {
 	type = GetBattleAnimRoundType(anim->nextRoundId * 2 + GetAnimPosition(anim));
 	if (type == ANIM_ROUND_INVALID)
 	    gBanimDoneFlag[GetAnimPosition(anim)] = 1;
-                }
-            }
-        }
-    }
+	}
+			}
+		}
+	}
 }

@@ -58,15 +58,20 @@ def detect_unit(text: str):
         indents.append(len(m.group()))
     if not indents:
         return None
-    counts = Counter(indents)
-    unit = counts.most_common(1)[0][0]
-    if unit < 2:
-        # 退化情况：最小公因数兜底
-        g = indents[0]
-        for n in indents[1:]:
-            g = __import__("math").gcd(g, n)
-        unit = g if g >= 1 else 4
-    return unit
+
+    # 众数在 4/8 混排的文件上会选错（例如 banim-main.c 众数是 8，
+    # 于是 4 空格的代码行被判成 level 0 而原样不动）。
+    # 改为：取能整除 ≥95% 缩进宽度的**最大**单位（从大到小试）。
+    # 取最小会永远命中 2，导致每层两个 Tab。
+    for w in (8, 4, 3, 2):
+        ok = sum(1 for n in indents if n % w == 0)
+        if ok >= len(indents) * 0.95:
+            return w
+    # 兜底：最大公约数
+    g = indents[0]
+    for n in indents[1:]:
+        g = __import__("math").gcd(g, n)
+    return g if g >= 2 else 4
 
 
 def scan_state(line, in_block_comment, in_string, in_char):

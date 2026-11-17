@@ -190,16 +190,16 @@ int GetBanimPalette(int banim_id, enum ekr_battle_unit_position pos)
 	switch (jid) {
 	case CLASS_ARCHER:
 		return 0x25;
-    
+
 	case CLASS_ARCHER_F:
 		return 0x27;
-    
+
 	case CLASS_SNIPER:
 		return 0x29;
-    
+
 	case CLASS_SNIPER_F:
 		return 0x2B;
-    
+
 	default:
 		return banim_id;
 	}
@@ -435,7 +435,7 @@ void InitRightAnim(int round_type)
 
 	array[0] = &&label1;
 	array[1] = &&label2;
-    
+
 	gEkrXPosBase[1] = 0;
 	gEkrYPosBase[1] = 0;
 	gEkrXPosReal[1] = r2;

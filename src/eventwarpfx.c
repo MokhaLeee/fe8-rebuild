@@ -116,7 +116,7 @@ void ProcEventWrapAnim_Loop(struct ProcBmFx *proc)
 
 	if (0 != proc->yPos && A_BUTTON & gKeyStatusPtr->heldKeys)
 		proc->counter++;
-    
+
 	proc->counter++;
 
 	x = pVec[proc->counter / 2].x;
@@ -129,7 +129,7 @@ void ProcEventWrapAnim_Loop(struct ProcBmFx *proc)
 
 	if (0x8 == proc->counter)
 		RefreshUnitSprites();
-    
+
 	TileMap_CopyRect(
 		TILEMAP_LOCATED(gUiTmScratchA, x, y),
 		gBG0TilemapBuffer, 4, 7);
@@ -146,7 +146,7 @@ void ProcEventWrapAnim_End(struct ProcBmFx *proc)
 void StartEventWarpAnim(ProcPtr parent, int x, int y, s8 subcmd, s8 flag)
 {
 	struct ProcBmFx *proc;
-    
+
 	proc = Proc_Start(ProcScr_EventWrapAnim, parent);
 	proc->xPos = subcmd;
 	proc->yPos = flag;
@@ -159,7 +159,7 @@ void StartEventWarpAnim(ProcPtr parent, int x, int y, s8 subcmd, s8 flag)
 void StartEventWarpAnim_unused(ProcPtr parent, int xCamera, int yCamera, s8 subcmd)
 {
 	struct ProcBmFx *proc;
-    
+
 	proc = Proc_Start(ProcScr_EventWrapAnim, parent);
 	proc->xPos = subcmd;
 

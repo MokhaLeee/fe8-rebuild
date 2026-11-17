@@ -61,7 +61,7 @@ int ReadLastGameSaveId()
 
 	if (!ReadGlobalSaveInfo(&info))
 		return 0;
-    
+
 	ret = info.last_game_save_id;
 
 	if (ret > SAVE_ID_GAME2)
@@ -122,7 +122,7 @@ void WriteNewGameSave(int index, int isDifficult, int mode, int isTutorial)
 	ClearSupplyItems();
 	ResetPermanentFlags();
 	InvalidateSuspendSave(SAVE_ID_SUSPEND);
-    
+
 	gPlaySt.unk_2C_1 = 0;
 	gPlaySt.unk_2C_04 = 0;
 	CpuFill16(0, &gPlaySt.unk_30, sizeof(gPlaySt.unk_30));
@@ -138,7 +138,7 @@ void WriteNewGameSave(int index, int isDifficult, int mode, int isTutorial)
 	WriteAndVerifySramFast(&gPlaySt, &dest->playSt, sizeof(gPlaySt));
 	SetBonusContentClaimFlags(0);
 	WriteBonusContentClaimFlags(dest);
-    
+
 	CpuFill16(0, &unitp, sizeof(unitp));
 
 	for (i = 0; i < UNIT_SAVE_AMOUNT_BLUE; i++) {
@@ -152,7 +152,7 @@ void WriteNewGameSave(int index, int isDifficult, int mode, int isTutorial)
 	ClearWorldMapStuff(&dest->wmStuff);
 
 	{
-		struct Dungeon dungeon[2];  
+		struct Dungeon dungeon[2];
 
 		CpuFill16(0, dungeon, sizeof(dungeon));
 		WriteAndVerifySramFast(dungeon, dest->dungeons, sizeof(dungeon));
@@ -182,7 +182,7 @@ void WriteGameSave(int slot)
 		WriteGameSavePackedUnit(&gUnitArrayBlue[i], &dest->units[i]);
 
 	ReadGlobalSaveInfo(&info);
-    
+
 	for (i = 0; i < UNIT_SAVE_AMOUNT_BLUE; i++)
 		SGM_SetCharacterKnown(UNIT_CHAR_ID(&gUnitArrayBlue[i]), &info);
 
@@ -349,7 +349,7 @@ void WriteGameSavePackedUnit(struct Unit *unit, void *sram_dest)
 	if (US_DEAD & unit->state)
 		unitp.flag |= PACKED_US_DEAD;
 
-	if (US_NOT_DEPLOYED & unit->state) 
+	if (US_NOT_DEPLOYED & unit->state)
 		unitp.flag |= PACKED_US_UNDEPLOYED;
 
 	if (US_SOLOANIM_1 & unit->state)
@@ -617,7 +617,7 @@ u8 IsValidSuspendSave(int slot)
 	gSuspendSaveIdOffset = GetNextSuspendSaveId();
 	if (ReadSaveBlockInfo(NULL, gSuspendSaveIdOffset + 3))
 		return true;
-    
+
 	gSuspendSaveIdOffset = 0x7F;
 	return false;
 }
@@ -637,7 +637,7 @@ void EncodeSuspendSavePackedUnit(struct Unit *unit, void *buf)
 		unit_su->pid = 0;
 		return;
 	}
-    
+
 	unit_su->pid = UNIT_CHAR_ID(unit);
 	unit_su->jid = unit->pClassData->number;
 	unit_su->level = unit->level;
@@ -661,7 +661,7 @@ void EncodeSuspendSavePackedUnit(struct Unit *unit, void *buf)
 	unit_su->rescue = unit->rescue;
 	unit_su->movBonus = unit->movBonus;
 
-	unit_su->ballistaIndex = 
+	unit_su->ballistaIndex =
 				  (0x7F & unit->ballistaIndex) | (0x01 & unit->supportBits) << 0x07;
 	unit_su->item1 = (0x3FFF & unit->items[0]) | (0x06 & unit->supportBits) << 0x0D;
 	unit_su->item2 = (0x3FFF & unit->items[1]) | (0x18 & unit->supportBits) << 0x0B;
@@ -671,7 +671,7 @@ void EncodeSuspendSavePackedUnit(struct Unit *unit, void *buf)
 
 	for (i = 0; i < 8; i++)
 		unit_su->ranks[i] = unit->ranks[i];
-    
+
 	for (i = 0; i < UNIT_SUPPORT_MAX_COUNT; i++)
 		unit_su->supports[i] = unit->supports[i];
 
@@ -687,7 +687,7 @@ void EncodeSuspendSavePackedUnit(struct Unit *unit, void *buf)
 	unit_su->ai_b_pc = unit->ai_b_pc;
 	unit_su->ai_config = unit->ai_config;
 	unit_su->ai_counter = unit->ai_counter;
-	unit_su->aiFlags = unit->aiFlags; 
+	unit_su->aiFlags = unit->aiFlags;
 }
 
 void ReadSuspendSavePackedUnit(const void *sram_src, struct Unit *unit)
@@ -790,7 +790,7 @@ int GetNextSuspendSaveId()
 
 void WriteSwappedSuspendSaveId()
 {
-	struct GlobalSaveInfo header;   
+	struct GlobalSaveInfo header;
 
 	ReadGlobalSaveInfo(&header);
 	header.last_suspend_slot = 0 == header.last_suspend_slot;

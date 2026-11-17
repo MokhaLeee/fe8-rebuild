@@ -1652,7 +1652,7 @@ void StartStatScreenHelp(int pageid, struct Proc *proc)
 		case STATSCREEN_PAGE_0:
 			gStatScreen.help = &gHelpInfo_Ss0Pow;
 			break;
-        
+
 		case STATSCREEN_PAGE_1:
 			gStatScreen.help = &gHelpInfo_Ss1Item0;
 			break;
@@ -2095,7 +2095,7 @@ void ApplyHelpBoxContentSize(struct HelpBoxProc *proc, int width, int height)
 			height += 0x10;
 
 		break;
-    
+
 	case 2: // staff
 		if (width < 0x60)
 			width = 0x60;

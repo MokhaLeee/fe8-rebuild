@@ -129,7 +129,7 @@ void StartDanceringAnim(ProcPtr parent)
 		struct Unit *unit = GetUnit(gActionData.targetIndex);
 		int x = unit->xPos;
 		int y = unit->yPos;
-        
+
 		Proc_StartBlocking(ProcScr_DanceringAnim, parent);
 
 		x = x * 0x10 - gBmSt.camera.x - 0x10;

@@ -209,7 +209,7 @@ struct BmBgxConf
 };
 
 enum BmBgxConf_type {
-    BMFX_CONFT_IMG = 0,  /* Uncomprsssed image */ 
+    BMFX_CONFT_IMG = 0,  /* Uncomprsssed image */
     BMFX_CONFT_ZIMG = 1, /* Compresssed  image */
     BMFX_CONFT_TSA = 2,
     BMFX_CONFT_PAL = 3,

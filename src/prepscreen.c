@@ -192,7 +192,7 @@ int PrepScreenMenu_OnStartPress(struct ProcAtMenu *proc)
 	PrepSpriteDraw_BlinkButtonStart();
 	Proc_Goto(proc, 0xB);
 	return 1;
-    
+
 }
 
 int Prep_HasUnitDeployed()
@@ -217,7 +217,7 @@ int PrepScreenMenu_OnBPress(struct ProcAtMenu *proc)
 		Proc_Goto(proc, 0x5);
 		return true;
 	}
-    
+
 	if (false == CanPrepScreenCheckMap())
 		return false;
 
@@ -425,7 +425,7 @@ void InitPrepScreenMainMenu(struct ProcAtMenu *proc)
 		color = TEXT_COLOR_SYSTEM_WHITE;
 		if (!CanPrepScreenSave())
 			color = TEXT_COLOR_SYSTEM_GRAY;
-        
+
 		SetPrepScreenMenuItem(
 			PREP_MAINMENU_SAVE,
 			PrepScreenMenu_OnSave,
@@ -597,7 +597,7 @@ void RemoveSomeUnitItems()
 					unit->items[j] = 0;
 					removeItem = 1;
 				}
-			}   
+			}
 		}
 
 		if (removeItem)

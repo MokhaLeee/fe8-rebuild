@@ -137,7 +137,7 @@ void PromoTrainee_Talk1(struct ProcPromoTraineeEvent *proc)
 	struct FaceProc *b, *c, *d;
 	u8 i;
 
-	const u32 msgs[3] = { 
+	const u32 msgs[3] = {
 		0xC44,  /* [ToggleSmile]Wow... Would you look at[NL]these muscles![A][ToggleSmile] */
 		0xC48,  /* [ToggleSmile]I'm ready to fight now![.][A][ToggleSmile] */
 		0xC4D   /* [ToggleSmile]Oh, my... Look at this![.][A][ToggleSmile] */

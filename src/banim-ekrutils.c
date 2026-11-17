@@ -109,7 +109,7 @@ void StartBattleAnimHitEffects(struct Anim *anim, int type, int a, int b)
 		val1 = gEfxHpLutOff[GetAnimPosition(animr5)];
 		val2 = gEfxHpLutOff[GetAnimPosition(animr5)];
 		val2++;
-    
+
 		val1 = GetEfxHp(val1 * 2 + GetAnimPosition(animr5));
 		val2 = GetEfxHp(val2 * 2 + GetAnimPosition(animr5));
 
@@ -120,7 +120,7 @@ void StartBattleAnimHitEffects(struct Anim *anim, int type, int a, int b)
 				NewEfxHitQuake(animr5, animr7, b);
 			else
 				NewEfxHitQuake(animr5, animr7, a);
-            
+
 			NewEfxFlashHPBar(animr5, 0, 5);
 			NewEfxFlashUnit(animr5, 0, 8, 0);
 		} else {
@@ -167,7 +167,7 @@ void StartBattleAnimResireHitEffects(struct Anim *anim, int type)
 				NewEfxHitQuake(animR5, animR7, 4);
 			else
 				NewEfxHitQuake(animR5, animR7, 3);
-            
+
 			NewEfxFlashHPBar(animR5, 0, 5);
 			NewEfxFlashUnit(animR5, 0, 8, 0);
 		} else {
@@ -195,7 +195,7 @@ void StartBattleAnimStatusChgHitEffects(struct Anim *anim, int type)
 	case EKR_HITTED:
 		NewEfxStatusCHG(anim1);
 		break;
-    
+
 	case EKR_MISS:
 		NewEfxAvoid(anim1);
 		break;
@@ -396,7 +396,7 @@ void sub_80558BC(const u16 *src, u16 *dst, u32 a, u32 b, u32 c)
 	u32 i;
 
 	for (i = 0; i < c; i++, a++) {
-        
+
 		if (a >= b)
 			a = 0;
 
@@ -425,19 +425,19 @@ s16 EfxAdvanceFrameLut(s16 *ptime, s16 *pcount, const s16 lut[])
 		count = *pcount;
 		uframe = lut[count * 2];
 		iframe = lut[count * 2];
-    
+
 		if (-1 == iframe)
 			return -1;
-        
+
 		if (-6 == iframe)
 			return -6;
-    
+
 		if (-5 == iframe)
 			return -5;
-        
+
 		if (-4 == iframe)
 			return -4;
-        
+
 		if (-2 == iframe) {
 			*pcount = r6;
 			uframe = lut[0];
@@ -446,7 +446,7 @@ s16 EfxAdvanceFrameLut(s16 *ptime, s16 *pcount, const s16 lut[])
 			tmp = *pcount;
 			uframe = lut[tmp * 2];
 		}
-    
+
 		count2 = *pcount;
 		time2 = lut[count2 * 2 + 1];
 		++*(vs16 *)pcount;
@@ -593,7 +593,7 @@ void sub_8055B38(struct ProcEfxSpdQuake *proc)
 	case EKR_DISTANCE_CLOSE:
 		BG_SetPosition(BG_2, 0, 0);
 		break;
-    
+
 	case EKR_DISTANCE_FAR:
 	case EKR_DISTANCE_FARFAR:
 		sub_8053618(gEkrBgPosition);

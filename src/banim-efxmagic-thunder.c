@@ -32,7 +32,7 @@ void Loop6C_efxThunder(struct ProcEfx *proc)
 
 	if (++proc->timer == 1)
 		NewEfxFarAttackWithDistance(proc->anim, -1);
-    
+
 	cur = proc->timer;
 	if (cur == (frame + 1)) {
 		NewEfxThunderBG(animc);
@@ -48,13 +48,13 @@ void Loop6C_efxThunder(struct ProcEfx *proc)
 
 		if (proc->hitted == EKR_HITTED)
 			EfxPlayHittedSFX(animc);
-        
+
 		return;
 	}
 
 	if (cur == (frame + 0x50))
 		return;
-    
+
 	if (cur == (frame + 0x60)) {
 		SpellFx_Finish();
 		RegisterEfxSpellCastEnd();
@@ -120,10 +120,10 @@ void EfxThunderBGMain(struct ProcEfxBG *proc)
 
 		if (ret == 0)
 			val = 0x11F;
-        
+
 		if (ret == 1)
 			val = 0x150;
-        
+
 		FillBGRect(TILEMAP_LOCATED(gBG1TilemapBuffer, 0x1E, 0x0), 0x2, 0x14, 0x1, val);
 		return;
 	}

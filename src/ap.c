@@ -68,7 +68,7 @@ s8 AP_Update(struct APHandle *handle, int x, int y)
 {
 	if (!handle || !handle->pDefinition)
 		return FALSE;
-    
+
 	AP_Display(handle, x, y);
 	return AP_ExecFrame(handle);
 }
@@ -102,15 +102,15 @@ s8 AP_ExecFrame(struct APHandle *handle)
 
 	if (!handle || !handle->pDefinition)
 		return FALSE;
-    
+
 	if (!handle->frameInterval)
 		return TRUE;
-    
+
 	// timer going down
 	if (handle->frameTimer != 0) {
 		if ((handle->frameTimer = handle->frameTimer-1) > 0)
 			return TRUE;
-        
+
 		handle->frameTimer = 0;
 		handle->pAnimDataCurrent += 2;
 	}
@@ -121,7 +121,7 @@ s8 AP_ExecFrame(struct APHandle *handle)
 		case (u16)(-1): // loop back to start
 			handle->pAnimDataCurrent = handle->pAnimDataStart;
 			return AP_ExecFrame(handle);
-        
+
 		case 1: // delete handle
 			AP_Delete(handle);
 		case 0: // end animation
@@ -167,10 +167,10 @@ void AP_QueueObjRotScale(struct APHandle *handle)
 
 	if (!handle || !handle->pDefinition)
 		return;
-    
+
 	if (!handle->pCurrentRotScale)
 		return;
-    
+
 	count = handle->pCurrentRotScale[0] & 0x7FFF; // rotscale data count
 	it    = handle->pCurrentRotScale + 1;         // rotscale data start
 
@@ -192,7 +192,7 @@ void AP_SwitchAnimation(struct APHandle *handle, int index)
 
 	if (!handle || !handle->pDefinition)
 		return;
-    
+
 	// anim data offset array is defined by there
 	// its entries are offsets relative to the table itself
 	animDataList = handle->pDefinition + handle->pDefinition[1]/2;
@@ -207,7 +207,7 @@ void AP_SetDefinition(struct APHandle *handle, const u16 *definition)
 {
 	if (!handle || !handle->pDefinition)
 		return;
-    
+
 	AP_LoadDefinition(handle, definition);
 	AP_ExecDummyFrame(handle);
 }
@@ -221,12 +221,12 @@ void AP_QueueObjGraphics(struct APHandle *handle)
 
 	if (!handle || !handle->pDefinition)
 		return;
-    
+
 	i = handle->pCurrentObjData[0];
 
 	itObjData = handle->pCurrentObjData + 1;
 	itGfxData = handle->pCurrentObjData + 1 + i*3;
-    
+
 	tileOffset = 0;
 
 	// This expression is used a lot here, so using helper macro for readability
@@ -266,7 +266,7 @@ void AP_LoadDefinition(struct APHandle *handle, const u16 *definition)
 
 	// frame data starts at offset in short 0
 	handle->pFrameData = definition + (definition[0]/2);
-    
+
 	// anim offset array starts at offset in short 1
 	// first entry is default anim index
 	// anim data is located by indexing the anim offset array.
@@ -328,7 +328,7 @@ struct APHandle* AP_Find(const u16 *definition)
 	for (i = 0; i < AP_MAX_COUNT; ++i) {
 		if (result->pDefinition == definition)
 			return result;
-        
+
 		result++;
 	}
 

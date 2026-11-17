@@ -129,11 +129,11 @@ void PrepUnit_InitTexts()
 	/* 0x00 ~ 0x0D (size = 14): unit name */
 	for (i = 0; i < 14; i++)
 		InitText(&gPrepUnitTexts[i], 5);
-    
+
 	/* 0x0E ~ 0x12 (size = 5):  item name */
 	for (i = 0; i < 5; i++)
 		InitText(&gPrepUnitTexts[i + 0xE], 7);
-    
+
 	InitText(&gPrepUnitTexts[0x13], 7);
 	InitText(&gPrepUnitTexts[0x14], 10);
 	InitText(&gPrepUnitTexts[0x15], 12);
@@ -572,7 +572,7 @@ void ProcPrepUnit_Idle(struct ProcPrepUnit *proc)
 		PrepUnit_DrawUnitItems(GetUnitFromPrepList(proc->list_num_cur));
 		StartParallelFiniteLoop(PrepUnit_DrawLeftUnitNameCur, 1, proc);
 		PlaySoundEffect(SONG_65);
-    
+
 		if (ShouldPrepUnitMenuScroll(proc)) {
 			if (proc->list_num_cur < proc->list_num_pre)
 				PrepUnit_DrawUnitListNames(proc, proc->yDiff_cur / 16 - 1);
@@ -588,7 +588,7 @@ void ProcPrepUnit_Idle(struct ProcPrepUnit *proc)
 				0x7, 0x800
 			);
 		}
-    
+
 		if (proc->list_num_pre == proc->list_num_cur)
 			return;
 	}

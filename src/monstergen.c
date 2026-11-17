@@ -13,6 +13,7 @@ int SelectFromWeightedArray(const u8 *weights, u8 size)
 {
 	char i;
 	char rand = NextRN_100();
+
 	const char *iter = weights;
 	char old_count = 0;
 	char new_count = 0;

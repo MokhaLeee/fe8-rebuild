@@ -304,7 +304,7 @@ void LoadSumMonsterFromDK(struct SumProc *proc)
 	LoadUnits(&gUnitDef2);
 }
 
-/** 
+/**
  * section.data
 */
 

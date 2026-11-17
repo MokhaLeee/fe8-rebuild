@@ -30,7 +30,7 @@ struct EventEngineProc
 
     /* 48 */ const struct UnitDefinition* pUnitLoadData;
     /* 4C */ s16 unitLoadCount;
-    
+
     /* 4E */ u8  chance;
 
     /* 4F */ u8 unitLoadParameter : 7;
@@ -76,7 +76,7 @@ enum EventCommandReturnCode
 
     EVC_ADVANCE_YIELD    = 2,
     EVC_STOP_YIELD       = 3,
-    
+
     EVC_UNK4             = 4,
     EVC_END              = 5,
     EVC_ERROR            = 6
@@ -105,7 +105,7 @@ typedef u8(*EventFuncType)(struct EventEngineProc*);
 
 /**
  * event slot values
- * 
+ *
  * Null (0)
  * Vars (1-A)
  * Position (B)

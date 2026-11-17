@@ -266,7 +266,7 @@ void DrawHelpBoxSaveMenuLabels(void)
 }
 
 //! FE8U = 0x08089DE8
-void DrawHelpBoxSaveMenuStats(void) 
+void DrawHelpBoxSaveMenuStats(void)
 {
 	int level;
 

@@ -223,9 +223,9 @@ void DrawPrepScreenItemUseStatBars(struct Unit *unit, int mask)
 void DrawPrepScreenItemUseStatValues(struct Unit *unit)
 {
 	// HP
-	PutNumberOrBlank( 
+	PutNumberOrBlank(
 		TILEMAP_LOCATED(gBG2TilemapBuffer, 20, 3),
-		(GetUnitCurrentHp(unit) == UNIT_MHP_MAX(unit)) 
+		(GetUnitCurrentHp(unit) == UNIT_MHP_MAX(unit))
 			? TEXT_COLOR_SYSTEM_GREEN
 			: TEXT_COLOR_SYSTEM_BLUE,
 		GetUnitCurrentHp(unit)
@@ -234,7 +234,7 @@ void DrawPrepScreenItemUseStatValues(struct Unit *unit)
 	// POW
 	PutNumberOrBlank(
 		TILEMAP_LOCATED(gBG2TilemapBuffer, 20, 5),
-		(GetUnitPower(unit) == UNIT_POW_MAX(unit)) 
+		(GetUnitPower(unit) == UNIT_POW_MAX(unit))
 			? TEXT_COLOR_SYSTEM_GREEN
 			: TEXT_COLOR_SYSTEM_BLUE,
 		GetUnitPower(unit)
@@ -243,7 +243,7 @@ void DrawPrepScreenItemUseStatValues(struct Unit *unit)
 	// SKL
 	PutNumberOrBlank(
 		TILEMAP_LOCATED(gBG2TilemapBuffer, 20, 7),
-		(GetUnitSkill(unit) == UNIT_SKL_MAX(unit)) 
+		(GetUnitSkill(unit) == UNIT_SKL_MAX(unit))
 			? TEXT_COLOR_SYSTEM_GREEN
 			: TEXT_COLOR_SYSTEM_BLUE,
 		GetUnitSkill(unit)
@@ -252,7 +252,7 @@ void DrawPrepScreenItemUseStatValues(struct Unit *unit)
 	// SPD
 	PutNumberOrBlank(
 		TILEMAP_LOCATED(gBG2TilemapBuffer, 20, 9),
-		(GetUnitSpeed(unit) == UNIT_SPD_MAX(unit)) 
+		(GetUnitSpeed(unit) == UNIT_SPD_MAX(unit))
 			? TEXT_COLOR_SYSTEM_GREEN
 			: TEXT_COLOR_SYSTEM_BLUE,
 		GetUnitSpeed(unit)
@@ -261,7 +261,7 @@ void DrawPrepScreenItemUseStatValues(struct Unit *unit)
 	// LCK
 	PutNumberOrBlank(
 		TILEMAP_LOCATED(gBG2TilemapBuffer, 27, 3),
-		(GetUnitLuck(unit) == UNIT_LCK_MAX(unit)) 
+		(GetUnitLuck(unit) == UNIT_LCK_MAX(unit))
 			? TEXT_COLOR_SYSTEM_GREEN
 			: TEXT_COLOR_SYSTEM_BLUE,
 		GetUnitLuck(unit)
@@ -270,7 +270,7 @@ void DrawPrepScreenItemUseStatValues(struct Unit *unit)
 	// DEF
 	PutNumberOrBlank(
 		TILEMAP_LOCATED(gBG2TilemapBuffer, 27, 5),
-		(GetUnitDefense(unit) == UNIT_DEF_MAX(unit)) 
+		(GetUnitDefense(unit) == UNIT_DEF_MAX(unit))
 			? TEXT_COLOR_SYSTEM_GREEN
 			: TEXT_COLOR_SYSTEM_BLUE,
 		GetUnitDefense(unit)
@@ -279,7 +279,7 @@ void DrawPrepScreenItemUseStatValues(struct Unit *unit)
 	// RES
 	PutNumberOrBlank(
 		TILEMAP_LOCATED(gBG2TilemapBuffer, 27, 7),
-		(GetUnitResistance(unit) == UNIT_RES_MAX(unit)) 
+		(GetUnitResistance(unit) == UNIT_RES_MAX(unit))
 			? TEXT_COLOR_SYSTEM_GREEN
 			: TEXT_COLOR_SYSTEM_BLUE,
 		GetUnitResistance(unit)
@@ -288,7 +288,7 @@ void DrawPrepScreenItemUseStatValues(struct Unit *unit)
 	// CON
 	PutNumberOrBlank(
 		TILEMAP_LOCATED(gBG2TilemapBuffer, 27, 9),
-		(UNIT_CON(unit) == UNIT_CON_MAX(unit)) 
+		(UNIT_CON(unit) == UNIT_CON_MAX(unit))
 			? TEXT_COLOR_SYSTEM_GREEN
 			: TEXT_COLOR_SYSTEM_BLUE,
 		UNIT_CON(unit)
@@ -330,13 +330,13 @@ void DrawPrepScreenItemUseDesc(struct Unit *unit, int slot)
 				Text_SetColor(thlut[0], TEXT_COLOR_SYSTEM_WHITE);
 				Text_SetColor(thlut[1], TEXT_COLOR_SYSTEM_WHITE);
 				Text_SetColor(thlut[2], TEXT_COLOR_SYSTEM_WHITE);
-    
+
 				PrintStringToTexts(thlut, GetStringFromIndex(msg), TILEMAP_LOCATED(gBG0TilemapBuffer, 15, 12), 3);
 			} else {
 				Text_SetColor(thlut[0], TEXT_COLOR_SYSTEM_GRAY);
 				Text_SetColor(thlut[1], TEXT_COLOR_SYSTEM_GRAY);
 				Text_SetColor(thlut[2], TEXT_COLOR_SYSTEM_GRAY);
-    
+
 				PrintStringToTexts(thlut, GetStringFromIndex(msg), TILEMAP_LOCATED(gBG0TilemapBuffer, 15, 12), 3);
 			}
 		}
@@ -433,8 +433,8 @@ void PrepItemUse_InitDisplay(struct ProcPrepItemUse *proc)
 
 	str = GetStringFromIndex(proc->unit->pCharacterData->nameTextId);
 	PutDrawText(
-		0, gBG0TilemapBuffer, 
-		TEXT_COLOR_SYSTEM_WHITE, 
+		0, gBG0TilemapBuffer,
+		TEXT_COLOR_SYSTEM_WHITE,
 		(0x30 - GetStringTextLen(str))/2,
 		6, str
 	);
@@ -603,7 +603,7 @@ void PrepItemUse_ConfirmWindowCtrlLoop(struct ProcPrepItemUse *proc)
 
 	if (gKeyStatusPtr->newKeys & A_BUTTON) {
 		PrepItemUseClearSubBox();
-        
+
 		if (proc->pos_subbox == POS_L) {
 			HideSysHandCursor();
 			PlaySoundEffect(SONG_SE_SYS_WINDOW_SELECT1);
@@ -717,7 +717,7 @@ void PrepItemUse_PostPromotion(struct ProcPrepItemUse *proc)
 
 	if (proc->slot >= max)
 		proc->slot--;
-    
+
 	Proc_Break(proc);
 }
 
@@ -729,7 +729,7 @@ void PrepItemUse_ResetBgmAfterPromo(struct ProcPrepItemUse *proc)
 		OverrideBgm(SONG_COLOSSEUM_ENTRANCE);
 		return;
 	}
-    
+
 	if (gGMData.state.bits.state_0) {
 		MakeBgmOverridePersist();
 		UpdateWorldMapBgm();

@@ -531,7 +531,7 @@ void sub_80BBDA4(int a1, int r8, int r4, int r9, int sp20)
 			r2 = r8;
 		}
 		r7 = r1 & 0x1f;
-    
+
 		puVar6 = gUnknown_02019D00 + (r2 * 0x3c + r1);
 		for (i = 0; i < 0x15; i++) {
 			tm = bgBuf + TILEMAP_INDEX(r7, (r2 + i) & 0x1f);
