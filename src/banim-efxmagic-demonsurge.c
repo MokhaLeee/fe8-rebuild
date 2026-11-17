@@ -20,89 +20,111 @@ struct ProcCmd CONST_DATA ProcScr_efxGorgon[] =
 // clang-format on
 
 //! FE8U = 0x0806B4F8
-void StartSpellAnimDemonSurge(struct Anim *anim)
+void StartSpellAnimDemonSurge(struct Anim * anim)
 {
-	struct ProcEfx *proc;
+    struct ProcEfx * proc;
 
-	SpellFx_Begin();
-	NewEfxSpellCast();
-	SpellFx_ClearBG1Position();
+    SpellFx_Begin();
+    NewEfxSpellCast();
+    SpellFx_ClearBG1Position();
 
-	proc = Proc_Start(ProcScr_efxGorgon, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->hitted = CheckRoundMiss(GetAnimRoundTypeAnotherSide(anim));
+    proc = Proc_Start(ProcScr_efxGorgon, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->hitted = CheckRoundMiss(GetAnimRoundTypeAnotherSide(anim));
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0806B534
-void efxGorgon_Loop_Main(struct ProcEfx *proc)
+void efxGorgon_Loop_Main(struct ProcEfx * proc)
 {
-	struct Anim *anim = GetAnimAnotherSide(proc->anim);
-	int duration = EfxGetCamMovDuration();
+    struct Anim * anim = GetAnimAnotherSide(proc->anim);
+    int duration = EfxGetCamMovDuration();
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer == 1) {
-		NewEfxFarAttackWithDistance(proc->anim, -1);
-	} else if (proc->timer == duration + 11) {
-		StartSubSpell_efxGorgon_806B680(anim);
-		PlaySFX(0x3B6, 0x100, 192, 1);
-	} else if (proc->timer == duration + 37) {
-		StartSubSpell_efxGorgonBGDirt(anim);
-	} else if (proc->timer == duration + 84) {
-		sub_806BBDC();
-	} else if (proc->timer == duration + 96) {
-		StartSubSpell_efxSuperdruidOBJ2(anim);
-	} else if (proc->timer == duration + 111) {
-		StartSpellThing_MagicQuake(proc->anim, 12, 4);
-		StartSubSpell_efxGorgonBGTwister(anim);
-	} else if (proc->timer == duration + 112) {
-		StartSubSpell_efxGorgonOBJTwister(anim);
-	} else if (proc->timer == duration + 122) {
-		sub_806C464();
-	} else if (proc->timer == duration + 123) {
-		StartSubSpell_efxGorgonBGFinish(anim);
-		StartSpellThing_MagicQuake(proc->anim, 26, 2);
-	} else if (proc->timer == duration + 149) {
-		anim->state3 |= 9;
+    if (proc->timer == 1)
+    {
+        NewEfxFarAttackWithDistance(proc->anim, -1);
+    }
+    else if (proc->timer == duration + 11)
+    {
+        StartSubSpell_efxGorgon_806B680(anim);
+        PlaySFX(0x3B6, 0x100, 192, 1);
+    }
+    else if (proc->timer == duration + 37)
+    {
+        StartSubSpell_efxGorgonBGDirt(anim);
+    }
+    else if (proc->timer == duration + 84)
+    {
+        sub_806BBDC();
+    }
+    else if (proc->timer == duration + 96)
+    {
+        StartSubSpell_efxSuperdruidOBJ2(anim);
+    }
+    else if (proc->timer == duration + 111)
+    {
+        StartSpellThing_MagicQuake(proc->anim, 12, 4);
+        StartSubSpell_efxGorgonBGTwister(anim);
+    }
+    else if (proc->timer == duration + 112)
+    {
+        StartSubSpell_efxGorgonOBJTwister(anim);
+    }
+    else if (proc->timer == duration + 122)
+    {
+        sub_806C464();
+    }
+    else if (proc->timer == duration + 123)
+    {
+        StartSubSpell_efxGorgonBGFinish(anim);
+        StartSpellThing_MagicQuake(proc->anim, 26, 2);
+    }
+    else if (proc->timer == duration + 149)
+    {
+        anim->state3 |= 9;
 
-		StartBattleAnimHitEffectsDefault(anim, proc->hitted);
+        StartBattleAnimHitEffectsDefault(anim, proc->hitted);
 
-		if (!proc->hitted) {
-			EfxPlayHittedSFX(anim);
-		}
-	} else if (proc->timer == duration + 169) {
-		SpellFx_Finish();
-		RegisterEfxSpellCastEnd();
-		Proc_Break(proc);
-	}
+        if (!proc->hitted)
+        {
+            EfxPlayHittedSFX(anim);
+        }
+    }
+    else if (proc->timer == duration + 169)
+    {
+        SpellFx_Finish();
+        RegisterEfxSpellCastEnd();
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0806B64C
-void sub_806B64C(struct ProcEfxOBJ *proc)
+void sub_806B64C(struct ProcEfxOBJ * proc)
 {
-	AnimDelete(proc->anim2);
-	gEfxBgSemaphore--;
-	return;
+    AnimDelete(proc->anim2);
+    gEfxBgSemaphore--;
+    return;
 }
 
 //! FE8U = 0x0806B664
-void sub_806B664(struct ProcEfxOBJ *proc)
+void sub_806B664(struct ProcEfxOBJ * proc)
 {
-	struct Anim *anim = proc->anim2;
+    struct Anim * anim = proc->anim2;
 
-	anim->pScrStart = AnimScr_086EAE14;
-	anim->pScrCurrent = AnimScr_086EAE14;
+    anim->pScrStart = AnimScr_086EAE14;
+    anim->pScrCurrent = AnimScr_086EAE14;
 
-	anim->timer = 0;
+    anim->timer = 0;
 
-	Proc_Break(proc);
+    Proc_Break(proc);
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -121,74 +143,86 @@ struct ProcCmd CONST_DATA ProcScr_085D8B24[] =
 // clang-format on
 
 //! FE8U = 0x0806B680
-void StartSubSpell_efxGorgon_806B680(struct Anim *anim)
+void StartSubSpell_efxGorgon_806B680(struct Anim * anim)
 {
-	struct ProcEfxOBJ *proc;
-	struct Anim *frontAnim;
-	u32 *scr;
+    struct ProcEfxOBJ * proc;
+    struct Anim * frontAnim;
+    u32 * scr;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_085D8B24, PROC_TREE_3);
-	proc->anim = anim;
+    proc = Proc_Start(ProcScr_085D8B24, PROC_TREE_3);
+    proc->anim = anim;
 
-	scr = AnimScr_086EAE24;
-	frontAnim = EfxCreateFrontAnim(anim, scr, scr, scr, scr);
-	proc->anim2 = frontAnim;
+    scr = AnimScr_086EAE24;
+    frontAnim = EfxCreateFrontAnim(anim, scr, scr, scr, scr);
+    proc->anim2 = frontAnim;
 
-	if (GetAnimPosition(proc->anim) == 0) {
-		frontAnim->xPosition = 88;
-	} else {
-		frontAnim->xPosition = 152;
-	}
+    if (GetAnimPosition(proc->anim) == 0)
+    {
+        frontAnim->xPosition = 88;
+    }
+    else
+    {
+        frontAnim->xPosition = 152;
+    }
 
-	frontAnim->yPosition = 84;
+    frontAnim->yPosition = 84;
 
-	if (gEkrDistanceType == 1) {
-		if (GetAnimPosition(proc->anim) == 0) {
-			frontAnim->xPosition -= 24;
-		} else {
-			frontAnim->xPosition += 24;
-		}
-	}
+    if (gEkrDistanceType == 1)
+    {
+        if (GetAnimPosition(proc->anim) == 0)
+        {
+            frontAnim->xPosition -= 24;
+        }
+        else
+        {
+            frontAnim->xPosition += 24;
+        }
+    }
 
-	if ((GetBanimDragonStatusType() == 1) || (GetBanimDragonStatusType() == 2)) {
-		frontAnim->oam2Base |= 0xc00;
-	}
+    if ((GetBanimDragonStatusType() == 1) || (GetBanimDragonStatusType() == 2))
+    {
+        frontAnim->oam2Base |= 0xc00;
+    }
 
-	frontAnim->drawLayerPriority = 20;
+    frontAnim->drawLayerPriority = 20;
 
-	AnimSort();
+    AnimSort();
 
-	SpellFx_RegisterObjGfx(Img_086E9D40, 32 * 4 * CHR_SIZE);
-	SpellFx_RegisterObjPal(Pal_086EA3EC, PLTT_SIZE_4BPP);
+    SpellFx_RegisterObjGfx(Img_086E9D40, 32 * 4 * CHR_SIZE);
+    SpellFx_RegisterObjPal(Pal_086EA3EC, PLTT_SIZE_4BPP);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0806B73C
-void efxGorgonBGDirt_Loop(struct ProcEfxBG *proc)
+void efxGorgonBGDirt_Loop(struct ProcEfxBG * proc)
 {
-	s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+    s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-	if (ret >= 0) {
-		u16 **tsa = proc->tsal;
-		u16 **img = proc->img;
-		u16 **pal = proc->pal;
+    if (ret >= 0)
+    {
+        u16 ** tsa = proc->tsal;
+        u16 ** img = proc->img;
+        u16 ** pal = proc->pal;
 
-		SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
-		SpellFx_RegisterBgPal(*(pal + ret), PLTT_SIZE_4BPP);
-		SpellFx_WriteBgMap(proc->anim, *(tsa + ret), *(tsa + ret));
-	} else {
-		if (ret == -1) {
-			SpellFx_ClearBG1();
-			gEfxBgSemaphore--;
-			SetDefaultColorEffects_();
-			Proc_Break(proc);
-		}
-	}
+        SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
+        SpellFx_RegisterBgPal(*(pal + ret), PLTT_SIZE_4BPP);
+        SpellFx_WriteBgMap(proc->anim, *(tsa + ret), *(tsa + ret));
+    }
+    else
+    {
+        if (ret == -1)
+        {
+            SpellFx_ClearBG1();
+            gEfxBgSemaphore--;
+            SetDefaultColorEffects_();
+            Proc_Break(proc);
+        }
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -264,61 +298,71 @@ struct ProcCmd CONST_DATA ProcScr_efxGorgonBGDirt[] =
 // clang-format on
 
 //! FE8U = 0x0806B7A8
-void StartSubSpell_efxGorgonBGDirt(struct Anim *anim)
+void StartSubSpell_efxGorgonBGDirt(struct Anim * anim)
 {
-	struct ProcEfxBG *proc;
+    struct ProcEfxBG * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxGorgonBGDirt, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
+    proc = Proc_Start(ProcScr_efxGorgonBGDirt, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
 
-	proc->frame = 0;
-	proc->frame_config = gFrameConfig_efxGorgonBGDirt;
+    proc->frame = 0;
+    proc->frame_config = gFrameConfig_efxGorgonBGDirt;
 
-	proc->tsal = TsaArray_efxGorgonBGDirt;
-	proc->img = ImgArray_efxGorgonBGDirt;
-	proc->pal = PalArray_efxGorgonBGDirt;
+    proc->tsal = TsaArray_efxGorgonBGDirt;
+    proc->img = ImgArray_efxGorgonBGDirt;
+    proc->pal = PalArray_efxGorgonBGDirt;
 
-	if (gEkrDistanceType == 1) {
-		if (GetAnimPosition(anim) == 0) {
-			BG_SetPosition(BG_1, 24, 0);
-		} else {
-			BG_SetPosition(BG_1, -24, 0);
-		}
-	} else {
-		BG_SetPosition(BG_1, 0, 0);
-	}
+    if (gEkrDistanceType == 1)
+    {
+        if (GetAnimPosition(anim) == 0)
+        {
+            BG_SetPosition(BG_1, 24, 0);
+        }
+        else
+        {
+            BG_SetPosition(BG_1, -24, 0);
+        }
+    }
+    else
+    {
+        BG_SetPosition(BG_1, 0, 0);
+    }
 
-	SpellFx_SetSomeColorEffect();
+    SpellFx_SetSomeColorEffect();
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0806B830
-void efxGorgonBGTwister_Loop(struct ProcEfxBG *proc)
+void efxGorgonBGTwister_Loop(struct ProcEfxBG * proc)
 {
-	int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+    int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-	if (ret >= 0) {
-		u16 **tsa = proc->tsal;
-		u16 **img = proc->img;
-		u16 **pal = proc->pal;
+    if (ret >= 0)
+    {
+        u16 ** tsa = proc->tsal;
+        u16 ** img = proc->img;
+        u16 ** pal = proc->pal;
 
-		SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
-		SpellFx_RegisterBgPal(*(pal + ret), PLTT_SIZE_4BPP);
-		SpellFx_WriteBgMapExt(proc->anim, *(tsa + ret), 32, 20);
-	} else {
-		if (ret == -1) {
-			SpellFx_ClearBG1();
-			gEfxBgSemaphore--;
+        SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
+        SpellFx_RegisterBgPal(*(pal + ret), PLTT_SIZE_4BPP);
+        SpellFx_WriteBgMapExt(proc->anim, *(tsa + ret), 32, 20);
+    }
+    else
+    {
+        if (ret == -1)
+        {
+            SpellFx_ClearBG1();
+            gEfxBgSemaphore--;
 
-			Proc_Break(proc);
-		}
-	}
+            Proc_Break(proc);
+        }
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -365,176 +409,196 @@ struct ProcCmd CONST_DATA ProcScr_efxGorgonBGTwister[] =
 // clang-format on
 
 //! FE8U = 0x0806B89C
-void StartSubSpell_efxGorgonBGTwister(struct Anim *anim)
+void StartSubSpell_efxGorgonBGTwister(struct Anim * anim)
 {
-	struct ProcEfxBG *proc;
+    struct ProcEfxBG * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxGorgonBGTwister, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
+    proc = Proc_Start(ProcScr_efxGorgonBGTwister, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
 
-	proc->frame = 0;
-	proc->frame_config = gFrameConfig_efxGorgonBGTwister;
+    proc->frame = 0;
+    proc->frame_config = gFrameConfig_efxGorgonBGTwister;
 
-	proc->tsal = TsaArray_efxGorgonBGTwister;
-	proc->img = ImgArray_efxGorgonBGTwister;
-	proc->pal = PalArray_efxGorgonBGTwister;
+    proc->tsal = TsaArray_efxGorgonBGTwister;
+    proc->img = ImgArray_efxGorgonBGTwister;
+    proc->pal = PalArray_efxGorgonBGTwister;
 
-	if (gEkrDistanceType == 1) {
-		if (GetAnimPosition(anim) == 0) {
-			BG_SetPosition(BG_1, 40, 0);
-		} else {
-			BG_SetPosition(BG_1, -24, 0);
-		}
-	} else {
-		if (GetAnimPosition(anim) == 0) {
-			BG_SetPosition(BG_1, 16, 0);
-		} else {
-			BG_SetPosition(BG_1, 0, 0);
-		}
-	}
+    if (gEkrDistanceType == 1)
+    {
+        if (GetAnimPosition(anim) == 0)
+        {
+            BG_SetPosition(BG_1, 40, 0);
+        }
+        else
+        {
+            BG_SetPosition(BG_1, -24, 0);
+        }
+    }
+    else
+    {
+        if (GetAnimPosition(anim) == 0)
+        {
+            BG_SetPosition(BG_1, 16, 0);
+        }
+        else
+        {
+            BG_SetPosition(BG_1, 0, 0);
+        }
+    }
 
-	SpellFx_SetSomeColorEffect();
+    SpellFx_SetSomeColorEffect();
 
-	return;
+    return;
 }
 
-struct Proc085D8C24 {
-	/* 00 */ PROC_HEADER;
-	/* 29 */ STRUCT_PAD(0x29, 0x4C);
-	/* 4C */ s16 unk4C;
+struct Proc085D8C24
+{
+    /* 00 */ PROC_HEADER;
+    /* 29 */ STRUCT_PAD(0x29, 0x4C);
+    /* 4C */ s16 unk4C;
 };
 
 //! FE8U = 0x0806B938
-void sub_806B938(struct Proc085D8C24 *proc)
+void sub_806B938(struct Proc085D8C24 * proc)
 {
-	proc->unk4C = 0;
-	return;
+    proc->unk4C = 0;
+    return;
 }
 
 #define RGB_(r, g, b) (((b) << 10) | ((g) << 5) | (r))
 
 //! FE8U = 0x0806B940
-void sub_806B940(struct Proc085D8C24 *proc)
+void sub_806B940(struct Proc085D8C24 * proc)
 {
-	int sl;
-	u16 *r6;
-	u16 *r7;
-	int sp_08;
-	int ip;
+    int sl;
+    u16 * r6;
+    u16 * r7;
+    int sp_08;
+    int ip;
 
-	r7 = gPaletteBuffer;
-	r6 = gEfxPal;
+    r7 = gPaletteBuffer;
+    r6 = gEfxPal;
 
-	sl = Interpolate(0, 0, 0x10, proc->unk4C, 12);
+    sl = Interpolate(0, 0, 0x10, proc->unk4C, 12);
 
-	*r6 = *r7;
+    *r6 = *r7;
 
-	for (sp_08 = 0; sp_08 < 0x20; sp_08++) {
-		switch (sp_08) {
-		case 2:
-		case 3:
-		case 16:
-		case 21:
-		case 22:
-		case 27:
-		case 28:
-		case 29:
-		case 30:
-			CpuFastCopy(r7, r6, 0x20);
-			r7 += 0x10;
-			r6 += 0x10;
-			continue;
+    for (sp_08 = 0; sp_08 < 0x20; sp_08++)
+    {
+        switch (sp_08)
+        {
+            case 2:
+            case 3:
+            case 16:
+            case 21:
+            case 22:
+            case 27:
+            case 28:
+            case 29:
+            case 30:
+                CpuFastCopy(r7, r6, 0x20);
+                r7 += 0x10;
+                r6 += 0x10;
+                continue;
 
-		default:
-			break;
-		}
+            default:
+                break;
+        }
 
-		r7++;
-		r6++;
+        r7++;
+        r6++;
 
-		for (ip = 0; ip < 0xF; ip++) {
-			u8 r = ((*r7 & 0x1f) * (0x10 - sl)) >> 4;
-			u8 g = (((*r7 >> 5) & 0x1f) * (0x10 - sl)) >> 4;
-			u8 b = (((*r7 >> 10) & 0x1f) * (0x10 - sl)) >> 4;
+        for (ip = 0; ip < 0xF; ip++)
+        {
+            u8 r = ((*r7 & 0x1f) * (0x10 - sl)) >> 4;
+            u8 g = (((*r7 >> 5) & 0x1f) * (0x10 - sl)) >> 4;
+            u8 b = (((*r7 >> 10) & 0x1f) * (0x10 - sl)) >> 4;
 
-			*r6 = RGB_(r & 0x1f, g & 0x1f, b & 0x1f);
-			r7++;
-			r6++;
-		}
-	}
+            *r6 = RGB_(r & 0x1f, g & 0x1f, b & 0x1f);
+            r7++;
+            r6++;
+        }
+    }
 
-	CpuFastCopy(gEfxPal, (void *)PLTT, 0x400);
-	DisablePaletteSync();
+    CpuFastCopy(gEfxPal, (void *)PLTT, 0x400);
+    DisablePaletteSync();
 
-	if (proc->unk4C == 12) {
-		proc->unk4C = 0;
-		Proc_Break(proc);
-	} else {
-		proc->unk4C++;
-	}
+    if (proc->unk4C == 12)
+    {
+        proc->unk4C = 0;
+        Proc_Break(proc);
+    }
+    else
+    {
+        proc->unk4C++;
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0806BACC
-void sub_806BACC(struct Proc085D8C24 *proc)
+void sub_806BACC(struct Proc085D8C24 * proc)
 {
-	int sl;
-	u16 *r6;
-	u16 *r7;
-	int sp_08;
-	int ip;
+    int sl;
+    u16 * r6;
+    u16 * r7;
+    int sp_08;
+    int ip;
 
-	r7 = gPaletteBuffer;
-	r6 = gEfxPal;
+    r7 = gPaletteBuffer;
+    r6 = gEfxPal;
 
-	*r6 = *r7;
+    *r6 = *r7;
 
-	for (sp_08 = 0; sp_08 < 0x20; sp_08++) {
-		switch (sp_08) {
-		case 2:
-		case 3:
-		case 16:
-		case 18:
-		case 21:
-		case 22:
-		case 27:
-		case 28:
-		case 29:
-		case 30:
-			CpuFastCopy(r7, r6, 0x20);
-			r7 += 0x10;
-			r6 += 0x10;
-			continue;
+    for (sp_08 = 0; sp_08 < 0x20; sp_08++)
+    {
+        switch (sp_08)
+        {
+            case 2:
+            case 3:
+            case 16:
+            case 18:
+            case 21:
+            case 22:
+            case 27:
+            case 28:
+            case 29:
+            case 30:
+                CpuFastCopy(r7, r6, 0x20);
+                r7 += 0x10;
+                r6 += 0x10;
+                continue;
 
-		default:
-			break;
-		}
+            default:
+                break;
+        }
 
-		r7++;
-		r6++;
+        r7++;
+        r6++;
 
-		for (ip = 0; ip < 0xF; ip++) {
-			*r6 = 0;
+        for (ip = 0; ip < 0xF; ip++)
+        {
+            *r6 = 0;
 
-			r7++;
-			r6++;
-		}
-	}
+            r7++;
+            r6++;
+        }
+    }
 
-	CpuFastCopy(gEfxPal, (void *)PLTT, 0x400);
-	DisablePaletteSync();
+    CpuFastCopy(gEfxPal, (void *)PLTT, 0x400);
+    DisablePaletteSync();
 
-	if (proc->unk4C == 16) {
-		Proc_Break(proc);
-	}
+    if (proc->unk4C == 16)
+    {
+        Proc_Break(proc);
+    }
 
-	proc->unk4C++;
+    proc->unk4C++;
 
-	return;
+    return;
 }
 
 #undef RGB_
@@ -558,50 +622,52 @@ struct ProcCmd CONST_DATA ProcScr_085D8C24[] =
 //! FE8U = 0x0806BBDC
 void sub_806BBDC(void)
 {
-	Proc_Start(ProcScr_085D8C24, PROC_TREE_VSYNC);
-	return;
+    Proc_Start(ProcScr_085D8C24, PROC_TREE_VSYNC);
+    return;
 }
 
 //! FE8U = 0x0806BBF0
-void efxGorgonOBJTwisterPiece_Loop(struct ProcEfxOBJ *proc)
+void efxGorgonOBJTwisterPiece_Loop(struct ProcEfxOBJ * proc)
 {
-	switch (proc->unk44) {
-	case 0:
-		proc->anim2->xPosition -= 2;
-		break;
+    switch (proc->unk44)
+    {
+        case 0:
+            proc->anim2->xPosition -= 2;
+            break;
 
-	case 1:
-		proc->anim2->xPosition -= 3;
-		break;
+        case 1:
+            proc->anim2->xPosition -= 3;
+            break;
 
-	case 2:
-		proc->anim2->xPosition -= 4;
-		break;
+        case 2:
+            proc->anim2->xPosition -= 4;
+            break;
 
-	case 3:
-		proc->anim2->xPosition += 2;
-		break;
+        case 3:
+            proc->anim2->xPosition += 2;
+            break;
 
-	case 4:
-		proc->anim2->xPosition += 3;
-		break;
+        case 4:
+            proc->anim2->xPosition += 3;
+            break;
 
-	case 5:
-		proc->anim2->xPosition += 4;
-		break;
-	}
+        case 5:
+            proc->anim2->xPosition += 4;
+            break;
+    }
 
-	proc->anim2->yPosition -= 6;
+    proc->anim2->yPosition -= 6;
 
-	proc->timer++;
+    proc->timer++;
 
-	if ((proc->timer == proc->terminator) || (proc->anim2->xPosition < -16)) {
-		gEfxBgSemaphore--;
-		AnimDelete(proc->anim2);
-		Proc_Break(proc);
-	}
+    if ((proc->timer == proc->terminator) || (proc->anim2->xPosition < -16))
+    {
+        gEfxBgSemaphore--;
+        AnimDelete(proc->anim2);
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -616,120 +682,134 @@ struct ProcCmd CONST_DATA ProcScr_efxGorgonOBJTwisterPiece[] =
 // clang-format on
 
 //! FE8U = 0x0806BC98
-void StartSubSpell_efxGorgonOBJTwisterPiece(struct Anim *anim, int flag, int c, int terminator)
+void StartSubSpell_efxGorgonOBJTwisterPiece(struct Anim * anim, int flag, int c, int terminator)
 {
-	struct ProcEfxOBJ *proc;
-	struct Anim *frontAnim;
-	u32 *scr;
+    struct ProcEfxOBJ * proc;
+    struct Anim * frontAnim;
+    u32 * scr;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxGorgonOBJTwisterPiece, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->terminator = terminator;
-	proc->unk44 = c;
+    proc = Proc_Start(ProcScr_efxGorgonOBJTwisterPiece, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->terminator = terminator;
+    proc->unk44 = c;
 
-	scr = AnimScr_EfxCrimsonEyeOBJ;
-	frontAnim = EfxCreateFrontAnim(anim, scr, scr, scr, scr);
-	proc->anim2 = frontAnim;
+    scr = AnimScr_EfxCrimsonEyeOBJ;
+    frontAnim = EfxCreateFrontAnim(anim, scr, scr, scr, scr);
+    proc->anim2 = frontAnim;
 
-	if (GetAnimPosition(proc->anim) == 0) {
-		frontAnim->xPosition = 88;
-	} else {
-		frontAnim->xPosition = 152;
-	}
+    if (GetAnimPosition(proc->anim) == 0)
+    {
+        frontAnim->xPosition = 88;
+    }
+    else
+    {
+        frontAnim->xPosition = 152;
+    }
 
-	frontAnim->yPosition = 88;
+    frontAnim->yPosition = 88;
 
-	if (gEkrDistanceType == 1) {
-		if (GetAnimPosition(proc->anim) == 0) {
-			frontAnim->xPosition -= 0x18;
-		} else {
-			frontAnim->xPosition += 0x18;
-		}
-	}
+    if (gEkrDistanceType == 1)
+    {
 
-	switch (proc->unk44) {
-	case 0:
-		frontAnim->xPosition -= 12;
-		break;
+        if (GetAnimPosition(proc->anim) == 0)
+        {
+            frontAnim->xPosition -= 0x18;
+        }
+        else
+        {
+            frontAnim->xPosition += 0x18;
+        }
+    }
 
-	case 1:
-		frontAnim->xPosition -= 24;
-		break;
+    switch (proc->unk44)
+    {
+        case 0:
+            frontAnim->xPosition -= 12;
+            break;
 
-	case 2:
-		frontAnim->xPosition -= 36;
-		break;
+        case 1:
+            frontAnim->xPosition -= 24;
+            break;
 
-	case 3:
-		frontAnim->xPosition += 12;
-		break;
+        case 2:
+            frontAnim->xPosition -= 36;
+            break;
 
-	case 4:
-		frontAnim->xPosition += 24;
-		break;
+        case 3:
+            frontAnim->xPosition += 12;
+            break;
 
-	case 5:
-		frontAnim->xPosition += 36;
-		break;
-	}
+        case 4:
+            frontAnim->xPosition += 24;
+            break;
 
-	if (flag == 0) {
-		frontAnim->oamBase = 0x3E000100;
-	} else {
-		frontAnim->oamBase = 0x3C000100;
-	}
+        case 5:
+            frontAnim->xPosition += 36;
+            break;
+    }
 
-	return;
+    if (flag == 0)
+    {
+        frontAnim->oamBase = 0x3E000100;
+    }
+    else
+    {
+        frontAnim->oamBase = 0x3C000100;
+    }
+
+    return;
 }
 
 //! FE8U = 0x0806BD94
-void efxGorgonOBJTwister_Loop(struct ProcEfxOBJ *proc)
+void efxGorgonOBJTwister_Loop(struct ProcEfxOBJ * proc)
 {
-	switch (proc->timer & 0x1f) {
-	case 0:
-		StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 0, 0, 12 - proc->timer);
-		break;
+    switch (proc->timer & 0x1f)
+    {
+        case 0:
+            StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 0, 0, 12 - proc->timer);
+            break;
 
-	case 4:
-		StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 1, 5, 12 - proc->timer);
-		break;
+        case 4:
+            StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 1, 5, 12 - proc->timer);
+            break;
 
-	case 8:
-		StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 0, 6, 12 - proc->timer);
-		break;
+        case 8:
+            StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 0, 6, 12 - proc->timer);
+            break;
 
-	case 12:
-		StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 1, 4, 12 - proc->timer);
-		break;
+        case 12:
+            StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 1, 4, 12 - proc->timer);
+            break;
 
-	case 16:
-		StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 0, 2, 12 - proc->timer);
-		break;
+        case 16:
+            StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 0, 2, 12 - proc->timer);
+            break;
 
-	case 20:
-		StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 1, 1, 12 - proc->timer);
-		break;
+        case 20:
+            StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 1, 1, 12 - proc->timer);
+            break;
 
-	case 24:
-		StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 0, 3, 12 - proc->timer);
-		break;
+        case 24:
+            StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 0, 3, 12 - proc->timer);
+            break;
 
-	case 28:
-		StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 1, 7, 12 - proc->timer);
-		break;
-	}
+        case 28:
+            StartSubSpell_efxGorgonOBJTwisterPiece(proc->anim, 1, 7, 12 - proc->timer);
+            break;
+    }
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer == 0xc) {
-		gEfxBgSemaphore--;
-		Proc_Break(proc);
-	}
+    if (proc->timer == 0xc)
+    {
+        gEfxBgSemaphore--;
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -744,33 +824,40 @@ struct ProcCmd CONST_DATA ProcScr_efxGorgonOBJTwister[] =
 // clang-format on
 
 //! FE8U = 0x0806BEEC
-void StartSubSpell_efxGorgonOBJTwister(struct Anim *anim)
+void StartSubSpell_efxGorgonOBJTwister(struct Anim * anim)
 {
-	struct ProcEfxOBJ *proc;
+    struct ProcEfxOBJ * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxGorgonOBJTwister, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
+    proc = Proc_Start(ProcScr_efxGorgonOBJTwister, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
 
-	if (GetAnimPosition(anim) == 0) {
-		proc->unk32 = 88;
-	} else {
-		proc->unk32 = 152;
-	}
+    if (GetAnimPosition(anim) == 0)
+    {
+        proc->unk32 = 88;
+    }
+    else
+    {
+        proc->unk32 = 152;
+    }
 
-	proc->unk3A = 72;
+    proc->unk3A = 72;
 
-	if (gEkrDistanceType == 1) {
-		if (GetAnimPosition(proc->anim) == 0) {
-			proc->unk32 -= 24;
-		} else {
-			proc->unk32 += 24;
-		}
-	}
+    if (gEkrDistanceType == 1)
+    {
+        if (GetAnimPosition(proc->anim) == 0)
+        {
+            proc->unk32 -= 24;
+        }
+        else
+        {
+            proc->unk32 += 24;
+        }
+    }
 
-	// clang-format off
+    // clang-format off
     SetObjAffine(
         31,
         Div(+COS(0) * 16, 128),
@@ -786,35 +873,39 @@ void StartSubSpell_efxGorgonOBJTwister(struct Anim *anim)
         Div(+SIN(0) * 16, 256),
         Div(+COS(0) * 16, 256)
     );
-	// clang-format on
+    // clang-format on
 
-	SpellFx_RegisterObjPal(Pal_CrimsonEyeSprites, PLTT_SIZE_4BPP);
-	SpellFx_RegisterObjGfx(Img_CrimsonEyeSprites, 32 * 4 * CHR_SIZE);
+    SpellFx_RegisterObjPal(Pal_CrimsonEyeSprites, PLTT_SIZE_4BPP);
+    SpellFx_RegisterObjGfx(Img_CrimsonEyeSprites, 32 * 4 * CHR_SIZE);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0806C050
-void efxGorgonBGFinish_Loop(struct ProcEfxBG *proc)
+void efxGorgonBGFinish_Loop(struct ProcEfxBG * proc)
 {
-	s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+    s16 ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-	if (ret >= 0) {
-		u16 **tsa = proc->tsal;
-		u16 **img = proc->img;
+    if (ret >= 0)
+    {
+        u16 ** tsa = proc->tsal;
+        u16 ** img = proc->img;
 
-		SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
-		sub_8068AFC(GetAnimAnotherSide(proc->anim), *(tsa + ret), *(tsa + ret), 1);
-	} else {
-		if (ret == -1) {
-			SpellFx_ClearBG1();
-			gEfxBgSemaphore--;
-			SetDefaultColorEffects_();
-			Proc_Break(proc);
-		}
-	}
+        SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
+        sub_8068AFC(GetAnimAnotherSide(proc->anim), *(tsa + ret), *(tsa + ret), 1);
+    }
+    else
+    {
+        if (ret == -1)
+        {
+            SpellFx_ClearBG1();
+            gEfxBgSemaphore--;
+            SetDefaultColorEffects_();
+            Proc_Break(proc);
+        }
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -870,204 +961,228 @@ struct ProcCmd CONST_DATA ProcScr_efxGorgonBGFinish[] =
 // clang-format on
 
 //! FE8U = 0x0806C0B8
-void StartSubSpell_efxGorgonBGFinish(struct Anim *anim)
+void StartSubSpell_efxGorgonBGFinish(struct Anim * anim)
 {
-	struct ProcEfxBG *proc;
+    struct ProcEfxBG * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxGorgonBGFinish, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
+    proc = Proc_Start(ProcScr_efxGorgonBGFinish, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
 
-	proc->frame = 0;
-	proc->frame_config = gFrameConfig_efxGorgonBGFinish;
+    proc->frame = 0;
+    proc->frame_config = gFrameConfig_efxGorgonBGFinish;
 
-	proc->tsal = TsaArray_efxGorgonBGFinish;
-	proc->img = ImgArray_efxGorgonBGFinish;
+    proc->tsal = TsaArray_efxGorgonBGFinish;
+    proc->img = ImgArray_efxGorgonBGFinish;
 
-	if (gEkrDistanceType == 1) {
-		if (GetAnimPosition(anim) == 0) {
-			BG_SetPosition(BG_1, 24, 0);
-		} else {
-			BG_SetPosition(BG_1, -24, 0);
-		}
-	} else {
-		BG_SetPosition(BG_1, 0, 0);
-	}
+    if (gEkrDistanceType == 1)
+    {
+        if (GetAnimPosition(anim) == 0)
+        {
+            BG_SetPosition(BG_1, 24, 0);
+        }
+        else
+        {
+            BG_SetPosition(BG_1, -24, 0);
+        }
+    }
+    else
+    {
+        BG_SetPosition(BG_1, 0, 0);
+    }
 
-	SpellFx_RegisterBgPal(Pal_086FDA44, PLTT_SIZE_4BPP);
+    SpellFx_RegisterBgPal(Pal_086FDA44, PLTT_SIZE_4BPP);
 
-	SetPrimaryHBlankHandler(OnHBlank_806B088);
+    SetPrimaryHBlankHandler(OnHBlank_806B088);
 
-	return;
+    return;
 }
 
-struct Proc085D8CE4 {
-	/* 00 */ PROC_HEADER;
-	/* 29 */ STRUCT_PAD(0x29, 0x4C);
-	/* 4C */ s16 unk4C;
+struct Proc085D8CE4
+{
+    /* 00 */ PROC_HEADER;
+    /* 29 */ STRUCT_PAD(0x29, 0x4C);
+    /* 4C */ s16 unk4C;
 };
 
 //! FE8U = 0x0806C14C
-void sub_806C14C(struct Proc085D8CE4 *proc)
+void sub_806C14C(struct Proc085D8CE4 * proc)
 {
-	proc->unk4C = 0;
-	return;
+    proc->unk4C = 0;
+    return;
 }
 
 //! FE8U = 0x0806C154
-void sub_806C154(struct Proc085D8CE4 *proc)
+void sub_806C154(struct Proc085D8CE4 * proc)
 {
-	u16 *src;
-	int i;
-	int j;
+    u16 * src;
+    int i;
+    int j;
 
-	u16 *src_ = gEfxPal;
+    u16 * src_ = gEfxPal;
 
-	for (i = 0, src = gEfxPal; i < 0x20; i++) {
-		src_++;
-		for (j = 0; j < 0xf; j++) {
-			*src_ = 0x00007FFF;
-			src_++;
-		}
-	}
+    for (i = 0, src = gEfxPal; i < 0x20; i++)
+    {
+        src_++;
+        for (j = 0; j < 0xf; j++)
+        {
+            *src_ = 0x00007FFF;
+            src_++;
+        }
+    }
 
-	CpuFastCopy(src, (void *)PLTT, 0x400);
-	DisablePaletteSync();
+    CpuFastCopy(src, (void *)PLTT, 0x400);
+    DisablePaletteSync();
 
-	if (proc->unk4C == 8) {
-		proc->unk4C = 0;
-		Proc_Break(proc);
-	} else {
-		proc->unk4C++;
-	}
+    if (proc->unk4C == 8)
+    {
+        proc->unk4C = 0;
+        Proc_Break(proc);
+    }
+    else
+    {
+        proc->unk4C++;
+    }
 
-	return;
+    return;
 }
 
 #define RGB_(r, g, b) (((b) << 10) | ((g) << 5) | (r))
 
 //! FE8U = 0x0806C1B8
-void sub_806C1B8(struct Proc085D8CE4 *proc)
+void sub_806C1B8(struct Proc085D8CE4 * proc)
 {
-	int sl;
-	u16 *r6;
-	u16 *r7;
-	int sp_08;
-	int ip;
+    int sl;
+    u16 * r6;
+    u16 * r7;
+    int sp_08;
+    int ip;
 
-	r7 = gPaletteBuffer;
-	r6 = gEfxPal;
+    r7 = gPaletteBuffer;
+    r6 = gEfxPal;
 
-	*r6 = *r7;
+    *r6 = *r7;
 
-	for (sp_08 = 0; sp_08 < 0x20; sp_08++) {
-		switch (sp_08) {
-		case 1:
-		case 2:
-		case 3:
-		case 16:
-		case 21:
-		case 22:
-		case 27:
-		case 28:
-		case 29:
-		case 30:
-			CpuFastCopy(r7, r6, 0x20);
-			r7 += 0x10;
-			r6 += 0x10;
-			continue;
+    for (sp_08 = 0; sp_08 < 0x20; sp_08++)
+    {
+        switch (sp_08)
+        {
+            case 1:
+            case 2:
+            case 3:
+            case 16:
+            case 21:
+            case 22:
+            case 27:
+            case 28:
+            case 29:
+            case 30:
+                CpuFastCopy(r7, r6, 0x20);
+                r7 += 0x10;
+                r6 += 0x10;
+                continue;
 
-		default:
-			break;
-		}
+            default:
+                break;
+        }
 
-		r7++;
-		r6++;
+        r7++;
+        r6++;
 
-		for (ip = 0; ip < 0xF; ip++) {
-			*r6 = 0;
-			r7++;
-			r6++;
-		}
-	}
+        for (ip = 0; ip < 0xF; ip++)
+        {
+            *r6 = 0;
+            r7++;
+            r6++;
+        }
+    }
 
-	CpuFastCopy(gEfxPal, (void *)PLTT, 0x400);
-	DisablePaletteSync();
+    CpuFastCopy(gEfxPal, (void *)PLTT, 0x400);
+    DisablePaletteSync();
 
-	if (proc->unk4C == 18) {
-		proc->unk4C = 0;
-		Proc_Break(proc);
-	} else {
-		proc->unk4C++;
-	}
+    if (proc->unk4C == 18)
+    {
+        proc->unk4C = 0;
+        Proc_Break(proc);
+    }
+    else
+    {
+        proc->unk4C++;
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0806C2D4
-void sub_806C2D4(struct Proc085D8CE4 *proc)
+void sub_806C2D4(struct Proc085D8CE4 * proc)
 {
-	int sl;
-	u16 *r6;
-	u16 *r7;
-	int sp_08;
-	int ip;
+    int sl;
+    u16 * r6;
+    u16 * r7;
+    int sp_08;
+    int ip;
 
-	r7 = gPaletteBuffer;
-	r6 = gEfxPal;
+    r7 = gPaletteBuffer;
+    r6 = gEfxPal;
 
-	sl = Interpolate(0, 16, 0, proc->unk4C, 18);
+    sl = Interpolate(0, 16, 0, proc->unk4C, 18);
 
-	*r6 = *r7;
+    *r6 = *r7;
 
-	for (sp_08 = 0; sp_08 < 0x20; sp_08++) {
-		switch (sp_08) {
-		case 1:
-		case 2:
-		case 3:
-		case 16:
-		case 21:
-		case 22:
-		case 27:
-		case 28:
-		case 29:
-		case 30:
-			CpuFastCopy(r7, r6, 0x20);
-			r7 += 0x10;
-			r6 += 0x10;
-			continue;
+    for (sp_08 = 0; sp_08 < 0x20; sp_08++)
+    {
+        switch (sp_08)
+        {
+            case 1:
+            case 2:
+            case 3:
+            case 16:
+            case 21:
+            case 22:
+            case 27:
+            case 28:
+            case 29:
+            case 30:
+                CpuFastCopy(r7, r6, 0x20);
+                r7 += 0x10;
+                r6 += 0x10;
+                continue;
 
-		default:
-			break;
-		}
+            default:
+                break;
+        }
 
-		r7++;
-		r6++;
+        r7++;
+        r6++;
 
-		for (ip = 0; ip < 0xF; ip++) {
-			u8 r = ((*r7 & 0x1f) * (0x10 - sl)) >> 4;
-			u8 g = (((*r7 >> 5) & 0x1f) * (0x10 - sl)) >> 4;
-			u8 b = (((*r7 >> 10) & 0x1f) * (0x10 - sl)) >> 4;
+        for (ip = 0; ip < 0xF; ip++)
+        {
+            u8 r = ((*r7 & 0x1f) * (0x10 - sl)) >> 4;
+            u8 g = (((*r7 >> 5) & 0x1f) * (0x10 - sl)) >> 4;
+            u8 b = (((*r7 >> 10) & 0x1f) * (0x10 - sl)) >> 4;
 
-			*r6 = RGB_(r & 0x1f, g & 0x1f, b & 0x1f);
-			r7++;
-			r6++;
-		}
-	}
+            *r6 = RGB_(r & 0x1f, g & 0x1f, b & 0x1f);
+            r7++;
+            r6++;
+        }
+    }
 
-	CpuFastCopy(gEfxPal, (void *)PLTT, 0x400);
-	DisablePaletteSync();
+    CpuFastCopy(gEfxPal, (void *)PLTT, 0x400);
+    DisablePaletteSync();
 
-	if (proc->unk4C == 18) {
-		proc->unk4C = 0;
-		Proc_Break(proc);
-	} else {
-		proc->unk4C++;
-	}
+    if (proc->unk4C == 18)
+    {
+        proc->unk4C = 0;
+        Proc_Break(proc);
+    }
+    else
+    {
+        proc->unk4C++;
+    }
 
-	return;
+    return;
 }
 
 #undef RGB_
@@ -1092,80 +1207,87 @@ struct ProcCmd CONST_DATA ProcScr_085D8CE4[] =
 //! FE8U = 0x0806C464
 void sub_806C464(void)
 {
-	Proc_Start(ProcScr_085D8CE4, PROC_TREE_VSYNC);
-	return;
+    Proc_Start(ProcScr_085D8CE4, PROC_TREE_VSYNC);
+    return;
 }
 
-struct Proc085D8D14 {
-	/* 00 */ PROC_HEADER;
-	/* 29 */ STRUCT_PAD(0x29, 0x4C);
-	/* 4C */ s16 unk4C;
+struct Proc085D8D14
+{
+    /* 00 */ PROC_HEADER;
+    /* 29 */ STRUCT_PAD(0x29, 0x4C);
+    /* 4C */ s16 unk4C;
 };
 
 #define RGB_(r, g, b) (((b) << 10) | ((g) << 5) | (r))
 
 //! FE8U = 0x0806C478
-void sub_806C478(struct Proc085D8D14 *proc)
+void sub_806C478(struct Proc085D8D14 * proc)
 {
-	int sl;
-	u16 *r6;
-	u16 *r7;
-	int sp_08;
-	int ip;
+    int sl;
+    u16 * r6;
+    u16 * r7;
+    int sp_08;
+    int ip;
 
-	r7 = gPaletteBuffer;
-	r6 = gEfxPal;
+    r7 = gPaletteBuffer;
+    r6 = gEfxPal;
 
-	sl = Interpolate(0, 0, 0x10, proc->unk4C, 8);
+    sl = Interpolate(0, 0, 0x10, proc->unk4C, 8);
 
-	*r6 = *r7;
+    *r6 = *r7;
 
-	for (sp_08 = 0; sp_08 < 0x20; sp_08++) {
-		switch (sp_08) {
-		case 1:
-		case 2:
-		case 3:
-		case 16:
-		case 21:
-		case 22:
-		case 27:
-		case 28:
-		case 29:
-		case 30:
-			CpuFastCopy(r7, r6, 0x20);
-			r7 += 0x10;
-			r6 += 0x10;
-			continue;
+    for (sp_08 = 0; sp_08 < 0x20; sp_08++)
+    {
+        switch (sp_08)
+        {
+            case 1:
+            case 2:
+            case 3:
+            case 16:
+            case 21:
+            case 22:
+            case 27:
+            case 28:
+            case 29:
+            case 30:
+                CpuFastCopy(r7, r6, 0x20);
+                r7 += 0x10;
+                r6 += 0x10;
+                continue;
 
-		default:
-			break;
-		}
+            default:
+                break;
+        }
 
-		r7++;
-		r6++;
+        r7++;
+        r6++;
 
-		for (ip = 0; ip < 0xF; ip++) {
-			u8 r = ((*r7 & 0x1f) * (0x10 - sl)) >> 4;
-			u8 g = (((*r7 >> 5) & 0x1f) * (0x10 - sl)) >> 4;
-			u8 b = (((*r7 >> 10) & 0x1f) * (0x10 - sl)) >> 4;
+        for (ip = 0; ip < 0xF; ip++)
+        {
+            u8 r = ((*r7 & 0x1f) * (0x10 - sl)) >> 4;
+            u8 g = (((*r7 >> 5) & 0x1f) * (0x10 - sl)) >> 4;
+            u8 b = (((*r7 >> 10) & 0x1f) * (0x10 - sl)) >> 4;
 
-			*r6 = RGB_(r & 0x1f, g & 0x1f, b & 0x1f);
-			r7++;
-			r6++;
-		}
-	}
+            *r6 = RGB_(r & 0x1f, g & 0x1f, b & 0x1f);
+            r7++;
+            r6++;
+        }
+    }
 
-	CpuFastCopy(gEfxPal, (void *)PLTT, 0x400);
-	DisablePaletteSync();
+    CpuFastCopy(gEfxPal, (void *)PLTT, 0x400);
+    DisablePaletteSync();
 
-	if (proc->unk4C == 8) {
-		proc->unk4C = 0;
-		Proc_Break(proc);
-	} else {
-		proc->unk4C++;
-	}
+    if (proc->unk4C == 8)
+    {
+        proc->unk4C = 0;
+        Proc_Break(proc);
+    }
+    else
+    {
+        proc->unk4C++;
+    }
 
-	return;
+    return;
 }
 
 #undef RGB_
@@ -1190,6 +1312,6 @@ struct ProcCmd CONST_DATA ProcScr_085D8D14[] =
 //! FE8U = 0x0806C608
 void sub_806C608(void)
 {
-	Proc_Start(ProcScr_085D8D14, PROC_TREE_VSYNC);
-	return;
+    Proc_Start(ProcScr_085D8D14, PROC_TREE_VSYNC);
+    return;
 }

@@ -19,59 +19,66 @@ struct ProcCmd CONST_DATA gProcScr_efxThunderstorm[] =
 // clang-format on
 
 //! FE8U = 0x0805E754
-void StartSpellAnimBolting(struct Anim *anim)
+void StartSpellAnimBolting(struct Anim * anim)
 {
-	struct ProcEfx *proc;
+    struct ProcEfx * proc;
 
-	SpellFx_Begin();
-	NewEfxSpellCast();
-	SpellFx_ClearBG1Position();
+    SpellFx_Begin();
+    NewEfxSpellCast();
+    SpellFx_ClearBG1Position();
 
-	proc = Proc_Start(gProcScr_efxThunderstorm, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->hitted = CheckRoundMiss(GetAnimRoundTypeAnotherSide(anim));
+    proc = Proc_Start(gProcScr_efxThunderstorm, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->hitted = CheckRoundMiss(GetAnimRoundTypeAnotherSide(anim));
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E790
-void efxThunderstorm_Loop_Main(struct ProcEfx *proc)
+void efxThunderstorm_Loop_Main(struct ProcEfx * proc)
 {
-	struct Anim *anim = GetAnimAnotherSide(proc->anim);
+    struct Anim * anim = GetAnimAnotherSide(proc->anim);
 
-	int duration = EfxGetCamMovDuration();
+    int duration = EfxGetCamMovDuration();
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer == 1) {
-		NewEfxFarAttackWithDistance(proc->anim, -1);
-	}
+    if (proc->timer == 1)
+    {
+        NewEfxFarAttackWithDistance(proc->anim, -1);
+    }
 
-	if (proc->timer == duration + 1) {
-		PlaySFX(0x119, 0x100, anim->xPosition, 1);
-		StartSubSpell_efxThunderstormBG(anim);
-		StartSubSpell_efxThunderstormCOLOR(anim);
-	}
+    if (proc->timer == duration + 1)
+    {
+        PlaySFX(0x119, 0x100, anim->xPosition, 1);
+        StartSubSpell_efxThunderstormBG(anim);
+        StartSubSpell_efxThunderstormCOLOR(anim);
+    }
 
-	if (proc->timer == duration + 89) {
-		StartSubSpell_efxThunderstormDARK(anim, 2, 3);
-	}
+    if (proc->timer == duration + 89)
+    {
+        StartSubSpell_efxThunderstormDARK(anim, 2, 3);
+    }
 
-	if (proc->timer == duration + 94) {
-		StartSubSpell_efxThunderstormOBJ(anim);
-		anim->state3 |= (ANIM_BIT3_TAKE_BACK_ENABLE | ANIM_BIT3_HIT_EFFECT_APPLIED);
-		StartBattleAnimHitEffectsDefault(anim, proc->hitted);
-		if (!proc->hitted) {
-			EfxPlayHittedSFX(anim);
-		}
-	} else if ((proc->timer != duration + 195) && (proc->timer == duration + 200)) {
-		SpellFx_Finish();
-		RegisterEfxSpellCastEnd();
-		Proc_Break(proc);
-	}
+    if (proc->timer == duration + 94)
+    {
+        StartSubSpell_efxThunderstormOBJ(anim);
+        anim->state3 |= (ANIM_BIT3_TAKE_BACK_ENABLE | ANIM_BIT3_HIT_EFFECT_APPLIED);
+        StartBattleAnimHitEffectsDefault(anim, proc->hitted);
+        if (!proc->hitted)
+        {
+            EfxPlayHittedSFX(anim);
+        }
+    }
+    else if ((proc->timer != duration + 195) && (proc->timer == duration + 200))
+    {
+        SpellFx_Finish();
+        RegisterEfxSpellCastEnd();
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -116,9 +123,9 @@ u16 * CONST_DATA TsaArray_BoltingBg[] =
 // clang-format on
 
 //! FE8U = 0x0805E850
-void StartSubSpell_efxThunderstormBG(struct Anim *anim)
+void StartSubSpell_efxThunderstormBG(struct Anim * anim)
 {
-	// clang-format off
+    // clang-format off
     static const u16 frames[] =
     {
          0,  2,
@@ -140,45 +147,49 @@ void StartSubSpell_efxThunderstormBG(struct Anim *anim)
         10, 38,
         -1,
     };
-	// clang-format on
+    // clang-format on
 
-	struct ProcEfxBG *proc;
+    struct ProcEfxBG * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(gProcScr_efxThunderstormBG, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->frame = 0;
-	proc->frame_config = frames;
-	proc->tsal = TsaArray_BoltingBg;
-	proc->tsar = TsaArray_BoltingBg;
-	proc->img = ImgArray_BoltingBg;
+    proc = Proc_Start(gProcScr_efxThunderstormBG, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->frame = 0;
+    proc->frame_config = frames;
+    proc->tsal = TsaArray_BoltingBg;
+    proc->tsar = TsaArray_BoltingBg;
+    proc->img = ImgArray_BoltingBg;
 
-	SpellFx_RegisterBgPal(Pal_BoltingBg, PLTT_SIZE_4BPP);
-	SpellFx_SetSomeColorEffect();
+    SpellFx_RegisterBgPal(Pal_BoltingBg, PLTT_SIZE_4BPP);
+    SpellFx_SetSomeColorEffect();
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E8A4
-void efxThunderstormBG_Loop(struct ProcEfxBG *proc)
+void efxThunderstormBG_Loop(struct ProcEfxBG * proc)
 {
-	int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+    int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-	if (ret >= 0) {
-		u16 **tsaL = proc->tsal;
-		u16 **tsaR = proc->tsar;
-		u16 **img = proc->img;
-		SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
-		SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
-	} else {
-		if (ret == -1) {
-			gEfxBgSemaphore--;
-			Proc_End(proc);
-		}
-	}
-	return;
+    if (ret >= 0)
+    {
+        u16 ** tsaL = proc->tsal;
+        u16 ** tsaR = proc->tsar;
+        u16 ** img = proc->img;
+        SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
+        SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
+    }
+    else
+    {
+        if (ret == -1)
+        {
+            gEfxBgSemaphore--;
+            Proc_End(proc);
+        }
+    }
+    return;
 }
 
 // clang-format off
@@ -197,41 +208,42 @@ struct ProcCmd CONST_DATA gProcScr_efxThunderstormOBJ[] =
 
 // clang-format on
 
+
 //! FE8U = 0x0805E900
-void StartSubSpell_efxThunderstormOBJ(struct Anim *anim)
+void StartSubSpell_efxThunderstormOBJ(struct Anim * anim)
 {
-	struct ProcEfxOBJ *proc;
+    struct ProcEfxOBJ * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(gProcScr_efxThunderstormOBJ, PROC_TREE_3);
-	proc->anim = anim;
+    proc = Proc_Start(gProcScr_efxThunderstormOBJ, PROC_TREE_3);
+    proc->anim = anim;
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E924
-void efxThunderstormOBJ_Loop(struct ProcEfxOBJ *proc)
+void efxThunderstormOBJ_Loop(struct ProcEfxOBJ * proc)
 {
-	proc->anim2 = EfxCreateFrontAnim(proc->anim, AnimScr_EfxThunderstormOBJ, AnimScr_EfxThunderstormOBJ, AnimScr_EfxThunderstormOBJ, AnimScr_EfxThunderstormOBJ);
+    proc->anim2 = EfxCreateFrontAnim(proc->anim, AnimScr_EfxThunderstormOBJ, AnimScr_EfxThunderstormOBJ, AnimScr_EfxThunderstormOBJ, AnimScr_EfxThunderstormOBJ);
 
-	SpellFx_RegisterObjPal(Pal_BoltingSprites, PLTT_SIZE_4BPP);
-	SpellFx_RegisterObjGfx(Img_BoltingSprites, 32 * 4 * CHR_SIZE);
+    SpellFx_RegisterObjPal(Pal_BoltingSprites, PLTT_SIZE_4BPP);
+    SpellFx_RegisterObjGfx(Img_BoltingSprites, 32 * 4 * CHR_SIZE);
 
-	Proc_Break(proc);
+    Proc_Break(proc);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E968
-void efxThunderstormOBJ_End(struct ProcEfxOBJ *proc)
+void efxThunderstormOBJ_End(struct ProcEfxOBJ * proc)
 {
-	AnimDelete(proc->anim2);
+    AnimDelete(proc->anim2);
 
-	gEfxBgSemaphore--;
-	Proc_Break(proc);
+    gEfxBgSemaphore--;
+    Proc_Break(proc);
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -255,71 +267,73 @@ struct ProcCmd CONST_DATA gProcScr_efxThunderstormCOLOR[] =
 // clang-format on
 
 //! FE8U = 0x0805E98C
-void StartSubSpell_efxThunderstormCOLOR(struct Anim *anim)
+void StartSubSpell_efxThunderstormCOLOR(struct Anim * anim)
 {
-	struct ProcEfxBGCOL *proc;
+    struct ProcEfxBGCOL * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(gProcScr_efxThunderstormCOLOR, PROC_TREE_3);
-	proc->anim = anim;
+    proc = Proc_Start(gProcScr_efxThunderstormCOLOR, PROC_TREE_3);
+    proc->anim = anim;
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E9B0
-void efxThunderstormColor_Loop_A(struct ProcEfxBGCOL *proc)
+void efxThunderstormColor_Loop_A(struct ProcEfxBGCOL * proc)
 {
-	PlaySFX(0x11a, 0x100, proc->anim->xPosition, 1);
+    PlaySFX(0x11a, 0x100, proc->anim->xPosition, 1);
 
-	NewEfxFlashBgWhite(proc->anim, 38);
+    NewEfxFlashBgWhite(proc->anim, 38);
 
-	proc->timer = 0;
-	proc->timer2 = 5;
+    proc->timer = 0;
+    proc->timer2 = 5;
 
-	Proc_Break(proc);
+    Proc_Break(proc);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E9E4
-void efxThunderstormColor_Loop_B(struct ProcEfxBGCOL *proc)
+void efxThunderstormColor_Loop_B(struct ProcEfxBGCOL * proc)
 {
-	int ret = Interpolate(INTERPOLATE_LINEAR, 16, 0, proc->timer, proc->timer2);
+    int ret = Interpolate(INTERPOLATE_LINEAR, 16, 0, proc->timer, proc->timer2);
 
-	CpuFastCopy(gPaletteBuffer, gEfxPal, PLTT_SIZE);
+    CpuFastCopy(gPaletteBuffer, gEfxPal, PLTT_SIZE);
 
-	EfxPalWhiteInOut(gEfxPal, 0, 32, ret);
+    EfxPalWhiteInOut(gEfxPal, 0, 32, ret);
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer > proc->timer2) {
-		proc->timer = 0;
-		proc->timer2 = 10;
-		Proc_Break(proc);
-	}
+    if (proc->timer > proc->timer2)
+    {
+        proc->timer = 0;
+        proc->timer2 = 10;
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805EA4C
-void efxThunderstormColor_Loop_C(struct ProcEfxBGCOL *proc)
+void efxThunderstormColor_Loop_C(struct ProcEfxBGCOL * proc)
 {
-	int ret = Interpolate(INTERPOLATE_LINEAR, 16, 0, proc->timer, proc->timer2);
-	SetBlendAlpha(ret, 16);
+    int ret = Interpolate(INTERPOLATE_LINEAR, 16, 0, proc->timer, proc->timer2);
+    SetBlendAlpha(ret, 16);
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer > proc->timer2) {
-		SpellFx_ClearBG1();
-		SetDefaultColorEffects_();
+    if (proc->timer > proc->timer2)
+    {
+        SpellFx_ClearBG1();
+        SetDefaultColorEffects_();
 
-		gEfxBgSemaphore--;
+        gEfxBgSemaphore--;
 
-		Proc_Break(proc);
-	}
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -337,54 +351,56 @@ struct ProcCmd CONST_DATA gProcScr_efxThunderstormDARK[] =
 // clang-format on
 
 //! FE8U = 0x0805EAAC
-void StartSubSpell_efxThunderstormDARK(struct Anim *anim, int timer, int terminator)
+void StartSubSpell_efxThunderstormDARK(struct Anim * anim, int timer, int terminator)
 {
-	struct ProcEfxBGCOL *proc;
+    struct ProcEfxBGCOL * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	CpuFastCopy(gPaletteBuffer, gEfxPal, PLTT_SIZE);
+    CpuFastCopy(gPaletteBuffer, gEfxPal, PLTT_SIZE);
 
-	proc = Proc_Start(gProcScr_efxThunderstormDARK, 0);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->timer2 = timer;
-	proc->terminator = terminator;
+    proc = Proc_Start(gProcScr_efxThunderstormDARK, 0);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->timer2 = timer;
+    proc->terminator = terminator;
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805EAF0
-void efxThunderstormDark_Loop_A(struct ProcEfxBGCOL *proc)
+void efxThunderstormDark_Loop_A(struct ProcEfxBGCOL * proc)
 {
-	int ret = Interpolate(INTERPOLATE_LINEAR, 0, 16, proc->timer, proc->timer2);
-	EfxPalBlackInOut(gEfxPal, 0, 32, ret);
+    int ret = Interpolate(INTERPOLATE_LINEAR, 0, 16, proc->timer, proc->timer2);
+    EfxPalBlackInOut(gEfxPal, 0, 32, ret);
 
-	CpuFastCopy(gEfxPal, (u16 *)PLTT, PLTT_SIZE);
-	DisablePaletteSync();
+    CpuFastCopy(gEfxPal, (u16 *)PLTT, PLTT_SIZE);
+    DisablePaletteSync();
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer > proc->timer2) {
-		proc->timer = 0;
-		Proc_Break(proc);
-	}
+    if (proc->timer > proc->timer2)
+    {
+        proc->timer = 0;
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805EB54
-void efxThunderstormDark_Loop_B(struct ProcEfxBGCOL *proc)
+void efxThunderstormDark_Loop_B(struct ProcEfxBGCOL * proc)
 {
-	CpuFastCopy(gEfxPal, (u16 *)PLTT, PLTT_SIZE);
-	DisablePaletteSync();
+    CpuFastCopy(gEfxPal, (u16 *)PLTT, PLTT_SIZE);
+    DisablePaletteSync();
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer > proc->terminator) {
-		gEfxBgSemaphore--;
-		Proc_Break(proc);
-	}
+    if (proc->timer > proc->terminator)
+    {
+        gEfxBgSemaphore--;
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }

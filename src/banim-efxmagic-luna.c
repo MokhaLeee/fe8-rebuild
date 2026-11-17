@@ -20,80 +20,95 @@ struct ProcCmd CONST_DATA ProcScr_efxLuna[] =
 // clang-format on
 
 //! FE8U = 0x08063974
-void StartSpellAnimLuna(struct Anim *anim)
+void StartSpellAnimLuna(struct Anim * anim)
 {
-	struct ProcEfx *proc;
+    struct ProcEfx * proc;
 
-	SpellFx_Begin();
-	NewEfxSpellCast();
-	SpellFx_ClearBG1Position();
+    SpellFx_Begin();
+    NewEfxSpellCast();
+    SpellFx_ClearBG1Position();
 
-	proc = Proc_Start(ProcScr_efxLuna, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->hitted = CheckRoundMiss(GetAnimRoundTypeAnotherSide(anim));
+    proc = Proc_Start(ProcScr_efxLuna, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->hitted = CheckRoundMiss(GetAnimRoundTypeAnotherSide(anim));
 
-	return;
+    return;
 }
 
 //! FE8U = 0x080639B0
-void efxLuna_Loop_Main(struct ProcEfx *proc)
+void efxLuna_Loop_Main(struct ProcEfx * proc)
 {
-	struct Anim *anim = GetAnimAnotherSide(proc->anim);
-	int duration = EfxGetCamMovDuration();
+    struct Anim * anim = GetAnimAnotherSide(proc->anim);
+    int duration = EfxGetCamMovDuration();
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer == 1) {
-		NewEfxFarAttackWithDistance(proc->anim, -1);
-	}
+    if (proc->timer == 1)
+    {
+        NewEfxFarAttackWithDistance(proc->anim, -1);
+    }
 
-	if (proc->timer == duration + 1) {
-		StartSubSpell_efxLunaBG(anim);
+    if (proc->timer == duration + 1)
+    {
+        StartSubSpell_efxLunaBG(anim);
 
-		SetWinEnable(0, 0, 0);
+        SetWinEnable(0, 0, 0);
 
-		SetBlendAlpha(0, 16);
+        SetBlendAlpha(0, 16);
 
-		NewEfxALPHA(anim, 0, 10, 0, 0x10, 0);
-		StartSubSpell_efxLunaRST(anim, NewefxRestRST(anim, 20, 15, 0x100, 2), 20);
-		NewEfxRestWINH(anim, 20, gLCDControlBuffer.bgoffset[BG_1].x, 0);
+        NewEfxALPHA(anim, 0, 10, 0, 0x10, 0);
+        StartSubSpell_efxLunaRST(anim, NewefxRestRST(anim, 20, 15, 0x100, 2), 20);
+        NewEfxRestWINH(anim, 20, gLCDControlBuffer.bgoffset[BG_1].x, 0);
 
-		PlaySFX(0x2BD, 0x100, 120, 1);
-	} else if (proc->timer == duration + 41) {
-		StartSubSpell_efxLunaSCR();
-		NewEfxRestWINH_(anim, 21, 1);
-		StartSubSpell_efxLunaOBJ(anim);
-		NewEfxALPHA(anim, 0, 25, 16, 0, 0);
-	} else if (proc->timer == duration + 55) {
-		PlaySFX(0x2BE, 0x100, anim->xPosition, 0);
-	} else if (proc->timer == duration + 70) {
-		StartSubSpell_efxLunaBG2(anim, 65);
-		StartSubSpell_efxLunaBGCOL(anim, 65);
+        PlaySFX(0x2BD, 0x100, 120, 1);
+    }
+    else if (proc->timer == duration + 41)
+    {
+        StartSubSpell_efxLunaSCR();
+        NewEfxRestWINH_(anim, 21, 1);
+        StartSubSpell_efxLunaOBJ(anim);
+        NewEfxALPHA(anim, 0, 25, 16, 0, 0);
+    }
+    else if (proc->timer == duration + 55)
+    {
+        PlaySFX(0x2BE, 0x100, anim->xPosition, 0);
+    }
+    else if (proc->timer == duration + 70)
+    {
+        StartSubSpell_efxLunaBG2(anim, 65);
+        StartSubSpell_efxLunaBGCOL(anim, 65);
 
-		SetBlendAlpha(0, 16);
-		NewEfxALPHA(anim, 0, 10, 0, 16, 0);
-		NewefxRestRST(anim, 65, 2, 128, 1);
-		NewEfxRestWINH_(anim, 68, 0);
-	} else if (proc->timer == duration + 135) {
-		NewEfxFlashBgWhite(anim, 5);
+        SetBlendAlpha(0, 16);
+        NewEfxALPHA(anim, 0, 10, 0, 16, 0);
+        NewefxRestRST(anim, 65, 2, 128, 1);
+        NewEfxRestWINH_(anim, 68, 0);
+    }
+    else if (proc->timer == duration + 135)
+    {
+        NewEfxFlashBgWhite(anim, 5);
 
-		anim->state3 |= (ANIM_BIT3_TAKE_BACK_ENABLE | ANIM_BIT3_HIT_EFFECT_APPLIED);
+        anim->state3 |= (ANIM_BIT3_TAKE_BACK_ENABLE | ANIM_BIT3_HIT_EFFECT_APPLIED);
 
-		StartBattleAnimHitEffectsDefault(anim, proc->hitted);
-		if (!proc->hitted) {
-			EfxPlayHittedSFX(anim);
-		}
-	} else if (proc->timer == duration + 140) {
-		BG_SetPosition(BG_1, 0, 0);
-		StartSubSpell_efxLunaBG3(proc->anim);
-	} else if (proc->timer == duration + 190) {
-		SpellFx_Finish();
-		RegisterEfxSpellCastEnd();
-		Proc_Break(proc);
-	}
+        StartBattleAnimHitEffectsDefault(anim, proc->hitted);
+        if (!proc->hitted)
+        {
+            EfxPlayHittedSFX(anim);
+        }
+    }
+    else if (proc->timer == duration + 140)
+    {
+        BG_SetPosition(BG_1, 0, 0);
+        StartSubSpell_efxLunaBG3(proc->anim);
+    }
+    else if (proc->timer == duration + 190)
+    {
+        SpellFx_Finish();
+        RegisterEfxSpellCastEnd();
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -113,57 +128,61 @@ u16 * CONST_DATA TsaArray_LunaBg1[] =
 // clang-format on
 
 //! FE8U = 0x08063B6C
-void StartSubSpell_efxLunaBG(struct Anim *anim)
+void StartSubSpell_efxLunaBG(struct Anim * anim)
 {
-	// clang-format off
+    // clang-format off
     static const u16 frames[] =
     {
          0, 60,
         -1,
     };
-	// clang-format on
+    // clang-format on
 
-	struct ProcEfxBG *proc;
+    struct ProcEfxBG * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxLunaBG, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
+    proc = Proc_Start(ProcScr_efxLunaBG, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
 
-	proc->frame = 0;
-	proc->frame_config = frames;
+    proc->frame = 0;
+    proc->frame_config = frames;
 
-	proc->tsal = TsaArray_LunaBg1;
-	proc->tsar = TsaArray_LunaBg1;
+    proc->tsal = TsaArray_LunaBg1;
+    proc->tsar = TsaArray_LunaBg1;
 
-	SpellFx_RegisterBgPal(Pal_LunaBg1, PLTT_SIZE_4BPP);
-	SpellFx_RegisterBgGfx(Img_LunaBg1, 32 * 8 * CHR_SIZE);
+    SpellFx_RegisterBgPal(Pal_LunaBg1, PLTT_SIZE_4BPP);
+    SpellFx_RegisterBgGfx(Img_LunaBg1, 32 * 8 * CHR_SIZE);
 
-	SpellFx_SetSomeColorEffect();
+    SpellFx_SetSomeColorEffect();
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08063BC8
-void efxLunaBG_Loop(struct ProcEfxBG *proc)
+void efxLunaBG_Loop(struct ProcEfxBG * proc)
 {
-	int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+    int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-	if (ret >= 0) {
-		u16 **tsaL = proc->tsal;
-		u16 **tsaR = proc->tsar;
-		SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
-	} else {
-		if (ret == -1) {
-			SpellFx_ClearBG1();
-			gEfxBgSemaphore--;
-			SetDefaultColorEffects_();
-			Proc_Break(proc);
-		}
-	}
+    if (ret >= 0)
+    {
+        u16 ** tsaL = proc->tsal;
+        u16 ** tsaR = proc->tsar;
+        SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
+    }
+    else
+    {
+        if (ret == -1)
+        {
+            SpellFx_ClearBG1();
+            gEfxBgSemaphore--;
+            SetDefaultColorEffects_();
+            Proc_Break(proc);
+        }
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -187,15 +206,15 @@ struct ProcCmd CONST_DATA ProcScr_efxLunaSCR2[] =
 //! FE8U = 0x08063C20
 void StartSubSpell_efxLunaSCR(void)
 {
-	struct ProcEfx *proc = Proc_Start(ProcScr_efxLunaSCR, PROC_TREE_3);
+    struct ProcEfx * proc = Proc_Start(ProcScr_efxLunaSCR, PROC_TREE_3);
 
-	proc->timer = 0;
-	proc->step = 0;
-	proc->unk44 = 0;
+    proc->timer = 0;
+    proc->step = 0;
+    proc->unk44 = 0;
 
-	StartSubSpell_efxLunaSCR2(proc);
+    StartSubSpell_efxLunaSCR2(proc);
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -215,69 +234,82 @@ s16 CONST_DATA gLunaBgScrollOffsets[] =
 // clang-format on
 
 //! FE8U = 0x08063C40
-void efxLunaSCR_Loop(struct ProcEfx *proc)
+void efxLunaSCR_Loop(struct ProcEfx * proc)
 {
-	u32 i;
+    u32 i;
 
-	u16 *bg2Scroll = (gEkrBg1ScrollFlip == 0) ? gpBg2ScrollOffsetTable2 : gpBg2ScrollOffsetTable1;
-	u16 *bg1Scroll = (gEkrBg1ScrollFlip == 0) ? gpBg1ScrollOffsetList2 : gpBg1ScrollOffsetList1;
+    u16 * bg2Scroll = (gEkrBg1ScrollFlip == 0) ? gpBg2ScrollOffsetTable2 : gpBg2ScrollOffsetTable1;
+    u16 * bg1Scroll = (gEkrBg1ScrollFlip == 0) ? gpBg1ScrollOffsetList2 : gpBg1ScrollOffsetList1;
 
-	for (i = 0; i < DISPLAY_HEIGHT; i++) {
-		if (i < 16) {
-			*bg2Scroll++ = 0;
-			*bg1Scroll++ = 0;
-		} else if (i < 112) {
-			s16 val = gLunaBgScrollOffsets[i - 16] * proc->unk44 >> 12;
+    for (i = 0; i < DISPLAY_HEIGHT; i++)
+    {
+        if (i < 16)
+        {
+            *bg2Scroll++ = 0;
+            *bg1Scroll++ = 0;
+        }
+        else if (i < 112)
+        {
+            s16 val = gLunaBgScrollOffsets[i - 16] * proc->unk44 >> 12;
 
-			if (val != 0) {
-				if (i < 64) {
-					if (val < -112 + i) {
-						val = -112 + i;
-					}
-				} else {
-					if (val > 112 - i) {
-						val = 112 - i;
-					}
-				}
-			}
+            if (val != 0)
+            {
+                if (i < 64)
+                {
+                    if (val < -112 + i)
+                    {
+                        val = -112 + i;
+                    }
+                }
+                else
+                {
+                    if (val > 112 - i)
+                    {
+                        val = 112 - i;
+                    }
+                }
+            }
 
-			*bg2Scroll++ = val;
-			*bg1Scroll++ = val;
-		} else {
-			*bg2Scroll++ = 0;
-			*bg1Scroll++ = 0;
-		}
-	}
+            *bg2Scroll++ = val;
+            *bg1Scroll++ = val;
+        }
+        else
+        {
+            *bg2Scroll++ = 0;
+            *bg1Scroll++ = 0;
+        }
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08063CFC
 void StartSubSpell_efxLunaSCR2(ProcPtr proc)
 {
-	struct ProcEfxSCR *otherProc = Proc_Start(ProcScr_efxLunaSCR2, PROC_TREE_3);
+    struct ProcEfxSCR * otherProc = Proc_Start(ProcScr_efxLunaSCR2, PROC_TREE_3);
 
-	otherProc->timer = 0;
-	otherProc->unk2E = 20;
-	otherProc->unk5C = proc;
+    otherProc->timer = 0;
+    otherProc->unk2E = 20;
+    otherProc->unk5C = proc;
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08063D1C
-void efxLunaSCR2_Loop(struct ProcEfxSCR *proc)
+void efxLunaSCR2_Loop(struct ProcEfxSCR * proc)
 {
-	struct ProcEfx *otherProc = proc->unk5C;
-	otherProc->unk44 = Interpolate(INTERPOLATE_LINEAR, 0, 0x4000, proc->timer, proc->unk2E);
+    struct ProcEfx * otherProc = proc->unk5C;
+    otherProc->unk44 = Interpolate(INTERPOLATE_LINEAR, 0, 0x4000, proc->timer, proc->unk2E);
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer > proc->unk2E) {
-		Proc_End(otherProc);
-		Proc_Break(proc);
-	}
+    if (proc->timer > proc->unk2E)
+    {
+        Proc_End(otherProc);
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -295,68 +327,76 @@ struct ProcCmd CONST_DATA ProcScr_efxLunaBG2[] =
 // clang-format on
 
 //! FE8U = 0x08063D64
-void StartSubSpell_efxLunaBG2(struct Anim *anim, int terminator)
+void StartSubSpell_efxLunaBG2(struct Anim * anim, int terminator)
 {
-	struct ProcEfxBG *proc;
+    struct ProcEfxBG * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxLunaBG2, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->terminator = terminator;
+    proc = Proc_Start(ProcScr_efxLunaBG2, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->terminator = terminator;
 
-	SpellFx_RegisterBgGfx(Img_LunaBg2, 32 * 8 * CHR_SIZE);
-	SpellFx_RegisterBgPal(Pal_LunaBg2, PLTT_SIZE_4BPP);
+    SpellFx_RegisterBgGfx(Img_LunaBg2, 32 * 8 * CHR_SIZE);
+    SpellFx_RegisterBgPal(Pal_LunaBg2, PLTT_SIZE_4BPP);
 
-	SpellFx_ClearBG1();
+    SpellFx_ClearBG1();
 
-	LZ77UnCompWram(Tsa_LunaBg2, gEkrTsaBuffer);
+    LZ77UnCompWram(Tsa_LunaBg2, gEkrTsaBuffer);
 
-	if (GetAnimPosition(proc->anim) == 0) {
-		EfxTmCpyBgHFlip(gEkrTsaBuffer, gBG1TilemapBuffer, 30, 32, 1, 0x100);
-	} else {
-		EfxTmCpyBG(gEkrTsaBuffer, gBG1TilemapBuffer, 30, 32, 1, 0x100);
-	}
+    if (GetAnimPosition(proc->anim) == 0)
+    {
+        EfxTmCpyBgHFlip(gEkrTsaBuffer, gBG1TilemapBuffer, 30, 32, 1, 0x100);
+    }
+    else
+    {
+        EfxTmCpyBG(gEkrTsaBuffer, gBG1TilemapBuffer, 30, 32, 1, 0x100);
+    }
 
-	BG_EnableSyncByMask(BG1_SYNC_BIT);
-	SpellFx_SetSomeColorEffect();
+    BG_EnableSyncByMask(BG1_SYNC_BIT);
+    SpellFx_SetSomeColorEffect();
 
-	if (gEkrDistanceType != 0) {
-		if (GetAnimPosition(proc->anim) == 0) {
-			BG_SetPosition(BG_1, 24, 0);
-		} else {
-			BG_SetPosition(BG_1, 232, 0);
-		}
-	}
+    if (gEkrDistanceType != 0)
+    {
+        if (GetAnimPosition(proc->anim) == 0)
+        {
+            BG_SetPosition(BG_1, 24, 0);
+        }
+        else
+        {
+            BG_SetPosition(BG_1, 232, 0);
+        }
+    }
 
-	SetWinEnable(0, 0, 0);
+    SetWinEnable(0, 0, 0);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08063E58
 void efxLunaBG2_OnEnd(void)
 {
-	SpellFx_ClearBG1();
-	gEfxBgSemaphore--;
-	SetDefaultColorEffects_();
+    SpellFx_ClearBG1();
+    gEfxBgSemaphore--;
+    SetDefaultColorEffects_();
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08063E74
-void efxLunaBG2_Loop(struct ProcEfxBG *proc)
+void efxLunaBG2_Loop(struct ProcEfxBG * proc)
 {
-	gLCDControlBuffer.bgoffset[BG_1].y++;
+    gLCDControlBuffer.bgoffset[BG_1].y++;
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer > proc->terminator) {
-		Proc_Break(proc);
-	}
+    if (proc->timer > proc->terminator)
+    {
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -376,9 +416,9 @@ struct ProcCmd CONST_DATA ProcScr_efxLunaBGCOL[] =
 // clang-format on
 
 //! FE8U = 0x08063EA0
-void StartSubSpell_efxLunaBGCOL(struct Anim *anim, int terminator)
+void StartSubSpell_efxLunaBGCOL(struct Anim * anim, int terminator)
 {
-	// clang-format off
+    // clang-format off
     static const u16 frames[] =
     {
          0, 4,
@@ -398,51 +438,53 @@ void StartSubSpell_efxLunaBGCOL(struct Anim *anim, int terminator)
         14, 4,
         -2,
     };
-	// clang-format on
+    // clang-format on
 
-	struct ProcEfxBGCOL *proc;
+    struct ProcEfxBGCOL * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxLunaBGCOL, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->timer2 = 0;
-	proc->terminator = terminator;
+    proc = Proc_Start(ProcScr_efxLunaBGCOL, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->timer2 = 0;
+    proc->terminator = terminator;
 
-	proc->frame = 0;
-	proc->frame_config = frames;
+    proc->frame = 0;
+    proc->frame_config = frames;
 
-	proc->pal = Pal_LunaBg2;
-	SpellFx_RegisterBgPal(Pal_LunaBg2, PLTT_SIZE_4BPP);
+    proc->pal = Pal_LunaBg2;
+    SpellFx_RegisterBgPal(Pal_LunaBg2, PLTT_SIZE_4BPP);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08063EE8
 void efxLunaBGCOL_OnEnd(void)
 {
-	gEfxBgSemaphore--;
-	return;
+    gEfxBgSemaphore--;
+    return;
 }
 
 //! FE8U = 0x08063EF8
-void efxLunaBGCOL_Loop(struct ProcEfxBGCOL *proc)
+void efxLunaBGCOL_Loop(struct ProcEfxBGCOL * proc)
 {
-	int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+    int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-	if (ret >= 0) {
-		u16 *pal = proc->pal;
-		SpellFx_RegisterBgPal(pal + ret * 0x10, PLTT_SIZE_4BPP);
-	}
+    if (ret >= 0)
+    {
+        u16 * pal = proc->pal;
+        SpellFx_RegisterBgPal(pal + ret * 0x10, PLTT_SIZE_4BPP);
+    }
 
-	proc->timer2++;
+    proc->timer2++;
 
-	if (proc->timer2 > proc->terminator) {
-		Proc_Break(proc);
-	}
+    if (proc->timer2 > proc->terminator)
+    {
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -489,9 +531,9 @@ u16 * CONST_DATA ImgArray_LunaBg3[] =
 // clang-format on
 
 //! FE8U = 0x08063F3C
-void StartSubSpell_efxLunaBG3(struct Anim *anim)
+void StartSubSpell_efxLunaBG3(struct Anim * anim)
 {
-	// clang-format off
+    // clang-format off
     static const u16 frames[] =
     {
          0, 2,
@@ -508,59 +550,67 @@ void StartSubSpell_efxLunaBG3(struct Anim *anim)
         11, 2,
         -1,
     };
-	// clang-format on
+    // clang-format on
 
-	struct ProcEfxBG *proc;
+    struct ProcEfxBG * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxLunaBG3, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->frame = 0;
-	proc->frame_config = frames;
+    proc = Proc_Start(ProcScr_efxLunaBG3, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->frame = 0;
+    proc->frame_config = frames;
 
-	proc->tsal = TsaArray_LunaBg3;
-	proc->tsar = TsaArray_LunaBg3;
+    proc->tsal = TsaArray_LunaBg3;
+    proc->tsar = TsaArray_LunaBg3;
 
-	proc->img = ImgArray_LunaBg3;
+    proc->img = ImgArray_LunaBg3;
 
-	SpellFx_RegisterBgPal(Pal_LunaBg3, PLTT_SIZE_4BPP);
+    SpellFx_RegisterBgPal(Pal_LunaBg3, PLTT_SIZE_4BPP);
 
-	SpellFx_SetSomeColorEffect();
+    SpellFx_SetSomeColorEffect();
 
-	if (gEkrDistanceType != 0) {
-		if (GetAnimPosition(proc->anim) == 0) {
-			BG_SetPosition(BG_1, 232, 0);
-		} else {
-			BG_SetPosition(BG_1, 24, 0);
-		}
-	}
+    if (gEkrDistanceType != 0)
+    {
+        if (GetAnimPosition(proc->anim) == 0)
+        {
+            BG_SetPosition(BG_1, 232, 0);
+        }
+        else
+        {
+            BG_SetPosition(BG_1, 24, 0);
+        }
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08063FC0
-void efxLunaBG3_Loop(struct ProcEfxBG *proc)
+void efxLunaBG3_Loop(struct ProcEfxBG * proc)
 {
-	int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+    int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-	if (ret >= 0) {
-		u16 **tsaL = proc->tsal;
-		u16 **tsaR = proc->tsar;
-		u16 **img = proc->img;
-		SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
-		SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
-	} else {
-		if (ret == -1) {
-			SpellFx_ClearBG1();
-			gEfxBgSemaphore--;
-			SetDefaultColorEffects_();
-			Proc_Break(proc);
-		}
-	}
+    if (ret >= 0)
+    {
+        u16 ** tsaL = proc->tsal;
+        u16 ** tsaR = proc->tsar;
+        u16 ** img = proc->img;
+        SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
+        SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
+    }
+    else
+    {
+        if (ret == -1)
+        {
+            SpellFx_ClearBG1();
+            gEfxBgSemaphore--;
+            SetDefaultColorEffects_();
+            Proc_Break(proc);
+        }
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -580,195 +630,202 @@ struct ProcCmd CONST_DATA ProcScr_efxLunaOBJ[] =
 // clang-format on
 
 //! FE8U = 0x08064024
-void StartSubSpell_efxLunaOBJ(struct Anim *anim)
+void StartSubSpell_efxLunaOBJ(struct Anim * anim)
 {
-	u32 i;
+    u32 i;
 
-	for (i = 0; i < 8; i++) {
-		struct ProcEfxOBJ *proc = Proc_Start(ProcScr_efxLunaOBJ, PROC_TREE_3);
-		proc->anim = anim;
-		proc->unk44 = i;
-	}
+    for (i = 0; i < 8; i++)
+    {
+        struct ProcEfxOBJ * proc = Proc_Start(ProcScr_efxLunaOBJ, PROC_TREE_3);
+        proc->anim = anim;
+        proc->unk44 = i;
+    }
 
-	SpellFx_RegisterObjPal(Pal_LunaSprites, PLTT_SIZE_4BPP);
-	SpellFx_RegisterObjGfx(Img_LunaSprites, 32 * 4 * CHR_SIZE);
+    SpellFx_RegisterObjPal(Pal_LunaSprites, PLTT_SIZE_4BPP);
+    SpellFx_RegisterObjGfx(Img_LunaSprites, 32 * 4 * CHR_SIZE);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08064060
-void efxLunaOBJ_Loop_A(struct ProcEfxOBJ *proc)
+void efxLunaOBJ_Loop_A(struct ProcEfxOBJ * proc)
 {
-	struct Anim *anim;
-	u32 *scr;
+    struct Anim * anim;
+    u32 * scr;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc->timer = 0;
-	proc->terminator = 0;
+    proc->timer = 0;
+    proc->terminator = 0;
 
-	proc->unk30 = proc->unk44 * 0x2AAA;
+    proc->unk30 = proc->unk44 * 0x2AAA;
 
-	scr = AnimScr_EfxLuna1;
-	anim = EfxCreateFrontAnim(proc->anim, scr, scr, scr, scr);
-	proc->anim2 = anim;
+    scr = AnimScr_EfxLuna1;
+    anim = EfxCreateFrontAnim(proc->anim, scr, scr, scr, scr);
+    proc->anim2 = anim;
 
-	anim->timer = 0;
+    anim->timer = 0;
 
-	anim->oam2Base &= ~OAM2_LAYER(3);
-	anim->oam2Base |= OAM2_LAYER(2);
+    anim->oam2Base &= ~OAM2_LAYER(3);
+    anim->oam2Base |= OAM2_LAYER(2);
 
-	anim->xPosition = 256;
-	anim->yPosition = 256;
+    anim->xPosition = 256;
+    anim->yPosition = 256;
 
-	proc->unk32 = proc->anim->xPosition;
-	proc->unk3A = proc->anim->yPosition;
+    proc->unk32 = proc->anim->xPosition;
+    proc->unk3A = proc->anim->yPosition;
 
-	Proc_Break(proc);
+    Proc_Break(proc);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x080640D0
-void efxLunaOBJ_Loop_B(struct ProcEfxOBJ *proc)
+void efxLunaOBJ_Loop_B(struct ProcEfxOBJ * proc)
 {
-	int x;
-	int y;
-	s16 a;
-	s16 b;
-	s16 sin;
-	s16 cos;
-	s16 hm;
+    int x;
+    int y;
+    s16 a;
+    s16 b;
+    s16 sin;
+    s16 cos;
+    s16 hm;
 
-	struct Anim *anim = proc->anim2;
+    struct Anim * anim = proc->anim2;
 
-	s16 ret = Interpolate(INTERPOLATE_RSQUARE, 0, 50, proc->timer, 20);
+    s16 ret = Interpolate(INTERPOLATE_RSQUARE, 0, 50, proc->timer, 20);
 
-	proc->unk30 = proc->unk30 + 0x200;
+    proc->unk30 = proc->unk30 + 0x200;
 
-	hm = proc->unk30 / 0x100;
+    hm = proc->unk30 / 0x100;
 
-	sin = gSinLookup[proc->unk30 / 0x100];
-	cos = gSinLookup[0x40 + proc->unk30 / 0x100];
+    sin = gSinLookup[proc->unk30 / 0x100];
+    cos = gSinLookup[0x40 + proc->unk30 / 0x100];
 
-	a = (sin * ret) >> 12;
-	b = (cos * ret) >> 12;
+    a = (sin * ret) >> 12;
+    b = (cos * ret) >> 12;
 
-	x = a + proc->unk32;
-	y = b + proc->unk3A;
+    x = a + proc->unk32;
+    y = b + proc->unk3A;
 
-	anim->xPosition = x;
-	anim->yPosition = y;
+    anim->xPosition = x;
+    anim->yPosition = y;
 
-	if (++proc->timer > 20) {
-		proc->timer = 20;
-	}
+    if (++proc->timer > 20)
+    {
+        proc->timer = 20;
+    }
 
-	if (++proc->terminator > 20) {
-		proc->timer = 0;
-		proc->terminator = 0;
+    if (++proc->terminator > 20)
+    {
+        proc->timer = 0;
+        proc->terminator = 0;
 
-		anim->pScrStart = AnimScr_EfxLuna4;
-		anim->pScrCurrent = AnimScr_EfxLuna4;
-		anim->timer = 0;
+        anim->pScrStart = AnimScr_EfxLuna4;
+        anim->pScrCurrent = AnimScr_EfxLuna4;
+        anim->timer = 0;
 
-		Proc_Break(proc);
-	}
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0806416C
-void efxLunaOBJ_Loop_C(struct ProcEfxOBJ *proc)
+void efxLunaOBJ_Loop_C(struct ProcEfxOBJ * proc)
 {
-	int x;
-	int y;
-	s16 a;
-	s16 b;
-	s16 sin;
-	s16 cos;
-	s16 hm;
+    int x;
+    int y;
+    s16 a;
+    s16 b;
+    s16 sin;
+    s16 cos;
+    s16 hm;
 
-	struct Anim *anim = proc->anim2;
+    struct Anim * anim = proc->anim2;
 
-	s16 ret = 50;
+    s16 ret = 50;
 
-	proc->unk30 = proc->unk30 + 0x200;
+    proc->unk30 = proc->unk30 + 0x200;
 
-	hm = proc->unk30 / 0x100;
+    hm = proc->unk30 / 0x100;
 
-	sin = gSinLookup[proc->unk30 / 0x100];
-	cos = gSinLookup[0x40 + proc->unk30 / 0x100];
+    sin = gSinLookup[proc->unk30 / 0x100];
+    cos = gSinLookup[0x40 + proc->unk30 / 0x100];
 
-	a = (sin * ret) >> 12;
-	b = (cos * ret) >> 12;
+    a = (sin * ret) >> 12;
+    b = (cos * ret) >> 12;
 
-	x = a + proc->unk32;
-	y = b + proc->unk3A;
+    x = a + proc->unk32;
+    y = b + proc->unk3A;
 
-	anim->xPosition = x;
-	anim->yPosition = y;
+    anim->xPosition = x;
+    anim->yPosition = y;
 
-	if (++proc->timer > 60) {
-		proc->timer = 60;
-	}
+    if (++proc->timer > 60)
+    {
+        proc->timer = 60;
+    }
 
-	if (++proc->terminator > 60) {
-		proc->timer = 0;
-		proc->terminator = 0;
+    if (++proc->terminator > 60)
+    {
+        proc->timer = 0;
+        proc->terminator = 0;
 
-		anim->pScrStart = AnimScr_EfxLuna2;
-		anim->pScrCurrent = AnimScr_EfxLuna2;
-		anim->timer = 0;
+        anim->pScrStart = AnimScr_EfxLuna2;
+        anim->pScrCurrent = AnimScr_EfxLuna2;
+        anim->timer = 0;
 
-		Proc_Break(proc);
-	}
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x080641F0
-void efxLunaOBJ_Loop_D(struct ProcEfxOBJ *proc)
+void efxLunaOBJ_Loop_D(struct ProcEfxOBJ * proc)
 {
-	int x;
-	int y;
-	s16 a;
-	s16 b;
-	s16 sin;
-	s16 cos;
-	s16 hm;
+    int x;
+    int y;
+    s16 a;
+    s16 b;
+    s16 sin;
+    s16 cos;
+    s16 hm;
 
-	struct Anim *anim = proc->anim2;
+    struct Anim * anim = proc->anim2;
 
-	s16 ret = Interpolate(INTERPOLATE_SQUARE, 50, 0, proc->timer, 10);
+    s16 ret = Interpolate(INTERPOLATE_SQUARE, 50, 0, proc->timer, 10);
 
-	proc->unk30 = proc->unk30 + 0x400;
+    proc->unk30 = proc->unk30 + 0x400;
 
-	hm = proc->unk30 / 0x100;
+    hm = proc->unk30 / 0x100;
 
-	sin = gSinLookup[proc->unk30 / 0x100];
-	cos = gSinLookup[0x40 + proc->unk30 / 0x100];
+    sin = gSinLookup[proc->unk30 / 0x100];
+    cos = gSinLookup[0x40 + proc->unk30 / 0x100];
 
-	a = (sin * ret) >> 12;
-	b = (cos * ret) >> 12;
+    a = (sin * ret) >> 12;
+    b = (cos * ret) >> 12;
 
-	x = a + proc->unk32;
-	y = b + proc->unk3A;
+    x = a + proc->unk32;
+    y = b + proc->unk3A;
 
-	anim->xPosition = x;
-	anim->yPosition = y;
+    anim->xPosition = x;
+    anim->yPosition = y;
 
-	if (++proc->timer > 10) {
-		proc->timer = 10;
-	}
+    if (++proc->timer > 10)
+    {
+        proc->timer = 10;
+    }
 
-	if (++proc->terminator > 10) {
-		gEfxBgSemaphore--;
-		AnimDelete(proc->anim2);
-		Proc_Break(proc);
-	}
+    if (++proc->terminator > 10)
+    {
+        gEfxBgSemaphore--;
+        AnimDelete(proc->anim2);
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -783,30 +840,31 @@ struct ProcCmd CONST_DATA ProcScr_efxLunaRST[] =
 // clang-format on
 
 //! FE8U = 0x0806428C
-void StartSubSpell_efxLunaRST(struct Anim *anim, ProcPtr efxproc, int duration)
+void StartSubSpell_efxLunaRST(struct Anim * anim, ProcPtr efxproc, int duration)
 {
-	struct ProcEfxRST *proc;
+    struct ProcEfxRST * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxLunaRST, PROC_TREE_3);
+    proc = Proc_Start(ProcScr_efxLunaRST, PROC_TREE_3);
 
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->duration = duration;
-	proc->efxproc = efxproc;
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->duration = duration;
+    proc->efxproc = efxproc;
 }
 
 //! FE8U = 0x080642BC
-void efxLunaRST_Loop(struct ProcEfxRST *proc)
+void efxLunaRST_Loop(struct ProcEfxRST * proc)
 {
-	struct ProcEfx *otherProc = proc->efxproc;
-	otherProc->frame = Interpolate(INTERPOLATE_RSQUARE, 0x80, 0, proc->timer, proc->duration);
+    struct ProcEfx * otherProc = proc->efxproc;
+    otherProc->frame = Interpolate(INTERPOLATE_RSQUARE, 0x80, 0, proc->timer, proc->duration);
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer > proc->duration) {
-		gEfxBgSemaphore--;
-		Proc_Break(proc);
-	}
+    if (proc->timer > proc->duration)
+    {
+        gEfxBgSemaphore--;
+        Proc_Break(proc);
+    }
 }

@@ -20,64 +20,74 @@ struct ProcCmd CONST_DATA ProcScr_efxFimbulvetr[] =
 // clang-format on
 
 //! FE8U = 0x0805E0E4
-void StartSpellAnimFimbulvetr(struct Anim *anim)
+void StartSpellAnimFimbulvetr(struct Anim * anim)
 {
-	struct ProcEfx *proc;
+    struct ProcEfx * proc;
 
-	SpellFx_Begin();
-	NewEfxSpellCast();
+    SpellFx_Begin();
+    NewEfxSpellCast();
 
-	SpellFx_ClearBG1Position();
+    SpellFx_ClearBG1Position();
 
-	proc = Proc_Start(ProcScr_efxFimbulvetr, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->hitted = CheckRoundMiss(GetAnimRoundTypeAnotherSide(anim));
+    proc = Proc_Start(ProcScr_efxFimbulvetr, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->hitted = CheckRoundMiss(GetAnimRoundTypeAnotherSide(anim));
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E120
-void efxFimbulvetr_Loop_Main(struct ProcEfx *proc)
+void efxFimbulvetr_Loop_Main(struct ProcEfx * proc)
 {
-	struct Anim *anim = GetAnimAnotherSide(proc->anim);
-	int duration = EfxGetCamMovDuration();
+    struct Anim * anim = GetAnimAnotherSide(proc->anim);
+    int duration = EfxGetCamMovDuration();
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer == 1) {
-		NewEfxFarAttackWithDistance(proc->anim, -1);
-	}
+    if (proc->timer == 1)
+    {
+        NewEfxFarAttackWithDistance(proc->anim, -1);
+    }
 
-	if (proc->timer == duration + 1) {
-		StartSubSpell_efxFimbulvetrBGTR(anim);
-		StartSubSpell_efxFimbulvetrOBJ2(anim);
-		SetBlendAlpha(0, 16);
-		NewEfxALPHA(anim, 0, 16, 0, 16, 0);
-		PlaySFX(0x122, 0x100, anim->xPosition, 1);
-	}
+    if (proc->timer == duration + 1)
+    {
+        StartSubSpell_efxFimbulvetrBGTR(anim);
+        StartSubSpell_efxFimbulvetrOBJ2(anim);
+        SetBlendAlpha(0, 16);
+        NewEfxALPHA(anim, 0, 16, 0, 16, 0);
+        PlaySFX(0x122, 0x100, anim->xPosition, 1);
+    }
 
-	if (proc->timer == duration + 82) {
-		NewEfxFlashBgWhite(proc->anim, 4);
-	} else if (proc->timer == duration + 85) {
-		StartSubSpell_efxFimbulvetrBG(anim);
-		StartSubSpell_efxFimbulvetrOBJ(anim);
-		NewEfxALPHA(anim, 24, 16, 16, 0, 0);
-		PlaySFX(0x123, 0x100, anim->xPosition, 1);
-	} else if (proc->timer == duration + 88) {
-		anim->state3 |= (ANIM_BIT3_TAKE_BACK_ENABLE | ANIM_BIT3_HIT_EFFECT_APPLIED);
-		StartBattleAnimHitEffectsDefault(anim, proc->hitted);
+    if (proc->timer == duration + 82)
+    {
+        NewEfxFlashBgWhite(proc->anim, 4);
+    }
+    else if (proc->timer == duration + 85)
+    {
+        StartSubSpell_efxFimbulvetrBG(anim);
+        StartSubSpell_efxFimbulvetrOBJ(anim);
+        NewEfxALPHA(anim, 24, 16, 16, 0, 0);
+        PlaySFX(0x123, 0x100, anim->xPosition, 1);
+    }
+    else if (proc->timer == duration + 88)
+    {
+        anim->state3 |= (ANIM_BIT3_TAKE_BACK_ENABLE | ANIM_BIT3_HIT_EFFECT_APPLIED);
+        StartBattleAnimHitEffectsDefault(anim, proc->hitted);
 
-		if (!proc->hitted) {
-			EfxPlayHittedSFX(anim);
-		}
-	} else if ((proc->timer != duration + 136) && (proc->timer == duration + 161)) {
-		SpellFx_Finish();
-		RegisterEfxSpellCastEnd();
-		Proc_Break(proc);
-	}
+        if (!proc->hitted)
+        {
+            EfxPlayHittedSFX(anim);
+        }
+    }
+    else if ((proc->timer != duration + 136) && (proc->timer == duration + 161))
+    {
+        SpellFx_Finish();
+        RegisterEfxSpellCastEnd();
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -113,11 +123,11 @@ u16 * CONST_DATA ImgArray_FimbulvetrBg_Tornado[] =
 // clang-format on
 
 //! FE8U = 0x0805E230
-void StartSubSpell_efxFimbulvetrBGTR(struct Anim *anim)
+void StartSubSpell_efxFimbulvetrBGTR(struct Anim * anim)
 {
-	struct ProcEfxBG *proc;
+    struct ProcEfxBG * proc;
 
-	// clang-format off
+    // clang-format off
     static const u16 frames[] =
     {
          0, 3,
@@ -149,55 +159,63 @@ void StartSubSpell_efxFimbulvetrBGTR(struct Anim *anim)
          5, 3,
         -1,
     };
-	// clang-format on
+    // clang-format on
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxFimbulvetrBGTR, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->frame = 0;
-	proc->frame_config = frames;
-	proc->tsal = TsaArray_FimbulvetrBg_Tornado;
-	proc->tsar = TsaArray_FimbulvetrBg_Tornado;
-	proc->img = ImgArray_FimbulvetrBg_Tornado;
+    proc = Proc_Start(ProcScr_efxFimbulvetrBGTR, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->frame = 0;
+    proc->frame_config = frames;
+    proc->tsal = TsaArray_FimbulvetrBg_Tornado;
+    proc->tsar = TsaArray_FimbulvetrBg_Tornado;
+    proc->img = ImgArray_FimbulvetrBg_Tornado;
 
-	SpellFx_RegisterBgPal(Pal_FimbulvetrBg_Tornado, PLTT_SIZE_4BPP);
+    SpellFx_RegisterBgPal(Pal_FimbulvetrBg_Tornado, PLTT_SIZE_4BPP);
 
-	if (gEkrDistanceType != EKR_DISTANCE_CLOSE) {
-		if (GetAnimPosition(proc->anim) == EKR_POS_L) {
-			BG_SetPosition(BG_1, 24, 0);
-		} else {
-			BG_SetPosition(BG_1, 232, 0);
-		}
-	}
+    if (gEkrDistanceType != EKR_DISTANCE_CLOSE)
+    {
+        if (GetAnimPosition(proc->anim) == EKR_POS_L)
+        {
+            BG_SetPosition(BG_1, 24, 0);
+        }
+        else
+        {
+            BG_SetPosition(BG_1, 232, 0);
+        }
+    }
 
-	SpellFx_SetSomeColorEffect();
+    SpellFx_SetSomeColorEffect();
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E2B4
-void efxFimbulvetrBGTR_Loop(struct ProcEfxBG *proc)
+void efxFimbulvetrBGTR_Loop(struct ProcEfxBG * proc)
 {
-	int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+    int ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-	if (ret >= 0) {
-		u16 **tsaL = proc->tsal;
-		u16 **tsaR = proc->tsar;
-		u16 **img = proc->img;
-		SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
-		SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
-	} else {
-		if (ret == -1) {
-			SpellFx_ClearBG1();
-			gEfxBgSemaphore--;
-			SetDefaultColorEffects_();
-			Proc_Break(proc);
-		}
-	}
+    if (ret >= 0)
+    {
+        u16 ** tsaL = proc->tsal;
+        u16 ** tsaR = proc->tsar;
+        u16 ** img = proc->img;
+        SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
+        SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
+    }
+    else
+    {
+        if (ret == -1)
+        {
+            SpellFx_ClearBG1();
+            gEfxBgSemaphore--;
+            SetDefaultColorEffects_();
+            Proc_Break(proc);
+        }
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -243,11 +261,11 @@ u16 * CONST_DATA ImgArray_FimbulvetrBg[] =
 // clang-format on
 
 //! FE8U = 0x0805E318
-void StartSubSpell_efxFimbulvetrBG(struct Anim *anim)
+void StartSubSpell_efxFimbulvetrBG(struct Anim * anim)
 {
-	struct ProcEfxBG *proc;
+    struct ProcEfxBG * proc;
 
-	// clang-format off
+    // clang-format off
     static const u16 frames[] =
     {
          0,  1,
@@ -263,65 +281,77 @@ void StartSubSpell_efxFimbulvetrBG(struct Anim *anim)
         10, 30,
         -1,
     };
-	// clang-format on
+    // clang-format on
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxFimbulvetrBG, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->frame = 0;
-	proc->frame_config = frames;
-	proc->tsal = TsaArray_FimbulvetrBg;
-	proc->tsar = TsaArray_FimbulvetrBg;
-	proc->img = ImgArray_FimbulvetrBg;
+    proc = Proc_Start(ProcScr_efxFimbulvetrBG, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->frame = 0;
+    proc->frame_config = frames;
+    proc->tsal = TsaArray_FimbulvetrBg;
+    proc->tsar = TsaArray_FimbulvetrBg;
+    proc->img = ImgArray_FimbulvetrBg;
 
-	SpellFx_RegisterBgPal(Pal_FimbulvetrBg, PLTT_SIZE_4BPP);
+    SpellFx_RegisterBgPal(Pal_FimbulvetrBg, PLTT_SIZE_4BPP);
 
-	if (gEkrDistanceType != EKR_DISTANCE_CLOSE) {
-		if (GetAnimPosition(proc->anim) == EKR_POS_L) {
-			BG_SetPosition(BG_1, 232, 0);
-		} else {
-			BG_SetPosition(BG_1, 24, 0);
-		}
-	}
+    if (gEkrDistanceType != EKR_DISTANCE_CLOSE)
+    {
+        if (GetAnimPosition(proc->anim) == EKR_POS_L)
+        {
+            BG_SetPosition(BG_1, 232, 0);
+        }
+        else
+        {
+            BG_SetPosition(BG_1, 24, 0);
+        }
+    }
 
-	SpellFx_SetSomeColorEffect();
+    SpellFx_SetSomeColorEffect();
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E39C
-void efxFimbulvetrBG_Loop(struct ProcEfxBG *proc)
+void efxFimbulvetrBG_Loop(struct ProcEfxBG * proc)
 {
-	int ret;
+    int ret;
 
-	if (gEkrDistanceType != EKR_DISTANCE_CLOSE) {
-		if (GetAnimPosition(proc->anim) == EKR_POS_L) {
-			BG_SetPosition(BG_1, 24, 0);
-		} else {
-			BG_SetPosition(BG_1, 232, 0);
-		}
-	}
+    if (gEkrDistanceType != EKR_DISTANCE_CLOSE)
+    {
+        if (GetAnimPosition(proc->anim) == EKR_POS_L)
+        {
+            BG_SetPosition(BG_1, 24, 0);
+        }
+        else
+        {
+            BG_SetPosition(BG_1, 232, 0);
+        }
+    }
 
-	ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
+    ret = EfxAdvanceFrameLut((s16 *)&proc->timer, (s16 *)&proc->frame, proc->frame_config);
 
-	if (ret >= 0) {
-		u16 **tsaL = proc->tsal;
-		u16 **tsaR = proc->tsar;
-		u16 **img = proc->img;
-		SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
-		SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
-	} else {
-		if (ret == -1) {
-			SpellFx_ClearBG1();
-			gEfxBgSemaphore--;
-			SetDefaultColorEffects_();
-			Proc_Break(proc);
-		}
-	}
+    if (ret >= 0)
+    {
+        u16 ** tsaL = proc->tsal;
+        u16 ** tsaR = proc->tsar;
+        u16 ** img = proc->img;
+        SpellFx_WriteBgMap(proc->anim, *(tsaL + ret), *(tsaR + ret));
+        SpellFx_RegisterBgGfx(*(img + ret), 32 * 8 * CHR_SIZE);
+    }
+    else
+    {
+        if (ret == -1)
+        {
+            SpellFx_ClearBG1();
+            gEfxBgSemaphore--;
+            SetDefaultColorEffects_();
+            Proc_Break(proc);
+        }
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -337,37 +367,38 @@ struct ProcCmd CONST_DATA ProcScr_efxFimbulvetrOBJ[] =
 // clang-format on
 
 //! FE8U = 0x0805E430
-void StartSubSpell_efxFimbulvetrOBJ(struct Anim *anim)
+void StartSubSpell_efxFimbulvetrOBJ(struct Anim * anim)
 {
-	struct ProcEfxOBJ *proc;
+    struct ProcEfxOBJ * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxFimbulvetrOBJ, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
+    proc = Proc_Start(ProcScr_efxFimbulvetrOBJ, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
 
-	proc->anim2 = EfxCreateFrontAnim(anim, AnimScr_FimbulvetrOBJ1, AnimScr_FimbulvetrOBJ1, AnimScr_FimbulvetrOBJ1, AnimScr_FimbulvetrOBJ1);
-	proc->anim2->xPosition += 24;
+    proc->anim2 = EfxCreateFrontAnim(anim, AnimScr_FimbulvetrOBJ1, AnimScr_FimbulvetrOBJ1, AnimScr_FimbulvetrOBJ1, AnimScr_FimbulvetrOBJ1);
+    proc->anim2->xPosition += 24;
 
-	SpellFx_RegisterObjPal(Pal_HealSprites_Sparkles, PLTT_SIZE_4BPP);
-	SpellFx_RegisterObjGfx(Img_FimbulvetrSprites_Snow, 32 * 4 * CHR_SIZE);
+    SpellFx_RegisterObjPal(Pal_HealSprites_Sparkles, PLTT_SIZE_4BPP);
+    SpellFx_RegisterObjGfx(Img_FimbulvetrSprites_Snow, 32 * 4 * CHR_SIZE);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E494
-void efxFimbulvetrOBJ_Loop(struct ProcEfxOBJ *proc)
+void efxFimbulvetrOBJ_Loop(struct ProcEfxOBJ * proc)
 {
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer > 51) {
-		AnimDelete(proc->anim2);
-		gEfxBgSemaphore--;
-		Proc_Break(proc);
-	}
+    if (proc->timer > 51)
+    {
+        AnimDelete(proc->anim2);
+        gEfxBgSemaphore--;
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -383,39 +414,40 @@ struct ProcCmd CONST_DATA ProcScr_efxFimbulvetrOBJ2[] =
 // clang-format on
 
 //! FE8U = 0x0805E4C4
-void StartSubSpell_efxFimbulvetrOBJ2(struct Anim *anim)
+void StartSubSpell_efxFimbulvetrOBJ2(struct Anim * anim)
 {
-	struct ProcEfxOBJ *proc;
+    struct ProcEfxOBJ * proc;
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxFimbulvetrOBJ2, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->terminator = 0;
-	proc->unk44 = 1;
-	proc->unk48 = 0;
+    proc = Proc_Start(ProcScr_efxFimbulvetrOBJ2, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->terminator = 0;
+    proc->unk44 = 1;
+    proc->unk48 = 0;
 
-	SpellFx_RegisterObjPal(Pal_HealSprites_Sparkles, PLTT_SIZE_4BPP);
-	SpellFx_RegisterObjGfx(Img_FimbulvetrSprites_Snow, 32 * 4 * CHR_SIZE);
+    SpellFx_RegisterObjPal(Pal_HealSprites_Sparkles, PLTT_SIZE_4BPP);
+    SpellFx_RegisterObjGfx(Img_FimbulvetrSprites_Snow, 32 * 4 * CHR_SIZE);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E510
-void efxFimbulvetrOBJ2_Loop(struct ProcEfxOBJ *proc)
+void efxFimbulvetrOBJ2_Loop(struct ProcEfxOBJ * proc)
 {
-	int i;
+    int i;
 
-	for (i = 0; i < 32; i++) {
-		StartSubSpell_efxFimbulvetrOBJ2Fall(proc->anim, i);
-	}
+    for (i = 0; i < 32; i++)
+    {
+        StartSubSpell_efxFimbulvetrOBJ2Fall(proc->anim, i);
+    }
 
-	gEfxBgSemaphore--;
+    gEfxBgSemaphore--;
 
-	Proc_Break(proc);
+    Proc_Break(proc);
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -431,95 +463,113 @@ struct ProcCmd CONST_DATA ProcScr_efxFimbulvetrOBJ2Fall[] =
 // clang-format on
 
 //! FE8U = 0x0805E53C
-void StartSubSpell_efxFimbulvetrOBJ2Fall(struct Anim *anim, int unk)
+void StartSubSpell_efxFimbulvetrOBJ2Fall(struct Anim * anim, int unk)
 {
-	struct ProcEfxOBJ *proc;
-	struct Anim *anim2;
+    struct ProcEfxOBJ * proc;
+    struct Anim * anim2;
 
-	u8 array[8] = { 0, 0, 0, 0, 0, 0, 1, 1 };
+    u8 array[8] = { 0, 0, 0, 0, 0, 0, 1, 1 };
 
-	gEfxBgSemaphore++;
+    gEfxBgSemaphore++;
 
-	proc = Proc_Start(ProcScr_efxFimbulvetrOBJ2Fall, PROC_TREE_3);
-	proc->anim = anim;
-	proc->timer = 0;
-	proc->terminator = 100;
-	proc->unk29 = array[unk & 7];
+    proc = Proc_Start(ProcScr_efxFimbulvetrOBJ2Fall, PROC_TREE_3);
+    proc->anim = anim;
+    proc->timer = 0;
+    proc->terminator = 100;
+    proc->unk29 = array[unk & 7];
 
-	anim2 = AnimCreate(AnimScr_FimbulvetrOBJ2, 120);
-	proc->anim2 = anim2;
-	anim2->oam2Base = OAM2_CHR(0x40) + OAM2_LAYER(2) + OAM2_PAL(2);
-	anim2->xPosition = 256;
-	anim2->yPosition = 256;
+    anim2 = AnimCreate(AnimScr_FimbulvetrOBJ2, 120);
+    proc->anim2 = anim2;
+    anim2->oam2Base = OAM2_CHR(0x40) + OAM2_LAYER(2) + OAM2_PAL(2);
+    anim2->xPosition = 256;
+    anim2->yPosition = 256;
 
-	proc->unk32 = BanimSpawnRandB(UINT16_MAX);
-	proc->unk3A = BanimSpawnRandB(UINT16_MAX);
+    proc->unk32 = BanimSpawnRandB(UINT16_MAX);
+    proc->unk3A = BanimSpawnRandB(UINT16_MAX);
 
-	if (array[unk & 7] == 0) {
-		proc->unk34 = (BanimSpawnRandB(UINT16_MAX) & 0x1FF) + 0x700;
-	} else {
-		proc->unk34 = (BanimSpawnRandB(UINT16_MAX) & 0x1FF) + 0xa00;
-	}
+    if (array[unk & 7] == 0)
+    {
+        proc->unk34 = (BanimSpawnRandB(UINT16_MAX) & 0x1FF) + 0x700;
+    }
+    else
+    {
+        proc->unk34 = (BanimSpawnRandB(UINT16_MAX) & 0x1FF) + 0xa00;
+    }
 
-	proc->unk3C = (BanimSpawnRandB(UINT16_MAX - 240) & 0x3FF) - 0x100;
-	proc->unk36 = BanimSpawnRandB(UINT16_MAX - 240);
-	proc->unk3E = BanimSpawnRandB(UINT16_MAX - 240);
+    proc->unk3C = (BanimSpawnRandB(UINT16_MAX - 240) & 0x3FF) - 0x100;
+    proc->unk36 = BanimSpawnRandB(UINT16_MAX - 240);
+    proc->unk3E = BanimSpawnRandB(UINT16_MAX - 240);
 
-	if (array[unk & 7] == 0) {
-		proc->unk38 = (BanimSpawnRandB(UINT16_MAX - 240) & 0x1FF) + 0x700;
-	} else {
-		proc->unk38 = (BanimSpawnRandB(UINT16_MAX - 240) & 0x1FF) + 0xa00;
-	}
+    if (array[unk & 7] == 0)
+    {
+        proc->unk38 = (BanimSpawnRandB(UINT16_MAX - 240) & 0x1FF) + 0x700;
+    }
+    else
+    {
+        proc->unk38 = (BanimSpawnRandB(UINT16_MAX - 240) & 0x1FF) + 0xa00;
+    }
 
-	proc->unk40 = (BanimSpawnRandB(UINT16_MAX - 240) & 0x3FF) - 0x100;
+    proc->unk40 = (BanimSpawnRandB(UINT16_MAX - 240) & 0x3FF) - 0x100;
 
-	return;
+    return;
 }
 
 //! FE8U = 0x0805E694
-void efxFimbulvetrOBJ2Fall_Loop(struct ProcEfxOBJ *proc)
+void efxFimbulvetrOBJ2Fall_Loop(struct ProcEfxOBJ * proc)
 {
-	struct Anim *anim = proc->anim2;
+    struct Anim * anim = proc->anim2;
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer > proc->terminator) {
-		gEfxBgSemaphore--;
-		AnimDelete(anim);
-		Proc_Break(proc);
-	} else {
-		if (!(proc->timer & 1)) {
-			if (proc->unk29 == 0) {
-				anim->pScrStart = AnimScr_FimbulvetrOBJ2Fall_TypeA;
-				anim->pScrCurrent = AnimScr_FimbulvetrOBJ2Fall_TypeA;
-			} else {
-				anim->pScrStart = AnimScr_FimbulvetrOBJ2Fall_TypeB;
-				anim->pScrCurrent = AnimScr_FimbulvetrOBJ2Fall_TypeB;
-			}
+    if (proc->timer > proc->terminator)
+    {
+        gEfxBgSemaphore--;
+        AnimDelete(anim);
+        Proc_Break(proc);
+    }
+    else
+    {
+        if (!(proc->timer & 1))
+        {
+            if (proc->unk29 == 0)
+            {
+                anim->pScrStart = AnimScr_FimbulvetrOBJ2Fall_TypeA;
+                anim->pScrCurrent = AnimScr_FimbulvetrOBJ2Fall_TypeA;
+            }
+            else
+            {
+                anim->pScrStart = AnimScr_FimbulvetrOBJ2Fall_TypeB;
+                anim->pScrCurrent = AnimScr_FimbulvetrOBJ2Fall_TypeB;
+            }
 
-			anim->timer = 0;
+            anim->timer = 0;
 
-			proc->unk32 += proc->unk34;
-			proc->unk3A += proc->unk3C;
-			anim->xPosition = proc->unk32 >> 8;
-			anim->yPosition = proc->unk3A >> 8;
-		} else {
-			if (proc->unk29 == 0) {
-				anim->pScrStart = AnimScr_FimbulvetrOBJ2Fall_TypeA;
-				anim->pScrCurrent = AnimScr_FimbulvetrOBJ2Fall_TypeA;
-			} else {
-				anim->pScrStart = AnimScr_FimbulvetrOBJ2Fall_TypeB;
-				anim->pScrCurrent = AnimScr_FimbulvetrOBJ2Fall_TypeB;
-			}
+            proc->unk32 += proc->unk34;
+            proc->unk3A += proc->unk3C;
+            anim->xPosition = proc->unk32 >> 8;
+            anim->yPosition = proc->unk3A >> 8;
+        }
+        else
+        {
+            if (proc->unk29 == 0)
+            {
+                anim->pScrStart = AnimScr_FimbulvetrOBJ2Fall_TypeA;
+                anim->pScrCurrent = AnimScr_FimbulvetrOBJ2Fall_TypeA;
+            }
+            else
+            {
+                anim->pScrStart = AnimScr_FimbulvetrOBJ2Fall_TypeB;
+                anim->pScrCurrent = AnimScr_FimbulvetrOBJ2Fall_TypeB;
+            }
 
-			anim->timer = 0;
+            anim->timer = 0;
 
-			proc->unk3E += proc->unk38;
-			proc->unk3E += proc->unk40;
-			anim->xPosition = proc->unk36 >> 8;
-			anim->yPosition = proc->unk3E >> 8;
-		}
-	}
+            proc->unk3E += proc->unk38;
+            proc->unk3E += proc->unk40;
+            anim->xPosition = proc->unk36 >> 8;
+            anim->yPosition = proc->unk3E >> 8;
+        }
+    }
 
-	return;
+    return;
 }

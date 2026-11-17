@@ -25,172 +25,190 @@ struct ProcCmd CONST_DATA gProc_efxFarAttack[] =
 // clang-format on
 
 //! FE8U = 0x080533D0
-void NewEfxFarAttackWithDistance(struct Anim *anim, s16 arg)
+void NewEfxFarAttackWithDistance(struct Anim * anim, s16 arg)
 {
-	struct ProcEfxFarAttack *proc;
-	u32 val;
+    struct ProcEfxFarAttack * proc;
+    u32 val;
 
-	switch (gEkrDistanceType) {
-	case EKR_DISTANCE_FAR:
-	case EKR_DISTANCE_FARFAR:
-		proc = Proc_Start(gProc_efxFarAttack, PROC_TREE_3);
-		proc->pos = GetAnimPosition(anim);
-		proc->timer = 0;
+    switch (gEkrDistanceType)
+    {
+        case EKR_DISTANCE_FAR:
+        case EKR_DISTANCE_FARFAR:
+            proc = Proc_Start(gProc_efxFarAttack, PROC_TREE_3);
+            proc->pos = GetAnimPosition(anim);
+            proc->timer = 0;
 
-		if (arg != -1) {
-			proc->unk_2e = arg >> 1;
-			proc->terminator = arg - (arg >> 1);
-		} else {
-			if (gEkrDistanceType == EKR_DISTANCE_FAR) {
-				proc->unk_2e = 5;
-				proc->terminator = 5;
-			} else {
-				proc->unk_2e = 7;
-				proc->terminator = 7;
-			}
-		}
+            if (arg != -1)
+            {
+                proc->unk_2e = arg >> 1;
+                proc->terminator = arg - (arg >> 1);
+            }
+            else
+            {
+                if (gEkrDistanceType == EKR_DISTANCE_FAR)
+                {
+                    proc->unk_2e = 5;
+                    proc->terminator = 5;
+                }
+                else
+                {
+                    proc->unk_2e = 7;
+                    proc->terminator = 7;
+                }
+            }
 
-		if (gEkrDistanceType == EKR_DISTANCE_FAR) {
-			val = 0x20;
-		} else {
-			val = 0xf0;
-		}
+            if (gEkrDistanceType == EKR_DISTANCE_FAR)
+            {
+                val = 0x20;
+            }
+            else
+            {
+                val = 0xf0;
+            }
 
-		if (proc->pos == POS_L) {
-			proc->unk_32 = -val;
-			proc->unk_34 = (-val >> 1);
-			proc->unk_36 = (-val >> 1);
-			proc->unk_38 = 0;
-		} else {
-			proc->unk_32 = 0;
-			proc->unk_34 = (-val >> 1);
-			proc->unk_36 = (-val >> 1);
-			proc->unk_38 = -val;
-		}
+            if (proc->pos == POS_L)
+            {
+                proc->unk_32 = -val;
+                proc->unk_34 = (-val >> 1);
+                proc->unk_36 = (-val >> 1);
+                proc->unk_38 = 0;
+            }
+            else
+            {
+                proc->unk_32 = 0;
+                proc->unk_34 = (-val >> 1);
+                proc->unk_36 = (-val >> 1);
+                proc->unk_38 = -val;
+            }
 
-		gEkrBgPosition = proc->unk_32;
-		gEfxFarAttackExist = 1;
+            gEkrBgPosition = proc->unk_32;
+            gEfxFarAttackExist = 1;
 
-		break;
+            break;
 
-	case EKR_DISTANCE_CLOSE:
-	case EKR_DISTANCE_MONOCOMBAT:
-	case EKR_DISTANCE_PROMOTION:
-		break;
-	}
+        case EKR_DISTANCE_CLOSE:
+        case EKR_DISTANCE_MONOCOMBAT:
+        case EKR_DISTANCE_PROMOTION:
+            break;
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x080534AC
-void sub_80534AC(struct ProcEfxFarAttack *unused, int x)
+void sub_80534AC(struct ProcEfxFarAttack * unused, int x)
 {
-	struct Anim *anim = gAnims[0];
-	x = -x;
+    struct Anim * anim = gAnims[0];
+    x = -x;
 
-	anim->xPosition = x + gEkrXPosReal[0];
+    anim->xPosition = x + gEkrXPosReal[0];
 
-	anim = gAnims[1];
-	anim->xPosition = x + gEkrXPosReal[0];
+    anim = gAnims[1];
+    anim->xPosition = x + gEkrXPosReal[0];
 
-	anim = gAnims[2];
-	anim->xPosition = x + gEkrXPosReal[1];
+    anim = gAnims[2];
+    anim->xPosition = x + gEkrXPosReal[1];
 
-	anim = gAnims[3];
-	anim->xPosition = x + gEkrXPosReal[1];
+    anim = gAnims[3];
+    anim->xPosition = x + gEkrXPosReal[1];
 
-	return;
+    return;
 }
 
 //! FE8U = 0x080534E4
-void sub_80534E4(struct ProcEfxFarAttack *proc)
+void sub_80534E4(struct ProcEfxFarAttack * proc)
 {
-	sub_80534AC(proc, proc->unk_32);
-	EkrDragonTmCpyExt(proc->unk_32, 0);
-	sub_8053618(proc->unk_32);
+    sub_80534AC(proc, proc->unk_32);
+    EkrDragonTmCpyExt(proc->unk_32, 0);
+    sub_8053618(proc->unk_32);
 
-	proc->timer = 0;
+    proc->timer = 0;
 
-	Proc_Break(proc);
+    Proc_Break(proc);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08053514
-void sub_8053514(struct ProcEfxFarAttack *proc)
+void sub_8053514(struct ProcEfxFarAttack * proc)
 {
-	u32 ret = Interpolate(INTERPOLATE_SQUARE, proc->unk_32, proc->unk_34, proc->timer, proc->unk_2e);
-	gEkrBgPosition = ret;
+    u32 ret = Interpolate(INTERPOLATE_SQUARE, proc->unk_32, proc->unk_34, proc->timer, proc->unk_2e);
+    gEkrBgPosition = ret;
 
-	sub_80534AC(proc, ret);
-	EkrDragonTmCpyExt(gEkrBgPosition, 0);
-	sub_8053618(gEkrBgPosition);
+    sub_80534AC(proc, ret);
+    EkrDragonTmCpyExt(gEkrBgPosition, 0);
+    sub_8053618(gEkrBgPosition);
 
-	if (GetBattleAnimArenaFlag() != 0) {
-		EkrArena_ChangeBg3Offset(gEkrBgPosition);
-	}
+    if (GetBattleAnimArenaFlag() != 0)
+    {
+        EkrArena_ChangeBg3Offset(gEkrBgPosition);
+    }
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer > proc->unk_2e) {
-		proc->timer = 1;
-		Proc_Break(proc);
-	}
+    if (proc->timer > proc->unk_2e)
+    {
+        proc->timer = 1;
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08053584
-void sub_8053584(struct ProcEfxFarAttack *proc)
+void sub_8053584(struct ProcEfxFarAttack * proc)
 {
-	u32 ret = Interpolate(INTERPOLATE_RSQUARE, proc->unk_36, proc->unk_38, proc->timer, proc->terminator);
-	gEkrBgPosition = ret;
+    u32 ret = Interpolate(INTERPOLATE_RSQUARE, proc->unk_36, proc->unk_38, proc->timer, proc->terminator);
+    gEkrBgPosition = ret;
 
-	sub_80534AC(proc, ret);
-	EkrDragonTmCpyExt(gEkrBgPosition, 0);
-	sub_8053618(gEkrBgPosition);
+    sub_80534AC(proc, ret);
+    EkrDragonTmCpyExt(gEkrBgPosition, 0);
+    sub_8053618(gEkrBgPosition);
 
-	if (GetBattleAnimArenaFlag() != 0) {
-		EkrArena_ChangeBg3Offset(gEkrBgPosition);
-	}
+    if (GetBattleAnimArenaFlag() != 0)
+    {
+        EkrArena_ChangeBg3Offset(gEkrBgPosition);
+    }
 
-	proc->timer++;
+    proc->timer++;
 
-	if (proc->timer > proc->terminator) {
-		if (proc->pos == POS_L)
-			gEkrInitPosReal = POS_R;
-		else
-			gEkrInitPosReal = POS_L;
+    if (proc->timer > proc->terminator)
+    {
+        if (proc->pos == POS_L)
+            gEkrInitPosReal = POS_R;
+        else
+            gEkrInitPosReal = POS_L;
 
-		gEfxFarAttackExist = false;
+        gEfxFarAttackExist = false;
 
-		Proc_Break(proc);
-	}
+        Proc_Break(proc);
+    }
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08053618
 void sub_8053618(int xPos)
 {
-	u16 *p;
-	int a;
-	int x;
+    u16 * p;
+    int a;
+    int x;
 
-	if ((GetBanimDragonStatusType() == EKRDRGON_TYPE_DEMON_KING) || (GetBattleAnimArenaFlag() != 0)) {
-		return;
-	}
+    if ((GetBanimDragonStatusType() == EKRDRGON_TYPE_DEMON_KING) || (GetBattleAnimArenaFlag() != 0))
+    {
+        return;
+    }
 
-	a = (xPos >> 3);
-	x = xPos & 7;
-	BG_SetPosition(BG_2, x, 0);
+    a = (xPos >> 3);
+    x = xPos & 7;
+    BG_SetPosition(BG_2, x, 0);
 
-	p = gTmA_Banim + 33 + a;
-	EfxTmCpyExt(p + 132, 66, gBG2TilemapBuffer, 32, 32, 20, -1, -1);
+    p = gTmA_Banim + 33 + a;
+    EfxTmCpyExt(p + 132, 66, gBG2TilemapBuffer, 32, 32, 20, -1, -1);
 
-	BG_EnableSyncByMask(BG2_SYNC_BIT);
+    BG_EnableSyncByMask(BG2_SYNC_BIT);
 
-	return;
+    return;
 }
 
 // clang-format off
@@ -980,224 +998,271 @@ struct ProcCmd CONST_DATA ProcScr_EfxHitQuake[] =
 // clang-format on
 
 //! FE8U = 0x08053718
-void NewEfxHitQuake(struct Anim *anim1, struct Anim *anim2, int kind)
+void NewEfxHitQuake(struct Anim * anim1, struct Anim * anim2, int kind)
 {
-	s16 x;
-	struct ProcEfxQuake *proc;
-	struct Anim *anim;
+    s16 x;
+    struct ProcEfxQuake * proc;
+    struct Anim * anim;
 
-	if (gEfxHitQuakeExist != 0) {
-		return;
-	}
+    if (gEfxHitQuakeExist != 0)
+    {
+        return;
+    }
 
-	gEfxHitQuakeExist = 1;
+    gEfxHitQuakeExist = 1;
 
-	proc = Proc_Start(ProcScr_EfxHitQuake, PROC_TREE_3);
+    proc = Proc_Start(ProcScr_EfxHitQuake, PROC_TREE_3);
 
-	proc->anim_l = anim1;
-	proc->anim_r = anim2;
-	proc->timer = 0;
-	proc->quake_ui = 1;
+    proc->anim_l = anim1;
+    proc->anim_r = anim2;
+    proc->timer = 0;
+    proc->quake_ui = 1;
 
-	if (kind == 0) {
-		proc->vec = gUnknown_080DA4BA;
-	} else if (kind == 1) {
-		proc->vec = gEfxQuakeVecs;
-	} else if (kind == 2) {
-		proc->vec = gUnknown_080DA526;
-	} else if (kind == 3) {
-		proc->vec = gEfxQuakeVecs2;
-	} else if (kind == 4) {
-		proc->vec = gUnknown_080DA9F8;
-	} else if (kind == 5) {
-		proc->vec = gUnknown_080DAA8E;
-	} else {
-		proc->vec = gUnknown_080DA4BA;
-	}
+    if (kind == 0)
+    {
+        proc->vec = gUnknown_080DA4BA;
+    }
+    else if (kind == 1)
+    {
+        proc->vec = gEfxQuakeVecs;
+    }
+    else if (kind == 2)
+    {
+        proc->vec = gUnknown_080DA526;
+    }
+    else if (kind == 3)
+    {
+        proc->vec = gEfxQuakeVecs2;
+    }
+    else if (kind == 4)
+    {
+        proc->vec = gUnknown_080DA9F8;
+    }
+    else if (kind == 5)
+    {
+        proc->vec = gUnknown_080DAA8E;
+    }
+    else
+    {
+        proc->vec = gUnknown_080DA4BA;
+    }
 
-	proc->unk_48 = 1;
+    proc->unk_48 = 1;
 
-	if (GetBanimDragonStatusType() != EKRDRGON_TYPE_NORMAL) {
-		proc->unk_64 = NULL;
-		return;
-	}
+    if (GetBanimDragonStatusType() != EKRDRGON_TYPE_NORMAL)
+    {
+        proc->unk_64 = NULL;
+        return;
+    }
 
-	if (GetBattleAnimArenaFlag() != 0) {
-		proc->unk_64 = NULL;
-		return;
-	}
+    if (GetBattleAnimArenaFlag() != 0)
+    {
+        proc->unk_64 = NULL;
+        return;
+    }
 
-	if (gEkrDistanceType == EKR_DISTANCE_CLOSE) {
-		proc->unk_64 = NULL;
-		return;
-	}
+    if (gEkrDistanceType == EKR_DISTANCE_CLOSE)
+    {
+        proc->unk_64 = NULL;
+        return;
+    }
 
-	x = gEkrBgPosition - gEkrXPosBase[GetAnimPosition(proc->anim_l)];
+    x = gEkrBgPosition - gEkrXPosBase[GetAnimPosition(proc->anim_l)];
 
-	if (GetAnimPosition(anim1) == 0) {
-		proc->unk_36 = 64;
-		proc->unk_3e = 104;
-		anim = AnimCreate(AnimScr_EkrMainMini_R_Far, 5);
-	} else {
-		proc->unk_36 = 176;
-		proc->unk_3e = 104;
-		anim = AnimCreate(AnimScr_EkrMainMini_L_Far, 5);
-	}
+    if (GetAnimPosition(anim1) == 0)
+    {
+        proc->unk_36 = 64;
+        proc->unk_3e = 104;
+        anim = AnimCreate(AnimScr_EkrMainMini_R_Far, 5);
+    }
+    else
+    {
+        proc->unk_36 = 176;
+        proc->unk_3e = 104;
+        anim = AnimCreate(AnimScr_EkrMainMini_L_Far, 5);
+    }
 
-	anim->xPosition = proc->unk_36 - x;
-	anim->yPosition = proc->unk_3e;
+    anim->xPosition = proc->unk_36 - x;
+    anim->yPosition = proc->unk_3e;
 
-	if (gUnknown_0201775C == 1) {
-		anim->oam2Base = OAM2_CHR(0xC0) + OAM2_LAYER(1) + OAM2_PAL(3);
-	} else {
-		anim->oam2Base = OAM2_CHR(0xC0) + OAM2_LAYER(3) + OAM2_PAL(3);
-	}
+    if (gUnknown_0201775C == 1)
+    {
+        anim->oam2Base = OAM2_CHR(0xC0) + OAM2_LAYER(1) + OAM2_PAL(3);
+    }
+    else
+    {
+        anim->oam2Base = OAM2_CHR(0xC0) + OAM2_LAYER(3) + OAM2_PAL(3);
+    }
 
-	proc->unk_64 = anim;
+    proc->unk_64 = anim;
 
-	RegisterDataMove(gUnknown_0200003C[GetAnimPosition(anim1)], (void *)0x06011800, 0x800);
+    RegisterDataMove(gUnknown_0200003C[GetAnimPosition(anim1)], (void *)0x06011800, 0x800);
 
-	if (gEkrSpellAnimIndex[GetAnimPosition(anim2)] == 0x39) {
-		CpuFastCopy(gBanimTerrainPaletteMaybe[GetAnimPosition(anim2)], gEfxTerrainPalette, PLTT_SIZE_4BPP);
-	}
+    if (gEkrSpellAnimIndex[GetAnimPosition(anim2)] == 0x39)
+    {
+        CpuFastCopy(gBanimTerrainPaletteMaybe[GetAnimPosition(anim2)], gEfxTerrainPalette, PLTT_SIZE_4BPP);
+    }
 
-	CpuFastCopy(gBanimTerrainPaletteMaybe[GetAnimPosition(anim1)], gPaletteBuffer + 0x130, PLTT_SIZE_4BPP);
-	EnablePaletteSync();
+    CpuFastCopy(gBanimTerrainPaletteMaybe[GetAnimPosition(anim1)], gPaletteBuffer + 0x130, PLTT_SIZE_4BPP);
+    EnablePaletteSync();
 
-	BanimCopyBgTM(gEkrDistanceType, GetAnimPosition(anim1));
-	sub_8053618(gEkrBgPosition);
+    BanimCopyBgTM(gEkrDistanceType, GetAnimPosition(anim1));
+    sub_8053618(gEkrBgPosition);
 
-	return;
+    return;
 }
 
 //! FE8U = 0x08053BBC
-void efxHitQuake_Loop(struct ProcEfxQuake *proc)
+void efxHitQuake_Loop(struct ProcEfxQuake * proc)
 {
-	int x1;
-	int y1;
-	int x2;
-	int y2;
+    int x1;
+    int y1;
+    int x2;
+    int y2;
 
-	const s16 *vec = proc->vec;
+    const s16 * vec = proc->vec;
 
-	if (vec[proc->timer * 2 + 0] == INT16_MAX) {
-		SetEkrBg2QuakeVec(0, 0);
+    if (vec[proc->timer * 2 + 0] == INT16_MAX)
+    {
+        SetEkrBg2QuakeVec(0, 0);
 
-		switch (gEkrDistanceType) {
-		case EKR_DISTANCE_CLOSE:
-			BG_SetPosition(BG_2, 0, 0);
+        switch (gEkrDistanceType)
+        {
+            case EKR_DISTANCE_CLOSE:
+                BG_SetPosition(BG_2, 0, 0);
 
-			if (GetBanimDragonStatusType() != EKRDRGON_TYPE_NORMAL) {
-				BG_SetPosition(BG_3, 0, 0);
-			}
-			break;
+                if (GetBanimDragonStatusType() != EKRDRGON_TYPE_NORMAL)
+                {
+                    BG_SetPosition(BG_3, 0, 0);
+                }
+                break;
 
-		case EKR_DISTANCE_FAR:
-		case EKR_DISTANCE_FARFAR:
-			if (GetBanimDragonStatusType() != EKRDRGON_TYPE_NORMAL) {
-				BG_SetPosition(BG_3, 0, 0);
-			}
+            case EKR_DISTANCE_FAR:
+            case EKR_DISTANCE_FARFAR:
+                if (GetBanimDragonStatusType() != EKRDRGON_TYPE_NORMAL)
+                {
+                    BG_SetPosition(BG_3, 0, 0);
+                }
 
-			sub_8053618(gEkrBgPosition);
+                sub_8053618(gEkrBgPosition);
 
-			break;
-		}
+                break;
+        }
 
-		if (proc->unk_64 != NULL) {
-			AnimDelete(proc->unk_64);
-			EkrTerrainfx_PutTiles(&gEkrTerrainfxDesc);
-		}
+        if (proc->unk_64 != NULL)
+        {
+            AnimDelete(proc->unk_64);
+            EkrTerrainfx_PutTiles(&gEkrTerrainfxDesc);
+        }
 
-		x1 = gEkrXPosReal[0] - gEkrBgPosition;
-		y1 = gEkrYPosReal[0];
-		x2 = gEkrXPosReal[1] - gEkrBgPosition;
-		y2 = gEkrYPosReal[1];
+        x1 = gEkrXPosReal[0] - gEkrBgPosition;
+        y1 = gEkrYPosReal[0];
+        x2 = gEkrXPosReal[1] - gEkrBgPosition;
+        y2 = gEkrYPosReal[1];
 
-		SetEkrFrontAnimPostion(0, x1, y1);
-		SetEkrFrontAnimPostion(1, x2, y2);
+        SetEkrFrontAnimPostion(0, x1, y1);
+        SetEkrFrontAnimPostion(1, x2, y2);
 
-		gEfxHitQuakeExist = 0;
+        gEfxHitQuakeExist = 0;
 
-		if (proc->quake_ui == 1) {
-			if (GetBanimDragonStatusType() != 0) {
-				BG_SetPosition(BG_3, 0, 0);
-			}
+        if (proc->quake_ui == 1)
+        {
+            if (GetBanimDragonStatusType() != 0)
+            {
+                BG_SetPosition(BG_3, 0, 0);
+            }
 
-			BG_SetPosition(BG_0, gEkrBg0QuakeVec.x, gEkrBg0QuakeVec.y);
-			EkrGauge_Setxy323A(-gEkrBg0QuakeVec.x, -gEkrBg0QuakeVec.y);
-			EkrDispUP_SetPositionSync(-gEkrBg0QuakeVec.x, -gEkrBg0QuakeVec.y);
-		}
+            BG_SetPosition(BG_0, gEkrBg0QuakeVec.x, gEkrBg0QuakeVec.y);
+            EkrGauge_Setxy323A(-gEkrBg0QuakeVec.x, -gEkrBg0QuakeVec.y);
+            EkrDispUP_SetPositionSync(-gEkrBg0QuakeVec.x, -gEkrBg0QuakeVec.y);
+        }
 
-		Proc_End(proc);
-	} else {
-		int x;
-		int y;
+        Proc_End(proc);
+    }
+    else
+    {
+        int x;
+        int y;
 
-		if ((proc->timer == 0) && (proc->unk_64 != NULL)) {
-			FillBGRect(GetAnimPosition(proc->anim_l) * 15 + gBG2TilemapBuffer + 0x160, 0xf, 5, 0, 0);
-		}
+        if ((proc->timer == 0) && (proc->unk_64 != NULL))
+        {
+            FillBGRect(GetAnimPosition(proc->anim_l) * 15 + gBG2TilemapBuffer + 0x160, 0xf, 5, 0, 0);
+        }
 
-		x = vec[proc->timer * 2 + 0];
-		y = vec[proc->timer * 2 + 1];
+        x = vec[proc->timer * 2 + 0];
+        y = vec[proc->timer * 2 + 1];
 
-		SetEkrBg2QuakeVec(x, y);
+        SetEkrBg2QuakeVec(x, y);
 
-		proc->timer++;
+        proc->timer++;
 
-		if (proc->unk_64 != NULL) {
-			s16 hm = gEkrBgPosition - gEkrXPosBase[GetAnimPosition(proc->anim_l)];
+        if (proc->unk_64 != NULL)
+        {
+            s16 hm = gEkrBgPosition - gEkrXPosBase[GetAnimPosition(proc->anim_l)];
 
-			struct Anim *anim = proc->unk_64;
+            struct Anim * anim = proc->unk_64;
 
-			anim->xPosition = (proc->unk_36 + gEkrBg2QuakeVec.x) - hm;
-			anim->yPosition = proc->unk_3e - gEkrBg2QuakeVec.y;
-		} else {
-			BG_SetPosition(BG_2, gEkrBg2QuakeVec.x, gEkrBg2QuakeVec.y);
-		}
+            anim->xPosition = (proc->unk_36 + gEkrBg2QuakeVec.x) - hm;
+            anim->yPosition = proc->unk_3e - gEkrBg2QuakeVec.y;
+        }
+        else
+        {
+            BG_SetPosition(BG_2, gEkrBg2QuakeVec.x, gEkrBg2QuakeVec.y);
+        }
 
-		if (proc->quake_ui == 1) {
-			if (GetBanimDragonStatusType() != EKRDRGON_TYPE_NORMAL) {
-				BG_SetPosition(BG_3, -x, y);
-			}
+        if (proc->quake_ui == 1)
+        {
+            if (GetBanimDragonStatusType() != EKRDRGON_TYPE_NORMAL)
+            {
+                BG_SetPosition(BG_3, -x, y);
+            }
 
-			BG_SetPosition(BG_0, gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x, gEkrBg2QuakeVec.y + gEkrBg0QuakeVec.y);
-			EkrGauge_Setxy323A(-(gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x), -(gEkrBg2QuakeVec.y + gEkrBg0QuakeVec.y));
-			EkrDispUP_SetPositionSync(
-				-(gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x), -(gEkrBg2QuakeVec.y + gEkrBg0QuakeVec.y));
-		}
+            BG_SetPosition(BG_0, gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x, gEkrBg2QuakeVec.y + gEkrBg0QuakeVec.y);
+            EkrGauge_Setxy323A(-(gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x), -(gEkrBg2QuakeVec.y + gEkrBg0QuakeVec.y));
+            EkrDispUP_SetPositionSync(
+                -(gEkrBg2QuakeVec.x + gEkrBg0QuakeVec.x), -(gEkrBg2QuakeVec.y + gEkrBg0QuakeVec.y));
+        }
 
-		if (GetBanimDragonStatusType() != 0) {
-			BG_SetPosition(BG_3, gEkrBg2QuakeVec.x, gEkrBg2QuakeVec.y);
-		}
+        if (GetBanimDragonStatusType() != 0)
+        {
+            BG_SetPosition(BG_3, gEkrBg2QuakeVec.x, gEkrBg2QuakeVec.y);
+        }
 
-		if (GetBanimDragonStatusType() != 0) {
-			x1 = (gEkrXPosReal[0] - gEkrBg2QuakeVec.x) - gEkrBgPosition;
-			y1 = gEkrYPosReal[0] - gEkrBg2QuakeVec.y;
-		} else {
-			x1 = (gEkrXPosReal[0] + gEkrBg2QuakeVec.x) - gEkrBgPosition;
-			y1 = gEkrYPosReal[0] - gEkrBg2QuakeVec.y;
-		}
+        if (GetBanimDragonStatusType() != 0)
+        {
+            x1 = (gEkrXPosReal[0] - gEkrBg2QuakeVec.x) - gEkrBgPosition;
+            y1 = gEkrYPosReal[0] - gEkrBg2QuakeVec.y;
+        }
+        else
+        {
+            x1 = (gEkrXPosReal[0] + gEkrBg2QuakeVec.x) - gEkrBgPosition;
+            y1 = gEkrYPosReal[0] - gEkrBg2QuakeVec.y;
+        }
 
-		x2 = (gEkrXPosReal[1] + gEkrBg2QuakeVec.x) - gEkrBgPosition;
-		y2 = gEkrYPosReal[1] - gEkrBg2QuakeVec.y;
+        x2 = (gEkrXPosReal[1] + gEkrBg2QuakeVec.x) - gEkrBgPosition;
+        y2 = gEkrYPosReal[1] - gEkrBg2QuakeVec.y;
 
-		switch (gEkrDistanceType) {
-		case EKR_DISTANCE_CLOSE:
-			SetEkrFrontAnimPostion(0, x1, y1);
-			SetEkrFrontAnimPostion(1, x2, y2);
+        switch (gEkrDistanceType)
+        {
+            case EKR_DISTANCE_CLOSE:
+                SetEkrFrontAnimPostion(0, x1, y1);
+                SetEkrFrontAnimPostion(1, x2, y2);
 
-			break;
+                break;
 
-		case EKR_DISTANCE_FAR:
-		case EKR_DISTANCE_FARFAR:
-			if (GetAnimPosition(proc->anim_l) == 0) {
-				SetEkrFrontAnimPostion(0, x1, y1);
-			} else {
-				SetEkrFrontAnimPostion(1, x2, y2);
-			}
-			break;
-		}
-	}
+            case EKR_DISTANCE_FAR:
+            case EKR_DISTANCE_FARFAR:
+                if (GetAnimPosition(proc->anim_l) == 0)
+                {
+                    SetEkrFrontAnimPostion(0, x1, y1);
+                }
+                else
+                {
+                    SetEkrFrontAnimPostion(1, x2, y2);
+                }
+                break;
+        }
+    }
 
-	return;
+    return;
 }
