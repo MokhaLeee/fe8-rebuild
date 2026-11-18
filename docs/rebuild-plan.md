@@ -340,16 +340,19 @@ sha1 才会不变。
 **验收**：`make check` 一致（内容不变 → sha1 不变）；`git grep -c 'baserom.gba'` 显著下降；
 最终目标是构建不再依赖 `baserom.gba`（可作为可选项）。
 
-### M5 测试基建 + testmenu（3–5 天）
+### M5 测试基建 + testmenu（3–5 天）🔨 进行中（2026-11-18 框架落地）
 
-| # | 任务 | 来源 |
-|---|---|---|
-| 5.1 | 移植 `tools/emu` | fe6：`gbarun.c`（mGBA 核心）、`build.sh`、`testmenu-tests.sh`、`testmenu/lib.sh` |
-| 5.2 | 配置系统 | `CONFIG_TEST_MENU` / `CONFIG_DEBUG_MENU` |
-| 5.3 | testmenu 骨架 | 顶层 `Start Game` / `Test`；基于 fe8 已有的 `bmdebug.c`、`menu_def.c`、debug 章节 |
-| 5.4 | 核心 case | boot→ch1、地图菜单、save/load、battle banim（GDB 断点）、prep |
-| 5.5 | runner | `--list` / `--case` / `--quick`；退出码 0/非 0；截图与日志 |
-| 5.6 | CI（可选） | 本地 `make test` 起步 |
+| # | 任务 | 来源 | 状态 |
+|---|---|---|---|
+| 5.1 | 移植 `tools/emu` | fe6：`gbarun.c`（mGBA 核心）、`build.sh`、`testmenu-tests.sh`、`testmenu/lib.sh` | ✅ |
+| 5.2 | 配置系统 | `CONFIG_TEST_MENU` / `CONFIG_DEBUG_MENU`；`configs.h` 已接进 `prelude.h`，`make TEST=1` 打开 | ✅ |
+| 5.3 | testmenu 骨架 | 顶层 `Start Game` / `Test`；FE8 用自己的 `MenuDef` + mural + 头像，未复用 `bmdebug.c` | ✅ |
+| 5.4 | 核心 case | boot→ch1、地图菜单、save/load、battle banim（GDB 断点）、prep | ⬜ 待做 |
+| 5.5 | runner | `--list` / `--case` / `--clean`；退出码 0/非 0；截图与日志 | ✅ 最小版 |
+| 5.6 | CI（可选） | 本地 `make test` 起步 | ⬜ |
+
+已落地细节见 [`src/Test/README.md`](../src/Test/README.md) 与
+[`tools/emu/README.md`](../tools/emu/README.md)。
 
 **验收**：`./tools/emu/testmenu-tests.sh` 全绿；此时 `make check` 仍然成立（双保险）。
 

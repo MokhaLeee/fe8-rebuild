@@ -2,7 +2,7 @@
 
 > 写给下一个接手的 agent。读完本文 + `AGENTS.md` 就能直接干活。
 >
-> 最后更新：2026-11-17，HEAD = `71bd459`
+> 最后更新：2026-11-18（M5 框架落地），工作区基线 HEAD = `ced46a9`
 
 ---
 
@@ -10,7 +10,9 @@
 
 从 decomp 起步的重构工程，**已完成 M0–M4c**：工程结构改成面向开发的样子，
 **ROM 仍然与官方原版逐位一致**（`make check` → `fireemblem8.gba: OK`）。
-下一步是 **M5 测试基建 + testmenu**。
+**M5 已开工**：`tools/emu` 无头测试跑通，testmenu 框架落地（`make TEST=1`），
+`./tools/emu/testmenu-tests.sh` 26 项断言全绿。下一步是往 testmenu 里加真实 case
+（进章节 / 存档 / 战斗 / 准备画面）。
 
 ---
 
@@ -112,6 +114,7 @@ fe8-rebuild/
 │   ├── Debug/       3          decomp 遗留（code_*/fe3_dummy）
 │   ├── MapAnim/    20          地图动画与特效
 │   ├── UI/         38          菜单/状态画面/标题/OP
+│   ├── Test/       —          （目录）testmenu 外壳 + 探针，只进 TEST=1 构建
 │   ├── data/       —          （目录）chapter_settings 等被 include 的 .h/.json
 │   └── events/     —          （目录）章节 eventinfo/eventscript .h
 ├── contents/                    素材（26 个目录 + sounds/）
@@ -120,12 +123,13 @@ fe8-rebuild/
 ├── texts/                       文本
 ├── lds/                         ldscript.txt + 3 个被 INCLUDE 的脚本
 ├── mk/                          素材 / 音频规则片段
-├── Makefile                     入口：all / check / clean
+├── Makefile                     入口：all / check / clean（TEST=1 切换测试构建）
 ├── tools/
 │   ├── agbcc/                   自带编译器（M6 前构建依赖）
 │   ├── {gbagfx,bin2c,scaninc,textencode,jsonproc,mid2agb,aif2pcm}/  构建工具（二进制不入库）
 │   ├── scripts/                 构建脚本（20 个，参与构建）
 │   ├── extract/                 反编译提取脚本（归档，不参与构建）
+│   ├── emu/                     无头 GBA 测试（gbarun + runner，.build 不入库）
 │   ├── refactor/                M4a/M4c 用的搬运脚本
 │   └── style/                   M3 用的风格工具
 └── docs/                        规划、基线、各阶段方案
@@ -146,15 +150,21 @@ fe8-rebuild/
 常用命令：
 
 ```bash
-make -j16            # 构建 fireemblem8.gba / .elf / .map
+make -j16            # normal 构建：fireemblem8.gba / .elf / .map（字节门禁有效）
 make check           # 字节门禁
+make TEST=1 -j16     # 测试构建：fireemblem8-test.{gba,elf,map,sym}，开机进 testmenu
 make clean           # 清理
 ./tools/build_tools.sh     # 重建 tools/ 下的工具二进制
+./tools/emu/build.sh       # 重建无头测试工具（mGBA 核心库 + gbarun）
+./tools/emu/testmenu-tests.sh   # 跑 testmenu 自动化测试
 ```
+
+两个档位共用同一批 `.o`，切换时 Makefile 在解析阶段自动清掉 C 对象重编
+（`.build-flavor` 记录当前档位），不需要手动 `make clean`。
 
 ---
 
-## 6. 下一步：M5 测试基建 + testmenu
+## 6. M5 测试基建 + testmenu（框架已落地）
 
 **为什么现在做**：M4b（合并代码）会破坏字节一致，之后就没有判据了。
 必须先有行为测试，才能安全地做 M4b 和 M6。
@@ -163,23 +173,27 @@ make clean           # 清理
 
 ### 6.1 任务清单
 
-| # | 任务 | 说明 | 参考 |
+| # | 任务 | 说明 | 状态 |
 |---|---|---|---|
-| 5.1 | 移植 `tools/emu` | `gbarun.c`（mGBA 核心库无头运行）+ `build.sh` + GDB stub + EWRAM 探针 | `~/fe6-rebuild/tools/emu/{build.sh,gbarun.c}` |
-| 5.2 | 接线 `include/configs` | 目前 `configs.h` 是**死代码**，没有任何 `.c` include 它。要接进构建并在 `main.c` 等处生效 | AGENTS.md §0.3；`include/configs/` |
-| 5.3 | 建 `src/Test/` | 目录结构：`testmenu/`（菜单）/ `harness/`（场景与探针）/ `cases/`（用例）/ `fixtures/`（测试章节） | `~/fe6-rebuild/src/Test/` |
-| 5.4 | testmenu 入口 | `CONFIG_TEST_MENU=1` 时开机进菜单，顶层 `Start Game` / `Test`。FE8 有自己的 debug 菜单（`src/Core/Map/bmdebug.c`、`src/UI/menu_def.c`），先查它能不能复用 | `~/fe6-rebuild/src/Test/testmenu/` |
-| 5.5 | 核心 case | ①开机→章节 ②存档写读 ③战斗动画（GDB 断点）④准备画面 | `~/fe6-rebuild/tools/emu/testmenu/cases/` |
-| 5.6 | `.sym` 生成 | **当前构建不产出 `.sym`**，但测试探针需要符号。要加 `elf2sym.py`（`tools/extract/elf2sym.py` 已有）到 Makefile | `~/fe6-rebuild/tools/scripts/elf2sym.py` |
-| 5.7 | runner | `tools/emu/testmenu-tests.sh`，带 `--list` / `--case`，退出码 0/1 | `~/fe6-rebuild/tools/emu/testmenu-tests.sh` |
+| 5.1 | 移植 `tools/emu` | `gbarun.c`（mGBA 核心库无头运行）+ `build.sh` + GDB stub + EWRAM 探针 | ✅ 已移植 |
+| 5.2 | 接线 `include/configs` | `configs.h` 已接进 `include/prelude.h`；`make TEST=1` 用 `-DCONFIG_USE_DEBUG=1` 打开 | ✅ 已接线 |
+| 5.3 | 建 `src/Test/` | `testmenu/` + `harness/` + 探针；`cases/` `fixtures/` 随 case 再加 | ✅ 骨架 |
+| 5.4 | testmenu 入口 | `CONFIG_TEST_MENU=1` 时开机进菜单，顶层 `Start Game` / `Test` | ✅ 框架 |
+| 5.5 | 核心 case | ①开机 ②菜单导航 ③自检 case；进章节 / 存档 / 战斗 / 准备画面待做 | ⬜ 部分 |
+| 5.6 | `.sym` 生成 | test 构建已产出 `fireemblem8-test.sym`（`elf2sym.py`）；normal 构建仍不产 | ✅ 部分 |
+| 5.7 | runner | `tools/emu/testmenu-tests.sh`（`--list` / `--case` / `--clean`），26 项断言 | ✅ 最小版 |
 
 ### 6.2 注意
 
-- testmenu 会往 ROM 里加代码，**字节门禁会失效**。所以 5.4 之后要用「debug 构建」和
-  「normal 构建」两套：normal 仍要 `make check` 通过，debug 才带 testmenu。
-  这个开关就用 `CONFIG_TEST_MENU`。
-- 如果两套构建不好共存，可以先让 testmenu 独立构建（`make test-rom`），normal 构建保持字节一致。
-- FE8 和 FE6 的启动流程不同，不要照抄 fe6 的入口代码，先读 `src/Boot/main.c` 的 `AgbMain()`。
+- testmenu 会往 ROM 里加代码，**字节门禁会失效**。所以有两档构建：
+  `make`（normal，`make check` 有效）与 `make TEST=1`（testmenu）。
+  切换档位由 `.build-flavor` 自动处理（解析阶段清 C 对象重编）。
+- test 构建的对象放在 ROM 空洞 `0x08EFB2E0..0x08FE0000`，可变数据放在 EWRAM
+  `0x0203FF00` 起；normal 构建完全不受影响。细节见 `src/Test/README.md`。
+- FE8 和 FE6 的启动流程不同：FE8 没有 fe6 的 `InitBmDisplay`/`DebugPutStr`，
+  testmenu 的初始化用 `SetupBackgrounds()` + `LoadUiFrameGraphics()` + `ResetText()`，
+  mural 用 `StartMuralBackground()`，菜单用 FE8 自己的 `struct MenuDef` /
+  `StartMenuCore()`。不要照抄 fe6 的入口代码。
 
 ---
 
@@ -210,8 +224,8 @@ make clean           # 清理
 | 2 | `src/Core/chapterdata.c` 单独一个文件，归位未定 | 小 | 决定放 `Core/` 还是 `Core/Map/` |
 | 3 | `src/Data/` 下 `data_banimconf.c` 等其实是战斗数据，分类可再议 | 小 | M4b 时一起调整 |
 | 4 | 1,297 处 `incbin "baserom.gba"` 仍在 | 构建依赖 ROM | **用户已明确不做外置** |
-| 5 | `.sym` 不生成 | 调试不便、M5 探针需要 | M5 任务 5.6 |
-| 6 | `include/configs/`、`include/hacks/klib.h` 是死代码 | 无影响 | M5/M6 接入 |
+| 5 | normal 构建仍不产 `.sym`（test 构建已产） | 调试不便 | 需要时把 `elf2sym.py` 规则推广到 normal |
+| 6 | `include/hacks/klib.h` 仍是死代码 | 无影响 | M6 接入；`include/configs/` 已在 M5 接线 |
 | 7 | `tools/extract/` 里大量脚本仍指向 `graphics/` 旧路径 | 归档脚本，不影响构建 | 可不管，或批量 sed |
 | 8 | `src/data/`、`src/events/` 两个头文件目录仍叫小写，与模块目录风格不一致 | 小 | 移动会牵动大量 `#include`，建议留在最后 |
 | 9 | `docs/baseline.md` 里的构建耗时/产物数据是 M0 时期的 | 参考价值降低 | 需要时重测 |
