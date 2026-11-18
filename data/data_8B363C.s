@@ -240,6 +240,12 @@ gChapterDataAssetTable:  @ 0x088B363C
 	.word Ch5TownPalettePast
 	.word Ch5TownMapPast
 
+	/* testmenu 测试章节（CHAPTER_TEST）的事件组，索引 236。
+	   只在 TEST=1 构建里追加，normal 构建这张表保持原样。 */
+	.ifdef CONFIG_TEST_MENU
+	.word ChapterEventGroup_Test
+	.endif
+
 	.global Events_WM_Beginning
 Events_WM_Beginning:  @ 0x088B39EC
 .4byte 0x00000000

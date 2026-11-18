@@ -195,8 +195,10 @@ make clean           # 清理
   mural 用 `StartMuralBackground()`，菜单用 FE8 自己的 `struct MenuDef` /
   `StartMenuCore()`。不要照抄 fe6 的入口代码。
 - `src/data/chapter_settings.h` 已从「JSON 生成」改为手工维护的源文件（表尾有
-  `CONFIG_TEST_MENU` 的 `TEST` 条目，即 `CHAPTER_TEST = 0x4F`）；事件组由
-  `chapterdata.c` 的 hook 返回，`worldmap_path.c` / `bm.c` 另有针对 0x4F 的分支。
+  `CONFIG_TEST_MENU` 的 `TEST` 条目，即 `CHAPTER_TEST = 0x4F`）。它的
+  `mapEventDataId` 指向 `gChapterDataAssetTable` 尾部新增的一项（`data/data_8B363C.s`
+  里的 `.ifdef CONFIG_TEST_MENU`，索引 236），和原版章节的注册方式一致，没有
+  再给 `GetChapterEventDataPointer()` 加 hook。
   切章节走 `StartBattleMap()`，不要走 `RestartGameAndGoto8()`。
 - 已知问题：蓝方单位（`FACTION_ID_BLUE`）加载会写坏 EWRAM，目前测试章节只放红方。
   细节见 `src/Test/README.md` §9。

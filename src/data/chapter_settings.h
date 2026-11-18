@@ -11187,7 +11187,7 @@ struct ROMChapterData CONST_DATA gChapterDataTable[] =
         },
         .chapTitleTextId = 353,
         .chapTitleTextIdInHectorStory = 353,
-        .mapEventDataId = 10,
+        .mapEventDataId = 236,
         .gmapEventId = 2,
         .divinationTextIdBeginning = 0,
         .divinationTextIdInEliwoodStory = 0,

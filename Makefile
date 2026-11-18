@@ -68,6 +68,8 @@ ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I include
 ifeq ($(TEST),1)
   BUILD_FLAVOR := test
   CPPFLAGS += -DCONFIG_USE_DEBUG=1
+  # 数据段汇编（data/*.s）也走同样的开关；C 侧用 -D，汇编侧用 --defsym。
+  ASFLAGS += --defsym CONFIG_TEST_MENU=1
 else
   BUILD_FLAVOR := normal
 endif
@@ -130,8 +132,14 @@ src/UI/menu_def.o: CC1FLAGS += -Wno-error
 FLAVOR_STAMP := .build-flavor
 
 ifneq ($(shell cat $(FLAVOR_STAMP) 2>/dev/null),$(BUILD_FLAVOR))
-$(shell echo $(BUILD_FLAVOR) > $(FLAVOR_STAMP); $(RM) -f $(C_OBJECTS) $(SFILES_COMPILED) >/dev/null 2>&1)
-$(info build flavor: $(BUILD_FLAVOR)（清理 C 对象后重编）)
+FLAVOR_CHANGED := 1
+endif
+
+ifeq ($(FLAVOR_CHANGED),1)
+# C 对象要重编（-D 变了），数据段汇编也要重编（--defsym 变了：data/*.s 里
+# 有 CONFIG_TEST_MENU 条件段）。
+$(shell echo $(BUILD_FLAVOR) > $(FLAVOR_STAMP); $(RM) -f $(C_OBJECTS) $(SFILES_COMPILED) $(ASM_OBJECTS) >/dev/null 2>&1)
+$(info build flavor: $(BUILD_FLAVOR)（清理对象后重编）)
 endif
 
 #### Main Targets ####

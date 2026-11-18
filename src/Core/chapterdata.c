@@ -3,8 +3,6 @@
 #include "agb_sram.h"
 #include "bmsave.h"
 
-#include "constants/chapters.h"
-
 #include "src/data/chapter_settings.h"
 
 const struct ROMChapterData *GetROMChapterStruct(unsigned chIndex)
@@ -34,11 +32,6 @@ const void *GetChapterMapChangesPointer(unsigned chIndex)
 
 const struct ChapterEventGroup *GetChapterEventDataPointer(unsigned chIndex)
 {
-#if CONFIG_TEST_MENU
-	if (chIndex == CHAPTER_TEST)
-		return &ChapterEventGroup_Test;
-#endif
-
 	if (chIndex != 0x7F)
 		return gChapterDataAssetTable[GetROMChapterStruct(chIndex)->mapEventDataId];
 

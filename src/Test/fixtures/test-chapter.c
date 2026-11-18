@@ -17,8 +17,9 @@
 /*
  * 测试章节 CHAPTER_TEST。
  *
- * 章节数据本身在 src/data/chapter_settings.h 的表尾（CONFIG_TEST_MENU 下），
- * 这里只定义事件组；GetChapterEventDataPointer() 对 CHAPTER_TEST 返回它。
+ * 章节数据在 src/data/chapter_settings.h 的表尾（CONFIG_TEST_MENU 下），
+ * 事件组通过 data/data_8B363C.s 的 gChapterDataAssetTable 尾部条目挂上去，
+ * 和原版章节的注册方式一致。
  *
  * 地图资源直接复用第一章（L01）的 id，所以不会新增素材。
  */

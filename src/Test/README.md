@@ -95,11 +95,14 @@ test 构建的代码和数据放在两处，normal 构建不占用任何字节�
 | 位置 | 内容 |
 |---|---|
 | `include/constants/chapters.h` | `CHAPTER_TEST = 0x4F`（表尾条目） |
-| `src/data/chapter_settings.h` | 表尾的 `TEST` 条目（复用 L01 地图资源、`hasPrepScreen=TRUE`） |
-| `src/Core/chapterdata.c` | `GetChapterEventDataPointer()` 对 0x4F 返回 fixture 的事件组 |
-| `src/Core/WorldMap/worldmap_path.c` | `GetBattleMapKind()` 对 0x4F 返回 `STORY`（否则会落到 `SKIRMISH` 分支，不走 test chapter 的开场事件） |
-| `src/Core/Map/bm.c` | `BmMain_StartIntroFx()` 对 0x4F 跳过章节标题 intro |
+| `src/data/chapter_settings.h` | 表尾的 `TEST` 条目（复用 L01 地图资源、`hasPrepScreen=TRUE`、`mapEventDataId = 236`） |
+| `data/data_8B363C.s` | `gChapterDataAssetTable` 尾部加一项 `.word ChapterEventGroup_Test`（`.ifdef CONFIG_TEST_MENU`） |
 | `src/Test/fixtures/test-chapter.c` | `ChapterEventGroup_Test` + 单位表 |
+| `src/Core/WorldMap/worldmap_path.c` | `GetBattleMapKind()` 的 `STORY` 分支里加 `case CHAPTER_TEST`（和原版故事章节同样处理） |
+| `src/Core/Map/bm.c` | `BmMain_StartIntroFx()` 跳过 0x4F 的章节标题 intro |
+
+数据段汇编的条件编译走 `make TEST=1` 追加的 `ASFLAGS += --defsym CONFIG_TEST_MENU=1`；
+`gChapterDataAssetTable` 的追加只在 test 构建里存在，normal 构建这张表仍是 236 项。
 
 - 地图复用第一章（L01）的 map 资源 id，不新增素材。
 - `test_scene_start_chapter()` 走 `StartBattleMap()` 而不是
