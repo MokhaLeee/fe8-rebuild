@@ -937,10 +937,12 @@ src/**/msg_data.c
 include/msg_data.h
 
 # Source files written in ASM
-!src/rom_header.s
-!src/crt0.s
-!src/m4a_1.s
-!src/libagbsyscall.s
+!src/Boot/rom_header.s
+!src/Boot/crt0.s
+!src/Boot/m4a_1.s
+!src/Boot/libagbsyscall.s
+!src/Common/arm.s
+!src/Common/arm_call.s
 
 # Generated from contents/bg/*.screen.png by tools/scripts/tsa_png.py
 contents/bg/bg_Cell.bin

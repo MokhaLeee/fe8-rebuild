@@ -244,9 +244,9 @@ SECTIONS
     ALIGN(4)
     {
         /* .text */
-        src/rom_header.o(.text);
-        src/crt0.o(.text);
-        asm/arm.o(.text);
+        src/Boot/rom_header.o(.text);
+        src/Boot/crt0.o(.text);
+        src/Common/arm.o(.text);
         src/Boot/main.o(.text);
         src/Debug/fe3_dummy.o(.text);
         src/Boot/irq.o(.text);
@@ -563,9 +563,9 @@ SECTIONS
         src/Core/Unit/classchg-menuselect.o(.text);
         src/Core/Unit/classchg-postconfirm.o(.text);
         src/Core/Map/bmguide.o(.text);
-        src/m4a_1.o(.text);
+        src/Boot/m4a_1.o(.text);
         src/Boot/m4a.o(.text);
-        src/libagbsyscall.o(.text);
+        src/Boot/libagbsyscall.o(.text);
         src/Boot/agb_sram.o(.text);
         *libgcc.a:_ashldi3.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
@@ -616,7 +616,7 @@ SECTIONS
         *libgcc.a:fp-bit.o(.text);
         *libgcc.a:_lshrdi3.o(.text);
         *libgcc.a:_negdi2.o(.text);
-        asm/arm_call.o(.text);
+        src/Common/arm_call.o(.text);
 
         /* .rodata */
         . = ALIGN(4); src/Boot/main.o(.rodata);

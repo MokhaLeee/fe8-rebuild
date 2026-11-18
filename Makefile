@@ -59,7 +59,6 @@ ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I include
 #### Files ####
 
 C_SUBDIR = src
-ASM_SUBDIR = asm
 DATA_SUBDIR = data
 DATA_SRC_SUBDIR = src/data
 SAMPLE_SUBDIR = contents/sounds/direct_sound_samples
@@ -76,11 +75,11 @@ CFILES       := $(shell find $(C_SUBDIR) -name '*.c')
 ifeq (,$(findstring $(CFILES_GENERATED),$(CFILES)))
 CFILES       += $(CFILES_GENERATED)
 endif
-ASM_S_FILES  := $(wildcard $(ASM_SUBDIR)/*.s)
-SRC_S_FILES  := src/rom_header.s src/crt0.s src/m4a_1.s src/libagbsyscall.s
+SRC_S_FILES  := src/Boot/rom_header.s src/Boot/crt0.s src/Boot/m4a_1.s src/Boot/libagbsyscall.s \
+                src/Common/arm.s src/Common/arm_call.s
 DATA_S_FILES := $(wildcard $(DATA_SUBDIR)/*.s)
 SOUND_S_FILES := $(wildcard contents/sounds/*.s contents/sounds/songs/*.s contents/sounds/songs/mml/*.s contents/sounds/voicegroups/*.s)
-SFILES       := $(ASM_S_FILES) $(SRC_S_FILES) $(DATA_S_FILES) $(SOUND_S_FILES)
+SFILES       := $(SRC_S_FILES) $(DATA_S_FILES) $(SOUND_S_FILES)
 SFILES_COMPILED := $(CFILES:.c=.s)
 C_OBJECTS    := $(CFILES:.c=.o)
 ASM_OBJECTS  := $(SFILES:.s=.o)
@@ -264,12 +263,6 @@ else
 	$(SED) '/.section	.debug_line/i\.align 2, 0' $*.s
 endif
 	$(AS) $(ASFLAGS) $*.s -o $@
-
-ifeq ($(NODEP),1)
-asm/%.o:      data_dep :=
-else
-asm/%.o:      data_dep = $(shell $(SCANINC) -I include -I "" $*.s)
-endif
 
 ifeq ($(NODEP),1)
 src/%.o:      data_dep :=

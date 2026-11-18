@@ -1,4 +1,4 @@
-	.include "asm/macros/m4a.inc"
+	.include "macros/m4a.inc"
 
 	.equiv TRACK_SIZE, 0x50
 	.equiv NUM_TRACKS_BGM1, 8
