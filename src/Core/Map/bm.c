@@ -27,7 +27,7 @@
 #include "eventcall.h"
 
 #include "bm.h"
-
+#include "constants/chapters.h"
 #include "constants/event-flags.h"
 #include "constants/songs.h"
 
@@ -481,6 +481,12 @@ void BmMain_SuspendBeforePhase(void)
 //! FE8U = 0x0801550C
 void BmMain_StartIntroFx(ProcPtr proc)
 {
+#if CONFIG_TEST_MENU
+	/* 测试章节不跑章节标题 intro：它会锁住游戏等动画/事件，而测试只需要地图。 */
+	if (gPlaySt.chapterIndex == CHAPTER_TEST)
+		return;
+#endif
+
 	if (gPlaySt.chapterIndex == 0x38)
 		return;
 

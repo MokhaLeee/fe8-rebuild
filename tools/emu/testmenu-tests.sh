@@ -19,19 +19,22 @@ ROOT=$(cd "$HERE/../.." && pwd)
 . "$HERE/testmenu/cases/02-test-root.sh"
 . "$HERE/testmenu/cases/03-build-info.sh"
 . "$HERE/testmenu/cases/04-start-game.sh"
+. "$HERE/testmenu/cases/05-test-chapter.sh"
 
-CASE_KEYS=(1 2 3 4)
+CASE_KEYS=(1 2 3 4 5)
 CASE_FUNCS=(
 	case_01_top_menu
 	case_02_test_root
 	case_03_build_info
 	case_04_start_game
+	case_05_test_chapter
 )
 CASE_TITLES=(
 	"top-menu           开机 → 顶层菜单（探针 magic/menu/state、画面非黑）"
 	"test-root          顶层 → Test → Back → 顶层"
 	"build-info         Test → System → Build Info → 一路 Back 回顶层"
 	"start-game         Start Game → 正常开局流程（探针清零）"
+	"test-chapter       Test → Game → Test Chapter → 测试章节地图"
 )
 
 usage() {

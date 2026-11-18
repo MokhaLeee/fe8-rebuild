@@ -115,7 +115,7 @@ fe8-rebuild/
 │   ├── MapAnim/    20          地图动画与特效
 │   ├── UI/         38          菜单/状态画面/标题/OP
 │   ├── Test/       —          （目录）testmenu 外壳 + 探针，只进 TEST=1 构建
-│   ├── data/       —          （目录）chapter_settings 等被 include 的 .h/.json
+│   ├── data/       —          （目录）chapter_settings.h（手工维护的章节表）
 │   └── events/     —          （目录）章节 eventinfo/eventscript .h
 ├── contents/                    素材（26 个目录 + sounds/）
 ├── include/                     .h（constants/ configs/ hacks/ gba/）+ macros/*.inc
@@ -179,7 +179,7 @@ make clean           # 清理
 | 5.2 | 接线 `include/configs` | `configs.h` 已接进 `include/prelude.h`；`make TEST=1` 用 `-DCONFIG_USE_DEBUG=1` 打开 | ✅ 已接线 |
 | 5.3 | 建 `src/Test/` | `testmenu/` + `harness/` + 探针；`cases/` `fixtures/` 随 case 再加 | ✅ 骨架 |
 | 5.4 | testmenu 入口 | `CONFIG_TEST_MENU=1` 时开机进菜单，顶层 `Start Game` / `Test` | ✅ 框架 |
-| 5.5 | 核心 case | ①开机 ②菜单导航 ③自检 case；进章节 / 存档 / 战斗 / 准备画面待做 | ⬜ 部分 |
+| 5.5 | 核心 case | ①开机 ②菜单导航 ③自检 case ④测试章节地图；存档 / 战斗 / 准备画面待做 | 🔨 部分 |
 | 5.6 | `.sym` 生成 | test 构建已产出 `fireemblem8-test.sym`（`elf2sym.py`）；normal 构建仍不产 | ✅ 部分 |
 | 5.7 | runner | `tools/emu/testmenu-tests.sh`（`--list` / `--case` / `--clean`），26 项断言 | ✅ 最小版 |
 
@@ -194,6 +194,12 @@ make clean           # 清理
   testmenu 的初始化用 `SetupBackgrounds()` + `LoadUiFrameGraphics()` + `ResetText()`，
   mural 用 `StartMuralBackground()`，菜单用 FE8 自己的 `struct MenuDef` /
   `StartMenuCore()`。不要照抄 fe6 的入口代码。
+- `src/data/chapter_settings.h` 已从「JSON 生成」改为手工维护的源文件（表尾有
+  `CONFIG_TEST_MENU` 的 `TEST` 条目，即 `CHAPTER_TEST = 0x4F`）；事件组由
+  `chapterdata.c` 的 hook 返回，`worldmap_path.c` / `bm.c` 另有针对 0x4F 的分支。
+  切章节走 `StartBattleMap()`，不要走 `RestartGameAndGoto8()`。
+- 已知问题：蓝方单位（`FACTION_ID_BLUE`）加载会写坏 EWRAM，目前测试章节只放红方。
+  细节见 `src/Test/README.md` §9。
 
 ---
 

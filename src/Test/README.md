@@ -1,8 +1,9 @@
 # src/Test —— testmenu 与测试项组织
 
-> 状态：**框架已落地（M5 阶段第一步）**。
-> 顶层 `Start Game` / `Test`；`Test` → `System` → `Build Info` 已经是一条完整的
-> 「分类 → case → 返回」链路，其余分类按下面的约定继续加。
+> 状态：**框架 + 测试章节已落地（M5 阶段）**。
+> 顶层 `Start Game` / `Test`；`Test` → `System` → `Build Info` 是完整的
+> 「分类 → case → 返回」链路；`Test` → `Game` → `Test Chapter` 会切到
+> 测试章节 `CHAPTER_TEST` 并进入第一章地图。
 
 ## 1. 为什么单独做一套菜单
 
@@ -21,15 +22,19 @@ src/Test/
 ├── testmenu/                 # 菜单外壳
 │   ├── testmenu.c            # 开机入口 + 顶层菜单（Start Game / Test）
 │   ├── testmenu_common.c     # 菜单切换、图层清理等公共逻辑
-│   └── testmenu_test.c       # Test 第二层：分类入口（目前 System）
-└── harness/
-    └── test_probe.c          # EWRAM 探针实现
+│   └── testmenu_test.c       # Test 第二层：Game / System / Back
+├── harness/
+│   ├── test_probe.c          # EWRAM 探针实现
+│   └── test_scene.c          # 切章节（StartBattleMap 路径）
+└── fixtures/
+    └── test-chapter.c        # CHAPTER_TEST 的章节数据、事件组、单位表
 ```
 
-公共头文件在 `include/hacks/`：`testmenu.h`、`testmenu_common.h`、`test_probe.h`。
+公共头文件在 `include/hacks/`：`testmenu.h`、`testmenu_common.h`、`test_probe.h`、
+`test_scene.h`、`test_chapter.h`。
 
-后面按需增加 `cases/<领域>/`（每个领域一个 `MenuDef` + 回调）和 `fixtures/`
-（测试专用章节事件 / 单位表）。先在第二层挂分类，再往分类里加 case。
+后面按需增加 `cases/<领域>/`（每个领域一个 `MenuDef` + 回调）。先在第二层挂分类，
+再往分类里加 case。
 
 ## 3. 编译开关
 
@@ -79,7 +84,30 @@ test 构建的代码和数据放在两处，normal 构建不占用任何字节�
 两边都在 `lds/ldscript.txt` 里用 `src/Test/*.o(...)` 通配收集，配合文件末尾的
 `/DISCARD/`：normal 构建没有这些对象，通配匹配不到输入段，不占地址。
 
-## 6. 菜单切换的规矩
+## 6. 测试章节 CHAPTER_TEST
+
+测试章节是 `gChapterDataTable` 的表尾条目（`CHAPTER_TEST = 0x4F`），只在
+`CONFIG_TEST_MENU` 下编进来。`src/data/chapter_settings.h` 现在是手工维护的源文件，
+不再由 JSON 生成，所以 normal 构建的表内容不变、字节门禁仍然有效。
+
+注册方式（全部在 `CONFIG_TEST_MENU` 下）：
+
+| 位置 | 内容 |
+|---|---|
+| `include/constants/chapters.h` | `CHAPTER_TEST = 0x4F`（表尾条目） |
+| `src/data/chapter_settings.h` | 表尾的 `TEST` 条目（复用 L01 地图资源、`hasPrepScreen=TRUE`） |
+| `src/Core/chapterdata.c` | `GetChapterEventDataPointer()` 对 0x4F 返回 fixture 的事件组 |
+| `src/Core/WorldMap/worldmap_path.c` | `GetBattleMapKind()` 对 0x4F 返回 `STORY`（否则会落到 `SKIRMISH` 分支，不走 test chapter 的开场事件） |
+| `src/Core/Map/bm.c` | `BmMain_StartIntroFx()` 对 0x4F 跳过章节标题 intro |
+| `src/Test/fixtures/test-chapter.c` | `ChapterEventGroup_Test` + 单位表 |
+
+- 地图复用第一章（L01）的 map 资源 id，不新增素材。
+- `test_scene_start_chapter()` 走 `StartBattleMap()` 而不是
+  `RestartGameAndGoto8()`：后者会进入 GameControl 的章节结束状态机
+  （label 9 → `PostChapterSwitch`），在测试场景下会切回标题/存档菜单。
+- 章节开场事件由 `CallBeginningEvents()` 触发，事件脚本里再加载单位。
+
+## 7. 菜单切换的规矩
 
 `uimenu.c` 的菜单 proc 在自己的回调返回后才会退出。在回调里直接 `StartMenu`
 会让两个菜单 proc 同时存在并抢输入，所以一律走
@@ -91,7 +119,7 @@ test 构建的代码和数据放在两处，normal 构建不占用任何字节�
 - 新增分类：在 `testmenu_test.c` 里加一条 `MenuItemDef` + 一个 `MenuDef`，
   在 `test_probe.h` 里加 `TEST_CATEGORY_*` / `TEST_CASE_*` 枚举。
 
-## 7. 视觉约定
+## 8. 视觉约定
 
 - 边框画在 BG2（字符基址 0，调色板 1），文字画在 BG0（调色板 0），
   底层 BG3 是滚动的 mural。
@@ -99,11 +127,21 @@ test 构建的代码和数据放在两处，normal 构建不占用任何字节�
 - 标题文字用独立字库（`BGCHR_TESTMENU_TITLE`），避免和菜单项共用
   `gDefaultFont` 的 `chr_counter`。
 
-## 8. 验证
+## 9. 已知问题
+
+- **蓝方单位加载会写坏 EWRAM**：`FACTION_ID_BLUE` 走
+  `GetFreeBlueUnit()` / `LoadUnit()`，在测试场景下 550 帧左右会把
+  `gBmSt` / `gPlaySt` / 单位数组覆盖成文本数据（`lock` 变成 0x20）。
+  红方（`LOAD1`）正常。所以 `EventScr_Test_Beginning` 目前只放红方，
+  蓝方在 `UnitDef_Test_Blue` 里准备好但暂时不加载。
+  下一步要定位是 `GetFreeBlueUnit()` 的未初始化 `i`、还是单位加载后触发的
+  UI 文本缓冲越界。
+
+## 10. 验证
 
 ```bash
 make TEST=1
-./tools/emu/testmenu-tests.sh          # 26 项断言全绿
+./tools/emu/testmenu-tests.sh          # 32 项断言全绿
 ./tools/emu/testmenu-tests.sh --list   # 列出 case
 make                                   # 切回正常构建
 make check                             # fireemblem8.gba: OK

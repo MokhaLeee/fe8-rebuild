@@ -94,6 +94,12 @@ enum chapter_idx
     CHAPTER_75 = 0x75,
     CHAPTER_7F = 0x7f,
 
+    /* testmenu 专用章节：gChapterDataTable 的表尾条目（src/data/chapter_settings.h），
+     * 事件组由 GetChapterEventDataPointer() 在 CONFIG_TEST_MENU 下走 hook 返回。 */
+#if CONFIG_TEST_MENU
+    CHAPTER_TEST = 0x4f,
+#endif
+
     CHAPTER_FE = 0xFE,
     CHAPTER_FF = 0xFF,
 };

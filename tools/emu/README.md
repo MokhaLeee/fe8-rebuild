@@ -34,6 +34,7 @@ make TEST=1                        # 先出测试构建 + .sym
 | 2 test-root | 顶层 → Test → Back → 顶层；探针 menu 1→2→1 |
 | 3 build-info | Test → System → Build Info → 一路 Back；探针走完 CATEGORY→CASE(DONE)→…→TOP |
 | 4 start-game | 顶层选 Start Game；探针清零并回到正常开局流程 |
+| 5 test-chapter | Test → Game → Test Chapter；`gPlaySt.chapterIndex = CHAPTER_TEST`，地图画面非黑 |
 
 新增 case 的方法：在 `tools/emu/testmenu/cases/` 加一个 `case_NN_xxx()` 函数，
 在 `testmenu-tests.sh` 的四个数组里登记；断言用 `lib.sh` 里的
@@ -95,5 +96,7 @@ $GB fireemblem8-test.gba --quiet --frames 480 \
 - 没有真机 BIOS，走 mGBA 的 HLE BIOS，BIOS 层行为与真机不完全等价。
 - 音频没有校验：只验证画面和流程。
 - 存档按 32 KB SRAM 处理（`CONFIG_SAVE_USE_SRAM` 形态）。
-- 目前只覆盖 testmenu 框架本身（开机 / 导航 / 一个自检 case），
-  进章节、存档、战斗等流程的 case 随功能逐步补。
+- 目前覆盖 testmenu 框架、一个自检 case 和测试章节地图；存档、战斗、
+  准备画面等流程的 case 随功能逐步补。
+- 测试章节里的蓝方单位加载还有 EWRAM 覆盖问题，见
+  [src/Test/README.md](../../src/Test/README.md) §9。

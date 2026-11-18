@@ -177,6 +177,11 @@ struct MapChangeInfo
 extern struct ROMChapterData CONST_DATA gChapterDataTable[];
 extern const void* gChapterDataAssetTable[];
 
+#if CONFIG_TEST_MENU
+/* src/Test/fixtures/test-chapter.c 定义的测试章节事件组（CHAPTER_TEST） */
+extern const struct ChapterEventGroup ChapterEventGroup_Test;
+#endif
+
 const struct ROMChapterData* GetROMChapterStruct(unsigned chIndex);
 const void* GetChapterMapPointer(unsigned chIndex);
 const void* GetChapterMapChangesPointer(unsigned chIndex);

@@ -347,7 +347,7 @@ sha1 才会不变。
 | 5.1 | 移植 `tools/emu` | fe6：`gbarun.c`（mGBA 核心）、`build.sh`、`testmenu-tests.sh`、`testmenu/lib.sh` | ✅ |
 | 5.2 | 配置系统 | `CONFIG_TEST_MENU` / `CONFIG_DEBUG_MENU`；`configs.h` 已接进 `prelude.h`，`make TEST=1` 打开 | ✅ |
 | 5.3 | testmenu 骨架 | 顶层 `Start Game` / `Test`；FE8 用自己的 `MenuDef` + mural + 头像，未复用 `bmdebug.c` | ✅ |
-| 5.4 | 核心 case | boot→ch1、地图菜单、save/load、battle banim（GDB 断点）、prep | ⬜ 待做 |
+| 5.4 | 核心 case | 测试章节 `CHAPTER_TEST` 与地图入口已通；save/load、battle banim、prep 待做 | 🔨 部分 |
 | 5.5 | runner | `--list` / `--case` / `--clean`；退出码 0/非 0；截图与日志 | ✅ 最小版 |
 | 5.6 | CI（可选） | 本地 `make test` 起步 | ⬜ |
 

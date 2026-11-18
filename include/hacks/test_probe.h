@@ -36,12 +36,14 @@ enum test_probe_state
 enum test_probe_category
 {
 	TEST_CATEGORY_NONE = 0,
+	TEST_CATEGORY_GAME,
 	TEST_CATEGORY_SYSTEM,
 };
 
 enum test_probe_case
 {
 	TEST_CASE_NONE = 0,
+	TEST_CASE_TEST_CHAPTER,
 	TEST_CASE_BUILD_INFO,
 };
 

@@ -1763,6 +1763,13 @@ u32 GetBattleMapKind(void)
 	int i;
 	u32 chapterId = gPlaySt.chapterIndex;
 
+#if CONFIG_TEST_MENU
+	/* 测试章节不在世界地图节点表里；不拦的话会落到函数末尾的 SKIRMISH 分支，
+	   章节开场事件就不会走 test chapter 自己的脚本。 */
+	if (chapterId == CHAPTER_TEST)
+		return BATTLEMAP_KIND_STORY;
+#endif
+
 	switch (chapterId) {
 		case CHAPTER_L_2:
 		case CHAPTER_L_3:
