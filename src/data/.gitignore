@@ -1,2 +1,2 @@
-chapter_settings.h
+# src/data/chapter_settings.h 已改为手工维护的源文件，不再忽略
 *.inc
