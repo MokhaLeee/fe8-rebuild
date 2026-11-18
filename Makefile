@@ -23,6 +23,15 @@ LD := $(PREFIX)ld$(EXE)
 OBJCOPY := $(PREFIX)objcopy$(EXE)
 STRIP := $(PREFIX)strip$(EXE)
 
+# 构建档位：
+#   make                → 原版行为，字节门禁有效
+#   make TEST=1         → testmenu 构建（CONFIG_USE_DEBUG=1），产物带 -test 后缀
+# 两档共用同一批 .o，所以切换档位时会自动清掉 C 对象重编（见 .build-flavor）。
+TEST ?= 0
+
+# 默认目标固定为 all；下面会定义 FORCE 之类的伪目标，不能让它抢走默认目标。
+.DEFAULT_GOAL := all
+
 CC1     := tools/agbcc/bin/agbcc$(EXE)
 CC1_OLD := tools/agbcc/bin/old_agbcc$(EXE)
 
@@ -56,6 +65,13 @@ CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -Werror -O2 -fhex-asm -ff
 CPPFLAGS := -I tools/agbcc/include -iquote include -iquote . -iquote src -nostdinc -undef
 ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I include
 
+ifeq ($(TEST),1)
+  BUILD_FLAVOR := test
+  CPPFLAGS += -DCONFIG_USE_DEBUG=1
+else
+  BUILD_FLAVOR := normal
+endif
+
 #### Files ####
 
 C_SUBDIR = src
@@ -66,6 +82,9 @@ MID_SUBDIR = contents/sounds/songs/midi
 MAP_LAYOUT_SUBDIR = contents/map/layout
 
 ROM          := fireemblem8.gba
+ifeq ($(TEST),1)
+ROM          := fireemblem8-test.gba
+endif
 ELF          := $(ROM:.gba=.elf)
 MAP          := $(ROM:.gba=.map)
 LDSCRIPT     := lds/ldscript.txt
@@ -102,10 +121,32 @@ src/Boot/m4a.o: CC1 := $(CC1_OLD)
 src/Core/Map/bmitem.o: CC1FLAGS += -Wno-error
 src/UI/menu_def.o: CC1FLAGS += -Wno-error
 
+# 档位戳：normal 与 test 共用同一批 .o。档位切换时必须重编 C 对象，否则
+# -DCONFIG_USE_DEBUG=1 不会生效，会链出「半新半旧」的 ROM。
+#
+# 注意在解析阶段检查并删除，不能写在 recipe 里：make 在执行前就已经把依赖图
+# 算好了，如果那时某个 .o 被判为「比 .c 新、不用重编」，recipe 里再删掉它，
+# 就没有任何目标会把它重新生成，最后 ld 会报 "cannot find xxx.o"。
+FLAVOR_STAMP := .build-flavor
+
+ifneq ($(shell cat $(FLAVOR_STAMP) 2>/dev/null),$(BUILD_FLAVOR))
+$(shell echo $(BUILD_FLAVOR) > $(FLAVOR_STAMP); $(RM) -f $(C_OBJECTS) $(SFILES_COMPILED) >/dev/null 2>&1)
+$(info build flavor: $(BUILD_FLAVOR)（清理 C 对象后重编）)
+endif
+
 #### Main Targets ####
 
 # 默认目标：构建 ROM。
+# TEST=1 时额外产出 .sym，供 tools/emu 的探针和条件按键使用。
+ifeq ($(TEST),1)
+SYM_FILE := $(ROM:.gba=.sym)
+all: $(ROM) $(SYM_FILE)
+
+$(SYM_FILE): $(ELF)
+	$(PYTHON) tools/extract/elf2sym.py $< > $@
+else
 all: $(ROM)
+endif
 
 .PHONY: all
 
@@ -113,6 +154,11 @@ all: $(ROM)
 # 基线 sha1 见 docs/baseline.md；改基线时同步改这里。
 ROM_SHA1 := c25b145e37456171ada4b0d440bf88a19f4d509f
 
+ifeq ($(TEST),1)
+check:
+	@echo "make check 只对 normal 构建有效（TEST=1 是 testmenu 构建）"
+	@exit 1
+else
 check: $(ROM)
 	@actual=$$($(SHASUM) $(ROM) | cut -d' ' -f1); \
 	if [ "$$actual" = "$(ROM_SHA1)" ]; then \
@@ -123,10 +169,12 @@ check: $(ROM)
 		echo "  actual   $$actual"; \
 		exit 1; \
 	fi
+endif
 
 .PHONY: check
 
-CLEAN_FILES := $(ROM) $(ELF) $(MAP) $(OBJECTS_LST) $(SFILES_COMPILED) contents/*/*.h $(CFILES_GENERATED)
+CLEAN_FILES := fireemblem8.gba fireemblem8.elf fireemblem8.map fireemblem8-test.gba fireemblem8-test.elf fireemblem8-test.map \
+               fireemblem8-test.sym $(OBJECTS_LST) $(SFILES_COMPILED) contents/*/*.h $(CFILES_GENERATED)
 CLEAN_DIRS := $(DEPS_DIR)
 CLEAN_BINS := contents/statscreen/*.bin $(SAMPLE_SUBDIR)/*.bin $(MAP_LAYOUT_SUBDIR)/*.bin $(AUTO_GEN_TARGETS)
 CLEAN_SONGS := $(MID_SUBDIR)/*.s

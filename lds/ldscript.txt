@@ -234,6 +234,18 @@ SECTIONS
         . = 0x3EFB8; end = .;
     }
 
+    /* testmenu（`make TEST=1`）专用：EWRAM 顶端 0x100 字节
+       （0x0203FF00..0x02040000）留给 src/Test 的 EWRAM_DATA。
+       代价是 gLoadUnitBuffer 的可用空间从 0x1048 缩到 0xF48 字节。
+       normal 构建里 src/Test 对象是空翻译单元，这一段匹配不到输入段。 */
+    ewram_test 0x0203FF00 (NOLOAD) :
+    {
+        . = ALIGN(4);
+        src/Test/*.o(ewram_data);
+        src/Test/*.o(.bss);
+        src/Test/*.o(COMMON);
+    }
+
     IWRAM __iwram_start (NOLOAD) :
     ALIGN(4)
     {
@@ -1207,6 +1219,18 @@ SECTIONS
         . = _banim_pal_start + 0x1000; data/data_banim_pal.o(.data);
         _banim_pal_end = .;
         _banim_pal_size = . - _banim_pal_start;
+
+        /* testmenu（`make TEST=1`）的代码放这里：banim 调色板之后的空洞，
+           0xEFB2E0..0xFE0000 约 0xE4D20 字节，原版是 FILL(0xFF) 的空白。
+           normal 构建里 src/Test 对象是空翻译单元，下面的通配匹配不到任何
+           输入段，所以这一段不占地址、ROM 布局与基线一致。 */
+        FILL(0xFF);
+        . = ALIGN(4);
+        src/Test/*.o(.text);
+        src/Test/*.o(.rodata);
+        . = ALIGN(4);
+        src/Test/*.o(.data);
+
         FILL(0xFF);
         . = 0xFE0000; data/data_FE0000.o(.data);
         . = 0xFFF000; data/data_FFF000.o(.data);

@@ -11,6 +11,10 @@
 #include "bmsave.h"
 #include "worldmap.h"
 
+#if CONFIG_TEST_MENU
+#include "hacks/testmenu.h"
+#endif
+
 // uninitialized memory in the original build due to changing this call to no longer use __FILE__.
 const u16 gUninitializedMemory[] = {0x4641, 0x464A, 0x4653, 0x465C};
 
@@ -70,7 +74,12 @@ void AgbMain()
 	GmDataInit();
 	SetLang(LANG_ENGLISH);
 	ResetText();
+
+#if CONFIG_TEST_MENU
+	StartGame_TestMenu();
+#else
 	StartGame();
+#endif
 
 	// perform the game loop.
 	while (1) {

@@ -953,3 +953,16 @@ contents/bg/bg_Garden.bin
 contents/bg/bg_Manse_Back.bin
 contents/bg/bg_Serafew_Village.bin
 contents/bg/bg_Volcano.bin
+
+# =========================
+# Testmenu / emu
+# =========================
+
+# 构建档位戳（normal / test 切换用）
+.build-flavor
+
+# 无头 GBA 测试工具的构建产物（mGBA 源码 + 核心库 + gbarun + 测试输出）
+tools/emu/.build/
+
+# emu 测试输出
+tools/emu/.build/out-testmenu/
