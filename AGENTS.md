@@ -212,7 +212,7 @@ Co-Authored-By: DeepSeek-V4.1-Flash <noreply@deepseek.com>
   - 默认**不生成** `.sym`（M5 补）。
 - 构建脚本在 `tools/scripts/`；`tools/extract/` 是反编译提取脚本归档，**不参与构建**。
 - `baserom.gba`（16 MiB）是构建必需输入，**按设计不入库**（decomp 惯例），
-  但本地必须存在。工具二进制同样未入库，首次构建前跑 `./build_tools.sh`。
+  但本地必须存在。工具二进制同样未入库，首次构建前跑 `./tools/build_tools.sh`。
 - 涉及 ROM 行为的改动，优先用 `tools/emu`（M5 落地后）验证；
   当前阶段用 0.1 的字节门禁。
 - 汇报时写清楚：跑了什么、结果如何、没跑什么及原因。
@@ -225,28 +225,31 @@ Co-Authored-By: DeepSeek-V4.1-Flash <noreply@deepseek.com>
 | 允许 | 禁止 |
 |---|---|
 | 改文档、脚本、`Makefile` | 合并 / 拆分 `src/*.c`（属于 M4b，会破坏字节一致） |
-| 在现有模块目录内新增文件 | 移动文件而不改四个链接脚本 |
+| 在现有模块目录内新增文件 | 移动文件而不改 `lds/` 下的四个链接脚本 |
 | 新增 `include/` 下的头文件 | 改动既有 C 代码的语义 |
 
 ### 5.1 目录与链接脚本（M4a 之后）
 
 `src/` 已按 FE8 模块域分到子目录（`Battle/` `Boot/` `Common/` `Core/*` `Data/`
-`Debug/` `MapAnim/` `UI/`）。移动或新增 `.c` 时必须同时处理以下几件事，
-否则 ROM 会不一致或链接失败：
+`Debug/` `MapAnim/` `UI/`），6 个手写汇编源（`Boot/` 4 个、`Common/` 2 个）也在其中；
+链接脚本在 `lds/`，素材与音频的 make 片段在 `mk/`。移动或新增 `.c` 时必须同时
+处理以下几件事，否则 ROM 会不一致或链接失败：
 
-1. **四个链接脚本**都要改（不是三个）：
-   - `ldscript.txt`
-   - `linker_script_sound.txt`（被 `INCLUDE` 进 ldscript）
-   - `linker_script_banim.txt`
-   - `sym_iwram.txt`（被 `INCLUDE`，含 `src/*.o(.bss)`）
+1. **四个链接脚本**都要改（不是三个），它们都在 `lds/`：
+   - `lds/ldscript.txt`
+   - `lds/linker_script_sound.txt`（被 `INCLUDE` 进 ldscript）
+   - `lds/linker_script_banim.txt`
+   - `lds/sym_iwram.txt`（被 `INCLUDE`，含 `src/*.o(.bss)`）
    只能做字符串替换，**绝不能改变行序**——行序即地址。
+   注意 `lds/ldscript.txt` 里的 `INCLUDE` 写成 `lds/xxx.txt`，按**仓库根**解析
+   （ld 从当前工作目录找），不是相对脚本所在目录。
 2. **Makefile 的逐文件覆盖**要跟着改：`src/Boot/agb_sram.o` 用 `-O1`、
    `src/Boot/m4a.o` 用 `CC1_OLD`、`src/Core/Map/bmitem.o` 与 `src/UI/menu_def.o`
    加 `-Wno-error`。路径不命中会静默退回默认选项，代码生成随之改变
    （实测 `agb_sram.o` +0x18、`m4a.o` +0x10，后面全部平移）。
 3. **清理陈旧产物**：`git mv` 不搬 `.o`/`.s`。判断标准是「旁边没有同名 `.c`
-   的 `.o` 或 `.s` 就是陈旧产物」——但**排除** `src/rom_header.s`、`src/crt0.s`、
-   `src/m4a_1.s`、`src/libagbsyscall.s` 这四个手写汇编源（它们是源码）。
+   的 `.o` 或 `.s` 就是陈旧产物」——但**排除** `src/Boot/{rom_header,crt0,m4a_1,libagbsyscall}.s`
+   与 `src/Common/{arm,arm_call}.s` 这六个手写汇编源（它们是源码）。
 4. **`CFILES` 用 `find` 时注意顺序**：链接顺序影响少数未显式定位的段。
    当前用 `$(shell find ...)`，若发现字节不一致可改用按文件名排序。
 5. **`.gitignore` 的通配要跟着目录层级走**：`src/*.s`、`src/msg_data.c` 这类
