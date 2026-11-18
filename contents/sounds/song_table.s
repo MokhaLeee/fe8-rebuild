@@ -1,4 +1,4 @@
-    .include "macros/m4a.inc"
+    .include "macros/song_macros.inc"
 
     .section .rodata
 
