@@ -68,8 +68,8 @@ MAP_LAYOUT_SUBDIR = contents/map/layout
 ROM          := fireemblem8.gba
 ELF          := $(ROM:.gba=.elf)
 MAP          := $(ROM:.gba=.map)
-LDSCRIPT     := ldscript.txt
-SYM_FILES    := sym_iwram.txt
+LDSCRIPT     := lds/ldscript.txt
+SYM_FILES    := lds/sym_iwram.txt
 CFILES_GENERATED := $(C_SUBDIR)/Common/msg_data.c
 CFILES       := $(shell find $(C_SUBDIR) -name '*.c')
 ifeq (,$(findstring $(CFILES_GENERATED),$(CFILES)))
@@ -177,10 +177,10 @@ src/Common/msg_data.c: $(TEXT_SRC) $(TEXT_DEFS)
 
 # Graphics Recipes
 
-include graphics_file_rules.mk
+include mk/graphics_file_rules.mk
 include contents/banim/assets/img/banim_img_rules.mk
-include songs.mk
-include json_data_rules.mk
+include mk/songs.mk
+include mk/json_data_rules.mk
 
 %.s: ;
 %.png: ;
@@ -218,8 +218,8 @@ contents/sounds/%.bin: contents/sounds/%.aif ; $(AIF2PCM) $< $@
 
 # Battle Animation Recipes
 
-$(BANIM_OBJECT): $(shell ./tools/scripts/arm_compressing_linker.py -t linker_script_banim.txt -m)
-	./tools/scripts/arm_compressing_linker.py -o $@ -t linker_script_banim.txt -b 0x8c02000 -l $(LD) --objcopy $(OBJCOPY) -c ./tools/scripts/compressor.py
+$(BANIM_OBJECT): $(shell ./tools/scripts/arm_compressing_linker.py -t lds/linker_script_banim.txt -m)
+	./tools/scripts/arm_compressing_linker.py -o $@ -t lds/linker_script_banim.txt -b 0x8c02000 -l $(LD) --objcopy $(OBJCOPY) -c ./tools/scripts/compressor.py
 
 %_modes.bin: %_motion.o
 	$(OBJCOPY) -O binary -j .data.modes $< $@

@@ -31,7 +31,7 @@ ROM_SHA1 = c25b145e37456171ada4b0d440bf88a19f4d509f
 2. 编译工具链（二进制未入库）：
 
 ```bash
-./build_tools.sh
+./tools/build_tools.sh
 ```
 
 > agbcc 已随仓库提供（`tools/agbcc/`），无需额外安装。
@@ -50,20 +50,19 @@ make clean         # 清理
 
 | 目录 | 内容 |
 |---|---|
-| `src/` | C 源码（359 个文件，agbcc 编译） |
-| `include/` | 头文件；`constants/` 常量、`configs/` 编译开关、`hacks/` 新增接口 |
-| `asm/` | 手写汇编（`arm.s`、`arm_call.s`、宏） |
+| `src/` | 源码（359 个 `.c` + 6 个手写汇编：`Boot/` 4 个、`Common/` 2 个），agbcc 编译 |
+| `include/` | 头文件；`constants/` 常量、`configs/` 编译开关、`hacks/` 新增接口、`macros/` 汇编宏 |
 | `data/` | 数据段汇编（`.s`，含 `.incbin baserom.gba` 引用） |
-| `graphics/` | 素材源文件（PNG / PAL / TSA）与生成物 |
-| `sound/` | 音乐（MML / MID）与音源 |
+| `contents/` | 素材源文件（PNG / PAL / TSA、MML / MID、音源）与生成物 |
 | `texts/` | 文本表 |
 | `tools/` | 构建工具（`agbcc`、`gbagfx` 等）+ `scripts/` 构建脚本 + `extract/` 反编译提取归档 |
 | `docs/` | 文档；`decomp/` 存放 decomp 阶段报告 |
-| `ldscript.txt` | 链接脚本（**对象级布局，见 AGENTS.md §5**） |
+| `lds/` | 链接脚本（`ldscript.txt` + 3 个被 `INCLUDE` 的脚本，**对象级布局，见 AGENTS.md §5**） |
+| `mk/` | make 规则片段（素材规则、音频规则） |
 
 ## 已知约束
 
-- **`ldscript.txt` 是对象级布局**：1,031 处 `src/xxx.o(.text)` 把每个目标文件钉死在固定地址。
+- **`lds/ldscript.txt` 是对象级布局**：1,031 处 `src/xxx.o(.text)` 把每个目标文件钉死在固定地址。
   移动文件必须同步改路径并保持顺序；新增 `.c` 必须在脚本里安排位置，否则被 `/DISCARD/` 丢掉。
 - **`baserom.gba` 是构建输入**：1,293 处 `.incbin` 引用它（约 1.07 MB）。M4c 会逐步外置到 `contents/`。
 - **源码必须 UTF-8**：构建管道会 `iconv -f UTF-8 -t CP932` 再喂给 agbcc。

@@ -180,7 +180,7 @@ prepare_agbcc() {
 build_project() {
   pushd "${PROJECT_DIR}" >/dev/null
     echo "[+] Building project-specific tools"
-    ./build_tools.sh
+    ./tools/build_tools.sh
     echo "[+] Building fireemblem8u (this can take several minutes)"
     make -j"$(nproc)"
     echo "[+] Verifying ROM checksum"

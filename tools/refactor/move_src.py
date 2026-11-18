@@ -23,10 +23,10 @@ import subprocess
 import sys
 
 LINKER_SCRIPTS = [
-    "ldscript.txt",
-    "linker_script_sound.txt",
-    "linker_script_banim.txt",
-    "sym_iwram.txt",
+    "lds/ldscript.txt",
+    "lds/linker_script_sound.txt",
+    "lds/linker_script_banim.txt",
+    "lds/sym_iwram.txt",
 ]
 
 

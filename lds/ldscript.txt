@@ -237,7 +237,7 @@ SECTIONS
     IWRAM __iwram_start (NOLOAD) :
     ALIGN(4)
     {
-        INCLUDE "sym_iwram.txt"
+        INCLUDE "lds/sym_iwram.txt"
     }
 
     ROM __text_start :
@@ -826,7 +826,7 @@ SECTIONS
         . = ALIGN(4); src/Core/Unit/classchg-menuconfirm.o(.rodata);
         . = ALIGN(4); src/Core/Unit/classchg-menuselect.o(.rodata);
         . = ALIGN(4); src/Core/Map/bmguide.o(.rodata);
-        . = ALIGN(4); INCLUDE "linker_script_sound.txt"
+        . = ALIGN(4); INCLUDE "lds/linker_script_sound.txt"
         . = ALIGN(4); src/Boot/agb_sram.o(.rodata);
         . = ALIGN(4); *libc.a:vfprintf.o(.rodata);
         . = ALIGN(4); *libc.a:dtoa.o(.rodata);

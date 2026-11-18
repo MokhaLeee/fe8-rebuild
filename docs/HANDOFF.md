@@ -49,14 +49,17 @@ make -j16 && make check     # 期望 fireemblem8.gba: OK
 
 移动或新增 `.c` 会牵动 **5 类**东西，漏一个就失败：
 
-1. **四个链接脚本**（不是三个）：`ldscript.txt`、`linker_script_sound.txt`、
-   `linker_script_banim.txt`、`sym_iwram.txt`。**只能改路径，不能改行序**（行序即地址）。
+1. **四个链接脚本**（不是三个），都在 `lds/`：`lds/ldscript.txt`、
+   `lds/linker_script_sound.txt`、`lds/linker_script_banim.txt`、`lds/sym_iwram.txt`。
+   **只能改路径，不能改行序**（行序即地址）。注意 `lds/ldscript.txt` 用
+   `INCLUDE "lds/..."` 引用另外两个，路径是相对仓库根写的。
 2. **`Makefile` 的逐文件覆盖**：`src/Boot/agb_sram.o`(-O1)、`src/Boot/m4a.o`(旧编译器)、
    `src/Core/Map/bmitem.o` 与 `src/UI/menu_def.o`(-Wno-error)。不命中会静默退回默认选项，代码生成变。
 3. **`.gitignore`**：通配必须跟着目录层级走（`src/**/*.s` 而非 `src/*.s`）。
 4. **陈旧产物**：`git mv` 不搬 `.o`/`.s`，要清「旁边没有同名 `.c`」的产物；
-   **排除** `src/{rom_header,crt0,m4a_1,libagbsyscall}.s`（手写汇编源，是源码）。
-5. **素材路径**：`data/*.s` 的 `incbin`、`graphics_file_rules.mk`、`linker_script_banim.txt`（671 处硬编码素材路径）。
+   **排除** `src/Boot/{rom_header,crt0,m4a_1,libagbsyscall}.s`（手写汇编源，是源码）。
+5. **素材路径**：`data/*.s` 的 `incbin`、`mk/graphics_file_rules.mk`、
+   `lds/linker_script_banim.txt`（671 处硬编码素材路径）。
 
 ### 2.4 代码风格
 
@@ -91,9 +94,9 @@ Linux kernel style 已全量落地，但有三条**本项目特有**的例外（
 fe8-rebuild/
 ├── AGENTS.md                    宪法
 ├── baserom.gba                  构建必需输入（不入库，16 MiB）
-├── src/                         372 个 .c / 334,800 行
+├── src/                         359 个 .c + 6 个 .s / 334,800 行
 │   ├── Battle/     92          战斗、战斗动画（banim/ekr/efx/cp/bb）
-│   ├── Boot/       19          启动运行时（main/crt0/irq/hardware/rng/m4a）
+│   ├── Boot/       19 + 4 .s   启动运行时（main/crt0/rom_header/irq/hardware/rng/m4a）
 │   ├── Common/     12          bmlib/fontgrp/icon/msg/soundwrapper
 │   ├── Core/
 │   │   ├── Map/    46          bm*/mu/cursor/地形/AI 行动
@@ -110,13 +113,13 @@ fe8-rebuild/
 │   ├── MapAnim/    20          地图动画与特效
 │   ├── UI/         38          菜单/状态画面/标题/OP
 │   ├── data/       —          （目录）chapter_settings 等被 include 的 .h/.json
-│   ├── events/     —          （目录）章节 eventinfo/eventscript .h
-│   └── *.s         4          手写汇编（rom_header/crt0/m4a_1/libagbsyscall）
+│   └── events/     —          （目录）章节 eventinfo/eventscript .h
 ├── contents/                    素材（26 个目录 + sounds/）
-├── include/                     305 个 .h（constants/ configs/ hacks/ gba/）
+├── include/                     .h（constants/ configs/ hacks/ gba/）+ macros/*.inc
 ├── data/                        265 个 .s（数据段汇编，含 1,297 处 baserom incbin）
-├── texts/ asm/                 文本、手写汇编与宏
-├── ldscript.txt + 3 个 linker_script_*.txt + sym_iwram.txt
+├── texts/                       文本
+├── lds/                         ldscript.txt + 3 个被 INCLUDE 的脚本
+├── mk/                          素材 / 音频规则片段
 ├── Makefile                     入口：all / check / clean
 ├── tools/
 │   ├── agbcc/                   自带编译器（M6 前构建依赖）
@@ -137,7 +140,7 @@ fe8-rebuild/
 | 主机 | `mokha@10.116.89.94`，Linux，16 核 |
 | `DEVKITPRO` / `DEVKITARM` | **未设置也能构建**。用系统 `arm-none-eabi-*`（2.34 / gcc 9.2.1）+ 仓库自带 `tools/agbcc` |
 | `baserom.gba` | 构建必需，不入库。没有它构建直接失败 |
-| 工具二进制 | 未入库，首次需 `./build_tools.sh`（当前已构建好） |
+| 工具二进制 | 未入库，首次需 `./tools/build_tools.sh`（当前已构建好） |
 | 全量构建 | 约 46 秒（`-j16`，干净树） |
 
 常用命令：
@@ -146,7 +149,7 @@ fe8-rebuild/
 make -j16            # 构建 fireemblem8.gba / .elf / .map
 make check           # 字节门禁
 make clean           # 清理
-./build_tools.sh     # 重建 tools/ 下的工具二进制
+./tools/build_tools.sh     # 重建 tools/ 下的工具二进制
 ```
 
 ---

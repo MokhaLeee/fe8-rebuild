@@ -25,9 +25,9 @@ REF_GLOBS = [
 ]
 
 TEXT_FILES = [
-    "graphics_file_rules.mk",
-    "songs.mk",
-    "json_data_rules.mk",
+    "mk/graphics_file_rules.mk",
+    "mk/songs.mk",
+    "mk/json_data_rules.mk",
     "Makefile",
     "graphics/banim/assets/img/banim_img_rules.mk",
 ]
